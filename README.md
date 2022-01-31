@@ -1,8 +1,12 @@
 # `pygcc`
 
+<img src="https://bitbucket.org/Tutolo-RTG/pygcc/src/master/docs/PyGCC-logo.png" alt="pygcc Logo" width="30%" align="right">
+
 A tool for thermodynamic calculations and geochemical database generation
 
-[![pyGeochemCalc Documentation](https://readthedocs.org/projects/pygcc/badge/?version=develop)](https://bitbucket.org/Tutolo-RTG/pygcc/src/master/pyGeoChemcalc.html)
+[![pyGeochemCalc Documentation](https://readthedocs.org/projects/pygcc/badge/?version=latest)](https://pygcc.readthedocs.io/en/latest/?badge=latest)
+[![License: GNU General Public License v3.0](https://img.shields.io/badge/License-GNU%20General%20Public%20License%20v3.0-blue.svg?style=flat)](https://bitbucket.org/Tutolo-RTG/pygcc/src/master/LICENSE)
+
 
 pyGeochemCalc (pygcc) is a python-based program for thermodynamic calculations and producing the 
 Geochemist's Workbench (GWB), EQ3/6, TOUGHREACT, and PFLOTRAN thermodynamic database from 
@@ -19,13 +23,19 @@ request features or examples; see [Contributing](#contributing) below).
 
 ## Installation
 
+[![PyPI](https://img.shields.io/pypi/v/pyrolite.svg?style=flat)](https://pypi.python.org/pypi/pyrolite)
+[![Compatible Python Versions](https://img.shields.io/pypi/pyversions/pyrolite.svg?style=flat)](https://pypi.python.org/pypi/pyrolite/)
+[![pygcc downloads](https://img.shields.io/pypi/dm/pyrolite.svg?style=flat)](https://pypistats.org/packages/pyrolite)
+
 ```bash
 $ pip install pygcc
 ```
 
 ## Examples
 
-Check out the documentation for galleries of [examples](https://pyrolite.readthedocs.io/en/main/examples/index.html) and [tutorials](https://pyrolite.readthedocs.io/en/main/tutorials/index.html). If you'd rather flip through notebooks here on GitHub, these same examples can be found in the folders [`docs/`](./docs/) and [`docs/`](./docs/).
+Check out the documentation for galleries of examples [General Usage](https://pygcc.readthedocs.io/en/latest/Example_1.html), 
+[Integration with GWB](https://pygcc.readthedocs.io/en/latest/Example_2.html) and [Integration with EQ3/6](https://pygcc.readthedocs.io/en/latest/Example_3.html). 
+If you would prefer to flip through notebooks on Bitbucket, these same examples can be found in the folder [`docs/`](https://bitbucket.org/Tutolo-RTG/pygcc/src/master/docs/).
 
 ## Contributing
 

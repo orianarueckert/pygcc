@@ -2,6 +2,6 @@
 
 <!--next-version-placeholder-->
 
-## v1.0.0 (20/01/2022)
+## v1.0.0 (31/01/2022)
 
 - First release of `pygcc`!
