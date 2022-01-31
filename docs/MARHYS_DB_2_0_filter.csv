@@ -1,0 +1,15 @@
+Sample-ID,Geol_setting,Rock_type_primary,Depth,Temp,pH,XH2S,Cl,Na,Fe,Mn,H2,K,Ca,Si,Cu,Press
+EPR 21°N-SW-1985,Mid-oceanic spreading center,Basalt,2500,335,4,8.1,525,462,660,763,0.01,23.7,17.4,17.2,1.00E-07,251.945325
+EPR 21°N-SW-1981,Mid-oceanic spreading center,Basalt,2500,355,3.6,7.45,496,439,750,699,0.01,23.2,16.6,17.3,9.7,251.945325
+EPR 21°N-OBS-1985,Mid-oceanic spreading center,Basalt,2500,340,3.4,7.6,500,439,1530,1024,0.01,23.5,15.6,17.6,1.00E-07,251.945325
+EPR 21°N-OBS-1981,Mid-oceanic spreading center,Basalt,2500,350,3.4,7.3,489,432,1664,960,0.01,23.2,15.6,17.6,35,251.945325
+EPR 21°N-HG-1985,Mid-oceanic spreading center,Basalt,2500,332,3.6,7.9,506,453,1308,640,0.01,24.5,11.6,16.8,1.00E-07,251.945325
+EPR 21°N-HG-1981,Mid-oceanic spreading center,Basalt,2500,351,3.3,8.37,496,443,2429,878,0.01,23.9,11.7,15.6,44,251.945325
+EPR 13°N-1982,Mid-oceanic spreading center,Basalt,2600,317,3.8,6.5,550,450,1800,610,0.01,24,16,22,1.00E-07,262.023138
+EPR 09°50'N-Q.1-1991,Mid-oceanic spreading center,Basalt,2513,371,2.8,33.4,71.4,61.9,1470,187,0.01,1.57,0.805,7.45,1.00E-07,253.2554407
+EPR 09°50'N-P.1-1991,Mid-oceanic spreading center,Basalt,2524,369,2.58,27.4,135,114,4230,176,0.01,2.39,1.17,8.7,1.00E-07,254.3640001
+EPR 09°50'N-G.1-1991,Mid-oceanic spreading center,Basalt,2523,326,2.06,33,150,132,2360,245,0.01,2.94,1.53,8.45,1.00E-07,254.263222
+EPR 09°50'N-B9.1-1991,Mid-oceanic spreading center,Basalt,2521,368,2.57,23.2,154,139,2190,285,0.01,3.69,2.07,9.9,1.00E-07,254.0616657
+EPR 09°47'N-Aa.2-1991,Mid-oceanic spreading center,Basalt,2533,396,2.54,86.2,30.5,26,722,102,0.01,0.624,1.45,3.82,1.00E-07,255.2710033
+EPR 09°47'N-Aa.1-1991,Mid-oceanic spreading center,Basalt,2533,390,2.82,50.3,80.9,71,1560,237,0.01,2.19,2,7.07,1.00E-07,255.2710033
+EPR 09°17'N-F.1-1991,Mid-oceanic spreading center,Basalt,2585,388,2.76,48.8,46.2,35.6,1440,169,0.01,1.24,1.34,6,1.00E-07,260.5114661

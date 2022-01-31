@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pygcc.water_eos &mdash; pygcc  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="prev" title="pygcc.species_eos" href="../species_eos/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html">
+            <img src="../../../_static/PyGCC-logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pygcc_overview.html">An Introduction to pyGeochemCalc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_1.html">General Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_2.html">Integrate pygcc with GWB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_3.html">Integrate pygcc with EQ3/6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../clay_thermocalc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.clay_thermocalc</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pygcc_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.pygcc_utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../read_db/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.read_db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../solid_solution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.solid_solution</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../species_eos/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.species_eos</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.water_eos</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pygcc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+          <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc</span></code></a> &raquo;</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.water_eos</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/pygcc/water_eos/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pygcc.water_eos">
+<span id="pygcc-water-eos"></span><h1><a class="reference internal" href="#module-pygcc.water_eos" title="pygcc.water_eos"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.water_eos</span></code></a><a class="headerlink" href="#module-pygcc.water_eos" title="Permalink to this headline"></a></h1>
+<p>Created on Wed Mar 17 16:02:22 2021</p>
+<p>&#64;author: adedapo.awolayo and Ben Tutolo, University of Calgary</p>
+<p>Copyright (c) 2020 - 2021, Adedapo Awolayo and Ben Tutolo, University of Calgary</p>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Functions implemented here include water equation of state and dielectric properties</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.water_eos.Dummy" title="pygcc.water_eos.Dummy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dummy</span></code></a></p></td>
+<td><p>Class of functions to evaluate the IAPWS95 equation of state for calculating thermodynamic</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.water_eos.iapws95" title="pygcc.water_eos.iapws95"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iapws95</span></code></a></p></td>
+<td><p>Implementation of IAPWS Formulation 1995 for ordinary water substance, revised release of 2016</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.water_eos.ZhangDuan" title="pygcc.water_eos.ZhangDuan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZhangDuan</span></code></a></p></td>
+<td><p>Implementation of Zhang &amp; Duan model Formulation for water at higher Temperature and Pressure conditions, i.e, Deep Earth Water - DEW</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.water_eos.water_dielec" title="pygcc.water_eos.water_dielec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">water_dielec</span></code></a></p></td>
+<td><p>Class Implementation of Water dielectric constants, the Debye-Huckel &quot;A&quot; and &quot;B&quot; parameters and their derivatives at ambient to deep-earth Temperature and Pressure conditions with three different formulations</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.water_eos.convert_temperature" title="pygcc.water_eos.convert_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_temperature</span></code></a>(T, Out_Unit='C')</p></td>
+<td><p>This function converts temperatures from Celsius to Kelvin and vice-versa</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.water_eos.derivative" title="pygcc.water_eos.derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivative</span></code></a>(f, a, method='central', h=0.001)</p></td>
+<td><p>Compute the derivative of f, f'(a) with step size h.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.water_eos.readIAPWS95data" title="pygcc.water_eos.readIAPWS95data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">readIAPWS95data</span></code></a>()</p></td>
+<td><p>returns all constants and coefficients needed for the IAPWS95 formulation, packed into a dictionary</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.water_eos.eps" title="pygcc.water_eos.eps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eps</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.water_eos.J_to_cal" title="pygcc.water_eos.J_to_cal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">J_to_cal</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.water_eos.IAPWS95_COEFFS" title="pygcc.water_eos.IAPWS95_COEFFS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IAPWS95_COEFFS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="pygcc.water_eos.eps">
+<span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">eps</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">2.220446049250313e-16</span></em><a class="headerlink" href="#pygcc.water_eos.eps" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="pygcc.water_eos.J_to_cal">
+<span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">J_to_cal</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">4.184</span></em><a class="headerlink" href="#pygcc.water_eos.J_to_cal" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.water_eos.convert_temperature">
+<span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">convert_temperature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Out_Unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#convert_temperature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.convert_temperature" title="Permalink to this definition"></a></dt>
+<dd><p>This function converts temperatures from Celsius to Kelvin and vice-versa</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature in °C or K</p></li>
+<li><p><strong>Out_Unit</strong> (<em>string</em>) – Expected temperature unit (C or K)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>T</strong> – Temperature in °C or K</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float, vector</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">TC</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span> <span class="n">convert_temperature</span><span class="p">(</span> <span class="n">TC</span><span class="p">,</span> <span class="n">Out_Unit</span> <span class="o">=</span> <span class="s1">&#39;K&#39;</span> <span class="p">)</span>
+<span class="go">    373.15</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TK</span> <span class="o">=</span> <span class="mi">520</span><span class="p">;</span> <span class="n">convert_temperature</span><span class="p">(</span> <span class="n">TK</span><span class="p">,</span> <span class="n">Out_Unit</span> <span class="o">=</span> <span class="s1">&#39;C&#39;</span> <span class="p">)</span>
+<span class="go">    246.85</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.water_eos.derivative">
+<span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'central'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#derivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.derivative" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the derivative of f, f’(a) with step size h.
+:param f: Vectorized function of one variable
+:type f: function
+:param a: Compute derivative at x = a
+:type a: number
+:param method: Difference formula: ‘forward’, ‘backward’ or ‘central’
+:type method: string
+:param h: Step size in difference formula
+:type h: number</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>Difference formula:</dt><dd><p>central: f(a + h) - f(a - h))/2h
+forward: f(a + h) - f(a))/h
+backward: f(a) - f(a-h))/h</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.water_eos.readIAPWS95data">
+<span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">readIAPWS95data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#readIAPWS95data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.readIAPWS95data" title="Permalink to this definition"></a></dt>
+<dd><p>returns all constants and coefficients needed for the IAPWS95 formulation, packed into a dictionary</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="pygcc.water_eos.IAPWS95_COEFFS">
+<span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">IAPWS95_COEFFS</span></span><a class="headerlink" href="#pygcc.water_eos.IAPWS95_COEFFS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pygcc.water_eos.Dummy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">Dummy</span></span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Dummy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Dummy" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class of functions to evaluate the IAPWS95 equation of state for calculating thermodynamic
+properties of water.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Dummy.EOSIAPWS95">
+<span class="sig-name descname"><span class="pre">EOSIAPWS95</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TK</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FullEOSppt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Dummy.EOSIAPWS95"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Dummy.EOSIAPWS95" title="Permalink to this definition"></a></dt>
+<dd><p>This function evaluates the IAPWS basic equation of state to calculate thermodynamic
+properties of water, which is written as a function of temperature and density.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TK</strong> (<em>temperature</em><em> [</em><em>K</em><em>]</em>) – </p></li>
+<li><p><strong>rho</strong> (<em>density</em><em> [</em><em>kg/m3</em><em>]</em>) – </p></li>
+<li><p><strong>FullEOSppt</strong> (<em>Option to output all</em><em> or </em><em>essential water properties</em><em> [</em><em>False</em><em> or </em><em>True</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>px</strong> (<em>pressure [bar]</em>)</p></li>
+<li><p><strong>ax</strong> (<em>Helmholtz energy [kJ/kg-K]</em>)</p></li>
+<li><p><strong>sx</strong> (<em>Entropy [kJ/kg/K]</em>)</p></li>
+<li><p><strong>hx</strong> (<em>Enthalpy [kJ/kg]</em>)</p></li>
+<li><p><strong>gx</strong> (<em>Gibbs energy [kJ/kg]</em>)</p></li>
+<li><p><strong>vx</strong> (<em>Volume [m3/kg]</em>)</p></li>
+<li><p><strong>pdx</strong> (<em>Derivative of pressure with respect to delta in bar</em>)</p></li>
+<li><p><strong>adx</strong> (<em>Helmholtz energy derivative with respect to delta</em>)</p></li>
+<li><p><strong>ztx</strong> (<em>zeta value (needed to calculate viscosity)</em>)</p></li>
+<li><p><strong>ptx</strong> (<em>Derivative of pressure with respect to tau in bar</em>)</p></li>
+<li><p><strong>ktx</strong> (<em>Compressibility [/bar]</em>)</p></li>
+<li><p><strong>avx</strong> (<em>Thermal expansion coefficient (thermal expansivity)</em>)</p></li>
+<li><p><strong>ux</strong> (<em>Internal energy [kJ/kg]  if FullEOSppt is True</em>)</p></li>
+<li><p><strong>gdx</strong> (<em>Gibbs energy derivative in kJ/kg   if FullEOSppt is True</em>)</p></li>
+<li><p><strong>bsx</strong> (<em>Isentropic temperature-pressure coefficient [K-m3/kJ]    if FullEOSppt is True</em>)</p></li>
+<li><p><strong>dtx</strong> (<em>Isothermal throttling coefficient [kJ/kg/bar]    if FullEOSppt is True</em>)</p></li>
+<li><p><strong>mux</strong> (<em>Joule-Thomsen coefficient [K-m3/kJ]  if FullEOSppt is True</em>)</p></li>
+<li><p><strong>cpx</strong> (<em>Isobaric heat capacity [kJ/kg/K]   if FullEOSppt is True</em>)</p></li>
+<li><p><strong>cvx</strong> (<em>Isochoric heat capacity [kJ/kg/K]   if FullEOSppt is True</em>)</p></li>
+<li><p><strong>wx</strong> (<em>Speed of sound [m/s]   if FullEOSppt is True</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>[px, ax, ux, sx, hx, gx, vx, pdx, adx, gdx, ztx, ptx, ktx, avx, bsx, dtx, mux, cpx, cvx, wx] = EOSIAPW95( TK, rho)</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Dummy.auxMeltingPressure">
+<span class="sig-name descname"><span class="pre">auxMeltingPressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TK</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Dummy.auxMeltingPressure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Dummy.auxMeltingPressure" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the melting pressure of ice as a function of temperature.</p>
+<p>This model is described in IAPWS R14-08(2011), Revised Release on the Pressure along
+the Melting and Sublimation Curves of Ordinary Water Substance, as may be found at:
+<a class="reference external" href="http://www.iapws.org/relguide/MeltSub.html">http://www.iapws.org/relguide/MeltSub.html</a></p>
+<p>Five ice phases are covered here. The melting pressure is not a single-valued function
+of temperature as there is some overlap in the temperature ranges of the individual phases.
+There is no overlap in the temperature ranges of Ices III, V, VI, and VII, which together
+span the range 251.165 - 715K. The melting pressure is continuous and monotonically increasing
+over this range, albeit with discontinuities in slope at the triple points where two ice
+phases and liquid are in equilibrium. The problem comes in with Ice Ih, whose temperature
+range completely overlaps that of Ice III and partially overlaps that of Ice V. For a
+temperature in the range for Ice Ih, there are two possible melting pressures.</p>
+<p>The possible ambiguity here in the meaning of melting pressure is not present if the
+temperature is greater than or equal to the triple point temperature of 273.16K, or
+if the pressure is greater than or equal to 2085.66 bar (the triple point pressure
+for Ice Ih-Ice III-liquid). If neither of these conditions are satisfied, then the Ice
+Ih-liquid curve will be used. To deal with the pressure condition noted above, this function
+assumes that an actual pressure is specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
+<li><p><strong>TK</strong> (<em>temperature</em><em> [</em><em>K</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Pmelt</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>melting pressure [bar]</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>[Pmelt] = auxMeltingPressure( TK, P)</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Dummy.auxMeltingTemp">
+<span class="sig-name descname"><span class="pre">auxMeltingTemp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Dummy.auxMeltingTemp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Dummy.auxMeltingTemp" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the melting temperature of ice as a function of pressure.</p>
+<p>This inverts the model for the melting pressure as a function of temperature.
+That model is described in IAPWS R14-08(2011), Revised Release on the Pressure
+along the Melting and Sublimation Curves of Ordinary Water Substance as may be found at:
+<a class="reference external" href="http://www.iapws.org/relguide/MeltSub.html">http://www.iapws.org/relguide/MeltSub.html</a></p>
+<p>Inversion of the model for the melting pressure is done here using the secant method.
+This is chosen instead of the Newton-Raphson method to avoid potential problems with slope
+discontinuites at boundaries between the ice phases for pressures above 208.566 MPa,
+which is the equilibrium pressure for Ice Ih-Ice III-liquid. The corresponding equlibrium
+temperature is 251.165K. Putative melting temperatures should not be less than this for
+pressures above 208.566 Mpa, nor more than this for pressures less than this.
+:param P:
+:type P: pressure [bar]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>Tmelt</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>temperature [K]</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>[Tmelt] = auxMeltingTemp( P)</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Dummy.waterviscosity">
+<span class="sig-name descname"><span class="pre">waterviscosity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Dummy.waterviscosity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Dummy.waterviscosity" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the viscosity of water using
+Ref:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>“IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance” (IAPWS R12-08).</p></li>
+<li><p>Huber M.L., Perkins R.A., Laesecke A., Friend D.G., Sengers J.V., Assael M.J., Metaxa I.N.,
+Vogel E., Mares R., and Miyagawa K. (2009) New International Formulation for the Viscosity
+of H2O. J. Phys. Chem. Ref. Data 38, 101-125.</p></li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>[</strong><strong>°C</strong><strong>]</strong> (<em>TC       temperature</em>) – </p></li>
+<li><p><strong>[</strong><strong>bar</strong><strong>]</strong> (<em>P        pressure</em>) – </p></li>
+<li><p><strong>[</strong><strong>kg/m3</strong><strong>]</strong> (<em>rho      density</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>visc     viscosity [Pa.s]</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>[visc] = waterviscosity( TC, P, rho)</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Dummy.apxsatpropT">
+<span class="sig-name descname"><span class="pre">apxsatpropT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TK</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Dummy.apxsatpropT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Dummy.apxsatpropT" title="Permalink to this definition"></a></dt>
+<dd><p>This function evaluates the approximate pressure (psat) as a function of temperature along
+the vapor-liquid equilibrium curve, using equation 2.5 of Wagner and Pruss (2002).
+It also calculates the derivative of saturation pressure wrt temperature as well as the
+densities of the liquid and vapor phases using equations 2.6 and 2.7
+from the same source.</p>
+<blockquote>
+<div><p>TK       temperature [K] (saturation temperature)</p>
+</div></blockquote>
+<blockquote>
+<div><p>Psat    saturation pressure [bar]</p>
+<p>Psat_t  Derivative of saturation pressure with respect to temperature</p>
+<p>rhosl   density of liquid [kg/m3]</p>
+<p>rhosv   density of vapor [kg/m3]</p>
+</div></blockquote>
+<blockquote>
+<div><p>[Psat, Psat_t, rhosl, rhosv] = apxsatpropT( TK)</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Dummy.apxsatpropP">
+<span class="sig-name descname"><span class="pre">apxsatpropP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Dummy.apxsatpropP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Dummy.apxsatpropP" title="Permalink to this definition"></a></dt>
+<dd><p>This function evaluates the approximate temperature (tsat) as a function of pressure along
+the vapor-liquid equilibrium curve, using equation 2.5 of Wagner and Pruss (2002).
+This is similar to apxsatpropT(TK), but evaluates the inverse problem (Tsat as a function
+of pressure instead of psat as a function of temperature). Newton-Raphson iteration is used.</p>
+<blockquote>
+<div><p>P        pressure [bar]</p>
+</div></blockquote>
+<blockquote>
+<div><p>Tsat     saturation temperature [K]</p>
+</div></blockquote>
+<blockquote>
+<div><p>[Tsat] = apxsatpropP( P)</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Dummy.calcsatpropT">
+<span class="sig-name descname"><span class="pre">calcsatpropT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TK</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Dummy.calcsatpropT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Dummy.calcsatpropT" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the saturation properties as a function of specified temperature.
+This is achieved using Newton-Raphson iteration to refine values of pressure, vapor density,
+and liquid density, starting with results obtained using approximate equations included
+by Wagner and Pruss (2002) in their description of the IAPWS-95 model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>[</strong><strong>K</strong><strong>]</strong> (<em>TK      temperature</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>Psat    saturation pressure [bar]</em></p></li>
+<li><p><em>rhosl   density of liquid [kg/m3]</em></p></li>
+<li><p><em>rhosv   density of vapor [kg/m3]</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>[Psat, rhosl, rhosv] = calcsatpropT( TK)</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Dummy.calcsatpropP">
+<span class="sig-name descname"><span class="pre">calcsatpropP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Dummy.calcsatpropP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Dummy.calcsatpropP" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the saturation properties as a function of specified pressure.
+This is done by iterating using Newton method on pressure to obtain the desired
+temperature. This implementation calls calcsatpropT(TK) to calculate the saturation
+pressure, liquid and vapor densities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>[</strong><strong>bar</strong><strong>]</strong> (<em>P        pressure</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>Tsat     temperature [K]</em></p></li>
+<li><p><em>rhosl    liquid density [kg/m3]</em></p></li>
+<li><p><em>rhosv    vapor density [kg/m3]</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>[Tsat, rhosl, rhosv] = calcsatpropP( P)</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Dummy.fluidDescriptor">
+<span class="sig-name descname"><span class="pre">fluidDescriptor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TK</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">rho</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Dummy.fluidDescriptor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Dummy.fluidDescriptor" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the appropriate description of the H2O fluid at any given
+temperature and pressure</p>
+<p>A problem may occur if the pressure is equal or nearly equal to the saturation pressure.
+Here comparing the pressure with the saturation pressure pressure may lead to the wrong
+description, as vapor and liquid coexist at the saturation pressure. It then becomes
+neccesary to compare the fluid density with the saturated vapor and saturated liquid densities.
+If the density is known, it will be used. If it is not known, the results obtained
+here will determine the starting density estimate, thus in essence choosing “vapor” or “liquid”
+for pressures close to the saturation pressure.</p>
+<blockquote>
+<div><p>P        pressure [bar]</p>
+<p>TK       temperature [K]</p>
+<p>rho      density [kg/m3] (optional)</p>
+</div></blockquote>
+<blockquote>
+<div><p>phase   fluid description</p>
+<p>rhosl    liquid density [kg/m3]</p>
+<p>rhosv    vapor density [kg/m3]</p>
+</div></blockquote>
+<blockquote>
+<div><p>[udescr, rhosl, rhosv] = fluidDescriptor( P, TK)</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Dummy.calcwaterppt">
+<span class="sig-name descname"><span class="pre">calcwaterppt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">rho0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FullEOSppt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Dummy.calcwaterppt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Dummy.calcwaterppt" title="Permalink to this definition"></a></dt>
+<dd><p>This function evaluates thermodynamic properties of water at given temperature and pressure.
+The problem reduces to finding the value of density that is consistent with the desired pressure.
+The Newton-Raphson method is employed. Small negative values of calculated pressure are okay.
+Zero or negative values for calculated “pdx” (pressure derivative with respect to delta)
+imply the unstable zone and must be avoided.</p>
+<blockquote>
+<div><p>T     :  temperature [°C]</p>
+<p>P     :  pressure [bar]</p>
+<p>rho0  :  starting estimate of density [kg/m3] (optional)
+FullEOSppt: Option to output all or essential water properties [False or True]</p>
+</div></blockquote>
+<blockquote>
+<div><p>rho   :  density [kg/m3]</p>
+<p>gx    :  Gibbs energy [cal/mol]</p>
+<p>hx    :  Enthalpy [cal/mol]</p>
+<p>sx    :  Entropy [cal/mol/K]</p>
+<p>vx    :  Volume [m3/mol]</p>
+<p>Pout  :  pressure [bar]</p>
+<p>Tout  :  temperature [°C]</p>
+<p>ux    :  Internal energy [cal/mol]  if FullEOSppt is True</p>
+<p>ax    :  Helmholtz energy [cal/mol/K]   if FullEOSppt is True</p>
+<p>cpx   :  Isobaric heat capacity [cal/mol/K]   if FullEOSppt is True</p>
+</div></blockquote>
+<blockquote>
+<div><p>[rho, gxcu, hxcu, sxcu, vxcu, uxcu, axcu, cpxcu, Pout, Tout] = calcwaterppt(T, P),</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Dummy.calcwaterppt_Prho">
+<span class="sig-name descname"><span class="pre">calcwaterppt_Prho</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FullEOSppt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Dummy.calcwaterppt_Prho"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Dummy.calcwaterppt_Prho" title="Permalink to this definition"></a></dt>
+<dd><p>This function evaluates thermodynamic properties of water at given density and pressure.
+The problem reduces to finding the value of temperature that is consistent with the desired pressure.</p>
+<blockquote>
+<div><p>P     :  pressure [bar]</p>
+<p>rho   :  density [kg/m3]</p>
+<p>FullEOSppt: Option to output all or essential water properties [False or True]</p>
+</div></blockquote>
+<blockquote>
+<div><p>rho   :  density [kg/m3]</p>
+<p>gx    :  Gibbs energy [cal/mol]</p>
+<p>hx    :  Enthalpy [cal/mol]</p>
+<p>sx    :  Entropy [cal/mol/K]</p>
+<p>vx    :  Volume [m3/mol]</p>
+<p>Pout  :  pressure [bar]</p>
+<p>Tout  :  temperature [°C]</p>
+<p>ux    :  Internal energy [cal/mol]  if FullEOSppt is True</p>
+<p>ax    :  Helmholtz energy [cal/mol/K]  if FullEOSppt is True</p>
+<p>cpx   :  Isobaric heat capacity [cal/mol/K]  if FullEOSppt is True</p>
+</div></blockquote>
+<blockquote>
+<div><p>[rho, gxcu, hxcu, sxcu, vxcu, uxcu, axcu, cpxcu, Pout, Tout] = calcwaterppt_Prho(P, rho),</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Dummy.calcwaterstdppt">
+<span class="sig-name descname"><span class="pre">calcwaterstdppt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TK</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Out_Unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'standard'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Dummy.calcwaterstdppt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Dummy.calcwaterstdppt" title="Permalink to this definition"></a></dt>
+<dd><p>This function converts thermodynamic properties of water from kilogram units to standard thermochemical
+scale (calorie units) and vice-versa.</p>
+<blockquote>
+<div><p>TK    :  temperature [K]</p>
+<p>hx    :  Enthalpy [kJ/kg] or [cal/mol]</p>
+<p>sx    :  Entropy [kJ/kg/K] or [cal/mol/K]</p>
+<p>vx    :  Volume [m3/kg]  or [m3/mol]</p>
+<p>ux    :  Internal energy [kJ/kg] or [cal/mol]</p>
+<p>cpx   :  Isobaric heat capacity [kJ/kg/K] or [cal/mol/K]</p>
+</div></blockquote>
+<blockquote>
+<div><p>gx    :  Gibbs energy [kJ/kg] or [cal/mol]</p>
+<p>hx    :  Enthalpy [kJ/kg] or [cal/mol]</p>
+<p>sx    :  Entropy [kJ/kg/K] or[cal/mol/K]</p>
+<p>vx    :  Volume [m3/kg]  or[m3/mol]</p>
+<p>ax    :  Helmholtz energy [kJ/kg/K] or[cal/mol/K]</p>
+<p>ux    :  Internal energy [kJ/kg] or [cal/mol]</p>
+<p>cpx   :  Isobaric heat capacity [kJ/kg/K] or[cal/mol/K]</p>
+</div></blockquote>
+<blockquote>
+<div><p>[gx, hx, sx, vx, ux, ax, cpx] = calcwaterstdppt(TK, hx, sx, vx, ux, cpx, Out_Unit = ‘kilogram’)</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pygcc.water_eos.iapws95">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">iapws95</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#iapws95"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.iapws95" title="Permalink to this definition"></a></dt>
+<dd><p>Implementation of IAPWS Formulation 1995 for ordinary water substance, revised release of 2016</p>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>Temperature and Pressure input limits</dt><dd><ul class="simple">
+<li><p>-22 ≤ TC ≤ 1000 and 0 ≤ P ≤ 100,000</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [°C]</p></li>
+<li><p><strong>P</strong> (<em>float</em><em>, </em><em>vector</em>) – Pressure [bar]</p></li>
+<li><p><strong>rho</strong> (<em>float</em><em>, </em><em>vector</em>) – Density [kg/m³]</p></li>
+<li><p><strong>rho0</strong> (<em>float</em><em>, </em><em>vector</em>) – Starting estimate of density [kg/m³]</p></li>
+<li><p><strong>rhom</strong> (<em>float</em><em>, </em><em>vector</em>) – Molar density [kg/m³]</p></li>
+<li><p><strong>delta</strong> (<em>float</em><em>, </em><em>vector</em>) – Reduced density, rho/rhoc</p></li>
+<li><p><strong>tau</strong> (<em>float</em><em>, </em><em>vector</em>) – Reduced temperature, Tc/T</p></li>
+<li><p><strong>v</strong> (<em>float</em><em>, </em><em>vector</em>) – Specific volume [m³/kg]</p></li>
+<li><p><strong>vm</strong> (<em>float</em><em>, </em><em>vector</em>) – Specific molar volume [m³/mol]</p></li>
+<li><p><strong>Out_Unit</strong> (<em>string</em>) – Expected units (‘standard’ or ‘kilogram’)</p></li>
+<li><p><strong>FullEOSppt</strong> (<em>bool</em>) – Option to output all or essential water properties [False or True]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>The calculated instance has the following potential properties</em></p></li>
+<li><p><strong>rho</strong> (<em>float, vector</em>) – Density [kg/m3]</p></li>
+<li><p><strong>G</strong> (<em>float, vector</em>) – Gibbs energy [cal/mol] or  [kJ/kg]</p></li>
+<li><p><strong>H</strong> (<em>float, vector</em>) – Enthalpy [cal/mol] or [kJ/kg]</p></li>
+<li><p><strong>S</strong> (<em>float, vector</em>) – Entropy [cal/mol/K] or [kJ/kg/K]</p></li>
+<li><p><strong>V</strong> (<em>float, vector</em>) – Volume [m3/mol] or [m3/kg]</p></li>
+<li><p><strong>P</strong> (<em>float, vector</em>) – Pressure [bar]</p></li>
+<li><p><strong>TC</strong> (<em>float, vector</em>) – Temperature [°C]</p></li>
+<li><p><strong>TK</strong> (<em>float, vector</em>) – Temperature [K]</p></li>
+<li><p><strong>U</strong> (<em>float, vector</em>) – Internal energy [cal/mol] or [kJ/kg]  if FullEOSppt is True</p></li>
+<li><p><strong>F</strong> (<em>float, vector</em>) – Helmholtz energy [cal/mol/K] or [kJ/kg-K]  if FullEOSppt is True</p></li>
+<li><p><strong>Cp</strong> (<em>float, vector</em>) – Isobaric heat capacity [cal/mol/K]</p></li>
+<li><p><strong>rhosl</strong> (<em>float, vector</em>) – Density of liquid [kg/m3]</p></li>
+<li><p><strong>rhosv</strong> (<em>float, vector</em>) – Density of vapor [kg/m3]</p></li>
+<li><p><strong>pdx</strong> (<em>float, vector</em>) – Derivative of pressure with respect to delta in bar</p></li>
+<li><p><strong>adx</strong> (<em>float, vector</em>) – Helmholtz energy derivative with respect to delta</p></li>
+<li><p><strong>ztx</strong> (<em>float, vector</em>) – zeta value (needed to calculate viscosity)</p></li>
+<li><p><strong>ptx</strong> (<em>float, vector</em>) – Derivative of pressure with respect to tau in bar</p></li>
+<li><p><strong>gdx</strong> (<em>float, vector</em>) – Gibbs energy derivative [kJ/kg]   if FullEOSppt is True</p></li>
+<li><p><strong>ktx</strong> (<em>float, vector</em>) – Compressibility [/bar]</p></li>
+<li><p><strong>avx</strong> (<em>float, vector</em>) – Thermal expansion coefficient (thermal expansivity)</p></li>
+<li><p><strong>mu</strong> (<em>float, vector</em>) – viscosity [Pa-s] if FullEOSppt is True</p></li>
+<li><p><strong>bsx</strong> (<em>float, vector</em>) – Isentropic temperature-pressure coefficient [K-m3/kJ]  if FullEOSppt is True</p></li>
+<li><p><strong>dtx</strong> (<em>float, vector</em>) – Isothermal throttling coefficient [kJ/kg/bar]  if FullEOSppt is True</p></li>
+<li><p><strong>mux</strong> (<em>float, vector</em>) – Joule-Thomsen coefficient [K-m3/kJ]  if FullEOSppt is True</p></li>
+<li><p><strong>cvx</strong> (<em>float, vector</em>) – Isochoric heat capacity [kJ/kg/K]  if FullEOSppt is True</p></li>
+<li><p><strong>wx</strong> (<em>float, vector</em>) – Speed of sound [m/s]  if FullEOSppt is True</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of iapws95 is as follows:</p>
+<ol class="arabic">
+<li><p>For water properties at any Temperature and Pressure not on steam saturation curve:</p>
+<p>water = iapws95(T = T, P = P),</p>
+<p>where T is temperature in celsius and P is pressure in bar</p>
+</li>
+<li><p>For water properties at any Temperature and Pressure on steam saturation curve:</p>
+<p>water = iapws95(T = T, P = ‘T’),</p>
+<p>where T is temperature in celsius, followed with a quoted character ‘T’ to reflect steam saturation pressure</p>
+<p>water = iapws95(T = ‘P’, P = P),</p>
+<p>where P is pressure in bar, followed with a quoted character ‘P’ to reflect steam saturation temperature</p>
+</li>
+<li><p>For water properties at any Temperature and density :</p>
+<p>water = iapws95(T = T, rho = rho),</p>
+<p>where T is temperature in celsius and rho is density in kg/m³</p>
+</li>
+<li><p>For water properties at any Pressure and density :</p>
+<p>water = iapws95(P = P, rho = rho),</p>
+<p>where P is pressure in bar and rho is density in kg/m³</p>
+</li>
+<li><p>For water saturation properties at any saturation Temperature :</p>
+<p>water = iapws95(T = T),</p>
+<p>where T is temperature in celsius</p>
+</li>
+<li><p>For water saturation properties at any saturation Pressure :</p>
+<p>water = iapws95(P = P),</p>
+<p>where P is pressure in bar</p>
+</li>
+</ol>
+</div></blockquote>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">water</span> <span class="o">=</span> <span class="n">iapws95</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mf">200.</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">FullEOSppt</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">water</span><span class="o">.</span><span class="n">rho</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">V</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">mu</span>
+<span class="go">    867.2595, -60368.41787, -65091.03895,  25.14869,  4.96478e-03,  50.00000,</span>
+<span class="go">    200.000, 0.00013546</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">water</span> <span class="o">=</span> <span class="n">iapws95</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">rho</span><span class="o">=</span><span class="mf">996.5560</span><span class="p">,</span> <span class="n">Out_Unit</span><span class="o">=</span><span class="s1">&#39;kilogram&#39;</span><span class="p">,</span> <span class="n">FullEOSppt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">water</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">F</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">V</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">Cp</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">pdx</span>
+<span class="go">    2872.063, -234.204, 2.051, 1024.747, 53.994, 1.0035e-03, 3.883, 10079.17</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">water</span><span class="o">.</span><span class="n">adx</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">ztx</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">ptx</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">ktx</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">avx</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">gdx</span>
+<span class="go">    93.120, 2.189e-03, -7.348e+03,  3.205e-05,  6.809e-04, 1.914e-04, 1011.40</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">water</span> <span class="o">=</span> <span class="n">iapws95</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">350</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">water</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">rhosl</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">rhosv</span>
+<span class="go">    165.2942 574.7065 113.6056</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">water</span> <span class="o">=</span> <span class="n">iapws95</span><span class="p">(</span><span class="n">P</span> <span class="o">=</span> <span class="mi">150</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">water</span><span class="o">.</span><span class="n">TC</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">rhosl</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">rhosv</span>
+<span class="go">    342.1553, 603.5179, 96.7271</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p>Wagner, W., Pruß, A., 2002. The IAPWS formulation 1995 for the thermodynamic properties of
+ordinary water substance for general and scientific use. J. Phys. Chem. Ref. Data 31, 387–535.
+<a class="reference external" href="https://doi.org/10.1063/1.1461829">https://doi.org/10.1063/1.1461829</a></p></li>
+</ol>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pygcc.water_eos.iapws95.kwargs">
+<span class="sig-name descname"><span class="pre">kwargs</span></span><a class="headerlink" href="#pygcc.water_eos.iapws95.kwargs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pygcc.water_eos.iapws95.mwH2O">
+<span class="sig-name descname"><span class="pre">mwH2O</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">18.015268</span></em><a class="headerlink" href="#pygcc.water_eos.iapws95.mwH2O" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.iapws95.__checker__">
+<span class="sig-name descname"><span class="pre">__checker__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#iapws95.__checker__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.iapws95.__checker__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.iapws95.__calc__">
+<span class="sig-name descname"><span class="pre">__calc__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#iapws95.__calc__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.iapws95.__calc__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pygcc.water_eos.ZhangDuan">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">ZhangDuan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#ZhangDuan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.ZhangDuan" title="Permalink to this definition"></a></dt>
+<dd><p>Implementation of Zhang &amp; Duan model Formulation for water at higher Temperature and Pressure conditions, i.e, Deep Earth Water - DEW</p>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>Temperature and Pressure input limits</dt><dd><ul class="simple">
+<li><p>0 ≤ TC ≤ 1726.85 and 1000 ≤ P ≤ 300,000</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [°C]</p></li>
+<li><p><strong>P</strong> (<em>float</em><em>, </em><em>vector</em>) – Pressure [bar]</p></li>
+<li><p><strong>rho</strong> (<em>float</em><em>, </em><em>vector</em>) – Density [kg/m³]</p></li>
+<li><p><strong>rho0</strong> (<em>float</em><em>, </em><em>vector</em>) – Starting estimate of density [kg/m³]</p></li>
+<li><p><strong>densityEquation</strong> (<em>string</em>) – specify either ‘ZD05’ to use Zhang &amp; Duan (2005) or ‘ZD09’  to use Zhang &amp; Duan (2009)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>The calculated instance has the following potential properties</em></p></li>
+<li><p><strong>rho</strong> (<em>float, vector</em>) – Density [kg/m3]</p></li>
+<li><p><strong>rhohat</strong> (<em>float, vector</em>) – Density [g/cm³]</p></li>
+<li><p><strong>G</strong> (<em>float, vector</em>) – Gibbs energy [cal/mol]</p></li>
+<li><p><strong>drhodP_T</strong> (<em>float, vector</em>) – Partial derivative of density with respect to pressure at constant temperature</p></li>
+<li><p><strong>drhodT_P</strong> (<em>float, vector</em>) – Partial derivative of density with respect to temperature at constant pressure</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of ZhangDuan is as follows:</p>
+<ol class="arabic">
+<li><p>For water properties at any Temperature and Pressure:</p>
+<p>deepearth = ZhangDuan(T = T, P = P),</p>
+<p>where T is temperature in celsius and P is pressure in bar</p>
+</li>
+<li><p>For water properties at any Temperature and density :</p>
+<p>deepearth = ZhangDuan(T = T, rho = rho),</p>
+<p>where T is temperature in celsius and rho is density in kg/m³</p>
+</li>
+</ol>
+</div></blockquote>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">deepearth</span> <span class="o">=</span> <span class="n">ZhangDuan</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deepearth</span><span class="o">.</span><span class="n">rho</span><span class="p">,</span> <span class="n">deepearth</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">deepearth</span><span class="o">.</span><span class="n">drhodP_T</span><span class="p">,</span> <span class="n">deepearth</span><span class="o">.</span><span class="n">drhodT_P</span>
+<span class="go">    1145.3065, -54631.5351, 2.3283e-05, -0.0004889</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">deepearth</span> <span class="o">=</span> <span class="n">ZhangDuan</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">rho</span> <span class="o">=</span> <span class="mi">1100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deepearth</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="n">deepearth</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">deepearth</span><span class="o">.</span><span class="n">drhodP_T</span><span class="p">,</span> <span class="n">deepearth</span><span class="o">.</span><span class="n">drhodT_P</span>
+<span class="go">    7167.2231, -57319.0980, 2.3282e-05, -0.0005122</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p>Zhang, Z., Duan, Z., 2005. Prediction of the PVT properties of water over wide range of
+temperatures and pressures from molecular dynamics simulation. Phys. Earth Planet. Inter.
+149, 335–354. <a class="reference external" href="https://doi.org/10.1016/j.pepi.2004.11.003">https://doi.org/10.1016/j.pepi.2004.11.003</a>.</p></li>
+<li><p>Zhang, C. and Duan, Z., 2009. “A model for C-O-H fluid in the Earth’s mantle”, Geochimica et
+Cosmochimica Acta, vol. 73, no. 7, pp. 2089–2102, doi:10.1016/j.gca.2009.01.021.</p></li>
+<li><p>Sverjensky, D.A., Harrison, B., Azzolini, D., 2014. Water in the deep Earth: The dielectric
+constant and the solubilities of quartz and corundum to 60kb and 1200°C. Geochim. Cosmochim.
+Acta 129, 125–145. <a class="reference external" href="https://doi.org/10.1016/j.gca.2013.12.019">https://doi.org/10.1016/j.gca.2013.12.019</a></p></li>
+</ol>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pygcc.water_eos.ZhangDuan.kwargs">
+<span class="sig-name descname"><span class="pre">kwargs</span></span><a class="headerlink" href="#pygcc.water_eos.ZhangDuan.kwargs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.ZhangDuan.__calc__">
+<span class="sig-name descname"><span class="pre">__calc__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#ZhangDuan.__calc__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.ZhangDuan.__calc__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.ZhangDuan.ZD_Pressure_drhodP">
+<span class="sig-name descname"><span class="pre">ZD_Pressure_drhodP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhohat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#ZhangDuan.ZD_Pressure_drhodP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.ZhangDuan.ZD_Pressure_drhodP" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.ZhangDuan.ZD_Density">
+<span class="sig-name descname"><span class="pre">ZD_Density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ZD05'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#ZhangDuan.ZD_Density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.ZhangDuan.ZD_Density" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.ZhangDuan.GibbsEnergy">
+<span class="sig-name descname"><span class="pre">GibbsEnergy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'VolumeIntegral'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#ZhangDuan.GibbsEnergy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.ZhangDuan.GibbsEnergy" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pygcc.water_eos.water_dielec">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">water_dielec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#water_dielec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.water_dielec" title="Permalink to this definition"></a></dt>
+<dd><p>Class Implementation of Water dielectric constants, the Debye-Huckel “A” and “B” parameters and their derivatives at ambient to deep-earth Temperature and Pressure conditions with three different formulations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [°C]</p></li>
+<li><p><strong>P</strong> (<em>float</em><em>, </em><em>vector</em>) – Pressure [bar]</p></li>
+<li><p><strong>rho</strong> (<em>float</em><em>, </em><em>vector</em>) – Density [kg/m³]</p></li>
+<li><p><strong>Dielec_method</strong> (<em>string</em>) – specify either ‘FGL97’ or ‘JN91’ or ‘DEW’ as the method to calculate dielectric constant (optional), if not specified, default - ‘JN91’</p></li>
+<li><p><strong>Dielec_DEWoutrange</strong> (<em>string</em>) – specify either ‘FGL97’ or ‘JN91’ as the method to calculate dielectric constant for out of range for ‘DEW’ method if any</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>The calculated instance has the following potential properties</em></p></li>
+<li><p><strong>E</strong> (<em>float, vector</em>) – dielectric constant of water [cal/mol]</p></li>
+<li><p><strong>rhohat</strong> (<em>float, vector</em>) – density [g/cm³]</p></li>
+<li><p><strong>Ah</strong> (<em>float, vector</em>) – Debye-Huckel “A” parameters [kg^1/2 mol^-1/2]</p></li>
+<li><p><strong>Bh</strong> (<em>float, vector</em>) – Debye-Huckel “B” parameters [kg^1/2 mol^-1/2 Angstrom^-1]</p></li>
+<li><p><strong>bdot</strong> (<em>float, vector</em>) – bdot at any given temperature T</p></li>
+<li><p><strong>Adhh</strong> (<em>float, vector</em>) – Debye-Huckel “A” parameters associated with apparent molar enthalpy</p></li>
+<li><p><strong>Adhv</strong> (<em>float, vector</em>) – Debye-Huckel “A” parameters associated with apparent molar volume</p></li>
+<li><p><strong>Bdhh</strong> (<em>float, vector</em>) – Debye-Huckel “B” parameters associated with apparent molar enthalpy</p></li>
+<li><p><strong>Bdhv</strong> (<em>float, vector</em>) – Debye-Huckel “B” parameters associated with apparent molar volume</p></li>
+<li><p><strong>dEdP_T</strong> (<em>float, vector</em>) – Partial derivative of dielectric constant with respect to pressure at constant temperature</p></li>
+<li><p><strong>dEdT_P</strong> (<em>float, vector</em>) – Partial derivative of dielectric constant with respect to temperature at constant pressure</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>FGL97 Temperature and Pressure input limits:</dt><dd><ul class="simple">
+<li><p>-35 ≤ TC ≤ 600 and 0 ≤ P ≤ 12000</p></li>
+</ul>
+</dd>
+<dt>DEW Temperature and Pressure input limits:</dt><dd><ul class="simple">
+<li><p>100 ≤ TC ≤ 1200 and 1000 ≤ P ≤ 60000</p></li>
+</ul>
+</dd>
+<dt>JN91 Temperature and Pressure input limits:</dt><dd><ul class="simple">
+<li><p>0 ≤ TC ≤ 1000 and 0 ≤ P ≤ 5000</p></li>
+</ul>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of water_dielec is as follows:</p>
+<ol class="arabic">
+<li><p>For water dielectric properties at any Temperature and Pressure:</p>
+<p>dielect = water_dielec(T = T, P = P, Dielec_method = ‘JN91’),</p>
+<p>where T is temperature in celsius and P is pressure in bar</p>
+</li>
+<li><p>For water dielectric properties at any Temperature and density :</p>
+<p>dielect = water_dielec(T = T, rho = rho, Dielec_method = ‘JN91’),</p>
+<p>where T is temperature in celsius and rho is density in kg/m³</p>
+</li>
+<li><p>For water dielectric properties at any Temperature and Pressure on steam saturation curve:</p>
+<p>dielect = water_dielec(T = T, P = ‘T’, Dielec_method = ‘JN91’),</p>
+<p>where T is temperature in celsius and P is assigned a quoted character ‘T’ to reflect steam saturation pressure</p>
+<p>dielect = water_dielec(P = P, T = ‘P’, Dielec_method = ‘JN91’),</p>
+<p>where P is pressure in bar and T is assigned a quoted character ‘P’ to reflect steam saturation temperature</p>
+</li>
+</ol>
+</div></blockquote>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dielect</span> <span class="o">=</span> <span class="n">water_dielec</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;JN91&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dielect</span><span class="o">.</span><span class="n">E</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">rhohat</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Ah</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">bdot</span>
+<span class="go">    71.547359, 1.00868586, 0.52131899,   0.33218072,   0.04088528</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dielect</span><span class="o">.</span><span class="n">Adhh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Adhv</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bdhh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bdhv</span>
+<span class="go">    0.64360153,   2.13119279,  15.6936832 , -14.52571678</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dielect</span><span class="o">.</span><span class="n">dEdP_T</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">dEdT_P</span>
+<span class="go">    0.03293026,   -0.32468033</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dielect</span> <span class="o">=</span> <span class="n">water_dielec</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">rho</span> <span class="o">=</span> <span class="mi">1100</span><span class="p">,</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;FGL97&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dielect</span><span class="o">.</span><span class="n">E</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">rhohat</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Ah</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">bdot</span>
+<span class="go">    49.73131404,  1.1,  0.5302338, 0.34384714,  0.04452579</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dielect</span><span class="o">.</span><span class="n">Adhh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Adhv</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bdhh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bdhv</span>
+<span class="go">    1.21317825,  2.21165281, 28.0047878, -34.21216547</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dielect</span><span class="o">.</span><span class="n">dEdP_T</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">dEdT_P</span>
+<span class="go">    0.01444368, -0.16864644</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dielect</span> <span class="o">=</span> <span class="n">water_dielec</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">,</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;DEW&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dielect</span><span class="o">.</span><span class="n">E</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">rhohat</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Ah</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">bdot</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Adhh</span>
+<span class="go">    39.46273008,  1.0238784,  0.62248141,   0.35417088, 0.02878662, 0.80688122</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dielect</span><span class="o">.</span><span class="n">Adhv</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bdhh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bdhv</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">dEdP_T</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">dEdT_P</span>
+<span class="go">     3.13101408, 39.76402294, -35.29670957, 0.0129006 , -0.08837842</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p>Release on the Static Dielectric Constant of Ordinary Water Substance for
+Temperatures from 238 K to 873 K and Pressures up to 1000 MPa” (IAPWS R8-97, 1997).</p></li>
+<li><p>Fernandez D. P., Goodwin A. R. H., Lemmon E. W., Levelt Sengers J. M. H.,
+and Williams R. C. (1997) A Formulation for the Permittivity of Water and
+Steam at Temperatures from 238 K to 873 K at Pressures up to 1200 MPa, including
+Derivatives and Debye-Hückel Coefficients. J. Phys. Chem. Ref. Data 26, 1125-1166.</p></li>
+<li><p>Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
+Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
+Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
+Am. J. Sci. 274, 1199-1251.</p></li>
+<li><p>Johnson JW, Norton D (1991) Critical phenomena in hydrothermal systems: State, thermodynamic,
+electrostatic, and transport properties of H2O in the critical region. American Journal of Science 291:541-648</p></li>
+<li><p>D. A. Sverjensky, B. Harrison, and D. Azzolini, “Water in the deep Earth: the dielectric
+constant and the solubilities of quartz and corundum to 60 kb and 1200 °C,” Geochimica et
+Cosmochimica Acta, vol. 129, pp. 125–145, 2014</p></li>
+</ol>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pygcc.water_eos.water_dielec.kwargs">
+<span class="sig-name descname"><span class="pre">kwargs</span></span><a class="headerlink" href="#pygcc.water_eos.water_dielec.kwargs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.water_dielec.__checker__">
+<span class="sig-name descname"><span class="pre">__checker__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#water_dielec.__checker__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.water_dielec.__checker__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.water_dielec.__calc__">
+<span class="sig-name descname"><span class="pre">__calc__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#water_dielec.__calc__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.water_dielec.__calc__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.water_dielec.dielec_FGL97">
+<span class="sig-name descname"><span class="pre">dielec_FGL97</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#water_dielec.dielec_FGL97"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.water_dielec.dielec_FGL97" title="Permalink to this definition"></a></dt>
+<dd><p>This function employs the FGL91 formulation to calculate the dielectric constant of water (E), the Debye-Huckel “A” parameters
+and Debye-Huckel “B” parameters (3)  and their derivatives as a
+function of temperature and pressure</p>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>Temperature and Pressure input limits:</dt><dd><ul class="simple">
+<li><p>-35 ≤ TC ≤ 600 and 0 ≤ P ≤ 12000</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>rho</strong> (<em>density</em><em> [</em><em>kg/m3</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>E</strong> (<em>dielectric constant of water [cal/mol]</em>)</p></li>
+<li><p><strong>rhohat</strong> (<em>density [g/cm³]</em>)</p></li>
+<li><p><strong>Ah</strong> (<em>Debye-Huckel “A” parameters [kg^1/2 mol^-1/2]</em>)</p></li>
+<li><p><strong>Bh</strong> (<em>Debye-Huckel “B” parameters [kg^1/2 mol^-1/2 Angstrom^-1]</em>)</p></li>
+<li><p><strong>bdot</strong> (<em>bdot at any given temperature T</em>)</p></li>
+<li><p><strong>Adhh</strong> (<em>Debye-Huckel “A” parameters associated with apparent molar enthalpy</em>)</p></li>
+<li><p><strong>Adhv</strong> (<em>Debye-Huckel “A” parameters associated with apparent molar volume</em>)</p></li>
+<li><p><strong>Bdhh</strong> (<em>Debye-Huckel “B” parameters associated with apparent molar enthalpy</em>)</p></li>
+<li><p><strong>Bdhv</strong> (<em>Debye-Huckel “B” parameters associated with apparent molar volume</em>)</p></li>
+<li><p><strong>dEdP_T</strong> (<em>Partial derivative of dielectric constant with respect to pressure at constant temperature</em>)</p></li>
+<li><p><strong>dEdT_P</strong> (<em>Partial derivative of dielectric constant with respect to temperature at constant pressure</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>[E, rhohat, Ah, Bh, bdot, Adhh, Adhv, Bdhh, Bdhv, dEdP_T, dEdT_P] = dielec_FGL97( TC, rho)</p>
+</div></blockquote>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p>Release on the Static Dielectric Constant of Ordinary Water Substance for
+Temperatures from 238 K to 873 K and Pressures up to 1000 MPa” (IAPWS R8-97, 1997).</p></li>
+<li><p>Fernandez D. P., Goodwin A. R. H., Lemmon E. W., Levelt Sengers J. M. H.,
+and Williams R. C. (1997) A Formulation for the Permittivity of Water and
+Steam at Temperatures from 238 K to 873 K at Pressures up to 1200 MPa, including
+Derivatives and Debye-Hückel Coefficients. J. Phys. Chem. Ref. Data 26, 1125-1166.</p></li>
+<li><p>Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
+Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
+Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
+Am. J. Sci. 274, 1199-1251.</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.water_dielec.dielec_JN91">
+<span class="sig-name descname"><span class="pre">dielec_JN91</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#water_dielec.dielec_JN91"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.water_dielec.dielec_JN91" title="Permalink to this definition"></a></dt>
+<dd><p>This dielec_JN91 implementation employs the JN91 formulation to calculate the
+dielectric properties of water and steam, the Debye-Huckel “A” parameters and
+Debye-Huckel “B” parameters  and their derivatives</p>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>Temperature and Pressure input limits:</dt><dd><ul class="simple">
+<li><p>0 ≤ TC ≤ 1000 and 0 ≤ P ≤ 5000</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>rho</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+<blockquote>
+<div><blockquote>
+<div><p>E       : dielectric constant of water [cal/mol]</p>
+<p>rhohat  : density [g/cm³]</p>
+<p>Ah      : Debye-Huckel “A” parameters [kg^1/2 mol^-1/2]</p>
+<p>Bh      : Debye-Huckel “B” parameters [kg^1/2 mol^-1/2 Angstrom^-1]</p>
+<p>bdot    : bdot at any given temperature T</p>
+<p>Adhh    : Debye-Huckel “A” parameters associated with apparent molar enthalpy</p>
+<p>Adhv    : Debye-Huckel “A” parameters associated with apparent molar volume</p>
+<p>Bdhh    : Debye-Huckel “B” parameters associated with apparent molar enthalpy</p>
+<p>Bdhv    : Debye-Huckel “B” parameters associated with apparent molar volume</p>
+<p>dEdP_T  : Partial derivative of dielectric constant with respect to pressure at constant temperature</p>
+<p>dEdT_P  : Partial derivative of dielectric constant with respect to temperature at constant pressure</p>
+</div></blockquote>
+<p>Usage</p>
+</div></blockquote>
+<blockquote>
+<div><p>[E, rhohat, Ah, Bh, bdot, Adhh, Adhv, Bdhh, Bdhv, dEdP_T, dEdT_P] = dielec_JN91( TC, rho)</p>
+</div></blockquote>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p>Johnson JW, Norton D (1991) Critical phenomena in hydrothermal systems: State, thermodynamic,
+electrostatic, and transport properties of H2O in the critical region. American Journal of Science 291:541-648</p></li>
+<li><p>Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
+Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
+Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
+Am. J. Sci. 274, 1199-1251.</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.water_dielec.dielec_DEW">
+<span class="sig-name descname"><span class="pre">dielec_DEW</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#water_dielec.dielec_DEW"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.water_dielec.dielec_DEW" title="Permalink to this definition"></a></dt>
+<dd><p>This watercalc implementation employs the DEW formulation embedded in Sverjensky et al. (2014)
+to calculate the dielectric properties of water and steam, the Debye-Huckel “A” parameters and
+Debye-Huckel “B” parameters  and their derivatives. This function has been set up to use
+either Johnson and Norton (1991) or Fernandez et al. (1997) formulation below 5000 bar and
+Sverjensky et al. (2014) formulation above 5000 bar.</p>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>Temperature and Pressure input limits:</dt><dd><ul class="simple">
+<li><p>100 ≤ TC ≤ 1200 and 1000 ≤ P ≤ 60000</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>P</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+<blockquote>
+<div><blockquote>
+<div><p>E       : dielectric constant of water [cal/mol]</p>
+<p>rhohat  : density [g/cm³]</p>
+<p>Ah      : Debye-Huckel “A” parameters [kg^1/2 mol^-1/2]</p>
+<p>Bh      : Debye-Huckel “B” parameters [kg^1/2 mol^-1/2 Angstrom^-1]</p>
+<p>bdot    : bdot at any given temperature T</p>
+<p>Adhh    : Debye-Huckel “A” parameters associated with apparent molar enthalpy</p>
+<p>Adhv    : Debye-Huckel “A” parameters associated with apparent molar volume</p>
+<p>Bdhh    : Debye-Huckel “B” parameters associated with apparent molar enthalpy</p>
+<p>Bdhv    : Debye-Huckel “B” parameters associated with apparent molar volume</p>
+<p>dEdP_T  : Partial derivative of dielectric constant with respect to pressure at constant temperature</p>
+<p>dEdT_P  : Partial derivative of dielectric constant with respect to temperature at constant pressure</p>
+</div></blockquote>
+<p>Usage</p>
+</div></blockquote>
+<blockquote>
+<div><p>[E, rhohat, Ah, Bh, bdot, Adhh, Adhv, Bdhh, Bdhv, dEdP_T, dEdT_P] = dielec_DEW()</p>
+</div></blockquote>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p>D. A. Sverjensky, B. Harrison, and D. Azzolini, “Water in the deep Earth: the dielectric
+constant and the solubilities of quartz and corundum to 60 kb and 1200 °C,” Geochimica et
+Cosmochimica Acta, vol. 129, pp. 125–145, 2014</p></li>
+<li><p>Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
+Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
+Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
+Am. J. Sci. 274, 1199-1251.</p></li>
+</ol>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../species_eos/index.html" class="btn btn-neutral float-left" title="pygcc.species_eos" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Adedapo Awolayo and Benjamin Tutolo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

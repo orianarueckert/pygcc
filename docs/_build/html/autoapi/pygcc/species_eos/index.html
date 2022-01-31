@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pygcc.species_eos &mdash; pygcc  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="pygcc.water_eos" href="../water_eos/index.html" />
+    <link rel="prev" title="pygcc.solid_solution" href="../solid_solution/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html">
+            <img src="../../../_static/PyGCC-logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pygcc_overview.html">An Introduction to pyGeochemCalc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_1.html">General Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_2.html">Integrate pygcc with GWB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_3.html">Integrate pygcc with EQ3/6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../clay_thermocalc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.clay_thermocalc</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pygcc_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.pygcc_utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../read_db/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.read_db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../solid_solution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.solid_solution</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.species_eos</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../water_eos/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.water_eos</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pygcc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+          <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc</span></code></a> &raquo;</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.species_eos</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/pygcc/species_eos/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pygcc.species_eos">
+<span id="pygcc-species-eos"></span><h1><a class="reference internal" href="#module-pygcc.species_eos" title="pygcc.species_eos"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.species_eos</span></code></a><a class="headerlink" href="#module-pygcc.species_eos" title="Permalink to this headline"></a></h1>
+<p>Created on Wed Mar 17 16:02:22 2021</p>
+<p>&#64;author: adedapo.awolayo and Ben Tutolo, University of Calgary</p>
+<p>Copyright (c) 2020 - 2021, Adedapo Awolayo and Ben Tutolo, University of Calgary</p>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Functions implemented here include gas, mineral and aqueous species equation of state</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.species_eos.heatcap" title="pygcc.species_eos.heatcap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heatcap</span></code></a>(TC, P, species, **kwargs)</p></td>
+<td><p>This function evaluates Gibbs energy and heat capacity as a function of temperature</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.species_eos.heatcapusgscal" title="pygcc.species_eos.heatcapusgscal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heatcapusgscal</span></code></a>(TC, P, species)</p></td>
+<td><p>This function evaluates Gibbs energy and heat capacity as a function of temperature and pressure</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.species_eos.supcrtaq" title="pygcc.species_eos.supcrtaq"><code class="xref py py-obj docutils literal notranslate"><span class="pre">supcrtaq</span></code></a>(TC, P, specieppt, Dielec_method=None, **rhoE)</p></td>
+<td><p>This function evaluates the Gibbs free energy of aqueous species at T and P</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.species_eos.Element_counts" title="pygcc.species_eos.Element_counts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Element_counts</span></code></a>(formula)</p></td>
+<td><p>This function calculates the elemental composition of a substance given by its chemical formula</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.species_eos.heatcap_Berman" title="pygcc.species_eos.heatcap_Berman"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heatcap_Berman</span></code></a>(TC, P, species)</p></td>
+<td><p>This function evaluates Gibbs energy and heat capacity as a function of temperature</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.species_eos.J_to_cal" title="pygcc.species_eos.J_to_cal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">J_to_cal</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="pygcc.species_eos.J_to_cal">
+<span class="sig-prename descclassname"><span class="pre">pygcc.species_eos.</span></span><span class="sig-name descname"><span class="pre">J_to_cal</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">4.184</span></em><a class="headerlink" href="#pygcc.species_eos.J_to_cal" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.species_eos.heatcap">
+<span class="sig-prename descclassname"><span class="pre">pygcc.species_eos.</span></span><span class="sig-name descname"><span class="pre">heatcap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/species_eos.html#heatcap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.species_eos.heatcap" title="Permalink to this definition"></a></dt>
+<dd><p>This function evaluates Gibbs energy and heat capacity as a function of temperature
+and pressure for any mineral or gas specie using Helgeson et al (1978) equations and Maier-Kelley
+power function for heat capacity</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TC</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [°C]</p></li>
+<li><p><strong>P</strong> (<em>float</em><em>, </em><em>vector</em>) – Pressure [bar]</p></li>
+<li><p><strong>species</strong> (<em>array</em>) – Properties such as ( dG [cal/ml], dH [cal/mol], S [cal/mol-K], V [cm³/mol], a [cal/mol-K],b [<a href="#id1"><span class="problematic" id="id2">*</span></a>10^3 cal/mol/K^2], c [<a href="#id3"><span class="problematic" id="id4">*</span></a>10^-5 cal/mol/K], Ttrans [K], Htr [cal/mol], Vtr [cm³/mol], dPdTtr [bar/K] ), etc</p></li>
+<li><p><strong>spec_name</strong> (<em>string</em>) – species name, optional for all cases except Coesite and Quartz</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>delGfPT</strong> (<em>float, vector</em>) – Gibbs Energy [cal/mol]</p></li>
+<li><p><strong>delCp</strong> (<em>float, vector</em>) – Heat capacity [cal/mol/K]</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pygcc.pygcc_utils</span> <span class="kn">import</span> <span class="n">db_reader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">()</span> <span class="c1"># utilizes the default direct-access database, speq21</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">delGfPT</span><span class="p">,</span> <span class="n">delCp</span><span class="p">]</span> <span class="o">=</span> <span class="n">heatcap</span><span class="p">(</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">ps</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">[</span><span class="s1">&#39;H2S(g)&#39;</span><span class="p">])</span>
+<span class="go">    -11782.47165818, 8.58416135</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">delGfPT</span><span class="p">,</span> <span class="n">delCp</span><span class="p">]</span> <span class="o">=</span> <span class="n">heatcap</span><span class="p">(</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">ps</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">[</span><span class="s1">&#39;Quartz&#39;</span><span class="p">],</span>
+<span class="go">                           spec_name = &#39;Quartz&#39;)</span>
+<span class="go">    -205292.75498942, 12.34074489</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p>Helgeson, H. C., Delany, J. M., Nesbitt, H. W. and Bird, D. K.(1978). Summary and critique of the
+thermodynamic properties of rock-forming minerals.</p></li>
+<li><p>Kelley K. K (1960) Contributions to the data on theoretical metallurgy. XIII. High
+temperature heat content, heat capacity and entropy data for elements and inorganic compounds US Bur Mines Bull 548: 232 p</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.species_eos.heatcapusgscal">
+<span class="sig-prename descclassname"><span class="pre">pygcc.species_eos.</span></span><span class="sig-name descname"><span class="pre">heatcapusgscal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/species_eos.html#heatcapusgscal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.species_eos.heatcapusgscal" title="Permalink to this definition"></a></dt>
+<dd><p>This function evaluates Gibbs energy and heat capacity as a function of temperature and pressure
+for any mineral or gas specie using Haas and Fisher (1976)’s heat capacity parameter fit (utilized for solid-solutions)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TC</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [°C]</p></li>
+<li><p><strong>P</strong> (<em>float</em><em>, </em><em>vector</em>) – Pressure [bar]</p></li>
+<li><p><strong>species</strong> (<em>array</em>) – Properties such as [dG [cal/ml], dH [cal/mol], S [cal/mol-K], V [cm³/mol], a [cal/mol-K], b [cal/mol/K^2], c [cal/mol/K], g [cal/mol/K^0.5], f [cal/mol/K^3] )</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>delGfPT</strong> (<em>float, vector</em>) – Gibbs Energy [cal/mol]</p></li>
+<li><p><strong>delCp</strong> (<em>float, vector</em>) – Heat capacity [cal/mol/K]</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pygcc.pygcc_utils</span> <span class="kn">import</span> <span class="n">db_reader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">()</span> <span class="c1"># utilizes the default direct-access database, speq21</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">delGfPT</span><span class="p">,</span> <span class="n">delCp</span><span class="p">]</span> <span class="o">=</span> <span class="n">heatcapusgscal</span><span class="p">(</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">ps</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">[</span><span class="s1">&#39;ss_Anorthite&#39;</span><span class="p">])</span>
+<span class="go">    -960440.79915641, 57.46776903</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p>Haas JL Jr, Fisher JR (1976) Simultaneous evaluation and correlation of thermodynamic data.
+American Journal of Science 276:525-545</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.species_eos.supcrtaq">
+<span class="sig-prename descclassname"><span class="pre">pygcc.species_eos.</span></span><span class="sig-name descname"><span class="pre">supcrtaq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">specieppt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">rhoE</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/species_eos.html#supcrtaq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.species_eos.supcrtaq" title="Permalink to this definition"></a></dt>
+<dd><p>This function evaluates the Gibbs free energy of aqueous species at T and P
+using the revised HKF equation of state</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TC</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [°C]</p></li>
+<li><p><strong>P</strong> (<em>float</em><em>, </em><em>vector</em>) – Pressure [bar]</p></li>
+<li><p><strong>specieppt</strong> (<em>array</em>) – Properties such as (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm3/mol], a1 [<em>10 cal/mol/bar], a2 [*10*</em>-2 cal/mol], a3 [cal-K/mol/bar], a4 [<em>10*</em>-4 cal-K/mol], c1 [cal/mol/K], c2 [<em>10*</em>-4 cal-K/mol], ω [<em>10*</em>-5 cal/mol] )</p></li>
+<li><p><strong>Dielec_method</strong> (<em>string</em>) – specify either ‘FGL97’ or ‘JN91’ or ‘DEW’ as the method to calculate dielectric constant (optional), if not specified default - ‘JN91’</p></li>
+<li><p><strong>rhoE</strong> (<em>dict</em>) – dictionary of water properties like density (rho) and dielectric factor (E) (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>delG</strong> – Gibbs energy [cal/mol]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float, vector</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of supcrtaq without the optional arguments is as follows:</p>
+<ol class="arabic">
+<li><p>Not on steam saturation curve:</p>
+<p>delG = supcrtaq(TC, P, specieppt)</p>
+<p>where T is temperature in celsius and P is pressure in bar</p>
+</li>
+<li><p>On steam saturation curve:</p>
+<p>delG = supcrtaq(TC, ‘T’, specieppt),</p>
+<p>where T is temperature in celsius, followed with a quoted char ‘T’</p>
+<p>delG = supcrtaq(P, ‘P’, specieppt),</p>
+<p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
+</li>
+<li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
+condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
+<p>delG = supcrtaq(TC, P, specieppt, Dielec_method = ‘FGL97’)</p>
+</li>
+</ol>
+</div></blockquote>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pygcc.pygcc_utils</span> <span class="kn">import</span> <span class="n">db_reader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">()</span> <span class="c1"># utilizes the default direct-access database, speq21</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">delG</span> <span class="o">=</span> <span class="n">supcrtaq</span><span class="p">(</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">ps</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">[</span><span class="s1">&#39;H2S(aq)&#39;</span><span class="p">],</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;JN91&#39;</span><span class="p">)</span>
+<span class="go">    -9221.81721068</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">delG</span> <span class="o">=</span> <span class="n">supcrtaq</span><span class="p">(</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">ps</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">[</span><span class="s1">&#39;H2S(aq)&#39;</span><span class="p">],</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;FGL97&#39;</span><span class="p">)</span>
+<span class="go">    -9221.6542038</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p>Johnson JW, Oelkers EH, Helgeson HC. 1992. SUPCRT92: A software package for calculating
+the standard molal thermodynamic properties of minerals, gases, aqueous species, and
+reactions from 1 to 5000 bar and 0 to 1000°C. Computers &amp; Geosciences 18(7): 899-947.
+doi: 10.1016/0098-3004(92)90029-Q</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.species_eos.Element_counts">
+<span class="sig-prename descclassname"><span class="pre">pygcc.species_eos.</span></span><span class="sig-name descname"><span class="pre">Element_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/species_eos.html#Element_counts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.species_eos.Element_counts" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the elemental composition of a substance given by its chemical formula
+It was a modified version of <a class="reference external" href="https://github.com/cgohlke/molmass/blob/master/molmass/molmass.py">https://github.com/cgohlke/molmass/blob/master/molmass/molmass.py</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>formula</strong> (<em>string</em>) – Chemical formula</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>elements</strong> – dictionary of elemental composition and their respective number of atoms</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<blockquote>
+<div><dl class="simple">
+<dt>[elements] = Element_counts(formula)</dt><dd><p>Examples of valid formulas are “H2O”, “[2H]2O”, “CH3COOH”, “EtOH”, “CuSO4:5H2O”, “(COOH)2”, “AgCuRu4(H)2[CO]12{PPh3}2”, “CGCGAATTCGCG”, and, “MDRGEQGLLK” .</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.species_eos.heatcap_Berman">
+<span class="sig-prename descclassname"><span class="pre">pygcc.species_eos.</span></span><span class="sig-name descname"><span class="pre">heatcap_Berman</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/species_eos.html#heatcap_Berman"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.species_eos.heatcap_Berman" title="Permalink to this definition"></a></dt>
+<dd><p>This function evaluates Gibbs energy and heat capacity as a function of temperature
+and pressure for any mineral or gas specie using Berman (1988) equations and datasets with
+Berman and Brown (1985)’s heat capacity parameter fit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TC</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [°C]</p></li>
+<li><p><strong>P</strong> (<em>float</em><em>, </em><em>vector</em>) – Pressure [bar]</p></li>
+<li><p><strong>species</strong> (<em>array</em>) – Properties such as [dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, k3, v1 [<a href="#id5"><span class="problematic" id="id6">*</span></a>10^5 K^-1], v2 [<a href="#id7"><span class="problematic" id="id8">*</span></a>10^5 K^-2], v3 [<a href="#id9"><span class="problematic" id="id10">*</span></a>10^5 bar^-1], v4 [<a href="#id11"><span class="problematic" id="id12">*</span></a>10^8 bar^-2], dTdP [K/bar], Tlambda [K], Tref [K], l1 [(J/mol)^0.5/K], l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], d2 [J/mol], d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K]]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>delGfPT</strong> (<em>float, vector</em>) – Gibbs Energy [cal/mol]</p></li>
+<li><p><strong>delCp</strong> (<em>float, vector</em>) – Heat capacity [cal/mol/K]</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pygcc.pygcc_utils</span> <span class="kn">import</span> <span class="n">db_reader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># utilizes the default speq21 and specified Berman dataset database</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">(</span><span class="n">dbBerman_dir</span> <span class="o">=</span> <span class="s1">&#39;./default_db/Berman.dat&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">delGfPT</span><span class="p">,</span> <span class="n">delCp</span><span class="p">]</span> <span class="o">=</span> <span class="n">heatcap_Berman</span><span class="p">(</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">ps</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">[</span><span class="s1">&#39;Quartz&#39;</span><span class="p">])</span>
+<span class="go">    -205472.3365716, 12.32381279</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p>Berman, R. G. (1988). Internally-consistent thermodynamic data for minerals in the system
+Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2. Journal of petrology, 29(2), 445-522.</p></li>
+<li><p>Berman RG, Brown TH (1985) Heat Capacities of minerals in the system Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2:
+Representation, estimation, and high temperature extrapolation. Contrib Mineral Petrol 89:168-183</p></li>
+</ol>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../solid_solution/index.html" class="btn btn-neutral float-left" title="pygcc.solid_solution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../water_eos/index.html" class="btn btn-neutral float-right" title="pygcc.water_eos" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Adedapo Awolayo and Benjamin Tutolo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

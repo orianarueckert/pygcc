@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Integrate pygcc with EQ3/6 &mdash; pygcc  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Changelog" href="changelog.html" />
+    <link rel="prev" title="Integrate pygcc with GWB" href="Example_2.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/PyGCC-logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pygcc_overview.html">An Introduction to pyGeochemCalc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Example_1.html">General Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Example_2.html">Integrate pygcc with GWB</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Integrate pygcc with EQ3/6</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#import-pygcc-eq3-6-environment-and-other-modules">Import pygcc, EQ3/6 environment and other modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#load-filtered-vent-fluid-data">Load filtered vent fluid data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generate-the-database-for-the-vent-fluid-with-pygcc-and-run-the-database-through-eq3-6-preprocessing">Generate the database for the vent fluid with pygcc and run the database through EQ3/6 preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#results-processing">Results processing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pygcc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Integrate pygcc with EQ3/6</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Example_3.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="integrate-pygcc-with-eq3-6">
+<h1>Integrate pygcc with EQ3/6<a class="headerlink" href="#integrate-pygcc-with-eq3-6" title="Permalink to this headline"></a></h1>
+<section id="import-pygcc-eq3-6-environment-and-other-modules">
+<h2>Import pygcc, EQ3/6 environment and other modules<a class="headerlink" href="#import-pygcc-eq3-6-environment-and-other-modules" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">subprocess</span><span class="o">,</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">pygcc.pygcc_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c1"># print(pygcc.__version__)</span>
+<span class="kn">from</span> <span class="nn">output_reader</span> <span class="kn">import</span> <span class="n">read_eq36output</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Set current working directory and EQ3/6 working directory. This is because EQ3/6 can only run from its working directory</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eq_dir</span> <span class="o">=</span> <span class="s2">&quot;C:\Eq3_6v8.0a\work_db&quot;</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">eq_dir</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">eq_dir</span><span class="p">))</span>
+    
+<span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+<span class="n">output_folder</span> <span class="o">=</span> <span class="s1">&#39;Vent_spec&#39;</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">output_folder</span><span class="p">))</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">output_folder</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># function to copy file between source and destination directory</span>
+<span class="k">def</span> <span class="nf">copyfile</span><span class="p">(</span><span class="n">source_dir</span><span class="p">,</span> <span class="n">destination_dir</span><span class="p">):</span>
+    <span class="c1"># Source path</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">source_dir</span>
+
+    <span class="c1"># Destination path</span>
+    <span class="n">destination</span> <span class="o">=</span> <span class="n">destination_dir</span>
+  
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File copied successfully.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># If source and destination are same</span>
+    <span class="k">except</span> <span class="n">shutil</span><span class="o">.</span><span class="n">SameFileError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Same files are in the Source and destination path.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># If there is any permission issue</span>
+    <span class="k">except</span> <span class="ne">PermissionError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Permission denied.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># For other errors</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error occurred while copying file.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="load-filtered-vent-fluid-data">
+<h2>Load filtered vent fluid data<a class="headerlink" href="#load-filtered-vent-fluid-data" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;./MARHYS_DB_2_0_filter.csv&#39;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample-ID                       EPR 21°N-OBS-1985
+Geol_setting         Mid-oceanic spreading center
+Rock_type_primary                          Basalt
+Depth                                        2500
+Temp                                          340
+pH                                            3.4
+XH2S                                          7.6
+Cl                                          500.0
+Na                                          439.0
+Fe                                           1530
+Mn                                           1024
+H2                                           0.01
+K                                            23.5
+Ca                                           15.6
+Si                                           17.6
+Cu                                            0.0
+Press                                  251.945325
+Name: 2, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we will work with EPR 21 N sample to run speciation and warm up the fluid from 25 °C to 340 °C</p>
+</section>
+<section id="generate-the-database-for-the-vent-fluid-with-pygcc-and-run-the-database-through-eq3-6-preprocessing">
+<h2>Generate the database for the vent fluid with pygcc and run the database through EQ3/6 preprocessing<a class="headerlink" href="#generate-the-database-for-the-vent-fluid-with-pygcc-and-run-the-database-through-eq3-6-preprocessing" title="Permalink to this headline"></a></h2>
+<p>We initialize the inputs and generate the database</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Press</span><span class="p">)</span>
+<span class="n">Temp</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Temp</span><span class="p">;</span>       <span class="n">npH</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">pH</span>
+<span class="c1"># multiplication was done to convert the concentrations from mmol/kg and umol/kg to mol/kg</span>
+<span class="n">nCl</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Cl</span><span class="o">*</span><span class="mf">1e-3</span><span class="p">;</span>     <span class="n">nNa</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Na</span><span class="o">*</span><span class="mf">1e-3</span>
+<span class="n">nH2S</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">XH2S</span><span class="o">*</span><span class="mf">1e-3</span><span class="p">;</span>  <span class="n">nFe</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Fe</span><span class="o">*</span><span class="mf">1e-6</span>
+<span class="n">nMn</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Mn</span><span class="o">*</span><span class="mf">1e-6</span><span class="p">;</span>     <span class="n">nH2</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">H2</span><span class="o">*</span><span class="mf">1e-6</span>
+<span class="n">nK</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">K</span><span class="o">*</span><span class="mf">1e-3</span><span class="p">;</span>       <span class="n">nCu</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Cu</span><span class="o">*</span><span class="mf">1e-6</span><span class="p">;</span>    
+<span class="n">nCa</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Ca</span><span class="o">*</span><span class="mf">1e-3</span><span class="p">;</span>     <span class="n">nSi</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Si</span><span class="o">*</span><span class="mf">1e-3</span>
+
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="n">Temp</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="n">P</span><span class="p">,</span> <span class="n">solid_solution</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">objdb</span> <span class="o">=</span> <span class="s1">&#39;./data0&#39;</span><span class="p">,</span> 
+               <span class="n">clay_thermo</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;eq36&#39;</span><span class="p">,</span>  <span class="n">sourcedb</span> <span class="o">=</span>  <span class="s1">&#39;./database/data0.geo&#39;</span><span class="p">)</span> <span class="c1">#</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:3327: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new EQ3/6 database is ready for download
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x20f1545bc08&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Copy the generated database to the EQ3/6 work environment specified above and run through eqpt for preprocessing</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">copyfile</span><span class="p">(</span><span class="n">current_dir</span> <span class="o">+</span> <span class="s1">&#39;/output/data0.geo&#39;</span><span class="p">,</span> <span class="n">eq_dir</span> <span class="o">+</span> <span class="s1">&#39;/data0.pym&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File copied successfully.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change the working directory to EQ3/6 work environment</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">eq_dir</span><span class="p">)</span>
+<span class="c1"># load EQ3/6 environment</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;EQ36CO&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;C:\Eq3_6v8.0a\Bin&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;EQ36DA&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eq_dir</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># check the &quot;eqptout.txt&quot; for the output of the database preprocessing</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">current_dir</span> <span class="o">+</span> <span class="s2">&quot;/</span><span class="si">%s</span><span class="s2">/eqptout.txt&quot;</span> <span class="o">%</span> <span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="sa">r</span><span class="s1">&#39;C:/Eq3_6v8.0a/bin/runeqpt&#39;</span><span class="p">,</span> <span class="s1">&#39;pym&#39;</span><span class="p">],</span> <span class="n">stdout</span> <span class="o">=</span> <span class="n">f</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Replace species and concentration in an existing eq3 file</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change the working directory back to current work environment to do some calculations and build input files</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">current_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Switch basis between HS- and SO4--</span>
+<span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;|Special Basis Switches (for model definition only)       | (nsbswt)           |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>  
+       <span class="s1">&#39;|------------------------------------------------------------------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;|Replace |SO4--                                           | (usbsw(1,n))       |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;|   with |HS-                                             | (usbsw(2,n))       |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;|------------------------------------------------------------------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">]</span>
+<span class="n">lst</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;|Special Basis Switches (for model definition only)       | (nsbswt)           |\n&#39;,
+ &#39;|------------------------------------------------------------------------------|\n&#39;,
+ &#39;|Replace |SO4--                                           | (usbsw(1,n))       |\n&#39;,
+ &#39;|   with |HS-                                             | (usbsw(2,n))       |\n&#39;,
+ &#39;|------------------------------------------------------------------------------|\n&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set H2(aq) as the redox constraint</span>
+<span class="n">lst2</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;|Default redox constraint (irdxc3):                                            |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;|  [ ] (-3) Use O2(g) line in the aqueous basis species block                  |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;|  [ ] (-2) pe (pe units)      | 0.00000E+00| (pei)                            |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;|  [ ] (-1) Eh (volts)         | 5.00000E-01| (ehi)                            |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;|  [ ] ( 0) Log fO2 (log bars) |-7.00000E-01| (fo2lgi)                         |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;|  [x] ( 1) Couple (aux. sp.)  |H2(aq)                  | (uredox)             |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;|------------------------------------------------------------------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">]</span>
+<span class="n">lst2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;|Default redox constraint (irdxc3):                                            |\n&#39;,
+ &#39;|  [ ] (-3) Use O2(g) line in the aqueous basis species block                  |\n&#39;,
+ &#39;|  [ ] (-2) pe (pe units)      | 0.00000E+00| (pei)                            |\n&#39;,
+ &#39;|  [ ] (-1) Eh (volts)         | 5.00000E-01| (ehi)                            |\n&#39;,
+ &#39;|  [ ] ( 0) Log fO2 (log bars) |-7.00000E-01| (fo2lgi)                         |\n&#39;,
+ &#39;|  [x] ( 1) Couple (aux. sp.)  |H2(aq)                  | (uredox)             |\n&#39;,
+ &#39;|------------------------------------------------------------------------------|\n&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ion_lst</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Fe++&#39;</span><span class="p">,</span> <span class="s1">&#39;Na+&#39;</span><span class="p">,</span> <span class="s1">&#39;H+&#39;</span><span class="p">,</span> <span class="s1">&#39;Cl-&#39;</span><span class="p">,</span> <span class="s1">&#39;HS-&#39;</span><span class="p">,</span> <span class="s1">&#39;Mn++&#39;</span><span class="p">,</span> <span class="s1">&#39;K+&#39;</span><span class="p">,</span> <span class="s1">&#39;Ca++&#39;</span><span class="p">,</span> <span class="s1">&#39;SiO2(aq)&#39;</span><span class="p">,</span> <span class="s1">&#39;Cu++&#39;</span><span class="p">,</span> <span class="s1">&#39;H2(aq)&#39;</span><span class="p">]</span> <span class="c1"># , &#39;H2S(aq)&#39;</span>
+<span class="n">conc_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">nFe</span><span class="p">,</span> <span class="n">nNa</span><span class="p">,</span> <span class="n">npH</span><span class="p">,</span> <span class="n">nCl</span><span class="p">,</span> <span class="n">nH2S</span><span class="p">,</span> <span class="n">nMn</span><span class="p">,</span> <span class="n">nK</span><span class="p">,</span> <span class="n">nCa</span><span class="p">,</span> <span class="n">nSi</span><span class="p">,</span> <span class="n">nCu</span><span class="p">,</span> <span class="n">nH2</span><span class="p">]</span>
+
+<span class="n">lst3</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;|Aqueous Basis Species/Constraint Species        |Conc., etc. |Units/Constraint|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;| (uspeci(n)/ucospi(n))                          | (covali(n))|(ujf3(jflgi(n)))|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;|------------------------------------------------------------------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ion_lst</span><span class="p">,</span> <span class="n">conc_lst</span><span class="p">):</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;Molality        &#39;</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="s1">&#39;H+&#39;</span> <span class="k">else</span> <span class="s1">&#39;pH              &#39;</span>
+    <span class="n">lst3</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;|</span><span class="si">%-10s</span><span class="s1">                                      | </span><span class="si">%.5e</span><span class="s1">|</span><span class="si">%s</span><span class="s1">|</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">units</span><span class="p">))</span>
+<span class="n">lst3</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;|------------------------------------------------------------------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">lst3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;|Aqueous Basis Species/Constraint Species        |Conc., etc. |Units/Constraint|\n&#39;,
+ &#39;| (uspeci(n)/ucospi(n))                          | (covali(n))|(ujf3(jflgi(n)))|\n&#39;,
+ &#39;|------------------------------------------------------------------------------|\n&#39;,
+ &#39;|Fe++                                            | 1.53000e-03|Molality        |\n&#39;,
+ &#39;|Na+                                             | 4.39000e-01|Molality        |\n&#39;,
+ &#39;|H+                                              | 3.40000e+00|pH              |\n&#39;,
+ &#39;|Cl-                                             | 5.00000e-01|Molality        |\n&#39;,
+ &#39;|HS-                                             | 7.60000e-03|Molality        |\n&#39;,
+ &#39;|Mn++                                            | 1.02400e-03|Molality        |\n&#39;,
+ &#39;|K+                                              | 2.35000e-02|Molality        |\n&#39;,
+ &#39;|Ca++                                            | 1.56000e-02|Molality        |\n&#39;,
+ &#39;|SiO2(aq)                                        | 1.76000e-02|Molality        |\n&#39;,
+ &#39;|Cu++                                            | 1.00000e-13|Molality        |\n&#39;,
+ &#39;|H2(aq)                                          | 1.00000e-08|Molality        |\n&#39;,
+ &#39;|------------------------------------------------------------------------------|\n&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># open an existing sample file and a new in put file</span>
+<span class="n">fin</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;swmaj_ex.3i&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">fout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./</span><span class="si">%s</span><span class="s2">/swmaj.3i&quot;</span> <span class="o">%</span> <span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+<span class="c1"># read and paste line by line until the beginning of the &quot;Special Basis Switches&quot; block</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span><span class="c1">#</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">fin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Special Basis Switches&quot;</span><span class="p">):</span>
+        <span class="k">break</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="c1"># paste the new &quot;Special Basis Switches&quot; block</span>
+<span class="n">fout</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
+<span class="c1"># read and skip pasting until the end of the &quot;Special Basis Switches&quot; block</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span><span class="c1">#</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">fin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Temperature (C)&quot;</span><span class="p">):</span>
+        <span class="k">break</span>
+<span class="n">fout</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+<span class="c1"># read and paste line by line until the beginning of the &quot;Default redox constraint&quot; block</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span><span class="c1">#</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">fin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Default redox constraint&quot;</span><span class="p">):</span>
+        <span class="k">break</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="c1"># paste the new &quot;Special Basis Switches&quot; block</span>
+<span class="n">fout</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">lst2</span><span class="p">)</span>
+<span class="c1"># read and skip pasting until the end of the &quot;Default redox constraint&quot; block and </span>
+<span class="c1"># the beginning of the &quot;Aqueous Basis Species&quot; block</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span><span class="c1">#</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">fin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Aqueous Basis Species/Constraint Species&quot;</span><span class="p">):</span>
+        <span class="k">break</span>
+
+<span class="c1"># paste the new &quot;Aqueous Basis Species&quot; block</span>
+<span class="n">fout</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">lst3</span><span class="p">)</span>
+<span class="c1"># read and skip pasting until the end of the &quot;Aqueous Basis Species&quot; block</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span><span class="c1">#</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">fin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;* &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Valid jflag strings&quot;</span><span class="p">):</span>
+        <span class="k">break</span>
+<span class="n">fout</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+<span class="c1"># read and paste the rest of the files</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span><span class="c1">#</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">fin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+<span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">fin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Copy the new eq3 input file to the EQ3/6 work environment and run eq3</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">copyfile</span><span class="p">(</span><span class="n">current_dir</span> <span class="o">+</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">/swmaj.3i&#39;</span> <span class="o">%</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">eq_dir</span> <span class="o">+</span> <span class="s1">&#39;/swmaj.3i&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File copied successfully.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change the working directory to EQ3/6 work environment</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">eq_dir</span><span class="p">)</span>
+
+<span class="c1"># check the &quot;eq3out.txt&quot; for the eq3 run details</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">current_dir</span> <span class="o">+</span> <span class="s2">&quot;/</span><span class="si">%s</span><span class="s2">/eq3out.txt&quot;</span> <span class="o">%</span> <span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="sa">r</span><span class="s1">&#39;C:\Eq3_6v8.0a/bin/runeq3&#39;</span><span class="p">,</span> <span class="s1">&#39;pym&#39;</span><span class="p">,</span>  <span class="s1">&#39;swmaj.3i&#39;</span><span class="p">],</span> <span class="n">stdout</span> <span class="o">=</span> <span class="n">f</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Generate a new eq6 file to run speciation and warm up temperature</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change the working directory back to current work environment to build input files</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">current_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Descript</span> <span class="o">=</span> <span class="s1">&#39;Heat ventfluid from 25C to </span><span class="si">%s</span><span class="s1">C&#39;</span> <span class="o">%</span> <span class="n">Temp</span>
+<span class="c1"># open an existing sample file, a new input file and the copied eq3 output file</span>
+<span class="n">fin</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;swmaj_ex.6i&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">fout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./</span><span class="si">%s</span><span class="s2">/swmaj.6i&quot;</span> <span class="o">%</span> <span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">f3p</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">eq_dir</span> <span class="o">+</span> <span class="s2">&quot;/swmaj.3p&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="c1"># read and paste line by line until the beginning of the first &quot;Linear tracking in Xi&quot; in the &quot;Temperature option&quot; block</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span><span class="c1">#</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">fin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;|  &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;[x] ( 1) Linear tracking in Xi&quot;</span><span class="p">):</span>
+        <span class="k">break</span>
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;EQ6 input file name&#39;</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">= </span><span class="si">%-11s</span><span class="s1">                                             |</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> 
+                                                                              <span class="s1">&#39;swmaj.6i&#39;</span><span class="p">)</span>
+        <span class="n">fout</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Description&#39;</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">= </span><span class="si">%-45s</span><span class="s1">                    |</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Descript</span><span class="p">)</span>
+        <span class="n">fout</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fout</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+<span class="c1">#create the new &quot;Linear tracking in Xi&quot; subblock and paste the new subblock</span>
+<span class="n">derivative</span> <span class="o">=</span> <span class="p">(</span><span class="n">Temp</span> <span class="o">-</span> <span class="mi">25</span><span class="p">)</span><span class="o">/</span><span class="mi">1</span>
+<span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;|  [x] ( 1) Linear tracking in Xi:                                             |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;|             Base Value (C)    | 2.50000E+01| (tempcb)                        |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;|             Derivative        | </span><span class="si">%.5e</span><span class="s1">| (ttk(1))                        |</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">derivative</span><span class="p">]</span>
+<span class="n">fout</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
+
+<span class="c1"># read and skip pasting until the end of the &quot;Linear tracking in Xi&quot; subblock</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span><span class="c1">#</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">fin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Derivative&quot;</span><span class="p">):</span>
+        <span class="k">break</span>
+
+<span class="c1"># read and paste line by line until the beginning of the &quot;eq3 output&quot; input</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span><span class="c1">#</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">fin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;* &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Start of the bottom half of the INPUT file&quot;</span><span class="p">):</span>
+        <span class="k">break</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+<span class="c1"># paste the new eq3 output</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span><span class="c1">#</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">f3p</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">fin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">f3p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Copy the new eq6 input file to the EQ3/6 work environment and run eq6</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">copyfile</span><span class="p">(</span><span class="n">current_dir</span> <span class="o">+</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">/swmaj.6i&#39;</span> <span class="o">%</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">eq_dir</span> <span class="o">+</span> <span class="s1">&#39;/swmaj.6i&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File copied successfully.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change the working directory to EQ3/6 work environment</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">eq_dir</span><span class="p">)</span>
+
+<span class="c1"># check the &quot;eq6out.txt&quot; for the eq6 run details</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">current_dir</span> <span class="o">+</span> <span class="s2">&quot;/</span><span class="si">%s</span><span class="s2">/eq6out.txt&quot;</span> <span class="o">%</span> <span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="sa">r</span><span class="s1">&#39;C:\Eq3_6v8.0a/bin/runeq6&#39;</span><span class="p">,</span> <span class="s1">&#39;pym&#39;</span><span class="p">,</span> <span class="s1">&#39;swmaj.6i&#39;</span><span class="p">],</span> <span class="n">stdout</span> <span class="o">=</span> <span class="n">f</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="results-processing">
+<h2>Results processing<a class="headerlink" href="#results-processing" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">rerun</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">eq_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.6o&#39;</span><span class="p">):</span> 
+        <span class="n">size</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span> <span class="c1">#size in KB</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">f</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]]</span> <span class="o">=</span> <span class="n">read_eq36output</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="n">f</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rerun</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rerun</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_df</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;swmaj&#39;</span><span class="p">]</span>
+<span class="c1"># data_df</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_df</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;Xi&#39;, &#39;pH&#39;, &#39;Temperature_C&#39;, &#39;Pressure_bars&#39;, &#39;Water_mass_g&#39;,
+       &#39;Rock_mass_g&#39;, &#39;M_Ca++&#39;, &#39;M_CaCl+&#39;, &#39;M_CaCl2(aq)&#39;, &#39;M_CaHSiO3+&#39;,
+       &#39;M_CaOH+&#39;, &#39;M_CaSO4(aq)&#39;, &#39;M_Cl-&#39;, &#39;M_Cu+&#39;, &#39;M_CuCl(aq)&#39;, &#39;M_CuCl2-&#39;,
+       &#39;M_CuCl3--&#39;, &#39;M_Fe++&#39;, &#39;M_Fe+++&#39;, &#39;M_FeCl+&#39;, &#39;M_FeCl++&#39;, &#39;M_FeCl2(aq)&#39;,
+       &#39;M_FeO(aq)&#39;, &#39;M_FeO+&#39;, &#39;M_FeO2-&#39;, &#39;M_FeOH+&#39;, &#39;M_FeOH++&#39;, &#39;M_H+&#39;,
+       &#39;M_H2(aq)&#39;, &#39;M_H2S(aq)&#39;, &#39;M_H2S2O3(aq)&#39;, &#39;M_HFeO2(aq)&#39;, &#39;M_HFeO2-&#39;,
+       &#39;M_HS-&#39;, &#39;M_HS2O3-&#39;, &#39;M_HSO3-&#39;, &#39;M_HSO4-&#39;, &#39;M_HSiO3-&#39;, &#39;M_K+&#39;,
+       &#39;M_KCl(aq)&#39;, &#39;M_KHSO4(aq)&#39;, &#39;M_KOH(aq)&#39;, &#39;M_KSO4-&#39;, &#39;M_Mn++&#39;, &#39;M_MnCl+&#39;,
+       &#39;M_MnO(aq)&#39;, &#39;M_MnOH+&#39;, &#39;M_MnSO4(aq)&#39;, &#39;M_Na+&#39;, &#39;M_NaCl(aq)&#39;,
+       &#39;M_NaHSiO3(aq)&#39;, &#39;M_NaOH(aq)&#39;, &#39;M_NaSO4-&#39;, &#39;M_OH-&#39;, &#39;M_S2--&#39;,
+       &#39;M_S2O3--&#39;, &#39;M_S3--&#39;, &#39;M_S4--&#39;, &#39;M_S5--&#39;, &#39;M_SO2(aq)&#39;, &#39;M_SO4--&#39;,
+       &#39;M_SiO2(aq)&#39;, &#39;TotM_Ca++&#39;, &#39;TotM_Cl-&#39;, &#39;TotM_Cu++&#39;, &#39;TotM_Fe++&#39;,
+       &#39;TotM_H+&#39;, &#39;TotM_H2O&#39;, &#39;TotM_HS-&#39;, &#39;TotM_K+&#39;, &#39;TotM_Mn++&#39;, &#39;TotM_Na+&#39;,
+       &#39;TotM_O2(g)&#39;, &#39;TotM_SiO2(aq)&#39;, &#39;SI_Alabandite&#39;, &#39;SI_Anhydrite&#39;,
+       &#39;SI_Bornite&#39;, &#39;SI_Chalcedony&#39;, &#39;SI_Chalcocite&#39;, &#39;SI_Chalcopyrite&#39;,
+       &#39;SI_Coesite&#39;, &#39;SI_Covellite&#39;, &#39;SI_Cristobalite(beta)&#39;, &#39;SI_Fayalite&#39;,
+       &#39;SI_FeO&#39;, &#39;SI_Ferrosilite&#39;, &#39;SI_Halite&#39;, &#39;SI_Hematite&#39;, &#39;SI_Magnetite&#39;,
+       &#39;SI_Minnesotaite&#39;, &#39;SI_Pyrite&#39;, &#39;SI_Pyrrhotite&#39;, &#39;SI_Quartz&#39;,
+       &#39;SI_SiO2(am)&#39;, &#39;SI_Sylvite&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot pyrite saturation with Temperature</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">data_df</span><span class="o">.</span><span class="n">SI_Pyrite</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">data_df</span><span class="o">.</span><span class="n">Temperature_C</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">350</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">350</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Temperature [C]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$Log_</span><span class="si">{10}</span><span class="s1">$(Q/K)$_</span><span class="si">{Pyrite}</span><span class="s1">$&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;$Log_{10}$(Q/K)$_{Pyrite}$&#39;)
+</pre></div>
+</div>
+<img alt="_images/Example_3_34_1.png" src="_images/Example_3_34_1.png" />
+</div>
+</div>
+<p>plot pH with Temperature</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">data_df</span><span class="o">.</span><span class="n">pH</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">data_df</span><span class="o">.</span><span class="n">Temperature_C</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">sc</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">350</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Temperature [C]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;pH&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;pH&#39;)
+</pre></div>
+</div>
+<img alt="_images/Example_3_36_1.png" src="_images/Example_3_36_1.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Example_2.html" class="btn btn-neutral float-left" title="Integrate pygcc with GWB" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Adedapo Awolayo and Benjamin Tutolo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pygcc.pygcc_utils &mdash; pygcc  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="pygcc.read_db" href="../read_db/index.html" />
+    <link rel="prev" title="pygcc.clay_thermocalc" href="../clay_thermocalc/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html">
+            <img src="../../../_static/PyGCC-logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pygcc_overview.html">An Introduction to pyGeochemCalc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_1.html">General Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_2.html">Integrate pygcc with GWB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_3.html">Integrate pygcc with EQ3/6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../clay_thermocalc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.clay_thermocalc</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.pygcc_utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../read_db/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.read_db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../solid_solution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.solid_solution</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../species_eos/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.species_eos</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../water_eos/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.water_eos</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pygcc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+          <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc</span></code></a> &raquo;</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.pygcc_utils</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/pygcc/pygcc_utils/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pygcc.pygcc_utils">
+<span id="pygcc-pygcc-utils"></span><h1><a class="reference internal" href="#module-pygcc.pygcc_utils" title="pygcc.pygcc_utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.pygcc_utils</span></code></a><a class="headerlink" href="#module-pygcc.pygcc_utils" title="Permalink to this headline"></a></h1>
+<p>Created on Wed Mar 17 16:02:22 2021</p>
+<p>&#64;author: Adedapo Awolayo and Ben Tutolo, University of Calgary</p>
+<p>Copyright (c) 2020 - 2021, Adedapo Awolayo and Ben Tutolo, University of Calgary</p>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.calcRxnlogK" title="pygcc.pygcc_utils.calcRxnlogK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calcRxnlogK</span></code></a></p></td>
+<td><p>This class implemetation calculates logK values for any reaction with the option for extrapolation where rho &lt; 350kg/m3</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.write_database" title="pygcc.pygcc_utils.write_database"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_database</span></code></a></p></td>
+<td><p>Class to write the new database for either GWB, EQ3/6, ToughReact, Pflotran into</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.calc_elem_count_molewt" title="pygcc.pygcc_utils.calc_elem_count_molewt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_elem_count_molewt</span></code></a>(formula, **kwargs)</p></td>
+<td><p>This function calculates the molecular mass and the elemental composition of a substance given</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.importconfile" title="pygcc.pygcc_utils.importconfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">importconfile</span></code></a>(filename, *Rows)</p></td>
+<td><p>This function imports numeric data from a text file as column vectors.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.var_name" title="pygcc.pygcc_utils.var_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var_name</span></code></a>(var)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.feval" title="pygcc.pygcc_utils.feval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feval</span></code></a>(funcName, *args)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.roundup_tenth" title="pygcc.pygcc_utils.roundup_tenth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">roundup_tenth</span></code></a>(x)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.roundup_hundredth" title="pygcc.pygcc_utils.roundup_hundredth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">roundup_hundredth</span></code></a>(x)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.read_specific_lines" title="pygcc.pygcc_utils.read_specific_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_specific_lines</span></code></a>(file, lines_to_read)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.derivative" title="pygcc.pygcc_utils.derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivative</span></code></a>(f, a, method='central', h=0.001)</p></td>
+<td><p>Compute the derivative of f, f'(a) with step size h.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.info" title="pygcc.pygcc_utils.info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">info</span></code></a>(name, dic)</p></td>
+<td><p>This function checks for naming convention of the species in the direct-access or source database</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.drummondgamma" title="pygcc.pygcc_utils.drummondgamma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">drummondgamma</span></code></a>(TK, I)</p></td>
+<td><p>This function models solubility of CO2 gas in brine using Drummond equation</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.Henry_duan_sun" title="pygcc.pygcc_utils.Henry_duan_sun"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Henry_duan_sun</span></code></a>(TK, P, I)</p></td>
+<td><p>This function evaluates the solubility of CO2 gase in brine using Duan_Sun Formulation</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.co2fugacity" title="pygcc.pygcc_utils.co2fugacity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">co2fugacity</span></code></a>(TK, P, poy=True)</p></td>
+<td><p>This function computes the fugacity and density of CO2 by Duan and Sun 2003</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.gamma_correlation" title="pygcc.pygcc_utils.gamma_correlation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gamma_correlation</span></code></a>(TC, P, method=None)</p></td>
+<td><p>This function calculates the CO2 activity correlation coefficients at</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.Helgeson_activity" title="pygcc.pygcc_utils.Helgeson_activity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Helgeson_activity</span></code></a>(TC, P, I, Dielec_method=None, **rhoEDB)</p></td>
+<td><p>This function calculates the solute activity coefficient, solvent osmotic coefficient,</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.aw_correlation" title="pygcc.pygcc_utils.aw_correlation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aw_correlation</span></code></a>(TC, P, Dielec_method=None, **rhoEDB)</p></td>
+<td><p>Calculates the water activity correlation coefficients at given temperature and pressure</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.outputfmt" title="pygcc.pygcc_utils.outputfmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outputfmt</span></code></a>(fid, logK, Rxn, *T, dataset=None, logK_form=None)</p></td>
+<td><p>This function writes logK and Rxn data to any file using GWB, EQ36, Pflotran and ToughReact format</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.main_function_name" title="pygcc.pygcc_utils.main_function_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">main_function_name</span></code></a>(module)</p></td>
+<td><p>print main_function name</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.eps" title="pygcc.pygcc_utils.eps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eps</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.J_to_cal" title="pygcc.pygcc_utils.J_to_cal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">J_to_cal</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.pygcc_utils.IAPWS95_COEFFS" title="pygcc.pygcc_utils.IAPWS95_COEFFS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IAPWS95_COEFFS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.eps">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">eps</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">2.220446049250313e-16</span></em><a class="headerlink" href="#pygcc.pygcc_utils.eps" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.J_to_cal">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">J_to_cal</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">4.184</span></em><a class="headerlink" href="#pygcc.pygcc_utils.J_to_cal" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.IAPWS95_COEFFS">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">IAPWS95_COEFFS</span></span><a class="headerlink" href="#pygcc.pygcc_utils.IAPWS95_COEFFS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.calc_elem_count_molewt">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">calc_elem_count_molewt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#calc_elem_count_molewt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.calc_elem_count_molewt" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the molecular mass and the elemental composition of a substance given
+by its chemical formula. This is modified from <a class="reference external" href="https://github.com/cgohlke/molmass/blob/master/molmass/molmass.py">https://github.com/cgohlke/molmass/blob/master/molmass/molmass.py</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>formula</strong> (<em>string</em>) – chemical formula</p></li>
+<li><p><strong>Elementdic</strong> (<em>dict</em>) – dictionary, containing the atomic mass of element database</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>elements</strong> (<em>dict</em>) – dictionary of elemental composition and their respective number of atoms</p></li>
+<li><p><strong>molewt</strong> (<em>float</em>) – Calculated Molecular Weights [g/mol]</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>[elements, molewt] = calc_elem_count_molewt(formula)</dt><dd><p>Examples of valid formulas are “H2O”, “[2H]2O”, “CH3COOH”, “EtOH”, “CuSO4:5H2O”, “(COOH)2”,
+“AgCuRu4(H)2[CO]12{PPh3}2”, “CGCGAATTCGCG”, and, “MDRGEQGLLK” .</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">elements</span><span class="p">,</span> <span class="n">molewt</span> <span class="o">=</span> <span class="n">calc_elem_count_molewt</span><span class="p">(</span><span class="s2">&quot;CuSO4:5H2O&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">elements</span><span class="p">,</span> <span class="n">molewt</span>
+<span class="go">    {&#39;O&#39;: 9.0, &#39;H&#39;: 10.0, &#39;S&#39;: 1, &#39;Cu&#39;: 1}, 249.6773</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.importconfile">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">importconfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">Rows</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#importconfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.importconfile" title="Permalink to this definition"></a></dt>
+<dd><dl>
+<dt>This function imports numeric data from a text file as column vectors.</dt><dd><blockquote>
+<div><p>[Var1, Var2] = importconfile(filename) Reads data from text file
+filename for the default selection.</p>
+<p>[Var1, Var2] = importconfile(filename, StartRow, EndRow) Reads data
+from rows StartRow through EndRow of text file filename.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Example:</dt><dd><p>[Var1, Var2] = importconfile(‘100bar.con’, 6, 13);</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.var_name">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">var_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#var_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.var_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.feval">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">feval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">funcName</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#feval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.feval" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.roundup_tenth">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">roundup_tenth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#roundup_tenth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.roundup_tenth" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.roundup_hundredth">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">roundup_hundredth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#roundup_hundredth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.roundup_hundredth" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.read_specific_lines">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">read_specific_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lines_to_read</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#read_specific_lines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.read_specific_lines" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.derivative">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'central'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#derivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.derivative" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the derivative of f, f’(a) with step size h.
+:param f: Vectorized function of one variable
+:type f: function
+:param a: Compute derivative at x = a
+:type a: number
+:param method: Difference formula: ‘forward’, ‘backward’ or ‘central’
+:type method: string
+:param h: Step size in difference formula
+:type h: number</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>Difference formula:</dt><dd><p>central: f(a + h) - f(a - h))/2h
+forward: f(a + h) - f(a))/h
+backward: f(a) - f(a-h))/h</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.info">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.info" title="Permalink to this definition"></a></dt>
+<dd><p>This function checks for naming convention of the species in the direct-access or source database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>string</em>) – species name</p></li>
+<li><p><strong>dic</strong> (<em>dict</em>) – dictionary of species from direct-access or source database</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>lst</strong> – resulting search of all species with the input name</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pygcc.pygcc_utils</span> <span class="kn">import</span> <span class="n">db_reader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">()</span> <span class="c1"># utilizes the default direct-access database, speq21</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;ss_&#39;</span><span class="p">,</span> <span class="n">ps</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">)</span>
+<span class="go">    [&#39;ss_Anorthite&#39;,  &#39;ss_Albite_high&#39;, &#39;ss_K-feldspar&#39;, &#39;ss_Ferrosilite&#39;,</span>
+<span class="go">     &#39;ss_Enstatite&#39;, &#39;ss_Clinoenstatite&#39;, &#39;ss_Hedenbergite&#39;, &#39;ss_Diopside&#39;,</span>
+<span class="go">     &#39;ss_Forsterite&#39;, &#39;ss_Fayalite&#39;, &#39;ss_Annite&#39;,  &#39;ss_Phlogopite&#39;,</span>
+<span class="go">     &#39;ss_Anorthite&#39;,  &#39;ss_Albite_high&#39;, &#39;ss_K-feldspar&#39;, &#39;ss_Ferrosilite&#39;,</span>
+<span class="go">     &#39;ss_Enstatite&#39;, &#39;ss_Clinoenstatite&#39;, &#39;ss_Hedenbergite&#39;, &#39;ss_Diopside&#39;,</span>
+<span class="go">     &#39;ss_Forsterite&#39;,  &#39;ss_Fayalite&#39;, &#39;ss_Annite&#39;, &#39;ss_Phlogopite&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.drummondgamma">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">drummondgamma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TK</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#drummondgamma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.drummondgamma" title="Permalink to this definition"></a></dt>
+<dd><p>This function models solubility of CO2 gas in brine using Drummond equation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TK</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [K]</p></li>
+<li><p><strong>I</strong> – Ionic strength</p></li>
+</ul>
+</dd>
+</dl>
+<blockquote>
+<div><dl class="simple">
+<dt>log10_gamma<span class="classifier">float, vector</span></dt><dd><p>co2 aqueous activities in log10</p>
+</dd>
+</dl>
+</div></blockquote>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">log10_gamma</span> <span class="o">=</span> <span class="n">drummondgamma</span><span class="p">(</span> <span class="mi">500</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log10_gamma</span>
+<span class="go">    0.0781512920184902</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.Henry_duan_sun">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">Henry_duan_sun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TK</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#Henry_duan_sun"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.Henry_duan_sun" title="Permalink to this definition"></a></dt>
+<dd><p>This function evaluates the solubility of CO2 gase in brine using Duan_Sun Formulation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TK</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [K]</p></li>
+<li><p><strong>P</strong> (<em>float</em><em>, </em><em>vector</em>) – Pressure [bar]</p></li>
+<li><p><strong>I</strong> (<em>float</em>) – Ionic strength</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>log10_co2_gamma</strong> (<em>float, vector</em>) – co2 aqueous activities in log10</p></li>
+<li><p><strong>mco2</strong> (<em>float, vector</em>) – co2 aqueous molalities</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>log10_co2_gamma, mco2 = Henry_duan_sun( TK, P, I)</p>
+</div></blockquote>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">log10_co2_gamma</span><span class="p">,</span> <span class="n">mco2</span> <span class="o">=</span> <span class="n">Henry_duan_sun</span><span class="p">(</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log10_co2_gamma</span><span class="p">,</span> <span class="n">mco2</span>
+<span class="go">    0.06202532, 1.6062557</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p>Duan, Z. and Sun, R., 2003. An improved model calculating CO2 solubility in
+pure water and aqueous NaCl solutions from 273 to 533 K and from 0 to 2000 bar.
+Chemical geology, 193(3-4), pp.257-271.</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.co2fugacity">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">co2fugacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TK</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#co2fugacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.co2fugacity" title="Permalink to this definition"></a></dt>
+<dd><p>This function computes the fugacity and density of CO2 by Duan and Sun 2003
+Also Calculate the Saturation Index SI and partial pressure of CO2(g) at any given T, P
+using the Duan equation of state. A Poynting correction factor is also applied.
+:param TK: Temperature [K]
+:type TK: float, vector
+:param P: pressure [bar]
+:type P: float, vector
+:param poy: Option to apply a Poynting correction factor [True is the default]
+:type poy: bool</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>fCO2</strong> (<em>float, vector</em>) – co2 fugacity [bar]</p></li>
+<li><p><strong>denCO2</strong> (<em>float, vector</em>) – co2 density [g/cm3]</p></li>
+<li><p><strong>SI</strong> (<em>float, vector</em>) – co2 saturation index</p></li>
+<li><p><strong>pCO2</strong> (<em>float, vector</em>) – co2 partial pressure [bar]</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>[fCO2, denCO2, SI, pCO2] = co2fugacity( TK, P)</p>
+</div></blockquote>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fCO2</span><span class="p">,</span> <span class="n">denCO2</span><span class="p">,</span> <span class="n">SI</span><span class="p">,</span> <span class="n">pCO2</span> <span class="o">=</span> <span class="n">co2fugacity</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">400</span><span class="p">,</span><span class="mi">420</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fCO2</span>
+<span class="go">    array([114.50387423, 150.87672517])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">denCO2</span>
+<span class="go">    array([2.6741242 , 3.33134397])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SI</span>
+<span class="go">    array([1.73291553, 1.84597591])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pCO2</span>
+<span class="go">    array([54.78127571, 71.0710152])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.gamma_correlation">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">gamma_correlation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#gamma_correlation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.gamma_correlation" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the CO2 activity correlation coefficients at
+given temperature T and pressure P</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TC</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [°C]</p></li>
+<li><p><strong>P</strong> (<em>float</em><em>, </em><em>vector</em>) – Pressure [bar]</p></li>
+<li><p><strong>method</strong> – specify the activity model [<code class="docutils literal notranslate"><span class="pre">'Duan_Sun'</span></code> or <code class="docutils literal notranslate"><span class="pre">'Drummond'</span></code>]</p></li>
+</ul>
+</dd>
+</dl>
+<blockquote>
+<div><blockquote>
+<div><dl class="simple">
+<dt>cco2<span class="classifier">float, vector</span></dt><dd><p>co2 correlation coefficients</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Usage</p>
+</div></blockquote>
+<blockquote>
+<div><p>cco2 = gamma_correlation( TC, P)</p>
+</div></blockquote>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">log10_co2_gamma</span><span class="p">,</span> <span class="n">mco2</span> <span class="o">=</span> <span class="n">Henry_duan_sun</span><span class="p">(</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log10_co2_gamma</span><span class="p">,</span> <span class="n">mco2</span>
+<span class="go">    0.06202532, 1.6062557</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p>Segal Edward Drummond, 1981, Boiling and Mixing of Hydrothermal
+Fluids: Chemical Effects on Mineral Precipitation, page 19</p></li>
+<li><p>Wolery, T. J., Lawrence Livermore National Laboratory, United States Dept.
+of Energy, 1992. EQ3/6: A software package for geochemical modeling of
+aqueous systems: package overview and  installation guide (version 7.0)</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.Helgeson_activity">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">Helgeson_activity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">rhoEDB</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#Helgeson_activity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.Helgeson_activity" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the solute activity coefficient, solvent osmotic coefficient,
+and solvent  activity at given temperature and pressure using equations 298, 190 and 106 in
+Helgeson, Kirkham and Flowers, 1981, A.J.S. p.1249-1516
+Parameters:
+———-</p>
+<blockquote>
+<div><p>TC       :   Temperature [°C]
+P        :   pressure [bar]
+I        :   ionic strength
+Dielec_method :   specify either ‘FGL97’ or ‘JN91’ or ‘DEW’ as the method to calculate dielectric</p>
+<blockquote>
+<div><p>constant (optional), if not specified default - ‘JN91’</p>
+</div></blockquote>
+<dl class="simple">
+<dt>rhoEDB<span class="classifier">dictionary of water properties like density (rho), dielectric factor (E) and</span></dt><dd><p>Debye–Hückel coefficients (optional)</p>
+</dd>
+</dl>
+</div></blockquote>
+<blockquote>
+<div><p>aw       :   solvent activity
+phi      :   solvent osmotic coefficient
+mean_act :   solute activity coefficient</p>
+</div></blockquote>
+<blockquote>
+<div><p>[aw, phi, mean_act] = Helgeson_activity( TC, P, I)</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.aw_correlation">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">aw_correlation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">rhoEDB</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#aw_correlation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.aw_correlation" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the water activity correlation coefficients at given temperature and pressure
+Parameters:
+———-</p>
+<blockquote>
+<div><p>TC       :       Temperature [°C]
+P        :       pressure [bar]
+Dielec_method :  specify either ‘FGL97’ or ‘JN91’ or ‘DEW’ as the method to calculate dielectric</p>
+<blockquote>
+<div><p>constant (optional), if not specified default - ‘JN91’</p>
+</div></blockquote>
+<dl class="simple">
+<dt>rhoEDB<span class="classifier">dictionary of water properties like density (rho), dielectric factor (E) and</span></dt><dd><p>Debye–Hückel coefficients (optional)</p>
+</dd>
+</dl>
+</div></blockquote>
+<blockquote>
+<div><p>ch20     :       water activity correlation coefficients</p>
+</div></blockquote>
+<blockquote>
+<div><p>[ch20] = aw_correlation( TC, P)</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.calcRxnlogK">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">calcRxnlogK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#calcRxnlogK"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.calcRxnlogK" title="Permalink to this definition"></a></dt>
+<dd><p>This class implemetation calculates logK values for any reaction with the option for extrapolation where rho &lt; 350kg/m3</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [°C]</p></li>
+<li><p><strong>P</strong> (<em>float</em><em>, </em><em>vector</em>) – Pressure [bar]</p></li>
+<li><p><strong>Specie</strong> (<em>string</em>) – specify the species for logK calculation, either the Product species of any reaction or solid solutions or clay like ‘AnAb’ or ‘AbOr’ or ‘FoFa’ or ‘EnFe’ or ‘DiHedEnFe’ or ‘clay’</p></li>
+<li><p><strong>Specie_class</strong> (<em>string</em>) – specify the class of species  like ‘aqueous’, ‘minerals’, ‘liquids’, or ‘gases’</p></li>
+<li><p><strong>elem</strong> (<em>list</em>) – list containing nine parameters with clay names and elements compositions with the following format [‘Montmorillonite_Lc_MgK’, ‘Si’, ‘Al’, ‘FeIII’, ‘FeII’, ‘Mg’, ‘K’, ‘Na’, ‘Ca’, ‘Li’]</p></li>
+<li><p><strong>dbaccessdic</strong> (<em>dict</em>) – direct-acess database dictionary</p></li>
+<li><p><strong>rhoEGextrap</strong> (<em>dict</em>) – dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy for density region 350-550kg/m3</p></li>
+<li><p><strong>group</strong> (<em>string</em>) – specify the structural layering of the phyllosilicate, for layers composed of  <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">tetrahedral</span> <span class="pre">+</span> <span class="pre">1</span> <span class="pre">octahedral</span> <span class="pre">sheet</span> <span class="pre">(1:1</span> <span class="pre">layer)</span></code> - specify <code class="docutils literal notranslate"><span class="pre">'7A'</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">tetrahedral</span> <span class="pre">+</span> <span class="pre">1</span> <span class="pre">octahedral</span> <span class="pre">sheet</span> <span class="pre">(2:1</span> <span class="pre">layer)</span></code> - specify <code class="docutils literal notranslate"><span class="pre">'10A'</span></code>, or  the latter with <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">brucitic</span> <span class="pre">sheet</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">interlayer</span> <span class="pre">(2:1:1</span> <span class="pre">layer)</span></code>  - specify <code class="docutils literal notranslate"><span class="pre">'14A'</span></code>  (optional), if not specified, default is ‘10A’ for smectites, micas, et cetera</p></li>
+<li><p><strong>X</strong> (<em>float</em>) – volume fractions of any (Anorthite, Albite, Forsterite, Enstatite) or mole fraction of Mg</p></li>
+<li><p><strong>cpx_Ca</strong> (<em>float</em>) – number of moles of Ca in formula unit (=1 for Di, Hed), must be greater than zero</p></li>
+<li><p><strong>sourcedic</strong> (<em>dict</em>) – source database reactions dictionary</p></li>
+<li><p><strong>specielist</strong> (<em>list of list</em>) – source database species grouped into categories [element, basis, redox, aqueous, minerals, gases, oxides]</p></li>
+<li><p><strong>Dielec_method</strong> (<em>string</em>) – specify either ‘FGL97’ or ‘JN91’ or ‘DEW’ as the method to calculate dielectric constant, default is ‘JN91’</p></li>
+<li><p><strong>mineral_eos</strong> (<em>string</em>) – specify either ‘SUPCRT’ or ‘Berman88’ the method to calculate thermodynamic properties of any mineral, default is ‘SUPCRT’</p></li>
+<li><p><strong>sourceformat</strong> (<em>string</em>) – specify the source database format, either ‘GWB’ or ‘EQ36’</p></li>
+<li><p><strong>densityextrap</strong> (<em>float</em><em>, </em><em>vector</em>) – specify the extrapolation option for density-logK, ‘Yes’/True or ‘No’/False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>log_K</strong> (<em>float, vector</em>) – logarithmic K value(s)</p></li>
+<li><p><strong>dGrxn</strong> (<em>float, vector</em>) – Total reaction Gibbs energy [cal/mol]</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of water_dielec is as follows:</p>
+<ol class="arabic">
+<li><p>For water dielectric properties at any Temperature and Pressure:</p>
+<p>calclogK = calcRxnlogK(T = T, P = P, Dielec_method = ‘JN91’, <a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs),</p>
+<p>where T is temperature in celsius and P is pressure in bar</p>
+</li>
+<li><p>For water dielectric properties at any Temperature and density :</p>
+<p>calclogK = calcRxnlogK(T = T, rho = rho, Dielec_method = ‘JN91’, <a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs),</p>
+<p>where T is temperature in celsius and rho is density in kg/m³</p>
+</li>
+<li><p>For water dielectric properties at any Temperature and Pressure on steam saturation curve:</p>
+<p>calclogK = calcRxnlogK(T = T, P = ‘T’, Dielec_method = ‘JN91’, <a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs),</p>
+<p>where T is temperature in celsius, followed with a quoted character ‘T’ to reflect steam saturation pressure</p>
+<p>calclogK = calcRxnlogK(P = P, T = ‘P’, Dielec_method = ‘JN91’, <a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs),</p>
+<p>where P is pressure in bar, followed with a quoted character ‘P’ to reflect steam saturation temperature</p>
+</li>
+</ol>
+</div></blockquote>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">(</span><span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./default_db/thermo.com.dat&#39;</span><span class="p">,</span>
+<span class="go">                   sourceformat = &#39;gwb&#39;, dbaccess = &#39;./default_db/speq21.dat&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">calclogK</span> <span class="o">=</span> <span class="n">calcRxnlogK</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">Specie</span> <span class="o">=</span> <span class="s1">&#39;H2S(aq)&#39;</span><span class="p">,</span>
+<span class="go">                           Specie_class = &#39;aqueous&#39;,</span>
+<span class="go">                           dbaccessdic = ps.dbaccessdic,</span>
+<span class="go">                           sourcedic = ps.sourcedic, specielist = ps.specielist)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">calclogK</span><span class="o">.</span><span class="n">logK</span><span class="p">,</span> <span class="n">calclogK</span><span class="o">.</span><span class="n">dGrxn</span>
+<span class="go">     -6.4713,       11049.3168</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.calcRxnlogK.kwargs">
+<span class="sig-name descname"><span class="pre">kwargs</span></span><a class="headerlink" href="#pygcc.pygcc_utils.calcRxnlogK.kwargs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.calcRxnlogK.__calc__">
+<span class="sig-name descname"><span class="pre">__calc__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#calcRxnlogK.__calc__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.calcRxnlogK.__calc__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.calcRxnlogK.AllRxnslogK">
+<span class="sig-name descname"><span class="pre">AllRxnslogK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#calcRxnlogK.AllRxnslogK"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.calcRxnlogK.AllRxnslogK" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates logK values of all reactions including solid-solution and clay minerals</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
+<li><p><strong>rhoEG</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>,</em>) – dielectric factor (E) and Gibbs Energy  (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>logK</strong> (<em>logarithmic K value(s)</em>)</p></li>
+<li><p><strong>dGrxn</strong> (<em>Total reaction Gibbs energy [cal/mol]</em>)</p></li>
+<li><p><strong>dGP</strong> (<em>Product specie Gibbs energy [cal/mol]</em>)</p></li>
+<li><p><strong>dGRs</strong> (<em>Reactant species Gibbs energy [cal/mol]</em>)</p></li>
+<li><p><strong>Rxn</strong> (<em>dict</em>)</p></li>
+<li><p><em>The calculated dictionary of reaction thermodynamic properties has the following properties</em> –</p>
+<ul>
+<li><p>type: solid-solution mineral type, [-]</p></li>
+<li><p>name: solid-solution name, [K]</p></li>
+<li><p>formula: solid-solution mineral formula, [-]</p></li>
+<li><p>MW: Molecular weight, [g/mol]</p></li>
+<li><p>min: solid-solution mineral properties, [‘formula’, ‘source date’, dG[cal/ml], dH[cal/mol], S[cal/mol-K], V[cm3/mol], a[cal/mol-K], b[10^3 cal/mol/K^2], c[10^-5 cal/mol/K]]</p></li>
+<li><p>spec: list of species, [-]</p></li>
+<li><p>coeff: list of corresponding coefficients of species above, [-]</p></li>
+<li><p>nSpec: Total number of species, [-]</p></li>
+<li><p>V: Molar volume, [cm3/mol]</p></li>
+<li><p>source: Source of thermo data, [kJ/kg·K]</p></li>
+<li><p>elements: list of elements and their total numbers, [-]</p></li>
+</ul>
+</li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of calcRxnlogK without the optional argument is as follows:</p>
+<ol class="arabic">
+<li><p>Not on steam saturation curve:</p>
+<p>[logK, dGrxn, dGP, dGRs] = AllRxnslogK(TC, P, Prod, dbaccessdic, sourcedic, specielist),</p>
+<p>where TC is temperature in celsius and P is pressure in bar;</p>
+</li>
+<li><p>On steam saturation curve:</p>
+<p>[logK, dGrxn, dGP, dGRs] = AllRxnslogK(TC, ‘T’, Prod, dbaccessdic, sourcedic, specielist),</p>
+<p>where TC is temperature in celsius, followed with a quoted char ‘T’</p>
+<p>[logK, dGrxn, dGP, dGRs] = AllRxnslogK(P, ‘P’, Prod, dbaccessdic, sourcedic, specielist),</p>
+<p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
+</li>
+<li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
+condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
+<p>[logK, dGrxn, dGP, dGRs] = AllRxnslogK( TC, P, Prod, dbaccessdic, sourcedic, specielist, Dielec_method = ‘FGL97’)</p>
+</li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.calcRxnlogK.RxnlogK">
+<span class="sig-name descname"><span class="pre">RxnlogK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Prod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#calcRxnlogK.RxnlogK"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.calcRxnlogK.RxnlogK" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates logK values of any reaction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
+<li><p><strong>Prod</strong> (<em>Product species of the reaction</em>) – </p></li>
+<li><p><strong>dbaccessdic</strong> (<em>direct-acess database dictionary</em>) – </p></li>
+<li><p><strong>sourcedic</strong> (<em>source database reactions dictionary</em>) – </p></li>
+<li><p><strong>specielist</strong> (<em>source database species grouped into</em>) – [element, basis, redox, aqueous, minerals, gases, oxides]</p></li>
+<li><p><strong>Dielec_method</strong> (<em>specify either 'FGL97'</em><em> or </em><em>'JN91'</em><em> or </em><em>'DEW' as the method</em>) – to calculate dielectric constant, default is ‘JN91’</p></li>
+<li><p><strong>sourceformat</strong> (<em>source database format</em><em>, </em><em>either 'GWB'</em><em> or </em><em>'EQ36'</em><em>, </em><em>default is 'GWB'</em>) – </p></li>
+<li><p><strong>mineral_eos</strong> (<em>specify either 'SUPCRT'</em><em> or </em><em>'Berman88' the method to calculate thermodynamic properties</em>) – of any mineral, default is ‘SUPCRT’</p></li>
+<li><p><strong>rhoEG</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>,</em>) – dielectric factor (E) and Gibbs Energy  (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>logK</strong> (<em>logarithmic K value(s)</em>)</p></li>
+<li><p><strong>dGrxn</strong> (<em>Total reaction Gibbs energy [cal/mol]</em>)</p></li>
+<li><p><strong>dGP</strong> (<em>Product specie Gibbs energy [cal/mol]</em>)</p></li>
+<li><p><strong>dGRs</strong> (<em>Reactant species Gibbs energy [cal/mol]</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of calcRxnlogK without the optional argument is as follows:</p>
+<ol class="arabic">
+<li><p>Not on steam saturation curve:</p>
+<p>[logK, dGrxn, dGP, dGRs] = RxnlogK(TC, P, Prod, dbaccessdic, sourcedic, specielist),</p>
+<p>where TC is temperature in celsius and P is pressure in bar;</p>
+</li>
+<li><p>On steam saturation curve:</p>
+<p>[logK, dGrxn, dGP, dGRs] = RxnlogK(TC, ‘T’, Prod, dbaccessdic, sourcedic, specielist),</p>
+<p>where TC is temperature in celsius, followed with a quoted char ‘T’</p>
+<p>[logK, dGrxn, dGP, dGRs] = RxnlogK(P, ‘P’, Prod, dbaccessdic, sourcedic, specielist),</p>
+<p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
+</li>
+<li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
+condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
+<p>[logK, dGrxn, dGP, dGRs] = RxnlogK( TC, P, Prod, dbaccessdic, sourcedic, specielist, Dielec_method = ‘FGL97’)</p>
+</li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.calcRxnlogK.densitylogKextrap">
+<span class="sig-name descname"><span class="pre">densitylogKextrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEGextrap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#calcRxnlogK.densitylogKextrap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.calcRxnlogK.densitylogKextrap" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates logK values extrapolation for conditions where rho &lt; 350kg/m3</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
+<li><p><strong>rhoEGextrap</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>, </em><em>dielectric factor</em><em> (</em><em>E</em><em>) </em><em>and</em>) – Gibbs Energy for density region 350-550kg/m3</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>logK</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>extrapolated logarithmic K value(s)</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>[logK] = densitylogKextrap(TC, P, ‘H2S(aq)’, dbaccessdic = dbaccessdic, sourcedic = sourcedic, specielist = specielist),</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.outputfmt">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">outputfmt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logK</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rxn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logK_form</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#outputfmt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.outputfmt" title="Permalink to this definition"></a></dt>
+<dd><p>This function writes logK and Rxn data to any file using GWB, EQ36, Pflotran and ToughReact format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fid</strong> (<em>string</em>) – file ID</p></li>
+<li><p><strong>logK</strong> (<em>float</em><em>, </em><em>vector</em>) – logarithmic K value(s)</p></li>
+<li><p><strong>Rxn</strong> (<em>dict</em>) – dictionary of reaction thermodynamic properties</p></li>
+<li><p><strong>T</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature value(s), optional</p></li>
+<li><p><strong>dataset</strong> (<em>string</em>) – specify the dataset format, either ‘GWB’, ‘EQ36’, ‘Pflotran’ or ‘ToughReact’</p></li>
+<li><p><strong>logK_form</strong> (<em>string</em>) – specify the format of logK either as a set of eight values one for each of the dataset’s principal temperatures, or blocks of polynomial coefficients,  [values, polycoeffs], default is ‘a set of eight values’ (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Output data to the file with filename described in fid with any format mentioned above.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fid</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./logK_details.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logKRxn</span> <span class="o">=</span> <span class="n">calcRxnlogK</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="mf">0.634</span><span class="p">,</span>
+<span class="go">                          Specie = &#39;Plagioclase&#39;, densityextrap = True)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># output in EQ36 format</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">outputfmt</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span> <span class="n">logKRxn</span><span class="o">.</span><span class="n">logK</span><span class="p">,</span> <span class="n">logKRxn</span><span class="o">.</span><span class="n">Rxn</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;EQ36&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fid</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.write_database">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">write_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#write_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.write_database" title="Permalink to this definition"></a></dt>
+<dd><p>Class to write the new database for either GWB, EQ3/6, ToughReact, Pflotran into
+a new folder called “output”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [°C]</p></li>
+<li><p><strong>P</strong> (<em>float</em><em>, </em><em>vector</em>) – Pressure [bar]</p></li>
+<li><p><strong>cpx_Ca</strong> (<em>string</em>) – number of moles of Ca in solid solution of clinopyroxene (optional) if it is ommitted solid solution of clinopyroxene will not be included, 0 &lt; nCa &gt;=1</p></li>
+<li><p><strong>solid_solution</strong> (<em>string</em><em>, </em><em>bool</em>) – specify the inclusion of solid-solution [Yes/True or No/False], default is ‘No’</p></li>
+<li><p><strong>clay_thermo</strong> (<em>float</em><em>, </em><em>vector</em>) – specify the inclusion of clay thermodynamic properties [Yes/True or No/False], default is ‘No’</p></li>
+<li><p><strong>logK_form</strong> (<em>float</em><em>, </em><em>vector</em>) – specify the format of logK either as a set of eight values one for each of the dataset’s principal temperatures, or blocks of polynomial coefficients, [values, polycoeffs] default is ‘a set of eight values’</p></li>
+<li><p><strong>densityextrap</strong> (<em>float</em><em>, </em><em>vector</em>) – specify the utilization of density extrapolation [Yes/True or No/False], default is ‘Yes’</p></li>
+<li><p><strong>dbaccess</strong> (<em>string</em>) – direct-access database filename and location  (optional)</p></li>
+<li><p><strong>dbBerman_dir</strong> (<em>string</em>) – filename and location of the Berman mineral database (optional)</p></li>
+<li><p><strong>sourcedb</strong> (<em>string</em>) – source database filename and location  (optional)</p></li>
+<li><p><strong>objdb</strong> (<em>string</em>) – new database filename and location    (optional)</p></li>
+<li><p><strong>co2actmodel</strong> (<em>string</em>) – co2 activity model equation [Duan_Sun or Drummond]  (optional), if not specified, default is ‘Drummond’</p></li>
+<li><p><strong>Dielec_method</strong> (<em>string</em>) – specify either ‘FGL97’ or ‘JN91’ or ‘DEW’ as the method to calculate dielectric constant, default is ‘JN91’   (optional)</p></li>
+<li><p><strong>mineral_eos</strong> (<em>string</em>) – specify either ‘SUPCRT’ or ‘Berman88’ the method to calculate thermodynamic properties of any mineral, default is ‘SUPCRT’</p></li>
+<li><p><strong>dataset</strong> (<em>string</em>) – specify the dataset format, either ‘GWB’, ‘EQ36’, ‘Pflotran’ or ‘ToughReact’, default is old GWB database [‘GWB’] (optional)</p></li>
+<li><p><strong>sourceformat</strong> (<em>string</em>) – source database format, either ‘GWB’ or ‘EQ36’, default is ‘GWB’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Output the new database to an ASCII file with filename described in ‘objdb’ if specified.</p>
+</dd>
+</dl>
+<blockquote>
+<div><dl>
+<dt>With any Temperature and Pressure:</dt><dd><ol class="arabic">
+<li><p>General format with default dielectric constant and CO2 activity model and exclusions
+of solid solutions for GWB</p>
+<p>write_database(T = T, P = P, cpx_Ca = nCa, dataset = ‘GWB’, sourceformat = ‘GWB’)</p>
+</li>
+<li><p>Inclusion of solid solutions and exclusion of solid solution of clinopyroxene and clay thermo</p>
+<p>write_database(T = T, P = P, solid_solution = ‘Yes’, clay_thermo = ‘Yes’, dataset = ‘GWB’, sourceformat = ‘GWB’)</p>
+</li>
+<li><p>Inclusion of all solid solutions and clay thermo with emph{‘Duan_Sun’} CO2 activity model and
+‘FGL97’ dielectric constant calculation</p>
+<p>write_database(T = T, P = P, cpx_Ca = nCa, solid_solution = ‘Yes’, clay_thermo = ‘Yes’, co2actmodel = ‘Duan_Sun’, Dielec_method = ‘FGL97’, dataset = ‘GWB’, sourceformat = ‘GWB’)</p>
+</li>
+</ol>
+</dd>
+<dt>With any Temperature or Pressure on the steam saturation curve:</dt><dd><ol class="arabic" start="4">
+<li><p>General format with default dielectric constant and CO2 activity model</p>
+<p>write_database(T = T, P = ‘T’, cpx_Ca = nCa, dataset = ‘GWB’, sourceformat = ‘GWB’),</p>
+<p>where T is temperature in celsius and P is assigned a quoted character ‘T’ to reflect steam saturation pressure</p>
+<p>write_database(P = P, T = ‘P’, cpx_Ca = nCa, dataset = ‘GWB’, sourceformat = ‘GWB’),</p>
+<p>where P is pressure in bar and T is assigned a quoted character ‘P’ to reflect steam saturation temperature</p>
+</li>
+</ol>
+</dd>
+</dl>
+</div></blockquote>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">write_database</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="mf">0.010</span><span class="p">,</span> <span class="mf">25.</span><span class="p">,</span> <span class="mf">60.</span><span class="p">,</span> <span class="mf">100.</span><span class="p">,</span> <span class="mf">150.</span><span class="p">,</span>  <span class="mf">200.</span><span class="p">,</span>
+<span class="go">                               250.,  300.]), P=200, cpx_Ca = 0.5,</span>
+<span class="go">                   sourceformat = &#39;GWB&#39;, solid_solution = True,</span>
+<span class="go">                   clay_thermo = True, dataset = &#39;GWB&#39;)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">write_database</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="mf">0.010</span><span class="p">,</span> <span class="mf">25.</span><span class="p">,</span> <span class="mf">60.</span><span class="p">,</span> <span class="mf">100.</span><span class="p">,</span> <span class="mf">150.</span><span class="p">,</span>  <span class="mf">200.</span><span class="p">,</span>  <span class="mf">250.</span><span class="p">,</span>
+<span class="go">                               300.]), P=200, cpx_Ca = 0.5,</span>
+<span class="go">                   sourceformat = &#39;GWB&#39;, solid_solution = True,</span>
+<span class="go">                   clay_thermo = True, dataset = &#39;Pflotran&#39;,</span>
+<span class="go">                   sourcedb = &#39;./pygcc/default_db/thermo.2021.dat&#39;)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.write_database.kwargs">
+<span class="sig-name descname"><span class="pre">kwargs</span></span><a class="headerlink" href="#pygcc.pygcc_utils.write_database.kwargs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.write_database.__calc__">
+<span class="sig-name descname"><span class="pre">__calc__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#write_database.__calc__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.write_database.__calc__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.write_database.write_GWBdb">
+<span class="sig-name descname"><span class="pre">write_GWBdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#write_database.write_GWBdb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.write_database.write_GWBdb" title="Permalink to this definition"></a></dt>
+<dd><p>This function writes the new GWB database into a new folder called “output”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Outputs the new database to an ASCII file with filename described in ‘objdb’.</p>
+</dd>
+</dl>
+<blockquote>
+<div><dl>
+<dt>Example:</dt><dd><ol class="arabic">
+<li><p>General format with default dielectric constant and CO2 activity model and exclusions
+of solid solutions</p>
+<p>write_GWBdb(T, P)</p>
+</li>
+<li><p>Inclusion of solid solutions and clay thermo and exclusion of solid solution of clinopyroxene</p>
+<p>write_GWBdb(T, P)</p>
+</li>
+<li><p>Inclusion of all solid solutions and clay thermo with emph{‘Duan_Sun’} CO2 activity model and ‘JN91’
+dielectric constant calculation</p>
+<p>write_GWBdb(T, P)</p>
+</li>
+</ol>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.write_database.write_EQ36db">
+<span class="sig-name descname"><span class="pre">write_EQ36db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#write_database.write_EQ36db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.write_database.write_EQ36db" title="Permalink to this definition"></a></dt>
+<dd><p>This function writes the new EQ3/6 database into a new folder called “output”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Outputs the new database to an ASCII file with filename described in ‘objdb’.</p>
+</dd>
+</dl>
+<blockquote>
+<div><dl>
+<dt>Example:</dt><dd><ol class="arabic">
+<li><p>General format with default dielectric constant and CO2 activity model and exclusions
+of solid solutions</p>
+<p>write_EQ36db(T, P )</p>
+</li>
+<li><p>Inclusion of solid solutions and clay thermo and exclusion of solid solution of clinopyroxene</p>
+<p>write_EQ36db(T, P )</p>
+</li>
+<li><p>Inclusion of all solid solutions and clay thermo with emph{‘Duan_Sun’} CO2 activity model and ‘FGL97’
+dielectric constant calculation</p>
+<p>write_EQ36db(T, P )</p>
+</li>
+</ol>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.write_database.write_pflotrandb">
+<span class="sig-name descname"><span class="pre">write_pflotrandb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#write_database.write_pflotrandb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.write_database.write_pflotrandb" title="Permalink to this definition"></a></dt>
+<dd><p>This function writes the new pflotran database into a new folder called “output”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Outputs the new database to an ASCII file with filename described in ‘objdb’.</p>
+</dd>
+</dl>
+<blockquote>
+<div><dl>
+<dt>Example:</dt><dd><ol class="arabic">
+<li><p>General format with default dielectric constant and CO2 activity model and exclusions
+of solid solutions</p>
+<p>write_pflotrandb(T, P )</p>
+</li>
+<li><p>Inclusion of solid solutions and clay thermo and exclusion of solid solution of clinopyroxene</p>
+<p>write_pflotrandb(T, P )</p>
+</li>
+<li><p>Inclusion of all solid solutions and clay thermo with emph{‘Duan_Sun’} CO2 activity model and ‘FGL97’
+dielectric constant calculation</p>
+<p>write_pflotrandb(T, P )</p>
+</li>
+</ol>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.write_database.write_ToughReactdb">
+<span class="sig-name descname"><span class="pre">write_ToughReactdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#write_database.write_ToughReactdb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.write_database.write_ToughReactdb" title="Permalink to this definition"></a></dt>
+<dd><p>This function writes the new ToughReact database into a new folder called “output”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Outputs the new database to an ASCII file with filename described in ‘objdb’.</p>
+</dd>
+</dl>
+<blockquote>
+<div><dl>
+<dt>Example:</dt><dd><ol class="arabic">
+<li><p>General format with default dielectric constant and CO2 activity model and exclusions
+of solid solutions</p>
+<dl class="simple">
+<dt>write_ToughReactdb(T, P, dbaccess = ‘location’, sourcedb = ‘location’,</dt><dd><p>objdb = ‘location’, sourceformat = ‘GWB’)</p>
+</dd>
+</dl>
+</li>
+<li><p>Inclusion of solid solutions and clay thermo and exclusion of solid solution of clinopyroxene</p>
+<dl class="simple">
+<dt>write_ToughReactdb(T, P, solid_solution = ‘Yes’, clay_thermo = ‘Yes’, dbaccess = ‘location’,</dt><dd><p>sourcedb = ‘location’, objdb = ‘location’, sourceformat = ‘GWB’)</p>
+</dd>
+</dl>
+</li>
+<li><p>Inclusion of all solid solutions and clay thermo with emph{‘Duan_Sun’} CO2 activity model and ‘FGL97’
+dielectric constant calculation</p>
+<dl class="simple">
+<dt>write_ToughReactdb(T, P, nCa, solid_solution = ‘Yes’, clay_thermo = ‘Yes’, dbaccess = ‘location’,</dt><dd><p>sourcedb = ‘location’, objdb = ‘location’, co2actmodel = ‘Duan_Sun’,
+Dielec_method = ‘FGL97’, sourceformat = ‘GWB’)</p>
+</dd>
+</dl>
+</li>
+</ol>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.pygcc_utils.main_function_name">
+<span class="sig-prename descclassname"><span class="pre">pygcc.pygcc_utils.</span></span><span class="sig-name descname"><span class="pre">main_function_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/pygcc_utils.html#main_function_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.pygcc_utils.main_function_name" title="Permalink to this definition"></a></dt>
+<dd><p>print main_function name</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../clay_thermocalc/index.html" class="btn btn-neutral float-left" title="pygcc.clay_thermocalc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../read_db/index.html" class="btn btn-neutral float-right" title="pygcc.read_db" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Adedapo Awolayo and Benjamin Tutolo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

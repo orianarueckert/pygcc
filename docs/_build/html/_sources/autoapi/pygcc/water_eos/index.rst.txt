@@ -1,0 +1,1001 @@
+:py:mod:`pygcc.water_eos`
+=========================
+
+.. py:module:: pygcc.water_eos
+
+.. autoapi-nested-parse::
+
+   Created on Wed Mar 17 16:02:22 2021
+
+   @author: adedapo.awolayo and Ben Tutolo, University of Calgary
+
+   Copyright (c) 2020 - 2021, Adedapo Awolayo and Ben Tutolo, University of Calgary
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+   See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+   Functions implemented here include water equation of state and dielectric properties
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   pygcc.water_eos.Dummy
+   pygcc.water_eos.iapws95
+   pygcc.water_eos.ZhangDuan
+   pygcc.water_eos.water_dielec
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   pygcc.water_eos.convert_temperature
+   pygcc.water_eos.derivative
+   pygcc.water_eos.readIAPWS95data
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   pygcc.water_eos.eps
+   pygcc.water_eos.J_to_cal
+   pygcc.water_eos.IAPWS95_COEFFS
+
+
+.. py:data:: eps
+   :annotation: = 2.220446049250313e-16
+
+   
+
+.. py:data:: J_to_cal
+   :annotation: = 4.184
+
+   
+
+.. py:function:: convert_temperature(T, Out_Unit='C')
+
+   This function converts temperatures from Celsius to Kelvin and vice-versa
+
+   :param T: Temperature in °C or K
+   :type T: float, vector
+   :param Out_Unit: Expected temperature unit (C or K)
+   :type Out_Unit: string
+
+   :returns: **T** -- Temperature in °C or K
+   :rtype: float, vector
+
+   .. rubric:: Examples
+
+   >>> TC = 100; convert_temperature( TC, Out_Unit = 'K' )
+       373.15
+   >>> TK = 520; convert_temperature( TK, Out_Unit = 'C' )
+       246.85
+
+
+.. py:function:: derivative(f, a, method='central', h=0.001)
+
+   Compute the derivative of f, f'(a) with step size h.
+   :param f: Vectorized function of one variable
+   :type f: function
+   :param a: Compute derivative at x = a
+   :type a: number
+   :param method: Difference formula: 'forward', 'backward' or 'central'
+   :type method: string
+   :param h: Step size in difference formula
+   :type h: number
+
+   :returns:
+
+             Difference formula:
+                 central: f(a + h) - f(a - h))/2h
+                 forward: f(a + h) - f(a))/h
+                 backward: f(a) - f(a-h))/h
+   :rtype: float
+
+
+.. py:function:: readIAPWS95data()
+
+   returns all constants and coefficients needed for the IAPWS95 formulation, packed into a dictionary
+
+
+.. py:data:: IAPWS95_COEFFS
+   
+
+   
+
+.. py:class:: Dummy
+
+   Bases: :py:obj:`object`
+
+   Class of functions to evaluate the IAPWS95 equation of state for calculating thermodynamic
+   properties of water.
+
+
+   .. py:method:: EOSIAPWS95(self, TK, rho, FullEOSppt=False)
+
+      This function evaluates the IAPWS basic equation of state to calculate thermodynamic
+      properties of water, which is written as a function of temperature and density.
+
+      :param TK:
+      :type TK: temperature [K]
+      :param rho:
+      :type rho: density [kg/m3]
+      :param FullEOSppt:
+      :type FullEOSppt: Option to output all or essential water properties [False or True]
+
+      :returns: * **px** (*pressure [bar]*)
+                * **ax** (*Helmholtz energy [kJ/kg-K]*)
+                * **sx** (*Entropy [kJ/kg/K]*)
+                * **hx** (*Enthalpy [kJ/kg]*)
+                * **gx** (*Gibbs energy [kJ/kg]*)
+                * **vx** (*Volume [m3/kg]*)
+                * **pdx** (*Derivative of pressure with respect to delta in bar*)
+                * **adx** (*Helmholtz energy derivative with respect to delta*)
+                * **ztx** (*zeta value (needed to calculate viscosity)*)
+                * **ptx** (*Derivative of pressure with respect to tau in bar*)
+                * **ktx** (*Compressibility [/bar]*)
+                * **avx** (*Thermal expansion coefficient (thermal expansivity)*)
+                * **ux** (*Internal energy [kJ/kg]  if FullEOSppt is True*)
+                * **gdx** (*Gibbs energy derivative in kJ/kg   if FullEOSppt is True*)
+                * **bsx** (*Isentropic temperature-pressure coefficient [K-m3/kJ]    if FullEOSppt is True*)
+                * **dtx** (*Isothermal throttling coefficient [kJ/kg/bar]    if FullEOSppt is True*)
+                * **mux** (*Joule-Thomsen coefficient [K-m3/kJ]  if FullEOSppt is True*)
+                * **cpx** (*Isobaric heat capacity [kJ/kg/K]   if FullEOSppt is True*)
+                * **cvx** (*Isochoric heat capacity [kJ/kg/K]   if FullEOSppt is True*)
+                * **wx** (*Speed of sound [m/s]   if FullEOSppt is True*)
+
+      Usage
+      ----------
+        [px, ax, ux, sx, hx, gx, vx, pdx, adx, gdx, ztx, ptx, ktx, avx, bsx, dtx, mux, cpx, cvx, wx] = EOSIAPW95( TK, rho)
+
+
+   .. py:method:: auxMeltingPressure(self, TK, P)
+
+      This function calculates the melting pressure of ice as a function of temperature.
+
+      This model is described in IAPWS R14-08(2011), Revised Release on the Pressure along
+      the Melting and Sublimation Curves of Ordinary Water Substance, as may be found at:
+      http://www.iapws.org/relguide/MeltSub.html
+
+      Five ice phases are covered here. The melting pressure is not a single-valued function
+      of temperature as there is some overlap in the temperature ranges of the individual phases.
+      There is no overlap in the temperature ranges of Ices III, V, VI, and VII, which together
+      span the range 251.165 - 715K. The melting pressure is continuous and monotonically increasing
+      over this range, albeit with discontinuities in slope at the triple points where two ice
+      phases and liquid are in equilibrium. The problem comes in with Ice Ih, whose temperature
+      range completely overlaps that of Ice III and partially overlaps that of Ice V. For a
+      temperature in the range for Ice Ih, there are two possible melting pressures.
+
+      The possible ambiguity here in the meaning of melting pressure is not present if the
+      temperature is greater than or equal to the triple point temperature of 273.16K, or
+      if the pressure is greater than or equal to 2085.66 bar (the triple point pressure
+      for Ice Ih-Ice III-liquid). If neither of these conditions are satisfied, then the Ice
+      Ih-liquid curve will be used. To deal with the pressure condition noted above, this function
+      assumes that an actual pressure is specified.
+
+      :param P:
+      :type P: pressure [bar]
+      :param TK:
+      :type TK: temperature [K]
+
+      :returns: **Pmelt**
+      :rtype: melting pressure [bar]
+
+      Usage
+      ----------
+        [Pmelt] = auxMeltingPressure( TK, P)
+
+
+
+   .. py:method:: auxMeltingTemp(self, P)
+
+      This function calculates the melting temperature of ice as a function of pressure.
+
+      This inverts the model for the melting pressure as a function of temperature.
+      That model is described in IAPWS R14-08(2011), Revised Release on the Pressure
+      along the Melting and Sublimation Curves of Ordinary Water Substance as may be found at:
+      http://www.iapws.org/relguide/MeltSub.html
+
+      Inversion of the model for the melting pressure is done here using the secant method.
+      This is chosen instead of the Newton-Raphson method to avoid potential problems with slope
+      discontinuites at boundaries between the ice phases for pressures above 208.566 MPa,
+      which is the equilibrium pressure for Ice Ih-Ice III-liquid. The corresponding equlibrium
+      temperature is 251.165K. Putative melting temperatures should not be less than this for
+      pressures above 208.566 Mpa, nor more than this for pressures less than this.
+      :param P:
+      :type P: pressure [bar]
+
+      :returns: **Tmelt**
+      :rtype: temperature [K]
+
+      Usage
+      ----------
+        [Tmelt] = auxMeltingTemp( P)
+
+
+
+   .. py:method:: waterviscosity(self, TC, P, rho)
+
+      This function calculates the viscosity of water using
+      Ref:
+          (1) "IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance" (IAPWS R12-08).
+          (2) Huber M.L., Perkins R.A., Laesecke A., Friend D.G., Sengers J.V., Assael M.J., Metaxa I.N.,
+              Vogel E., Mares R., and Miyagawa K. (2009) New International Formulation for the Viscosity
+              of H2O. J. Phys. Chem. Ref. Data 38, 101-125.
+
+      :param TC       temperature [°C]:
+      :param P        pressure [bar]:
+      :param rho      density [kg/m3]:
+
+      :rtype: visc     viscosity [Pa.s]
+
+      Usage
+      ----------
+        [visc] = waterviscosity( TC, P, rho)
+
+
+   .. py:method:: apxsatpropT(self, TK)
+
+      This function evaluates the approximate pressure (psat) as a function of temperature along
+      the vapor-liquid equilibrium curve, using equation 2.5 of Wagner and Pruss (2002).
+      It also calculates the derivative of saturation pressure wrt temperature as well as the
+      densities of the liquid and vapor phases using equations 2.6 and 2.7
+      from the same source.
+
+      Parameters:
+      ----------
+          TK       temperature [K] (saturation temperature)
+
+      Returns:
+      ----------
+          Psat    saturation pressure [bar]
+
+          Psat_t  Derivative of saturation pressure with respect to temperature
+
+          rhosl   density of liquid [kg/m3]
+
+          rhosv   density of vapor [kg/m3]
+
+      Usage:
+      ----------
+        [Psat, Psat_t, rhosl, rhosv] = apxsatpropT( TK)
+
+
+   .. py:method:: apxsatpropP(self, P)
+
+      This function evaluates the approximate temperature (tsat) as a function of pressure along
+      the vapor-liquid equilibrium curve, using equation 2.5 of Wagner and Pruss (2002).
+      This is similar to apxsatpropT(TK), but evaluates the inverse problem (Tsat as a function
+      of pressure instead of psat as a function of temperature). Newton-Raphson iteration is used.
+
+      Parameters:
+      ----------
+          P        pressure [bar]
+
+      Returns:
+      ----------
+          Tsat     saturation temperature [K]
+
+      Usage:
+      ----------
+        [Tsat] = apxsatpropP( P)
+
+
+   .. py:method:: calcsatpropT(self, TK)
+
+      This function calculates the saturation properties as a function of specified temperature.
+      This is achieved using Newton-Raphson iteration to refine values of pressure, vapor density,
+      and liquid density, starting with results obtained using approximate equations included
+      by Wagner and Pruss (2002) in their description of the IAPWS-95 model.
+
+      :param TK      temperature [K]:
+
+      :returns: * *Psat    saturation pressure [bar]*
+                * *rhosl   density of liquid [kg/m3]*
+                * *rhosv   density of vapor [kg/m3]*
+
+      Usage
+      ----------
+        [Psat, rhosl, rhosv] = calcsatpropT( TK)
+
+
+   .. py:method:: calcsatpropP(self, P)
+
+      This function calculates the saturation properties as a function of specified pressure.
+      This is done by iterating using Newton method on pressure to obtain the desired
+      temperature. This implementation calls calcsatpropT(TK) to calculate the saturation
+      pressure, liquid and vapor densities.
+
+
+      :param P        pressure [bar]:
+
+      :returns: * *Tsat     temperature [K]*
+                * *rhosl    liquid density [kg/m3]*
+                * *rhosv    vapor density [kg/m3]*
+
+      Usage
+      ----------
+        [Tsat, rhosl, rhosv] = calcsatpropP( P)
+
+
+   .. py:method:: fluidDescriptor(self, P, TK, *rho)
+
+      This function calculates the appropriate description of the H2O fluid at any given
+      temperature and pressure
+
+
+      A problem may occur if the pressure is equal or nearly equal to the saturation pressure.
+      Here comparing the pressure with the saturation pressure pressure may lead to the wrong
+      description, as vapor and liquid coexist at the saturation pressure. It then becomes
+      neccesary to compare the fluid density with the saturated vapor and saturated liquid densities.
+      If the density is known, it will be used. If it is not known, the results obtained
+      here will determine the starting density estimate, thus in essence choosing "vapor" or "liquid"
+      for pressures close to the saturation pressure.
+
+      Parameters:
+      ----------
+          P        pressure [bar]
+
+          TK       temperature [K]
+
+          rho      density [kg/m3] (optional)
+
+      Returns:
+      ----------
+          phase   fluid description
+
+          rhosl    liquid density [kg/m3]
+
+          rhosv    vapor density [kg/m3]
+
+      Usage:
+      ----------
+        [udescr, rhosl, rhosv] = fluidDescriptor( P, TK)
+
+
+   .. py:method:: calcwaterppt(self, TC, P, *rho0, FullEOSppt=False)
+
+      This function evaluates thermodynamic properties of water at given temperature and pressure.
+      The problem reduces to finding the value of density that is consistent with the desired pressure.
+      The Newton-Raphson method is employed. Small negative values of calculated pressure are okay.
+      Zero or negative values for calculated "pdx" (pressure derivative with respect to delta)
+      imply the unstable zone and must be avoided.
+
+      Parameters:
+      ----------
+          T     :  temperature [°C]
+
+          P     :  pressure [bar]
+
+          rho0  :  starting estimate of density [kg/m3] (optional)
+          FullEOSppt: Option to output all or essential water properties [False or True]
+      Returns:
+      ----------
+          rho   :  density [kg/m3]
+
+          gx    :  Gibbs energy [cal/mol]
+
+          hx    :  Enthalpy [cal/mol]
+
+          sx    :  Entropy [cal/mol/K]
+
+          vx    :  Volume [m3/mol]
+
+          Pout  :  pressure [bar]
+
+          Tout  :  temperature [°C]
+
+          ux    :  Internal energy [cal/mol]  if FullEOSppt is True
+
+          ax    :  Helmholtz energy [cal/mol/K]   if FullEOSppt is True
+
+          cpx   :  Isobaric heat capacity [cal/mol/K]   if FullEOSppt is True
+
+      Usage:
+      ----------
+          [rho, gxcu, hxcu, sxcu, vxcu, uxcu, axcu, cpxcu, Pout, Tout] = calcwaterppt(T, P),
+
+
+
+   .. py:method:: calcwaterppt_Prho(self, P, rho, FullEOSppt=False)
+
+      This function evaluates thermodynamic properties of water at given density and pressure.
+      The problem reduces to finding the value of temperature that is consistent with the desired pressure.
+
+      Parameters:
+      ----------
+          P     :  pressure [bar]
+
+          rho   :  density [kg/m3]
+
+          FullEOSppt: Option to output all or essential water properties [False or True]
+      Returns:
+      ----------
+          rho   :  density [kg/m3]
+
+          gx    :  Gibbs energy [cal/mol]
+
+          hx    :  Enthalpy [cal/mol]
+
+          sx    :  Entropy [cal/mol/K]
+
+          vx    :  Volume [m3/mol]
+
+          Pout  :  pressure [bar]
+
+          Tout  :  temperature [°C]
+
+          ux    :  Internal energy [cal/mol]  if FullEOSppt is True
+
+          ax    :  Helmholtz energy [cal/mol/K]  if FullEOSppt is True
+
+          cpx   :  Isobaric heat capacity [cal/mol/K]  if FullEOSppt is True
+
+      Usage:
+      ----------
+          [rho, gxcu, hxcu, sxcu, vxcu, uxcu, axcu, cpxcu, Pout, Tout] = calcwaterppt_Prho(P, rho),
+
+
+
+   .. py:method:: calcwaterstdppt(self, TK, hx, sx, vx, ux=None, cpx=None, Out_Unit='standard')
+
+      This function converts thermodynamic properties of water from kilogram units to standard thermochemical
+      scale (calorie units) and vice-versa.
+
+      Parameters:
+      ----------
+          TK    :  temperature [K]
+
+          hx    :  Enthalpy [kJ/kg] or [cal/mol]
+
+          sx    :  Entropy [kJ/kg/K] or [cal/mol/K]
+
+          vx    :  Volume [m3/kg]  or [m3/mol]
+
+          ux    :  Internal energy [kJ/kg] or [cal/mol]
+
+          cpx   :  Isobaric heat capacity [kJ/kg/K] or [cal/mol/K]
+
+      Returns:
+      ----------
+          gx    :  Gibbs energy [kJ/kg] or [cal/mol]
+
+          hx    :  Enthalpy [kJ/kg] or [cal/mol]
+
+          sx    :  Entropy [kJ/kg/K] or[cal/mol/K]
+
+          vx    :  Volume [m3/kg]  or[m3/mol]
+
+          ax    :  Helmholtz energy [kJ/kg/K] or[cal/mol/K]
+
+          ux    :  Internal energy [kJ/kg] or [cal/mol]
+
+          cpx   :  Isobaric heat capacity [kJ/kg/K] or[cal/mol/K]
+
+      Usage:
+      ----------
+          [gx, hx, sx, vx, ux, ax, cpx] = calcwaterstdppt(TK, hx, sx, vx, ux, cpx, Out_Unit = 'kilogram')
+
+
+
+
+.. py:class:: iapws95(**kwargs)
+
+   Implementation of IAPWS Formulation 1995 for ordinary water substance, revised release of 2016
+
+   .. rubric:: Notes
+
+   Temperature and Pressure input limits
+       * -22 ≤ TC ≤ 1000 and 0 ≤ P ≤ 100,000
+
+   :param T: Temperature [°C]
+   :type T: float, vector
+   :param P: Pressure [bar]
+   :type P: float, vector
+   :param rho: Density [kg/m³]
+   :type rho: float, vector
+   :param rho0: Starting estimate of density [kg/m³]
+   :type rho0: float, vector
+   :param rhom: Molar density [kg/m³]
+   :type rhom: float, vector
+   :param delta: Reduced density, rho/rhoc
+   :type delta: float, vector
+   :param tau: Reduced temperature, Tc/T
+   :type tau: float, vector
+   :param v: Specific volume [m³/kg]
+   :type v: float, vector
+   :param vm: Specific molar volume [m³/mol]
+   :type vm: float, vector
+   :param Out_Unit: Expected units ('standard' or 'kilogram')
+   :type Out_Unit: string
+   :param FullEOSppt: Option to output all or essential water properties [False or True]
+   :type FullEOSppt: bool
+
+   :returns: * *The calculated instance has the following potential properties*
+             * **rho** (*float, vector*) -- Density [kg/m3]
+             * **G** (*float, vector*) -- Gibbs energy [cal/mol] or  [kJ/kg]
+             * **H** (*float, vector*) -- Enthalpy [cal/mol] or [kJ/kg]
+             * **S** (*float, vector*) -- Entropy [cal/mol/K] or [kJ/kg/K]
+             * **V** (*float, vector*) -- Volume [m3/mol] or [m3/kg]
+             * **P** (*float, vector*) -- Pressure [bar]
+             * **TC** (*float, vector*) -- Temperature [°C]
+             * **TK** (*float, vector*) -- Temperature [K]
+             * **U** (*float, vector*) -- Internal energy [cal/mol] or [kJ/kg]  if FullEOSppt is True
+             * **F** (*float, vector*) -- Helmholtz energy [cal/mol/K] or [kJ/kg-K]  if FullEOSppt is True
+             * **Cp** (*float, vector*) -- Isobaric heat capacity [cal/mol/K]
+             * **rhosl** (*float, vector*) -- Density of liquid [kg/m3]
+             * **rhosv** (*float, vector*) -- Density of vapor [kg/m3]
+             * **pdx** (*float, vector*) -- Derivative of pressure with respect to delta in bar
+             * **adx** (*float, vector*) -- Helmholtz energy derivative with respect to delta
+             * **ztx** (*float, vector*) -- zeta value (needed to calculate viscosity)
+             * **ptx** (*float, vector*) -- Derivative of pressure with respect to tau in bar
+             * **gdx** (*float, vector*) -- Gibbs energy derivative [kJ/kg]   if FullEOSppt is True
+             * **ktx** (*float, vector*) -- Compressibility [/bar]
+             * **avx** (*float, vector*) -- Thermal expansion coefficient (thermal expansivity)
+             * **mu** (*float, vector*) -- viscosity [Pa-s] if FullEOSppt is True
+             * **bsx** (*float, vector*) -- Isentropic temperature-pressure coefficient [K-m3/kJ]  if FullEOSppt is True
+             * **dtx** (*float, vector*) -- Isothermal throttling coefficient [kJ/kg/bar]  if FullEOSppt is True
+             * **mux** (*float, vector*) -- Joule-Thomsen coefficient [K-m3/kJ]  if FullEOSppt is True
+             * **cvx** (*float, vector*) -- Isochoric heat capacity [kJ/kg/K]  if FullEOSppt is True
+             * **wx** (*float, vector*) -- Speed of sound [m/s]  if FullEOSppt is True
+
+   Usage:
+   ----------
+       The general usage of iapws95 is as follows:
+
+       (1) For water properties at any Temperature and Pressure not on steam saturation curve:
+
+           water = iapws95(T = T, P = P),
+
+           where T is temperature in celsius and P is pressure in bar
+       (2) For water properties at any Temperature and Pressure on steam saturation curve:
+
+           water = iapws95(T = T, P = 'T'),
+
+           where T is temperature in celsius, followed with a quoted character 'T' to reflect steam saturation pressure
+
+           water = iapws95(T = 'P', P = P),
+
+           where P is pressure in bar, followed with a quoted character 'P' to reflect steam saturation temperature
+       (3) For water properties at any Temperature and density :
+
+           water = iapws95(T = T, rho = rho),
+
+           where T is temperature in celsius and rho is density in kg/m³
+       (4) For water properties at any Pressure and density :
+
+           water = iapws95(P = P, rho = rho),
+
+           where P is pressure in bar and rho is density in kg/m³
+       (5) For water saturation properties at any saturation Temperature :
+
+           water = iapws95(T = T),
+
+           where T is temperature in celsius
+       (6) For water saturation properties at any saturation Pressure :
+
+           water = iapws95(P = P),
+
+           where P is pressure in bar
+
+   .. rubric:: Examples
+
+   >>> water = iapws95(T = 200., P = 50, FullEOSppt = True)
+   >>> water.rho, water.G, water.H, water.S, water.V, water.P, water.T, water.mu
+       867.2595, -60368.41787, -65091.03895,  25.14869,  4.96478e-03,  50.00000,
+       200.000, 0.00013546
+
+   >>> water = iapws95(T=200, rho=996.5560, Out_Unit='kilogram', FullEOSppt=True)
+   >>> water.P, water.F, water.S, water.H, water.G, water.V, water.Cp, water.pdx
+       2872.063, -234.204, 2.051, 1024.747, 53.994, 1.0035e-03, 3.883, 10079.17
+   >>> water.adx, water.ztx, water.ptx, water.ktx, water.avx, water.mu, water.gdx
+       93.120, 2.189e-03, -7.348e+03,  3.205e-05,  6.809e-04, 1.914e-04, 1011.40
+
+   >>> water = iapws95(T = 350)
+   >>> water.P, water.rhosl, water.rhosv
+       165.2942 574.7065 113.6056
+
+   >>> water = iapws95(P = 150)
+   >>> water.TC, water.rhosl, water.rhosv
+       342.1553, 603.5179, 96.7271
+
+   .. rubric:: References
+
+   (1) Wagner, W., Pruß, A., 2002. The IAPWS formulation 1995 for the thermodynamic properties of
+       ordinary water substance for general and scientific use. J. Phys. Chem. Ref. Data 31, 387–535.
+       https://doi.org/10.1063/1.1461829
+
+   .. py:attribute:: kwargs
+      
+
+      
+
+   .. py:attribute:: mwH2O
+      :annotation: = 18.015268
+
+      
+
+   .. py:method:: __checker__(self, **kwargs)
+
+
+   .. py:method:: __calc__(self, **kwargs)
+
+
+
+.. py:class:: ZhangDuan(**kwargs)
+
+   Implementation of Zhang & Duan model Formulation for water at higher Temperature and Pressure conditions, i.e, Deep Earth Water - DEW
+
+   .. rubric:: Notes
+
+   Temperature and Pressure input limits
+       * 0 ≤ TC ≤ 1726.85 and 1000 ≤ P ≤ 300,000
+
+   :param T: Temperature [°C]
+   :type T: float, vector
+   :param P: Pressure [bar]
+   :type P: float, vector
+   :param rho: Density [kg/m³]
+   :type rho: float, vector
+   :param rho0: Starting estimate of density [kg/m³]
+   :type rho0: float, vector
+   :param densityEquation: specify either 'ZD05' to use Zhang & Duan (2005) or 'ZD09'  to use Zhang & Duan (2009)
+   :type densityEquation: string
+
+   :returns: * *The calculated instance has the following potential properties*
+             * **rho** (*float, vector*) -- Density [kg/m3]
+             * **rhohat** (*float, vector*) -- Density [g/cm³]
+             * **G** (*float, vector*) -- Gibbs energy [cal/mol]
+             * **drhodP_T** (*float, vector*) -- Partial derivative of density with respect to pressure at constant temperature
+             * **drhodT_P** (*float, vector*) -- Partial derivative of density with respect to temperature at constant pressure
+
+   Usage:
+   ----------
+       The general usage of ZhangDuan is as follows:
+
+       (1) For water properties at any Temperature and Pressure:
+
+           deepearth = ZhangDuan(T = T, P = P),
+
+           where T is temperature in celsius and P is pressure in bar
+       (2) For water properties at any Temperature and density :
+
+           deepearth = ZhangDuan(T = T, rho = rho),
+
+           where T is temperature in celsius and rho is density in kg/m³
+
+   .. rubric:: Examples
+
+   >>> deepearth = ZhangDuan(T = 25, P = 5000)
+   >>> deepearth.rho, deepearth.G, deepearth.drhodP_T, deepearth.drhodT_P
+       1145.3065, -54631.5351, 2.3283e-05, -0.0004889
+
+   >>> deepearth = ZhangDuan(T = 200, rho = 1100)
+   >>> deepearth.P, deepearth.G, deepearth.drhodP_T, deepearth.drhodT_P
+       7167.2231, -57319.0980, 2.3282e-05, -0.0005122
+
+   .. rubric:: References
+
+   (1) Zhang, Z., Duan, Z., 2005. Prediction of the PVT properties of water over wide range of
+       temperatures and pressures from molecular dynamics simulation. Phys. Earth Planet. Inter.
+       149, 335–354. https://doi.org/10.1016/j.pepi.2004.11.003.
+   (2) Zhang, C. and Duan, Z., 2009. “A model for C-O-H fluid in the Earth’s mantle”, Geochimica et
+       Cosmochimica Acta, vol. 73, no. 7, pp. 2089–2102, doi:10.1016/j.gca.2009.01.021.
+   (3) Sverjensky, D.A., Harrison, B., Azzolini, D., 2014. Water in the deep Earth: The dielectric
+       constant and the solubilities of quartz and corundum to 60kb and 1200°C. Geochim. Cosmochim.
+       Acta 129, 125–145. https://doi.org/10.1016/j.gca.2013.12.019
+
+   .. py:attribute:: kwargs
+      
+
+      
+
+   .. py:method:: __calc__(self, **kwargs)
+
+
+   .. py:method:: ZD_Pressure_drhodP(self, TC, rhohat, method=None)
+
+
+   .. py:method:: ZD_Density(self, TC, P, method='ZD05', error=None)
+
+
+   .. py:method:: GibbsEnergy(self, TC, P, method='VolumeIntegral')
+
+
+
+.. py:class:: water_dielec(**kwargs)
+
+   Class Implementation of Water dielectric constants, the Debye-Huckel "A" and "B" parameters and their derivatives at ambient to deep-earth Temperature and Pressure conditions with three different formulations
+
+   :param T: Temperature [°C]
+   :type T: float, vector
+   :param P: Pressure [bar]
+   :type P: float, vector
+   :param rho: Density [kg/m³]
+   :type rho: float, vector
+   :param Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified, default - 'JN91'
+   :type Dielec_method: string
+   :param Dielec_DEWoutrange: specify either 'FGL97' or 'JN91' as the method to calculate dielectric constant for out of range for 'DEW' method if any
+   :type Dielec_DEWoutrange: string
+
+   :returns: * *The calculated instance has the following potential properties*
+             * **E** (*float, vector*) -- dielectric constant of water [cal/mol]
+             * **rhohat** (*float, vector*) -- density [g/cm³]
+             * **Ah** (*float, vector*) -- Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]
+             * **Bh** (*float, vector*) -- Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]
+             * **bdot** (*float, vector*) -- bdot at any given temperature T
+             * **Adhh** (*float, vector*) -- Debye-Huckel "A" parameters associated with apparent molar enthalpy
+             * **Adhv** (*float, vector*) -- Debye-Huckel "A" parameters associated with apparent molar volume
+             * **Bdhh** (*float, vector*) -- Debye-Huckel "B" parameters associated with apparent molar enthalpy
+             * **Bdhv** (*float, vector*) -- Debye-Huckel "B" parameters associated with apparent molar volume
+             * **dEdP_T** (*float, vector*) -- Partial derivative of dielectric constant with respect to pressure at constant temperature
+             * **dEdT_P** (*float, vector*) -- Partial derivative of dielectric constant with respect to temperature at constant pressure
+
+   .. rubric:: Notes
+
+   FGL97 Temperature and Pressure input limits:
+       * -35 ≤ TC ≤ 600 and 0 ≤ P ≤ 12000
+   DEW Temperature and Pressure input limits:
+       * 100 ≤ TC ≤ 1200 and 1000 ≤ P ≤ 60000
+   JN91 Temperature and Pressure input limits:
+       * 0 ≤ TC ≤ 1000 and 0 ≤ P ≤ 5000
+
+   Usage
+   ----------
+       The general usage of water_dielec is as follows:
+
+       (1) For water dielectric properties at any Temperature and Pressure:
+
+           dielect = water_dielec(T = T, P = P, Dielec_method = 'JN91'),
+
+           where T is temperature in celsius and P is pressure in bar
+       (2) For water dielectric properties at any Temperature and density :
+
+           dielect = water_dielec(T = T, rho = rho, Dielec_method = 'JN91'),
+
+           where T is temperature in celsius and rho is density in kg/m³
+       (3) For water dielectric properties at any Temperature and Pressure on steam saturation curve:
+
+           dielect = water_dielec(T = T, P = 'T', Dielec_method = 'JN91'),
+
+           where T is temperature in celsius and P is assigned a quoted character 'T' to reflect steam saturation pressure
+
+           dielect = water_dielec(P = P, T = 'P', Dielec_method = 'JN91'),
+
+           where P is pressure in bar and T is assigned a quoted character 'P' to reflect steam saturation temperature
+
+   .. rubric:: Examples
+
+   >>> dielect = water_dielec(T = 50, P = 500, Dielec_method = 'JN91')
+   >>> dielect.E, dielect.rhohat, dielect.Ah, dielect.Bh, dielect.bdot
+       71.547359, 1.00868586, 0.52131899,   0.33218072,   0.04088528
+   >>> dielect.Adhh, dielect.Adhv, dielect.Bdhh, dielect.Bdhv
+       0.64360153,   2.13119279,  15.6936832 , -14.52571678
+   >>> dielect.dEdP_T, dielect.dEdT_P
+       0.03293026,   -0.32468033
+
+   >>> dielect = water_dielec(T = 200, rho = 1100, Dielec_method = 'FGL97')
+   >>> dielect.E, dielect.rhohat, dielect.Ah, dielect.Bh, dielect.bdot
+       49.73131404,  1.1,  0.5302338, 0.34384714,  0.04452579
+   >>> dielect.Adhh, dielect.Adhv, dielect.Bdhh, dielect.Bdhv
+       1.21317825,  2.21165281, 28.0047878, -34.21216547
+   >>> dielect.dEdP_T, dielect.dEdT_P
+       0.01444368, -0.16864644
+
+   >>> dielect = water_dielec(T = 250, P = 5000, Dielec_method = 'DEW')
+   >>> dielect.E, dielect.rhohat, dielect.Ah, dielect.Bh, dielect.bdot, dielect.Adhh
+       39.46273008,  1.0238784,  0.62248141,   0.35417088, 0.02878662, 0.80688122
+   >>> dielect.Adhv, dielect.Bdhh, dielect.Bdhv, dielect.dEdP_T, dielect.dEdT_P
+        3.13101408, 39.76402294, -35.29670957, 0.0129006 , -0.08837842
+
+   .. rubric:: References
+
+   (1) Release on the Static Dielectric Constant of Ordinary Water Substance for
+       Temperatures from 238 K to 873 K and Pressures up to 1000 MPa" (IAPWS R8-97, 1997).
+   (2) Fernandez D. P., Goodwin A. R. H., Lemmon E. W., Levelt Sengers J. M. H.,
+       and Williams R. C. (1997) A Formulation for the Permittivity of Water and
+       Steam at Temperatures from 238 K to 873 K at Pressures up to 1200 MPa, including
+       Derivatives and Debye-Hückel Coefficients. J. Phys. Chem. Ref. Data 26, 1125-1166.
+   (3) Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
+       Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
+       Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
+       Am. J. Sci. 274, 1199-1251.
+   (4) Johnson JW, Norton D (1991) Critical phenomena in hydrothermal systems: State, thermodynamic,
+       electrostatic, and transport properties of H2O in the critical region. American Journal of Science 291:541-648
+   (5) D. A. Sverjensky, B. Harrison, and D. Azzolini, "Water in the deep Earth: the dielectric
+       constant and the solubilities of quartz and corundum to 60 kb and 1200 °C," Geochimica et
+       Cosmochimica Acta, vol. 129, pp. 125–145, 2014
+
+   .. py:attribute:: kwargs
+      
+
+      
+
+   .. py:method:: __checker__(self, **kwargs)
+
+
+   .. py:method:: __calc__(self, **kwargs)
+
+
+   .. py:method:: dielec_FGL97(self, TC, rho)
+
+      This function employs the FGL91 formulation to calculate the dielectric constant of water (E), the Debye-Huckel "A" parameters
+      and Debye-Huckel "B" parameters (3)  and their derivatives as a
+      function of temperature and pressure
+
+
+      .. rubric:: Notes
+
+      Temperature and Pressure input limits:
+          * -35 ≤ TC ≤ 600 and 0 ≤ P ≤ 12000
+
+      :param TC:
+      :type TC: temperature [°C]
+      :param rho:
+      :type rho: density [kg/m3]
+
+      :returns: * **E** (*dielectric constant of water [cal/mol]*)
+                * **rhohat** (*density [g/cm³]*)
+                * **Ah** (*Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]*)
+                * **Bh** (*Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]*)
+                * **bdot** (*bdot at any given temperature T*)
+                * **Adhh** (*Debye-Huckel "A" parameters associated with apparent molar enthalpy*)
+                * **Adhv** (*Debye-Huckel "A" parameters associated with apparent molar volume*)
+                * **Bdhh** (*Debye-Huckel "B" parameters associated with apparent molar enthalpy*)
+                * **Bdhv** (*Debye-Huckel "B" parameters associated with apparent molar volume*)
+                * **dEdP_T** (*Partial derivative of dielectric constant with respect to pressure at constant temperature*)
+                * **dEdT_P** (*Partial derivative of dielectric constant with respect to temperature at constant pressure*)
+
+      Usage
+      ----------
+         [E, rhohat, Ah, Bh, bdot, Adhh, Adhv, Bdhh, Bdhv, dEdP_T, dEdT_P] = dielec_FGL97( TC, rho)
+
+      .. rubric:: References
+
+      (1) Release on the Static Dielectric Constant of Ordinary Water Substance for
+          Temperatures from 238 K to 873 K and Pressures up to 1000 MPa" (IAPWS R8-97, 1997).
+      (2) Fernandez D. P., Goodwin A. R. H., Lemmon E. W., Levelt Sengers J. M. H.,
+          and Williams R. C. (1997) A Formulation for the Permittivity of Water and
+          Steam at Temperatures from 238 K to 873 K at Pressures up to 1200 MPa, including
+          Derivatives and Debye-Hückel Coefficients. J. Phys. Chem. Ref. Data 26, 1125-1166.
+      (3) Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
+          Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
+          Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
+          Am. J. Sci. 274, 1199-1251.
+
+
+   .. py:method:: dielec_JN91(self, TC, rho)
+
+      This dielec_JN91 implementation employs the JN91 formulation to calculate the
+      dielectric properties of water and steam, the Debye-Huckel "A" parameters and
+      Debye-Huckel "B" parameters  and their derivatives
+
+      .. rubric:: Notes
+
+      Temperature and Pressure input limits:
+          * 0 ≤ TC ≤ 1000 and 0 ≤ P ≤ 5000
+
+      :param TC:
+      :type TC: temperature [°C]
+      :param rho:
+      :type rho: density [kg/m3]
+
+       Returns
+      ----------
+         E       : dielectric constant of water [cal/mol]
+
+         rhohat  : density [g/cm³]
+
+         Ah      : Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]
+
+         Bh      : Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]
+
+         bdot    : bdot at any given temperature T
+
+         Adhh    : Debye-Huckel "A" parameters associated with apparent molar enthalpy
+
+         Adhv    : Debye-Huckel "A" parameters associated with apparent molar volume
+
+         Bdhh    : Debye-Huckel "B" parameters associated with apparent molar enthalpy
+
+         Bdhv    : Debye-Huckel "B" parameters associated with apparent molar volume
+
+         dEdP_T  : Partial derivative of dielectric constant with respect to pressure at constant temperature
+
+         dEdT_P  : Partial derivative of dielectric constant with respect to temperature at constant pressure
+
+       Usage
+      ----------
+         [E, rhohat, Ah, Bh, bdot, Adhh, Adhv, Bdhh, Bdhv, dEdP_T, dEdT_P] = dielec_JN91( TC, rho)
+
+      .. rubric:: References
+
+      (1) Johnson JW, Norton D (1991) Critical phenomena in hydrothermal systems: State, thermodynamic,
+          electrostatic, and transport properties of H2O in the critical region. American Journal of Science 291:541-648
+      (2) Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
+          Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
+          Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
+          Am. J. Sci. 274, 1199-1251.
+
+
+   .. py:method:: dielec_DEW(self)
+
+      This watercalc implementation employs the DEW formulation embedded in Sverjensky et al. (2014)
+      to calculate the dielectric properties of water and steam, the Debye-Huckel "A" parameters and
+      Debye-Huckel "B" parameters  and their derivatives. This function has been set up to use
+      either Johnson and Norton (1991) or Fernandez et al. (1997) formulation below 5000 bar and
+      Sverjensky et al. (2014) formulation above 5000 bar.
+
+      .. rubric:: Notes
+
+      Temperature and Pressure input limits:
+          * 100 ≤ TC ≤ 1200 and 1000 ≤ P ≤ 60000
+
+      :param TC:
+      :type TC: temperature [°C]
+      :param P:
+      :type P: pressure [bar]
+
+       Returns
+      ----------
+         E       : dielectric constant of water [cal/mol]
+
+         rhohat  : density [g/cm³]
+
+         Ah      : Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]
+
+         Bh      : Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]
+
+         bdot    : bdot at any given temperature T
+
+         Adhh    : Debye-Huckel "A" parameters associated with apparent molar enthalpy
+
+         Adhv    : Debye-Huckel "A" parameters associated with apparent molar volume
+
+         Bdhh    : Debye-Huckel "B" parameters associated with apparent molar enthalpy
+
+         Bdhv    : Debye-Huckel "B" parameters associated with apparent molar volume
+
+         dEdP_T  : Partial derivative of dielectric constant with respect to pressure at constant temperature
+
+         dEdT_P  : Partial derivative of dielectric constant with respect to temperature at constant pressure
+
+       Usage
+      ----------
+         [E, rhohat, Ah, Bh, bdot, Adhh, Adhv, Bdhh, Bdhv, dEdP_T, dEdT_P] = dielec_DEW()
+
+      .. rubric:: References
+
+      (1) D. A. Sverjensky, B. Harrison, and D. Azzolini, "Water in the deep Earth: the dielectric
+          constant and the solubilities of quartz and corundum to 60 kb and 1200 °C," Geochimica et
+          Cosmochimica Acta, vol. 129, pp. 125–145, 2014
+      (2) Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
+          Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
+          Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
+          Am. J. Sci. 274, 1199-1251.
+
+
+

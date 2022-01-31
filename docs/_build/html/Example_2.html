@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Integrate pygcc with GWB &mdash; pygcc  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Integrate pygcc with EQ3/6" href="Example_3.html" />
+    <link rel="prev" title="General Usage" href="Example_1.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/PyGCC-logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pygcc_overview.html">An Introduction to pyGeochemCalc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Example_1.html">General Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Integrate pygcc with GWB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#import-pygcc-gwbplugin-and-other-modules">Import pygcc, GWBplugin and other modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#load-filtered-vent-fluid-data">Load filtered vent fluid data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#automate-the-generation-of-database-for-each-vent-fluid-with-pygcc-and-run-speciation-with-gwb-react">Automate the generation of database for each vent fluid with pygcc and run speciation with gwb React</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extract-simulation-results">Extract simulation results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Example_3.html">Integrate pygcc with EQ3/6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pygcc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Integrate pygcc with GWB</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Example_2.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="integrate-pygcc-with-gwb">
+<h1>Integrate pygcc with GWB<a class="headerlink" href="#integrate-pygcc-with-gwb" title="Permalink to this headline"></a></h1>
+<section id="import-pygcc-gwbplugin-and-other-modules">
+<h2>Import pygcc, GWBplugin and other modules<a class="headerlink" href="#import-pygcc-gwbplugin-and-other-modules" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">pygcc</span><span class="o">,</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">pygcc.pygcc_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c1"># print(pygcc.__version__)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load GWB plugin</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;c:/program files/gwb/src&quot;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">))</span>
+
+<span class="c1"># import GWBplugin class</span>
+<span class="kn">from</span> <span class="nn">GWBplugin</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># create the plug-in object</span>
+<span class="n">myGWBrun</span> <span class="o">=</span> <span class="n">GWBplugin</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">output_reader</span> <span class="kn">import</span> <span class="n">read_gwboutput</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">OSError</span><span class="g g-Whitespace">                                   </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="mi">5</span><span class="n">dd2ba651ff1</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> 
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="c1"># import GWBplugin class</span>
+<span class="ne">----&gt; </span><span class="mi">6</span> <span class="kn">from</span> <span class="nn">GWBplugin</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> 
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="c1"># create the plug-in object</span>
+
+<span class="ne">c</span>:/program files/gwb/src\GWBplugin.py in &lt;module&gt;
+<span class="g g-Whitespace">      </span><span class="mi">7</span>    <span class="n">gwbdll</span> <span class="o">=</span> <span class="n">cdll</span><span class="o">.</span><span class="n">LoadLibrary</span><span class="p">(</span><span class="s1">&#39;libgwbplugin.so&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">----&gt; </span><span class="mi">9</span>    <span class="n">gwbdll</span> <span class="o">=</span> <span class="n">cdll</span><span class="o">.</span><span class="n">LoadLibrary</span><span class="p">(</span><span class="s1">&#39;gwbplugin&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> 
+<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="k">class</span> <span class="nc">GWBplugin</span><span class="p">:</span>
+
+<span class="nn">D:\ProgramData\Anaconda3\lib\ctypes\__init__.py</span> in <span class="ni">LoadLibrary</span><span class="nt">(self, name)</span>
+<span class="g g-Whitespace">    </span><span class="mi">440</span> 
+<span class="g g-Whitespace">    </span><span class="mi">441</span>     <span class="k">def</span> <span class="nf">LoadLibrary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">442</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dlltype</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">443</span> 
+<span class="g g-Whitespace">    </span><span class="mi">444</span> <span class="n">cdll</span> <span class="o">=</span> <span class="n">LibraryLoader</span><span class="p">(</span><span class="n">CDLL</span><span class="p">)</span>
+
+<span class="nn">D:\ProgramData\Anaconda3\lib\ctypes\__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, name, mode, handle, use_errno, use_last_error)</span>
+<span class="g g-Whitespace">    </span><span class="mi">362</span> 
+<span class="g g-Whitespace">    </span><span class="mi">363</span>         <span class="k">if</span> <span class="n">handle</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">364</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_handle</span> <span class="o">=</span> <span class="n">_dlopen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">365</span>         <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">366</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_handle</span> <span class="o">=</span> <span class="n">handle</span>
+
+<span class="ne">OSError</span>: [WinError 126] The specified module could not be found
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="load-filtered-vent-fluid-data">
+<h2>Load filtered vent fluid data<a class="headerlink" href="#load-filtered-vent-fluid-data" title="Permalink to this headline"></a></h2>
+<p>This example is from Syverson, D. D., Awolayo, D., &amp; Tutolo, B. M. (2021). Global constraints on secular changes in mid-ocean ridge subseafloor sulfide deposition and metal fluxes through Earth history. In AGU Fall Meeting 2021. AGU.</p>
+<p>Here we will work with EPR 21 N sample to run speciation and warm up the fluid from 25 °C to 355 °C</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;./MARHYS_DB_2_0_filter.csv&#39;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>    
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample-ID                        EPR 21°N-SW-1981
+Geol_setting         Mid-oceanic spreading center
+Rock_type_primary                          Basalt
+Depth                                        2500
+Temp                                          355
+pH                                            3.6
+XH2S                                         7.45
+Cl                                            496
+Na                                            439
+Fe                                            750
+Mn                                            699
+H2                                           0.01
+K                                            23.2
+Ca                                           16.6
+Si                                           17.3
+Cu                                            9.7
+Press                                     251.945
+Name: 1, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="automate-the-generation-of-database-for-each-vent-fluid-with-pygcc-and-run-speciation-with-gwb-react">
+<h2>Automate the generation of database for each vent fluid with pygcc and run speciation with gwb React<a class="headerlink" href="#automate-the-generation-of-database-for-each-vent-fluid-with-pygcc-and-run-speciation-with-gwb-react" title="Permalink to this headline"></a></h2>
+<p>The gwb output files are stored in the folder ‘Ventspec’</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Temp</span><span class="p">]</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Press</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">T</span><span class="p">))</span>
+<span class="n">Temp</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Temp</span><span class="p">;</span>       <span class="n">npH</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">pH</span>
+<span class="n">nCl</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Cl</span><span class="p">;</span>          <span class="n">nNa</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Na</span>
+<span class="n">nH2S</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">XH2S</span><span class="p">;</span>       <span class="n">nFe</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Fe</span>
+<span class="n">nMn</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Mn</span><span class="p">;</span>          <span class="n">nH2</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">H2</span>
+<span class="n">nK</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">K</span><span class="p">;</span>            <span class="n">nCu</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Cu</span><span class="p">;</span>    
+<span class="n">nCa</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Ca</span><span class="p">;</span>          <span class="n">nSi</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Si</span>
+<span class="n">objdbname</span> <span class="o">=</span> <span class="s1">&#39;./thermo.</span><span class="si">%s</span><span class="s1">bars</span><span class="si">%s</span><span class="s1">C&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">Temp</span><span class="p">))</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="n">Temp</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="n">P</span><span class="p">,</span> <span class="n">solid_solution</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">objdb</span> <span class="o">=</span> <span class="n">objdbname</span><span class="p">,</span> 
+               <span class="n">clay_thermo</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">,</span>  <span class="n">sourcedb</span> <span class="o">=</span>  <span class="s1">&#39;./database/thermo.com.tdat&#39;</span><span class="p">)</span>
+
+<span class="n">output_folder</span> <span class="o">=</span> <span class="s1">&#39;Vent_spec&#39;</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">output_folder</span><span class="p">))</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">output_folder</span><span class="p">))</span>
+
+<span class="c1"># start the GWB program</span>
+<span class="k">if</span> <span class="n">myGWBrun</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="s2">&quot;react&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/runs_</span><span class="si">%s</span><span class="s2">.txt&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> 
+                       <span class="s2">&quot;-nocd -d </span><span class="se">\&quot;</span><span class="s2">./output/</span><span class="si">%s</span><span class="s2">.dat</span><span class="se">\&quot;</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="n">objdbname</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+
+    <span class="n">cmds</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;H2O  = 1 free kg&#39;</span><span class="p">,</span> <span class="s1">&#39;Fe++  = </span><span class="si">%s</span><span class="s1"> umol/kg&#39;</span> <span class="o">%</span> <span class="n">nFe</span><span class="p">,</span> <span class="s2">&quot;Na+  = </span><span class="si">%s</span><span class="s2"> mmol/kg&quot;</span> <span class="o">%</span> <span class="n">nNa</span><span class="p">,</span> 
+            <span class="s1">&#39;pH = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">npH</span><span class="p">,</span> <span class="s2">&quot;Cl- = </span><span class="si">%s</span><span class="s2"> mmol/kg&quot;</span> <span class="o">%</span> <span class="n">nCl</span><span class="p">,</span> <span class="s2">&quot;swap H2S(aq) for SO4--&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;H2S(aq) = </span><span class="si">%s</span><span class="s2"> mmol/kg&quot;</span> <span class="o">%</span> <span class="n">nH2S</span><span class="p">,</span> <span class="s1">&#39;Mn++  = </span><span class="si">%s</span><span class="s1"> umol/kg&#39;</span> <span class="o">%</span> <span class="n">nMn</span><span class="p">,</span> <span class="s2">&quot;K+  = </span><span class="si">%s</span><span class="s2"> mmol/kg&quot;</span> <span class="o">%</span> <span class="n">nK</span><span class="p">,</span> 
+            <span class="s1">&#39;Ca++  = </span><span class="si">%s</span><span class="s1"> mmol/kg&#39;</span> <span class="o">%</span> <span class="n">nCa</span><span class="p">,</span> <span class="s1">&#39;SiO2(aq) = </span><span class="si">%s</span><span class="s1"> mmol/kg&#39;</span> <span class="o">%</span> <span class="n">nSi</span><span class="p">,</span> <span class="s1">&#39;Cu++  = </span><span class="si">%s</span><span class="s1"> umol/kg&#39;</span> <span class="o">%</span> <span class="n">nCu</span><span class="p">,</span> 
+            <span class="s1">&#39;temperature initial = 25 C, final = </span><span class="si">%s</span><span class="s1"> C&#39;</span> <span class="o">%</span> <span class="n">Temp</span><span class="p">,</span> <span class="s1">&#39;swap H2(aq) for O2(aq)&#39;</span><span class="p">,</span> 
+            <span class="s2">&quot;H2(aq) = </span><span class="si">%s</span><span class="s2"> umol/kg&quot;</span> <span class="o">%</span> <span class="n">nH2</span><span class="p">,</span>  <span class="s2">&quot;balance off&quot;</span><span class="p">]</span>
+
+    <span class="n">cmds</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;suppress ALL&#39;</span><span class="p">,</span> <span class="s2">&quot;plot = character&quot;</span><span class="p">,</span> <span class="s1">&#39;itmax = 9999&#39;</span><span class="p">,</span> <span class="s2">&quot;go&quot;</span><span class="p">,</span> 
+             <span class="s1">&#39;save </span><span class="si">%s</span><span class="s1">/react</span><span class="si">%s</span><span class="s1">.rea&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span>
+
+    <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">cmds</span><span class="p">:</span> 
+        <span class="n">myGWBrun</span><span class="o">.</span><span class="n">exec_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;./</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">output_folder</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">fname</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;React_</span><span class="si">%s</span><span class="s1">.txt&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/React_</span><span class="si">%s</span><span class="s1">.txt&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">fname</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;React_</span><span class="si">%s</span><span class="s1">.gtp&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">):</span> 
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/React_</span><span class="si">%s</span><span class="s1">.gtp&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;React_output.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/React_</span><span class="si">%s</span><span class="s1">.txt&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;React_plot.gtp&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/React_</span><span class="si">%s</span><span class="s1">.gtp&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Finished run.&quot;</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:2266: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="extract-simulation-results">
+<h2>Extract simulation results<a class="headerlink" href="#extract-simulation-results" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rerun</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;./&#39;</span> <span class="o">+</span> <span class="n">output_folder</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.gtp&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;React_&#39;</span><span class="p">):</span> 
+        <span class="n">size</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span> <span class="c1">#size in KB</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">read_gwboutput</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="n">f</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rerun</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rerun</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># data</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot pyrite saturation with temperature</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">SI_Pyrite</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Temperature</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">350</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">350</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Temperature [C]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$Log_</span><span class="si">{10}</span><span class="s1">$(Q/K)$_</span><span class="si">{Pyrite}</span><span class="s1">$&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>pH versus temperature</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pH</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Temperature</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">sc</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">350</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Temperature [C]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;pH&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Example_1.html" class="btn btn-neutral float-left" title="General Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Example_3.html" class="btn btn-neutral float-right" title="Integrate pygcc with EQ3/6" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Adedapo Awolayo and Benjamin Tutolo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

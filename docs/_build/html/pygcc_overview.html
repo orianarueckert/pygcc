@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>An Introduction to pyGeochemCalc &mdash; pygcc  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="General Usage" href="Example_1.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/PyGCC-logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">An Introduction to pyGeochemCalc</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview-a-class-anchor-id-section-1-a">Overview  <a class="anchor" id="section_1"></a></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installing-and-loading-pygeochemcalc-a-class-anchor-id-section-1-1-a">Installing and loading pyGeochemCalc  <a class="anchor" id="section_1_1"></a></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getting-help-a-class-anchor-id-section-1-2-a">Getting help  <a class="anchor" id="section_1_2"></a></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#description-and-organization-of-major-accompanied-datasets-a-class-anchor-id-section-1-3-a">Description and Organization of major accompanied datasets   <a class="anchor" id="section_1_3"></a></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#thermodynamic-database-a-class-anchor-id-section-2-a">Thermodynamic database   <a class="anchor" id="section_2"></a></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#properties-of-database-and-reactions-a-class-anchor-id-section-2-1-a">Properties of Database and reactions   <a class="anchor" id="section_2_1"></a></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#search-function-a-class-anchor-id-section-2-2-a">Search function    <a class="anchor" id="section_2_2"></a></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#water-equation-of-state-a-class-anchor-id-section-3-a">Water Equation of State   <a class="anchor" id="section_3"></a></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#iapws-95-formulation-a-class-anchor-id-section-3-1-a">IAPWS-95 Formulation   <a class="anchor" id="section_3_1"></a></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#properties-as-a-function-of-temperature-and-density-a-class-anchor-id-section-3-1-1-a">Properties as a Function of Temperature and Density   <a class="anchor" id="section_3_1_1"></a></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#properties-as-a-function-of-temperature-and-pressure-a-class-anchor-id-section-3-1-2-a">Properties as a Function of Temperature and Pressure   <a class="anchor" id="section_3_1_2"></a></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#calculating-properties-on-the-saturation-curve-a-class-anchor-id-section-3-1-3-a">Calculating Properties on the Saturation Curve   <a class="anchor" id="section_3_1_3"></a></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#zhangduan-formulation-a-class-anchor-id-section-3-2-a">ZhangDuan Formulation   <a class="anchor" id="section_3_2"></a></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dielectric-constants-calculation-a-class-anchor-id-section-3-3-a">Dielectric Constants Calculation  <a class="anchor" id="section_3_3"></a></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fgl-electrostatic-formulation-a-class-anchor-id-section-3-3-1-a">FGL Electrostatic Formulation   <a class="anchor" id="section_3_3_1"></a></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jn91-electrostatic-formulation-a-class-anchor-id-section-3-3-2-a">JN91 Electrostatic Formulation   <a class="anchor" id="section_3_3_2"></a></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dew-electrostatic-formulation-a-class-anchor-id-section-3-3-3-a">DEW Electrostatic Formulation   <a class="anchor" id="section_3_3_3"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#calculating-thermodynamic-properties-a-class-anchor-id-section-4-a">Calculating thermodynamic properties     <a class="anchor" id="section_4"></a></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#thermodynamic-properties-of-reactions-among-species-a-class-anchor-id-section-4-1-a">Thermodynamic Properties of Reactions among species      <a class="anchor" id="section_4_1"></a></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#redox-and-aqueous-species-a-class-anchor-id-section-4-1-1-a">Redox and Aqueous species     <a class="anchor" id="section_4_1_1"></a></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mineral-and-gas-species-a-class-anchor-id-section-4-1-2-a">Mineral and gas species     <a class="anchor" id="section_4_1_2"></a></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#solid-solution-species-a-class-anchor-id-section-4-2-a">Solid-solution species     <a class="anchor" id="section_4_2"></a></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#clay-mineral-species-a-class-anchor-id-section-4-3-a">Clay Mineral species     <a class="anchor" id="section_4_3"></a></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#density-extrapolation-a-class-anchor-id-section-4-4-a">Density extrapolation     <a class="anchor" id="section_4_4"></a></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#generating-thermodynamic-database-a-class-anchor-id-section-5-a">Generating thermodynamic database      <a class="anchor" id="section_5"></a></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#citation-and-contact-information-a-class-anchor-id-section-6-a">Citation and contact information     <a class="anchor" id="section_6"></a></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-a-class-anchor-id-section-7-a">References:    <a class="anchor" id="section_7"></a></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Example_1.html">General Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Example_2.html">Integrate pygcc with GWB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Example_3.html">Integrate pygcc with EQ3/6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pygcc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>An Introduction to pyGeochemCalc</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/pygcc_overview.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="an-introduction-to-pygeochemcalc">
+<h1>An Introduction to pyGeochemCalc<a class="headerlink" href="#an-introduction-to-pygeochemcalc" title="Permalink to this headline"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">Adedapo</span> <span class="pre">Awolayo</span></code> and <code class="docutils literal notranslate"><span class="pre">Benjamin</span> <span class="pre">Tutolo</span></code> 2022-01-20</p>
+<section id="overview-a-class-anchor-id-section-1-a">
+<h2>Overview  <a class="anchor" id="section_1"></a><a class="headerlink" href="#overview-a-class-anchor-id-section-1-a" title="Permalink to this headline"></a></h2>
+<p>The pyGeochemCalc (pygcc) tool, a package for the python software environment, serves as an upgrade over the <code class="docutils literal notranslate"><span class="pre">DBCreate</span></code> and <code class="docutils literal notranslate"><span class="pre">SUPCRT92</span></code> software package. <code class="docutils literal notranslate"><span class="pre">DBCreate</span></code> has been developed based on <code class="docutils literal notranslate"><span class="pre">SUPCRT92</span></code> as a tool for creating thermodynamic database for geochemical calulations in tools like GWB, EQ36 and ToughReact (Kong et al., 2013). This community-driven, open-source Python package incorporates existing and newly implemented functions for calculating the thermodynamic properties of gas, aqueous, and mineral (including solid solutions - plagioclase, alkali-feldspar, olivine, pyroxene and clinopyroxene, and variable-formula clays) species, as well as reactions amongst these species, over a broad range of temperature and pressure conditions using the <em><code class="docutils literal notranslate"><span class="pre">International</span> <span class="pre">Association</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">Properties</span> <span class="pre">of</span> <span class="pre">Water</span> <span class="pre">and</span> <span class="pre">Steam</span></code></em> (IAWPS) Formulation 1995 (Wagner and Pruß, 2002) equation of state and <em><code class="docutils literal notranslate"><span class="pre">Zhang</span> <span class="pre">&amp;</span> <span class="pre">Duan</span> <span class="pre">model</span> <span class="pre">Formulation</span></code></em> (Zhang and Duan, 2005 and 2009) for Deep Earth Water (DEW) conditions. In addition, pygcc incorporates functions that permit the seamless integration and usage of these newly produced thermodynamic data in popular geochemical software including the Geochemist’s Workbench, EQ3/6, TOUGHREACT, and PFLOTRAN. The package is swift for ordinary stand-alone calculations and could be modified to support direct incorporation into other software, such as reactive-transport codes. The package is open-source and intended to be community-driven, such that the package and its capabilities can evolve in tandem with the needs of the geochemical modeling community</p>
+<section id="installing-and-loading-pygeochemcalc-a-class-anchor-id-section-1-1-a">
+<h3>Installing and loading pyGeochemCalc  <a class="anchor" id="section_1_1"></a><a class="headerlink" href="#installing-and-loading-pygeochemcalc-a-class-anchor-id-section-1-1-a" title="Permalink to this headline"></a></h3>
+<p>After starting python, install pygcc through running <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pygcc</span></code> in either your shell or anaconda prompt. Then, do either of the following as applicable:</p>
+<ul class="simple">
+<li><p>create a python file (either .py or ipynb) and write the following command:</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pygcc.pygcc_utils</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>  Save and Run the script with Spyder/Jupyter or in your shell/powershell/Anaconda prompt (if script is .py) using:</p>
+<blockquote>
+<div><p>python scriptname.py</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>run python in your shell/powershell/Anaconda prompt by calling <code class="docutils literal notranslate"><span class="pre">python</span></code> and then run the following command:</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pygcc.pygcc_utils</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="getting-help-a-class-anchor-id-section-1-2-a">
+<h3>Getting help  <a class="anchor" id="section_1_2"></a><a class="headerlink" href="#getting-help-a-class-anchor-id-section-1-2-a" title="Permalink to this headline"></a></h3>
+<p>After installation, type and run the following commands on Spyder terminal or Jupyter or shell/powershell/Anaconda prompt to browse the main function names in the pyGeochemCalc:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pygcc.pygcc_utils</span> <span class="k">as</span> <span class="nn">pyGCC</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">main_function_name</span><span class="p">(</span><span class="n">pyGCC</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Helgeson_activity&#39;, &#39;Henry_duan_sun&#39;, &#39;ZhangDuan&#39;, &#39;aw_correlation&#39;, &#39;calcRxnlogK&#39;, &#39;calc_elem_count_molewt&#39;, &#39;calclogKclays&#39;, &#39;co2fugacity&#39;, &#39;convert_temperature&#39;, &#39;db_reader&#39;, &#39;derivative&#39;, &#39;drummondgamma&#39;, &#39;gamma_correlation&#39;, &#39;heatcap&#39;, &#39;heatcap_Berman&#39;, &#39;heatcapusgscal&#39;, &#39;iapws95&#39;, &#39;importconfile&#39;, &#39;info&#39;, &#39;outputfmt&#39;, &#39;readIAPWS95data&#39;, &#39;roundup_hundredth&#39;, &#39;roundup_tenth&#39;, &#39;solidsolution_thermo&#39;, &#39;supcrtaq&#39;, &#39;water_dielec&#39;, &#39;write_database&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Type <code class="docutils literal notranslate"><span class="pre">help(function</span> <span class="pre">name)</span></code> on the commands to see an overview documentation for each function; many of which include examples. For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">Helgeson_activity</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function Helgeson_activity in module pygcc.pygcc_utils:
+
+Helgeson_activity(TC, P, I, Dielec_method=None, **rhoEDB)
+    This function calculates the solute activity coefficient, solvent osmotic coefficient,
+    and solvent  activity at given temperature and pressure using equations 298, 190 and 106 in
+    Helgeson, Kirkham and Flowers, 1981, A.J.S. p.1249-1516
+    Parameters:
+    ----------
+       TC       :   Temperature [°C]
+       P        :   pressure [bar]
+       I        :   ionic strength
+       Dielec_method :   specify either &#39;FGL97&#39; or &#39;JN91&#39; or &#39;DEW&#39; as the method to calculate dielectric
+                       constant (optional), if not specified default - &#39;JN91&#39;
+       rhoEDB   :   dictionary of water properties like density (rho), dielectric factor (E) and
+                       Debye–Hückel coefficients (optional)
+    Returns:
+    ----------
+       aw       :   solvent activity
+       phi      :   solvent osmotic coefficient
+       mean_act :   solute activity coefficient
+    Usage
+    -------
+       [aw, phi, mean_act] = Helgeson_activity( TC, P, I)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="description-and-organization-of-major-accompanied-datasets-a-class-anchor-id-section-1-3-a">
+<h3>Description and Organization of major accompanied datasets   <a class="anchor" id="section_1_3"></a><a class="headerlink" href="#description-and-organization-of-major-accompanied-datasets-a-class-anchor-id-section-1-3-a" title="Permalink to this headline"></a></h3>
+<p>pyGeochemCalc contains the following major datasets and folders:</p>
+<ol class="simple">
+<li><p><strong>clay_elements.dat</strong> contain 42 clay names and fractional elemental composition of the clay mineral arranged in this specific order <em>[‘Si’, ‘Al’, ‘FeIII’, ‘FeII’, ‘Mg’, ‘K’, ‘Na’, ‘Ca’, ‘Li’]</em>. The function <strong><code class="docutils literal notranslate"><span class="pre">calclogKclays</span></code></strong> or <strong><code class="docutils literal notranslate"><span class="pre">calcRxnlogK</span></code></strong> uses this dataset to estimate the thermodynamic properties of the clay minerals to be included in the newly-generated database.</p></li>
+<li><p><strong>default_db</strong> is a folder that contains default thermodynamic databases utilized in several calculations in pygcc in case the user failed to provide any database. It can be categorized into:</p>
+<ul class="simple">
+<li><p><em>direct-access:</em></p>
+<ul>
+<li><p><strong>speq21.dat</strong> is the sequential-access database that contains 1604 species thermodynamic properties, which undergoes timely update as newer information becomes available.</p></li>
+<li><p><strong>berman.dat</strong> is the sequential-access database that contains Berman mineral species thermodynamic properties.</p></li>
+</ul>
+</li>
+<li><p><em>source:</em></p>
+<ul>
+<li><p><strong>data0.dat</strong> is a sample source thermodynamic database for EQ3/6</p></li>
+<li><p><strong>thermo.com.dat</strong> and <strong>thermo.com.tdat</strong> are sample source thermodynamic databases for older (Oct94) and latest (Apr20) formats of GWB respectively.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>test_db</strong> is a folder that contains several other databases that could be used with pygcc</p>
+<ul class="simple">
+<li><p><strong>data0.geo</strong>, <strong>thermo.29Sep15.dat</strong>, and <strong>slop07.dat</strong> and <strong>dpumn2012.dat</strong> are example databases (<em>first is an EQ3/6 source database, second is a GWB source database and last two are sequential-access and direct-access</em>) used for testing purposes.</p></li>
+<li><p><strong>data0.hmw</strong>, <strong>thermo_hmw.tdat</strong>, and <strong>thermo_ymp.R2.tdat</strong> are example Ptifer databases (<em>first is the EQ3/6 source database, and last two are GWB source databases</em>) used for testing purposes.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="thermodynamic-database-a-class-anchor-id-section-2-a">
+<h2>Thermodynamic database   <a class="anchor" id="section_2"></a><a class="headerlink" href="#thermodynamic-database-a-class-anchor-id-section-2-a" title="Permalink to this headline"></a></h2>
+<section id="properties-of-database-and-reactions-a-class-anchor-id-section-2-1-a">
+<h3>Properties of Database and reactions   <a class="anchor" id="section_2_1"></a><a class="headerlink" href="#properties-of-database-and-reactions-a-class-anchor-id-section-2-1-a" title="Permalink to this headline"></a></h3>
+<p>The direct-access or sequential-access thermodynamic database can be read into a dictionary through the following commands:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Db_thermo</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">(</span><span class="n">dbaccess</span> <span class="o">=</span> <span class="s1">&#39;./database/speq21.dat&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">db_reader(dbaccess</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">dbBerman_dir</span> <span class="pre">=</span> <span class="pre">None)</span></code> requires the users to specify the file location, name and its extension, of the direct-access or sequential-access thermodynamic database, if nothing is specified, the function reads the default database, <code class="docutils literal notranslate"><span class="pre">speq21.dat</span></code>. The <em>dbBerman_dir</em> input only needs to specified if the users prefers Berman dataset for mineral species, then the filename and location needs to be specified (see <em>dbBerman_dir = ‘./database/berman.dat’</em>). The above function returns two parameters; <em>a dictionary</em> containing the thermodynamic properties of each species (gas, minerals, aqueous and redox) within the direct-access/sequential-access thermodynamic database and <em>a string</em> containing the filename without the file location. The format of this dictionary contains a list, for example for a mineral using Maier-Kelley power function with no phase transition, as follows:</p>
+<blockquote>
+<div><p>Db_thermo.dbaccessdic[‘mineral name’] =
+[‘formula’, ‘source  date’, dG[cal/ml], dH[cal/mol], S[cal/mol-K], V[cm3/mol], a[cal/mol-K], b[*10^3 cal/mol/K^2], c[*10^-5 cal/mol/K], Ttrans [K]]</p>
+</div></blockquote>
+<p>For example, we can output the thermo properties of <code class="docutils literal notranslate"><span class="pre">'Diopside'</span></code> with:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">[</span><span class="s1">&#39;Diopside&#39;</span><span class="p">])</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccess</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;CaMg(SiO3)2&#39;, &#39; ref:1,19            15.Mar.90\n&#39;, -723780.0, -765378.0, 34.2, 66.09, 52.87, 7.84, -15.74, 1600.0]
+speq21.dat
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Note:</strong> <em><strong>‘speq21.dat’</strong></em> contains properties in the following format - for minerals species (dG [cal/mol],
+dH [cal/mol], S [cal/mol-K], V [cm3/mol] a [cal/mol-K], b [*10<em><em>3 cal/mol/K^2],
+c [<em>10^-5 cal/mol/K], Ttrans [K], Htr [cal/mol], Vtr [cm³/mol], dPdTtr [bar/K] ) and aqueous
+species (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm3/mol], a1 [<em>10 cal/mol/bar],
+a2 [<em>10</em></em>-2 cal/mol], a3 [cal-K/mol/bar], a4 [<em>10</em></em>-4 cal-K/mol], c1 [cal/mol/K],
+c2 [<em>10</em></em>-4 cal-K/mol], ω [<em>10</em></em>-5 cal/mol] ), while <em><strong>‘Berman.dat’</strong></em> contains properties in the
+following format - for minerals (dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2,
+k3, v1 [*10^5 K^-1], v2 [*10^5 K^-2], v3 [*10^5 bar^-1], v4 [*10^8 bar^-2], dTdP [K/bar],
+Tlambda [K], Tref [K], l1 [(J/mol)^0.5/K], l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol],
+d2 [J/mol], d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K])</p>
+<p>If the user wants to use the default database and needs to add any species properties that is not already included, a quick way is to follow the above commands and add the properties of the new species. For example:</p>
+<blockquote>
+<div><p>Db_thermo.dbaccessdic[‘Diopside_new’] = [‘CaMg(SiO3)2’, ‘ ref:n/a            15.Mar.21’, -724780.0, -765878.0, 34.3, 66.19, 52.87, 7.84, -15.74, 1600.0]</p>
+</div></blockquote>
+<p>Similarly, the source thermodynamic database can be read for either EQ3/6 or GWB to be used in various calculations through the following commands:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># for GWB database</span>
+<span class="n">Db_thermo</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">(</span><span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/thermo.com.dat&#39;</span><span class="p">,</span> <span class="n">sourceformat</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span>
+                      <span class="c1">#, dbBerman_dir = &#39;./database/berman.dat&#39;</span>
+                     <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">db_reader(dbaccess</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">dbBerman_dir</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">sourcedb</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">sourceformat</span> <span class="pre">=</span> <span class="pre">None)</span></code>above returns six parameters; <em>a dictionary</em> containing the reaction coefficient and species from the source thermodynamic database, <em>a list of list</em> categorizing the species in the source  database into basis gas, minerals, aqueous and redox species, <em>a dictionary</em> containing the charges of each species, <em>a dictionary</em> containing the molecular weight of each species, <em>a dictionary</em> containing the mineral type of each mineral species, <em>a list</em> containing fugacity info for gas species, required for the latest GWB format and <em>a dictionary</em> containing the activity coefficient parameters, especially with Pitzer activity model. The format of the dictionary containing reaction coefficient and species for GWB is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">Db_thermo</span><span class="o">.</span><span class="n">sourcedic</span><span class="p">[</span><span class="s1">&#39;Diopside&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39; CaMgSi2O6&#39;, 5, &#39;-4.0000&#39;, &#39;H+&#39;, &#39;1.0000&#39;, &#39;Ca++&#39;, &#39;1.0000&#39;, &#39;Mg++&#39;, &#39;2.0000&#39;, &#39;H2O&#39;, &#39;2.0000&#39;, &#39;SiO2(aq)&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="search-function-a-class-anchor-id-section-2-2-a">
+<h3>Search function    <a class="anchor" id="section_2_2"></a><a class="headerlink" href="#search-function-a-class-anchor-id-section-2-2-a" title="Permalink to this headline"></a></h3>
+<p>Suppose the user is interested in finding the naming system for a particular species, this function searches through any of the database (either direct-access or source) for any name that contains the declared string and returns species that matching the search. This is highly critical when it is important to know exactly how the species name is written within each of the database to get the right match for various geochemical calculations, such as thermodynamic properties or chemical reaction. For example, gather all species containing HCO3 in its compositions from source dictionary:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;HCO3&#39;</span><span class="p">,</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">sourcedic</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;HCO3-&#39;, &#39;HCO3-&#39;, &#39;(UO2)3O(OH)2(HCO3)+&#39;, &#39;CaHCO3+&#39;, &#39;CdHCO3+&#39;, &#39;CeHCO3++&#39;, &#39;DyHCO3++&#39;, &#39;ErHCO3++&#39;, &#39;EuHCO3++&#39;, &#39;EuOHCO3(aq)&#39;, &#39;FeHCO3+&#39;, &#39;GdHCO3++&#39;, &#39;HoHCO3++&#39;, &#39;LaHCO3++&#39;, &#39;LuHCO3++&#39;, &#39;MgHCO3+&#39;, &#39;MnHCO3+&#39;, &#39;NaHCO3(aq)&#39;, &#39;NdHCO3++&#39;, &#39;PmHCO3++&#39;, &#39;PrHCO3++&#39;, &#39;SmHCO3++&#39;, &#39;TbHCO3++&#39;, &#39;TmHCO3++&#39;, &#39;YHCO3++&#39;, &#39;YbHCO3++&#39;, &#39;ZnHCO3+&#39;, &#39;AmOHCO3&#39;, &#39;EuOHCO3&#39;, &#39;NdOHCO3&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>This function can also be used to identify the available species that contain particular chemical elements. For example, to get Rubidium-bearing species for direct-access database, run this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Rb&#39;</span><span class="p">,</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Rb+&#39;, &#39;RbBr(aq)&#39;, &#39;RbCl(aq)&#39;, &#39;RbF(aq)&#39;, &#39;RbI(aq)&#39;, &#39;RbOH(aq)&#39;, &#39;Rb(Ac)(aq)&#39;, &#39;Rb(Ac)2-&#39;, &#39;Rb+&#39;, &#39;RbBr(aq)&#39;, &#39;RbCl(aq)&#39;, &#39;RbF(aq)&#39;, &#39;RbI(aq)&#39;, &#39;RbOH(aq)&#39;, &#39;Rb(Ac)(aq)&#39;, &#39;Rb(Ac)2-&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="water-equation-of-state-a-class-anchor-id-section-3-a">
+<h2>Water Equation of State   <a class="anchor" id="section_3"></a><a class="headerlink" href="#water-equation-of-state-a-class-anchor-id-section-3-a" title="Permalink to this headline"></a></h2>
+<p><em>IAPWS95</em> (Wagner and Pruß, 2002) and <em>FGL</em> (Fernández et al., 1997) formulations are implemented in pygcc for the calculation of the thermodynamic and dielectric properties of water and steam, while the <em>ZhangDuan</em> (Zhang and Duan, 2005 and 2009) and <em>DEW</em> (Sverjensky et al., 2014) formulations are implemented for high temperature and pressure conditions. However since many of the coefficients in the HKF equations (especially dielectric constant) required to calculate thermodynamic properties of other species are based on the <em>IAPWS84</em> formulation (popularly known as HGK84 or NBS/NRC-84, Haar et al. (1984)) incorporated in the H2O92 subroutine from <em>SUPCRT92</em> (Johnson et al., 1992) and to avoid regressing those parameters, Johnson and Norton formulation for dielectric constant (Johnson and Norton, 1991) was implemented in pygcc. Hence, the users have the option of choosing either formulation (<em>FGL97</em> or <em>JN91</em>) for dielectric constant calculation. Other water properties are calculated using the <em>IAPWS95</em> formulation, in part because of the intrinsic thermodynamic differences between <em>IAPWS84</em> and <em>IAPWS95</em>, and also that the <em>IAPWS95</em> equations can be extrapolated to a greater range of Temperatures and Pressures than <em>IAPWS84</em>. In addition, .</p>
+<section id="iapws-95-formulation-a-class-anchor-id-section-3-1-a">
+<h3>IAPWS-95 Formulation   <a class="anchor" id="section_3_1"></a><a class="headerlink" href="#iapws-95-formulation-a-class-anchor-id-section-3-1-a" title="Permalink to this headline"></a></h3>
+<p>The function <code class="docutils literal notranslate"><span class="pre">iapws95(T</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">P</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">rho</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">rho0</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">FullEOSppt</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">v</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">Out_Unit</span> <span class="pre">=</span> <span class="pre">'standard')</span></code> is designed to take a combination of different inputs - temperature [C], density [kg/m3], pressure [bar] and output equation of state properties such as pressure [bar], Helmholtz energy [cal/mol/K or kJ/kg/K], Entropy [cal/mol/K or kJ/kg/K], Enthalpy [cal/mol or kJ/kg], Gibbs energy [cal/mol or kJ/kg], Volume [m3/mol or m3/kg], Derivative of pressure with respect to delta [bar], Helmholtz energy derivative with respect to reduced density (delta), zeta value (needed to calculate viscosity), Derivative of pressure with respect to reduced temperature (tau) [bar], Compressibility [/bar], Thermal expansion coefficient (thermal expansivity). Other water properties such as viscosity [Pa-s], Internal energy [cal/mol or kJ/kg], Isobaric heat capacity [cal/mol/K or kJ/kg/K], Isochoric heat capacity [cal/mol/K or kJ/kg/K], Joule-Thomsen coefficient [K-m3/kJ], Isothermal throttling coefficient [kJ/kg/bar], Isentropic temperature-pressure coefficient [K-m3/kJ], Speed of sound [m/s] are returned as outputs only when <code class="docutils literal notranslate"><span class="pre">FullEOSppt</span></code> input is set as <code class="docutils literal notranslate"><span class="pre">True</span></code> as they are not currently utilized in any calculation in pygcc. Also, the <code class="docutils literal notranslate"><span class="pre">Out_Unit</span></code> has the option of converting the properties to <code class="docutils literal notranslate"><span class="pre">'standard'</span></code> (calorie units) or ‘kilogram’ (kilogram units). There are three basic types of problems in evaluating this equation-of-state model and these problems are distinguished by their specified inputs as below:</p>
+<section id="properties-as-a-function-of-temperature-and-density-a-class-anchor-id-section-3-1-1-a">
+<h4>Properties as a Function of Temperature and Density   <a class="anchor" id="section_3_1_1"></a><a class="headerlink" href="#properties-as-a-function-of-temperature-and-density-a-class-anchor-id-section-3-1-1-a" title="Permalink to this headline"></a></h4>
+<p>This is a straightforward approach that does not require any iteration. Here, the temperature [C] and density [kg/m3] are specified as inputs in <code class="docutils literal notranslate"><span class="pre">iapws95</span></code> and returns various thermodynamic properties as previously mentioned. An example of utilizing <code class="docutils literal notranslate"><span class="pre">iapws95</span></code> for calculating properties at 500 K and 838.025 kg/m3 is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">water</span> <span class="o">=</span> <span class="n">iapws95</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mf">226.85</span><span class="p">,</span> <span class="n">rho</span> <span class="o">=</span> <span class="mf">838.025</span><span class="p">,</span> <span class="n">Out_Unit</span><span class="o">=</span><span class="s1">&#39;kilogram&#39;</span><span class="p">)</span>
+<span class="n">water</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">F</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">V</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array(100.00385801),
+ array(-318.20624717),
+ array(2.56690919),
+ array(977.18162414),
+ array(-306.27296857),
+ array(0.00119328))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">water</span> <span class="o">=</span> <span class="n">iapws95</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mf">226.85</span><span class="p">,</span> <span class="n">rho</span> <span class="o">=</span> <span class="mf">838.025</span><span class="p">,</span> <span class="n">Out_Unit</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span> <span class="n">FullEOSppt</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">water</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">F</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">V</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">Cp</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array(100.00385801),
+ -60206.765249165524,
+ 26.189860494061463,
+ -64559.264477311226,
+ -61032.47210455878,
+ 0.0051379794852494795,
+ array(0.00011983),
+ 19.816052259823447)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="properties-as-a-function-of-temperature-and-pressure-a-class-anchor-id-section-3-1-2-a">
+<h4>Properties as a Function of Temperature and Pressure   <a class="anchor" id="section_3_1_2"></a><a class="headerlink" href="#properties-as-a-function-of-temperature-and-pressure-a-class-anchor-id-section-3-1-2-a" title="Permalink to this headline"></a></h4>
+<p>This approach involves an iterative solution to the above approach by finding and revising the value of density that is consistent with the desired input pressure using Newton-Raphson method. The implementation of this approach is carried out by function <code class="docutils literal notranslate"><span class="pre">iapws95</span></code> where a user-specified starting estimate of density <code class="docutils literal notranslate"><span class="pre">(rho0)</span></code> can be optionally utilized. The approached used in generating starting guess is similar to that described in Wolery (2020). The function <code class="docutils literal notranslate"><span class="pre">iapws95</span></code> takes temperature [C] and pressure [bar] as inputs and returns various thermodynamic properties. An example of utilizing <code class="docutils literal notranslate"><span class="pre">iapws95</span></code> for calculating properties at 25 °C and 1 bar is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">water</span> <span class="o">=</span> <span class="n">iapws95</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">water</span><span class="o">.</span><span class="n">rho</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">V</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">TC</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([997.04703902]),
+ array([16.71845103]),
+ array([-68315.01431914]),
+ array([-56677.89787508]),
+ array([0.00431851]),
+ array([1]),
+ array([25]))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="calculating-properties-on-the-saturation-curve-a-class-anchor-id-section-3-1-3-a">
+<h4>Calculating Properties on the Saturation Curve   <a class="anchor" id="section_3_1_3"></a><a class="headerlink" href="#calculating-properties-on-the-saturation-curve-a-class-anchor-id-section-3-1-3-a" title="Permalink to this headline"></a></h4>
+<p>This approach deals with the calculation of thermodynamic properties on the saturation (vapor-liquid
+equilibrium) curve, extending from the triple point (273.16K, 0.00611657 bar) up to the critical point
+(647.096K, 220.64 bar) as show below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">pp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.00611657</span><span class="p">,</span> <span class="mf">220.64</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">373.946</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">water</span> <span class="o">=</span> <span class="n">iapws95</span><span class="p">(</span><span class="n">P</span> <span class="o">=</span> <span class="n">pp</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot3D</span><span class="p">(</span><span class="n">tt</span> <span class="o">-</span> <span class="mf">273.15</span><span class="p">,</span> <span class="n">pp</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">rhosl</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot3D</span><span class="p">(</span><span class="n">tt</span> <span class="o">-</span> <span class="mf">273.15</span><span class="p">,</span> <span class="n">pp</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">rhosv</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Temperature [°C]&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Pressure [bar]&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;Density [kg/m3]&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span> <span class="o">=</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">get_tightbbox</span><span class="p">(</span><span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">get_renderer</span><span class="p">(),</span> <span class="n">call_axes_locator</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>  <span class="n">bbox_extra_artists</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\scipy\optimize\minpack.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the 
+  improvement from the last ten iterations.
+  warnings.warn(msg, RuntimeWarning)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bbox([[112.68, 36.0], [854.951554054054, 253.44]])
+</pre></div>
+</div>
+<img alt="_images/pygcc_overview_28_2.png" src="_images/pygcc_overview_28_2.png" />
+</div>
+</div>
+<p>Here, the users can specify either a temperature or pressure value and the implementation of this type can solve for corresponding pressure (<code class="docutils literal notranslate"><span class="pre">T</span></code>) or temperature (<code class="docutils literal notranslate"><span class="pre">P</span></code>) respectively and their respective vapor and liquid densities. These functions have been implemented in <code class="docutils literal notranslate"><span class="pre">iapws95</span></code> to calculate thermodynamic properties when saturation curve properties are requested. An example of utilizing <code class="docutils literal notranslate"><span class="pre">iapws95</span></code> for calculating properties at temperatures ranging from 0.01°C to 300°C and saturation pressures is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">water</span> <span class="o">=</span> <span class="n">iapws95</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="n">TC</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="s1">&#39;T&#39;</span><span class="p">)</span>
+<span class="n">water</span><span class="o">.</span><span class="n">rho</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">V</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">TC</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([999.84376462, 988.031656  , 958.34546327, 917.00540392,
+        864.65810229]),
+ array([-56279.53650436, -57114.34721375, -58089.12256378, -59184.20258644,
+        -60385.54751607]),
+ array([-68766.32498231, -67864.92957317, -66961.8516668 , -66044.71299022,
+        -65097.09778613]),
+ array([15.13740717, 18.1680458 , 20.76615218, 23.06783539, 25.1720857 ]),
+ array([0.00430643, 0.00435791, 0.00449291, 0.00469545, 0.00497972]),
+ array([ 1.0133    ,  1.0133    ,  1.01436095,  4.76196448, 15.549279  ]),
+ array([1.000000e-02, 5.000750e+01, 1.000050e+02, 1.500025e+02,
+        2.000000e+02]))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Meanwhile, for calculating water properties with specified pressure at saturation temperature, a typical usage is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">water</span> <span class="o">=</span> <span class="n">iapws95</span><span class="p">(</span><span class="n">P</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="s1">&#39;P&#39;</span><span class="p">)</span>
+<span class="n">water</span><span class="o">.</span><span class="n">rho</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">V</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">TC</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([490.18783526]),
+ array([-64995.46289957]),
+ array([-60899.23505785]),
+ array([32.4275702]),
+ array([0.00878389]),
+ array([200]),
+ array([365.74925556]))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="zhangduan-formulation-a-class-anchor-id-section-3-2-a">
+<h3>ZhangDuan Formulation   <a class="anchor" id="section_3_2"></a><a class="headerlink" href="#zhangduan-formulation-a-class-anchor-id-section-3-2-a" title="Permalink to this headline"></a></h3>
+<p>Zhang and Duan (2005) proposed an empirical pressure-volume-temperature equation of state for water at high temperature and pressure, which Sverjensky et al. (2014) developed into Deep Earth Water model. Its implementation in pygcc takes the first two forms described above, which are estimating <em>Properties as a Function of Temperature and Pressure</em> and <em>Properties as a Function of Temperature and Density</em>. However, in both cases, the outputs are density [kg/m3]/pressure [bar], Gibbs energy [cal/mol], derivative of density to pressure at constant temperature and derivative of density to temperature at constant pressure. The typical usage of the <code class="docutils literal notranslate"><span class="pre">ZhangDuan()</span></code> function is as below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">water</span> <span class="o">=</span> <span class="n">ZhangDuan</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">water</span><span class="o">.</span><span class="n">rho</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">drhodP_T</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">drhodT_P</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([875.09805237]),
+ array([-61207.50810984]),
+ array([9.3131885e-05]),
+ array([-0.00102445]))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dielectric-constants-calculation-a-class-anchor-id-section-3-3-a">
+<h3>Dielectric Constants Calculation  <a class="anchor" id="section_3_3"></a><a class="headerlink" href="#dielectric-constants-calculation-a-class-anchor-id-section-3-3-a" title="Permalink to this headline"></a></h3>
+<p>The dielectric constant is one of the most critical properties of water required in calculating Born functions, Debye-Hückel parameters and molal properties of species and reactions at varying temperature and pressure conditions. Like earlier noted, two different formulations were implemented for non-extreme temperature and pressure conditions, and users have a choice to pick the preferred formulation using <code class="docutils literal notranslate"><span class="pre">Dielec_method</span></code> and as further described below. The function <code class="docutils literal notranslate"><span class="pre">water_dielec()</span></code> takes any two combinations of temperature [°C], pressure [bar] and density [kg/m3] as inputs, and returns various properties of water such as dielectric constant of water [cal/mol], density [g/cm3], Debye-Huckel “A” parameters [kg^1/2 mol^-1/2], Debye-Huckel “B” parameters [kg^1/2 mol^-1/2 Angstrom^-1], bdot, Debye-Huckel “A” parameters derivatives associated with apparent molar enthalpy and apparent molar volume, and Debye-Huckel “B” parameters derivatives associated with apparent molar enthalpy and apparent molar volume.</p>
+<section id="fgl-electrostatic-formulation-a-class-anchor-id-section-3-3-1-a">
+<h4>FGL Electrostatic Formulation   <a class="anchor" id="section_3_3_1"></a><a class="headerlink" href="#fgl-electrostatic-formulation-a-class-anchor-id-section-3-3-1-a" title="Permalink to this headline"></a></h4>
+<p>The IAPWS-sanctioned model for the dielectric constant of water is described in IAPWS (1997) and the relevant equations and constants for the model are given in the source document and the paper by Fernández et al. (1997). An example of utilizing <code class="docutils literal notranslate"><span class="pre">FGL97</span></code> for calculating properties at 50°C and 1.0133 bar (at saturation curve) is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dielect</span> <span class="o">=</span> <span class="n">water_dielec</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;FGL97&#39;</span><span class="p">)</span>
+<span class="n">dielect</span><span class="o">.</span><span class="n">E</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">rhohat</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Ah</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">bdot</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Adhh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Adhv</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bdhh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bdhv</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([69.91599636]),
+ array([0.98803505]),
+ array([0.53410832]),
+ array([0.3325671]),
+ array([0.04088528]),
+ array([0.68757801]),
+ array([2.37680041]),
+ array([16.55676064]),
+ array([-13.40777756]))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="jn91-electrostatic-formulation-a-class-anchor-id-section-3-3-2-a">
+<h4>JN91 Electrostatic Formulation   <a class="anchor" id="section_3_3_2"></a><a class="headerlink" href="#jn91-electrostatic-formulation-a-class-anchor-id-section-3-3-2-a" title="Permalink to this headline"></a></h4>
+<p>The dielectric constant equation as expressed by Johnson and Norton (1991) and utilized in SUPCRT92 is implemented here. An example of utilizing <code class="docutils literal notranslate"><span class="pre">JN91</span></code> for calculating properties at 50°C and 1.0133 bar (at saturation curve) is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dielect</span> <span class="o">=</span> <span class="n">water_dielec</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;JN91&#39;</span><span class="p">)</span>
+<span class="n">dielect</span><span class="o">.</span><span class="n">E</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">rhohat</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Ah</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">bdot</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Adhh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Adhv</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bdhh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bdhv</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([69.80673495]),
+ array([0.98803505]),
+ array([0.53537265]),
+ array([0.33283636]),
+ array([0.04088528]),
+ array([0.68352145]),
+ array([2.53510753]),
+ array([16.39347606]),
+ array([-18.16464841]))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dew-electrostatic-formulation-a-class-anchor-id-section-3-3-3-a">
+<h4>DEW Electrostatic Formulation   <a class="anchor" id="section_3_3_3"></a><a class="headerlink" href="#dew-electrostatic-formulation-a-class-anchor-id-section-3-3-3-a" title="Permalink to this headline"></a></h4>
+<p>Sverjensky et al (2014) extended the application of the revised HKF model to deep Earth (upper mantle) conditions by developing an empirical correlation for dielectric constant of water up to 60 kbar and 1200°C using experimental data and molecular dynamics simulation data. This implementation is considered with <code class="docutils literal notranslate"><span class="pre">ZhangDuan</span></code> water EoS to model high temperature and pressure conditions, taking inputs and printing output similar to the above description. An example of the utilization of <code class="docutils literal notranslate"><span class="pre">DEW</span></code> to calculate properties at 200°C and 1000 bar is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dielect</span> <span class="o">=</span> <span class="n">water_dielec</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;DEW&#39;</span><span class="p">)</span>
+<span class="n">dielect</span><span class="o">.</span><span class="n">E</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">rhohat</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Ah</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">bdot</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Adhh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Adhv</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bdhh</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bdhv</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([38.32009939]),
+ array([0.92183148]),
+ array([0.71764521]),
+ array([0.35859842]),
+ array([0.04452579]),
+ array([1.15231321]),
+ array([7.02321141]),
+ array([52.29367986]),
+ array([-66.08043662]))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="calculating-thermodynamic-properties-a-class-anchor-id-section-4-a">
+<h2>Calculating thermodynamic properties     <a class="anchor" id="section_4"></a><a class="headerlink" href="#calculating-thermodynamic-properties-a-class-anchor-id-section-4-a" title="Permalink to this headline"></a></h2>
+<p>The molal properties of species and reactions at any temperature and pressure condition are computed using the different classification described below.</p>
+<section id="thermodynamic-properties-of-reactions-among-species-a-class-anchor-id-section-4-1-a">
+<h3>Thermodynamic Properties of Reactions among species      <a class="anchor" id="section_4_1"></a><a class="headerlink" href="#thermodynamic-properties-of-reactions-among-species-a-class-anchor-id-section-4-1-a" title="Permalink to this headline"></a></h3>
+<p>The calculation of equilibrium constants for reactions among aqueous, gas, and mineral species is implemented in the pygcc <code class="docutils literal notranslate"><span class="pre">calcRxnlogK(T</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">P</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">Specie</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">dbaccessdic</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">sourcedic</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">specielist</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">mineral_eos</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">sourceformat</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">densityextrap</span> <span class="pre">=</span> <span class="pre">False)</span></code> function. The logarithm (base 10) of the equilibrium constant (<span class="math notranslate nohighlight">\( K_{eq} \)</span>) of any reaction is calculated via:</p>
+<p>\begin{equation}
+log K_{eq} = \frac{G^{reactants}<em>{T, P} - G^{products}</em>{(T, P)}}{-RTln(10)}<br />
+\end{equation}</p>
+<p>The function outputs logarithm of the equilibrium constant, Gibbs free energy of the reaction, total Gibbs free energy of the product species and total Gibbs free energy of the reactant species. The required inputs are temperature [°C], pressure [bar], Specie (a <em>string</em> that specifies the name of the product species), direct-access database dictionary (for example above, <em>Db_thermo.dbaccessdic</em>), source database dictionary and species list (for example above, <em>Db_thermo.sourcedic, Db_thermo.specielist</em>), <code class="docutils literal notranslate"><span class="pre">densityextrap</span></code> (bool - True or False - to indicate usage of density extrapolation), <code class="docutils literal notranslate"><span class="pre">sourceformat</span></code> (either <em>GWB</em> or <em>EQ36</em>) and <code class="docutils literal notranslate"><span class="pre">mineral_eos</span></code> (specifying either <code class="docutils literal notranslate"><span class="pre">'SUPCRT'</span></code> or <code class="docutils literal notranslate"><span class="pre">'Berman88'</span></code> for using either <code class="docutils literal notranslate"><span class="pre">heatcap</span></code> or <code class="docutils literal notranslate"><span class="pre">heatcap_Berman</span></code> function respectively) and other optional inputs like <code class="docutils literal notranslate"><span class="pre">Dielec_method</span></code> and <code class="docutils literal notranslate"><span class="pre">rhoEGextrap</span></code>.</p>
+<section id="redox-and-aqueous-species-a-class-anchor-id-section-4-1-1-a">
+<h4>Redox and Aqueous species     <a class="anchor" id="section_4_1_1"></a><a class="headerlink" href="#redox-and-aqueous-species-a-class-anchor-id-section-4-1-1-a" title="Permalink to this headline"></a></h4>
+<p>The standard molal Gibbs energy of aqueous, redox or auxilliary aqueous species  with temperature and pressure can be calculated using the <code class="docutils literal notranslate"><span class="pre">supcrtaq</span></code> function. The name and the different equations implemented in this function is derived from the SUPCRT package (Johnson et al., 1992). An example of utilizing <code class="docutils literal notranslate"><span class="pre">supcrtaq</span></code> for calculating Gibbs free energy of <em>‘NaCl(aq)’</em> at 60°C and 100 bar with different <code class="docutils literal notranslate"><span class="pre">Dielec_method</span></code> and higher pressure <code class="docutils literal notranslate"><span class="pre">DEW</span></code> is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">supcrtaq</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">[</span><span class="s1">&#39;NaCl(aq)&#39;</span><span class="p">],</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;JN91&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-93847.85528561])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">supcrtaq</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">[</span><span class="s1">&#39;NaCl(aq)&#39;</span><span class="p">],</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;FGL97&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-93847.82866489])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">supcrtaq</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">[</span><span class="s1">&#39;NaCl(aq)&#39;</span><span class="p">],</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;DEW&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-94480.46872573])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mineral-and-gas-species-a-class-anchor-id-section-4-1-2-a">
+<h4>Mineral and gas species     <a class="anchor" id="section_4_1_2"></a><a class="headerlink" href="#mineral-and-gas-species-a-class-anchor-id-section-4-1-2-a" title="Permalink to this headline"></a></h4>
+<p>The standard molal Gibbs free energy and heat capacity with temperature and pressure of mineral and gas species can be calculated in pygcc using the <code class="docutils literal notranslate"><span class="pre">heatcap</span></code> function based on Maier-Kelly powerlaw (Maier and Kelley, 1932). The 5-term Haas-Fisher polynomial equation (Haas and Fisher 1976) was also implemented to calculate Gibbs free energy and heat capacity for some minerals as reported by Robie and Hemingway (1995), as implemented in the <code class="docutils literal notranslate"><span class="pre">heatcapusgscal</span></code>. In addition, Berman (1988) reported an internally consistent standard state thermodynamic data set for 67 minerals using a different thermodynamic conventions as compared with that used by Helgeson et al. (1978). The equation of state by Berman (1988) was converted to the Helgeson Convention used in pygcc by considering the equation below as implemented in <code class="docutils literal notranslate"><span class="pre">heatcap_Berman</span></code> function.</p>
+<p>\begin{equation}
+G_{Helgeson} = G_{Berman} + T_{r} S^{elements}_{(Tr, Pr)}
+\end{equation}</p>
+<p>Examples of utilizing <code class="docutils literal notranslate"><span class="pre">heatcap</span></code>, <code class="docutils literal notranslate"><span class="pre">heatcapusgscal</span></code> and <code class="docutils literal notranslate"><span class="pre">heatcap_Berman</span></code> for calculating Gibbs free energy and heat capacity of <em>‘CO2(g)’</em>, <em>‘Fluorapatite’</em>, and <em>‘Quartz’</em> respectively at 60°C and 100 bar with the default <code class="docutils literal notranslate"><span class="pre">JN91</span> <span class="pre">Dielec_method</span></code> are as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">heatcap</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">[</span><span class="s1">&#39;CO2(g)&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-96059.91196724]), array([9.41357392]))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">heatcapusgscal</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">[</span><span class="s1">&#39;Fluorapatite&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-1554128.63647955]), array([94.71751487]))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">heatcap_Berman</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">[</span><span class="s1">&#39;Quartz&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-36210.40881628]), array([2.7890188]))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="solid-solution-species-a-class-anchor-id-section-4-2-a">
+<h3>Solid-solution species     <a class="anchor" id="section_4_2"></a><a class="headerlink" href="#solid-solution-species-a-class-anchor-id-section-4-2-a" title="Permalink to this headline"></a></h3>
+<p>The standard molal properties of solid-solution species and reactions are computed differently from other minerals, interaction parameters and mixing rules as described in Stefánsson (2001) are applied in combining the properties of various end-members thermodynamic data from Robie and Hemingway (1995). The function <code class="docutils literal notranslate"><span class="pre">solidsolution_thermo</span></code> or <code class="docutils literal notranslate"><span class="pre">calcRxnlogK</span></code> computes reaction species and coefficient, and molal properties of solid-solutions of plagioclase, olivine, pyroxene, alkali-feldspar and clinopyroxene minerals. The inputs are fractions of Anorthite, Forsterite, Enstatite or Albite as the case may be and number of moles of Calcium in the clinopyroxene formula units and the <span class="math notranslate nohighlight">\(\frac{Mg}{Mg+Fe}\)</span> ratio for clinopyroxene, coupled with temperature [°C], pressure [bar], solidsolution_type (specifying either ‘All’ or ‘plagioclase’ or ‘olivine’ or ‘pyroxene’ or ‘cpx’ or ‘alk-feldspar’) and a direct-access dictionary (for example above, [Db_thermo.dbaccessdic]). If the moles of calcium is zero, the solid-solution is reduced to pyroxene end-member, which is is a binary solid solution between orthoenstatite and ferrosilite. Hence, <code class="docutils literal notranslate"><span class="pre">calclogKDiHedEnFe</span></code> should only be used if moles of calcium is greater than zero. The structure of the output includes an <em>array</em> of equilibrium constants and a <em>dictionary</em> containing mineral type, name, formula, molecular weight, list of properties (like Db_thermo.dbaccessdic), reaction species and coefficient, mineral volume, data source and elements species and moles. An example that calculates solid-solution properties for <em>‘Di45Hed25En19Fe11’</em> at 60°C and 100 bar with the default <code class="docutils literal notranslate"><span class="pre">JN91</span></code> formulation is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">=</span> <span class="n">solidsolution_thermo</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">solidsolution_type</span> <span class="o">=</span> <span class="s1">&#39;cpx&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">cpx_Ca</span> <span class="o">=</span> <span class="mf">0.646</span><span class="p">,</span>
+                          <span class="n">dbaccessdic</span> <span class="o">=</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">)</span>
+<span class="n">ss</span><span class="o">.</span><span class="n">logK</span><span class="p">,</span> <span class="n">ss</span><span class="o">.</span><span class="n">Rxn</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([17.81356522]),
+ {&#39;type&#39;: &#39;cpx&#39;,
+  &#39;name&#39;: &#39;Di45Hed19En25Fe11&#39;,
+  &#39;formula&#39;: &#39;Ca0.65Mg0.95Fe0.41Si2O6&#39;,
+  &#39;MW&#39;: 224.20512,
+  &#39;min&#39;: [&#39;Ca0.65Mg0.95Fe0.41Si2O6&#39;,
+   &#39; R&amp;H95, Stef2001&#39;,
+   -681678.7564868213,
+   nan,
+   39.535095090743326,
+   65.566176,
+   95.86780066921605,
+   -0.01085667447418738,
+   -89154.23518164441,
+   -887.9544455066921,
+   3.040245219885277e-06],
+  &#39;spec&#39;: [&#39;H+&#39;, &#39;Ca++&#39;, &#39;Mg++&#39;, &#39;Fe++&#39;, &#39;SiO2(aq)&#39;, &#39;H2O&#39;],
+  &#39;coeff&#39;: [-4, 0.65, 0.95, 0.41, 2, 2],
+  &#39;nSpec&#39;: 6,
+  &#39;V&#39;: 65.566176,
+  &#39;source&#39;: &#39; R&amp;H95, Stef2001&#39;,
+  &#39;elements&#39;: [&#39;0.6500&#39;,
+   &#39;Ca&#39;,
+   &#39;0.9500&#39;,
+   &#39;Mg&#39;,
+   &#39;0.4100&#39;,
+   &#39;Fe&#39;,
+   &#39;2.0000&#39;,
+   &#39;Si&#39;,
+   &#39;6.0000&#39;,
+   &#39;O&#39;]})
+</pre></div>
+</div>
+</div>
+</div>
+<p>A similar result can be generated using <code class="docutils literal notranslate"><span class="pre">calcRxnlogK</span></code> as below and the difference is that <code class="docutils literal notranslate"><span class="pre">calcRxnlogK</span></code> allows computation of equilibrium constants using density extrapolation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">=</span> <span class="n">calcRxnlogK</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">Specie</span> <span class="o">=</span> <span class="s1">&#39;cpx&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">cpx_Ca</span> <span class="o">=</span> <span class="mf">0.646</span><span class="p">,</span>
+                 <span class="n">dbaccessdic</span> <span class="o">=</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">)</span>
+<span class="n">ss</span><span class="o">.</span><span class="n">logK</span><span class="p">,</span> <span class="n">ss</span><span class="o">.</span><span class="n">Rxn</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([17.81356522]),
+ {&#39;type&#39;: &#39;cpx&#39;,
+  &#39;name&#39;: &#39;Di45Hed19En25Fe11&#39;,
+  &#39;formula&#39;: &#39;Ca0.65Mg0.95Fe0.41Si2O6&#39;,
+  &#39;MW&#39;: 224.20512,
+  &#39;min&#39;: [&#39;Ca0.65Mg0.95Fe0.41Si2O6&#39;,
+   &#39; R&amp;H95, Stef2001&#39;,
+   -681678.7564868213,
+   nan,
+   39.535095090743326,
+   65.566176,
+   95.86780066921605,
+   -0.01085667447418738,
+   -89154.23518164441,
+   -887.9544455066921,
+   3.040245219885277e-06],
+  &#39;spec&#39;: [&#39;H+&#39;, &#39;Ca++&#39;, &#39;Mg++&#39;, &#39;Fe++&#39;, &#39;SiO2(aq)&#39;, &#39;H2O&#39;],
+  &#39;coeff&#39;: [-4, 0.65, 0.95, 0.41, 2, 2],
+  &#39;nSpec&#39;: 6,
+  &#39;V&#39;: 65.566176,
+  &#39;source&#39;: &#39; R&amp;H95, Stef2001&#39;,
+  &#39;elements&#39;: [&#39;0.6500&#39;,
+   &#39;Ca&#39;,
+   &#39;0.9500&#39;,
+   &#39;Mg&#39;,
+   &#39;0.4100&#39;,
+   &#39;Fe&#39;,
+   &#39;2.0000&#39;,
+   &#39;Si&#39;,
+   &#39;6.0000&#39;,
+   &#39;O&#39;]})
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="clay-mineral-species-a-class-anchor-id-section-4-3-a">
+<h3>Clay Mineral species     <a class="anchor" id="section_4_3"></a><a class="headerlink" href="#clay-mineral-species-a-class-anchor-id-section-4-3-a" title="Permalink to this headline"></a></h3>
+<p>The thermodynamic properties for any clay minerals, including 42 of which are compiled in <strong>clay_elements.dat</strong>, can be calculated based on techniques detailed by Blanc et al (2015, 2021). These techniques have been implemented in function <code class="docutils literal notranslate"><span class="pre">calclogKclays</span></code>, which takes inputs as temperature [°C], pressure [bar], a <em>list</em> containing clay mineral name and elemental composition in this particular order [‘clay_name’, ‘Si’, ‘Al’, ‘FeIII’, ‘FeII’, ‘Mg’, ‘K’, ‘Na’, ‘Ca’, ‘Li’], a <em>dictionary</em> containing the thermodynamic properties of each species (for example above, [Db_thermo.dbaccessdic]) and a <em>string</em> that specifies the structural layering of the phyllosilicate. Examples of utilizing <code class="docutils literal notranslate"><span class="pre">calclogKclays</span></code> and <code class="docutils literal notranslate"><span class="pre">calcRxnlogK</span></code> for calculating properties of <em>‘Chamosite’</em> at 60°C and 100 bar with the default <code class="docutils literal notranslate"><span class="pre">Dielec_method</span></code> are:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calclogKclays</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="o">*</span><span class="p">[</span><span class="s1">&#39;Chamosite&#39;</span><span class="p">,</span><span class="s1">&#39;3&#39;</span><span class="p">,</span><span class="s1">&#39;2&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;5&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">],</span> 
+              <span class="n">dbaccessdic</span> <span class="o">=</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">,</span>  <span class="n">group</span><span class="o">=</span><span class="s1">&#39;14A&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([40.01276655]),
+ {&#39;type&#39;: &#39;Smectites&#39;,
+  &#39;name&#39;: &#39;Chamosite&#39;,
+  &#39;formula&#39;: &#39;Fe5.00Al2.00Si3.0O10(OH)8&#39;,
+  &#39;MW&#39;: 713.5073000000001,
+  &#39;min&#39;: [&#39;Fe5.00Al2.00Si3.0O10(OH)8&#39;,
+   &#39;B2015, B2021&#39;,
+   -1553442.9682398445,
+   -1699939.053537285,
+   134.53834562298331,
+   215.92,
+   146.64913957934988,
+   86.36591778202677,
+   -30.076481835564053],
+  &#39;spec&#39;: [&#39;H+&#39;, &#39;Fe++&#39;, &#39;Al+++&#39;, &#39;SiO2(aq)&#39;, &#39;H2O&#39;],
+  &#39;coeff&#39;: [-16.0, 5.0, 2.0, 3.0, 12.0],
+  &#39;nSpec&#39;: 5,
+  &#39;V&#39;: 215.92,
+  &#39;dG&#39;: -6499.60537911551,
+  &#39;dHf&#39;: -7112.545000000001,
+  &#39;Cp&#39;: 579.765,
+  &#39;source&#39;: &#39;B2015, B2021&#39;,
+  &#39;elements&#39;: [&#39;5.0000&#39;,
+   &#39;Fe&#39;,
+   &#39;2.0000&#39;,
+   &#39;Al&#39;,
+   &#39;3.0000&#39;,
+   &#39;Si&#39;,
+   &#39;8.0000&#39;,
+   &#39;H&#39;,
+   &#39;18.0000&#39;,
+   &#39;O&#39;]})
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clay</span> <span class="o">=</span> <span class="n">calcRxnlogK</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">elem</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Chamosite&#39;</span><span class="p">,</span><span class="s1">&#39;3&#39;</span><span class="p">,</span><span class="s1">&#39;2&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;5&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">],</span> 
+              <span class="n">Specie</span> <span class="o">=</span> <span class="s1">&#39;clay&#39;</span><span class="p">,</span>  <span class="n">dbaccessdic</span> <span class="o">=</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s1">&#39;14A&#39;</span><span class="p">)</span>
+<span class="n">clay</span><span class="o">.</span><span class="n">logK</span><span class="p">,</span> <span class="n">clay</span><span class="o">.</span><span class="n">Rxn</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([40.01276655]),
+ {&#39;type&#39;: &#39;Smectites&#39;,
+  &#39;name&#39;: &#39;Chamosite&#39;,
+  &#39;formula&#39;: &#39;Fe5.00Al2.00Si3.0O10(OH)8&#39;,
+  &#39;MW&#39;: 713.5073000000001,
+  &#39;min&#39;: [&#39;Fe5.00Al2.00Si3.0O10(OH)8&#39;,
+   &#39;B2015, B2021&#39;,
+   -1553442.9682398445,
+   -1699939.053537285,
+   134.53834562298331,
+   215.92,
+   146.64913957934988,
+   86.36591778202677,
+   -30.076481835564053],
+  &#39;spec&#39;: [&#39;H+&#39;, &#39;Fe++&#39;, &#39;Al+++&#39;, &#39;SiO2(aq)&#39;, &#39;H2O&#39;],
+  &#39;coeff&#39;: [-16.0, 5.0, 2.0, 3.0, 12.0],
+  &#39;nSpec&#39;: 5,
+  &#39;V&#39;: 215.92,
+  &#39;dG&#39;: -6499.60537911551,
+  &#39;dHf&#39;: -7112.545000000001,
+  &#39;Cp&#39;: 579.765,
+  &#39;source&#39;: &#39;B2015, B2021&#39;,
+  &#39;elements&#39;: [&#39;5.0000&#39;,
+   &#39;Fe&#39;,
+   &#39;2.0000&#39;,
+   &#39;Al&#39;,
+   &#39;3.0000&#39;,
+   &#39;Si&#39;,
+   &#39;8.0000&#39;,
+   &#39;H&#39;,
+   &#39;18.0000&#39;,
+   &#39;O&#39;]})
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="density-extrapolation-a-class-anchor-id-section-4-4-a">
+<h3>Density extrapolation     <a class="anchor" id="section_4_4"></a><a class="headerlink" href="#density-extrapolation-a-class-anchor-id-section-4-4-a" title="Permalink to this headline"></a></h3>
+<p>The calculation of the standard molal Gibbs free energy of charged species as described by the revised Helgeson-Kirkham-Flowers (HKF) equation of state is limited to temperature-pressure condition for which the water density &gt; 0.35 g/<span class="math notranslate nohighlight">\(cm^{3}\)</span>, temperature &lt; 350°C, pressure &lt; 500 bar and not valid within the critical water region (350 – 400 °C). Hence, outside this region, the approach that is considered here is to linearly extrapolate thermodynamic properties with 0.35 g/<span class="math notranslate nohighlight">\(cm^{3}\)</span> &lt; density &lt; 0.6 g/<span class="math notranslate nohighlight">\(cm^{3}\)</span> to calculate corresponding equilibrium constants for region with density &lt; 0.35 g/<span class="math notranslate nohighlight">\(cm^{3}\)</span>  as show below. However, regions where density &gt; 0.35 g/<span class="math notranslate nohighlight">\(cm^{3}\)</span> and critical water region (350 – 400 °C) are still not valid within this density extrapolation range.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">density_extrap</span> <span class="kn">import</span> <span class="n">plot_densityextrap</span>
+<span class="n">plot_densityextrap</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/pygcc_overview_58_0.png" src="_images/pygcc_overview_58_0.png" />
+</div>
+</div>
+<p>This approach is implemented in <code class="docutils literal notranslate"><span class="pre">calcRxnlogK</span></code> and can be activated by setting <code class="docutils literal notranslate"><span class="pre">densityextrap</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>. Examples are shown below</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rxncalc</span> <span class="o">=</span> <span class="n">calcRxnlogK</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">450</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">Specie</span> <span class="o">=</span> <span class="s1">&#39;H2S(aq)&#39;</span><span class="p">,</span>  <span class="n">sourcedic</span> <span class="o">=</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">sourcedic</span><span class="p">,</span> 
+                      <span class="n">dbaccessdic</span> <span class="o">=</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">,</span> <span class="n">specielist</span> <span class="o">=</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">specielist</span><span class="p">,</span> 
+                      <span class="n">densityextrap</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">rxncalc</span><span class="o">.</span><span class="n">logK</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-14.26282955])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">=</span> <span class="n">calcRxnlogK</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">450</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">Specie</span> <span class="o">=</span> <span class="s1">&#39;plagioclase&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">densityextrap</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                 <span class="n">dbaccessdic</span> <span class="o">=</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">)</span>
+<span class="n">ss</span><span class="o">.</span><span class="n">logK</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([9.97884849])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clay</span> <span class="o">=</span> <span class="n">calcRxnlogK</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">450</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">elem</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Chamosite&#39;</span><span class="p">,</span><span class="s1">&#39;3&#39;</span><span class="p">,</span><span class="s1">&#39;2&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;5&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">],</span> 
+                   <span class="n">Specie</span> <span class="o">=</span> <span class="s1">&#39;clay&#39;</span><span class="p">,</span>  <span class="n">dbaccessdic</span> <span class="o">=</span> <span class="n">Db_thermo</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">,</span> <span class="n">group</span> <span class="o">=</span> <span class="s1">&#39;14A&#39;</span><span class="p">,</span> 
+                   <span class="n">densityextrap</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">clay</span><span class="o">.</span><span class="n">logK</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([36.02176691])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="generating-thermodynamic-database-a-class-anchor-id-section-5-a">
+<h2>Generating thermodynamic database      <a class="anchor" id="section_5"></a><a class="headerlink" href="#generating-thermodynamic-database-a-class-anchor-id-section-5-a" title="Permalink to this headline"></a></h2>
+<p>Generating database for any of GWB, EQ3/6, ToughReact, Pflotran or Phreeqc (under development) can be easily achieved through the function <code class="docutils literal notranslate"><span class="pre">write_database</span></code>. This function requires several inputs some of which are compulsory - temperature [°C], pressure [bar] and dataset format (GWB, EQ36, ToughReact, or Pflotran). If the users want default solid_solution and clay_minerals included, then the inputs have to include <em>‘Yes’</em> or <em>True</em> option. By default, density extrapolation is included to generate equilibrium constants for regions outside the revised HKF applicability, however, if the users want to turn off density extrapolation, this can be achieved by setting <code class="docutils literal notranslate"><span class="pre">densityextrap</span> <span class="pre">=</span> <span class="pre">'No'</span></code>. Meanwhile, for ToughReact and Pflotran, their source database can be either of GWB or EQ3/6 and this option needs to included as part of the inputs through <em>‘sourceformat’</em>, see example below.</p>
+<p>A typical example of the command to generate <strong>GWB</strong> using 0°C to 350°C temperature range, 300 bar and nCa of 0.5 and turning on the inclusion of solid_solution and clay minerals thermodynamics is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">350</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">nCa_cpx</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">solid_solution</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> 
+               <span class="n">clay_thermo</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:2266: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x20624949488&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can scroll to the folder <strong>“output”</strong> to access the newly generated database as well as a text file <em>“spxNotFound”</em> containing species that are not found in direct-access database.</p>
+<p>Another typical example (converting <strong>EQ3/6</strong> to <strong>GWB</strong>) of the command to generate <strong>GWB</strong> using <strong>EQ3/6</strong> source database, 0°C to 250°C temperature range, 100 bar and turning on the inclusion of solid_solution and clay minerals thermodynamics is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">solid_solution</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="n">clay_thermo</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> 
+               <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">,</span> <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/data0.geo&#39;</span><span class="p">,</span> <span class="n">sourceformat</span> <span class="o">=</span> <span class="s1">&#39;EQ36&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x20625f2d788&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>A typical example of the command to generate <strong>EQ3/6</strong> using specified temperature range, 250 bar and nCa of 0.5 and turning on the inclusion of solid_solution thermodynamics only is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="mf">0.010</span><span class="p">,</span> <span class="mf">25.0000</span> <span class="p">,</span> <span class="mf">60.0000</span><span class="p">,</span> <span class="mf">100.0000</span><span class="p">,</span> <span class="mf">150.0000</span><span class="p">,</span> <span class="mf">200.0000</span><span class="p">,</span> <span class="mf">250.0000</span><span class="p">,</span> <span class="mf">300.0000</span><span class="p">])</span>
+<span class="n">P</span> <span class="o">=</span> <span class="mi">250</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">T</span><span class="p">))</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">P</span><span class="p">,</span> <span class="n">nCa_cpx</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">solid_solution</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;EQ36&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:3327: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new EQ3/6 database is ready for download
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x20625f2d7c8&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>A typical example of the command to generate <strong>ToughReact</strong> using 0°C to 300°C temperature range, 250 bar, and turning on the inclusion of clay minerals thermodynamics only, also specifying the location of the source database is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">300</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span> <span class="n">clay_thermo</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/thermo.com.tdat&#39;</span><span class="p">,</span> 
+               <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;ToughReact&#39;</span><span class="p">,</span> <span class="n">sourceformat</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:4365: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new ToughReact database is ready for download
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2062696ab88&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>A typical example of the command to generate <strong>Pflotran</strong> using 0°C to 300°C temperature range, 250 bar, and turning on the inclusion of clay minerals thermodynamics only, here we can specify EQ36 sourceformat is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">300</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span> <span class="n">clay_thermo</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;Pflotran&#39;</span><span class="p">,</span> 
+               <span class="n">sourceformat</span> <span class="o">=</span> <span class="s1">&#39;EQ36&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:3938: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new Pflotran database is ready for download
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x20627089348&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="citation-and-contact-information-a-class-anchor-id-section-6-a">
+<h2>Citation and contact information     <a class="anchor" id="section_6"></a><a class="headerlink" href="#citation-and-contact-information-a-class-anchor-id-section-6-a" title="Permalink to this headline"></a></h2>
+<p>If you use pyGeochemCalc (pygcc) for publications, consider citing the following paper:</p>
+<blockquote>
+<div><p>Awolayo, A. N. and Tutolo, B. M. (2022). “PyGeochemCalc: A python package for geochemical thermodynamic calculations and software-specific thermodynamic database production from ambient to deep Earth conditions” in prep.</p>
+</div></blockquote>
+<p>If you found a bug or have questions that are not answered in this documentation, please contact:</p>
+<p>“<code class="docutils literal notranslate"><span class="pre">Adedapo</span> <span class="pre">Awolayo</span></code> <a class="reference external" href="mailto:adedapo&#46;awolayo&#37;&#52;&#48;ucalgary&#46;ca">mailto:adedapo<span>&#46;</span>awolayo<span>&#64;</span>ucalgary<span>&#46;</span>ca</a>”</p>
+<p>“<code class="docutils literal notranslate"><span class="pre">Benjamin</span> <span class="pre">Tutolo</span></code> <a class="reference external" href="mailto:benjamin&#46;tutolo&#37;&#52;&#48;ucalgary&#46;ca">mailto:benjamin<span>&#46;</span>tutolo<span>&#64;</span>ucalgary<span>&#46;</span>ca</a>”</p>
+</section>
+<section id="references-a-class-anchor-id-section-7-a">
+<h2>References:    <a class="anchor" id="section_7"></a><a class="headerlink" href="#references-a-class-anchor-id-section-7-a" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Wagner W, Pruß A. (2002). The IAPWS formulation 1995 for the thermodynamic properties of ordinary water substance for general and scientific use. Journal of Physical and Chemical Reference Data 31(2): 387–535. doi: 10.1063/1.1461829</p></li>
+<li><p>Johnson J. W., Oelkers E. H., and Helgeson H. C. (1992). SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000°C. Computers and Geosciences 18(7): 899–947. doi: 10.1016/0098-3004(92)90029-Q</p></li>
+<li><p>Wolery, T.J., (2020). H2OI95: A Stand-Alone Fortran Code for Evaluating the IAPWS-95 Equation-of-State Model for Water (Rev. 1) (No. LLNL-TR-805304). Lawrence Livermore National Lab.(LLNL), Livermore, CA (United States).</p></li>
+<li><p>Helgeson H.C. and Kirkham D.H., (1974), American Journal of Science, Vol.274, pp:1199-1261</p></li>
+<li><p>International Association for the Properties of Water and Steam, IAPWS R8-97 (1997), Release on the Static Dielectric Constant of Ordinary Water Substance for Temperatures from 238 K to 873 K and Pressures up to 1000 MPa (1997), 9 pp</p></li>
+<li><p>Fernandez D. P., Goodwin A. R. H., Lemmon E. W., Levelt Sengers J. M. H., and Williams R. C. (1997) A Formulation for the Permittivity of Water and Steam at Temperatures from 238 K to 873 K at Pressures up to 1200 MPa, including Derivatives and Debye-Hückel Coefficients. J. Phys. Chem. Ref. Data 26, 1125-1166</p></li>
+<li><p>Robie R. A. and Hemingway B. S. (1995). Thermodynamic Properties of Minerals and Related Substances at 298.15 K and 1 Bar (105 Pascals) Pressure and at Higher Temperatures. Washington, D. C.: U. S. Geological Survey. (Bulletin 2131). doi: 10.3133/b2131</p></li>
+<li><p>Stefánsson, A. (2001). Dissolution of primary minerals of basalt in natural waters: I. Calculation of mineral solubilities from 0 C to 350 C. Chemical Geology, 172(3-4), 225-250.</p></li>
+<li><p>Blanc, P., Vieillard, P., Gailhanou, H., Gaboreau, S., Gaucher, É., Fialips, C. I., Madé, B. and Giffaut, E. (2015). A generalized model for predicting the thermodynamic properties of clay minerals. American journal of science, 315(8), 734-780.</p></li>
+<li><p>Blanc, P., Gherardi, F., Vieillard, P., Marty, N. C. M., Gailhanou, H., Gaboreau, S., Letat, B., Geloni, C., Gaucher, E.C. and Madé, B. (2021). Thermodynamics for clay minerals: calculation tools and application to the case of illite/smectite interstratified minerals. Applied Geochemistry, 104986.</p></li>
+<li><p>Kong, X. Z., Tutolo, B. M., Saar, M. O. (2013) DBCreate: A SUPCRT92-Based Program for Producing EQ3/6, TOUGHREACT, and GWB Thermodynamic Databases at User-Defined T and P. Comput. Geosci., 51, 415–417.</p></li>
+<li><p>Johnson, J. W., and Norton, D. (1991) Critical phenomena in hydrothermal systems: state, thermodynamic, electrostatic, and transport properties of H20 in the critical region: Am. Jour. Science, v. 291, no. 6, p. 541-648</p></li>
+<li><p>Haar, L., Gallagher, J. S., and Kell, G. S. (1984). NBS/NRC steam tables thermodynamic and transport properties and computer programs for vapor and liquid states of water in SI units. Hemisphere, Washington, D.C., 320 p</p></li>
+<li><p>Sverjensky, D.A., Harrison, B., Azzolini, D., 2014. Water in the deep Earth: The dielectric constant and the solubilities of quartz and corundum to 60kb and 1200°C. Geochim. Cosmochim. Acta 129, 125–145. https://doi.org/10.1016/j.gca.2013.12.019</p></li>
+<li><p>Zhang, C. and Duan, Z., 2009. “A model for C-O-H fluid in the Earth’s mantle”, Geochimica et Cosmochimica Acta, vol. 73, no. 7, pp. 2089–2102, doi:10.1016/j.gca.2009.01.021.</p></li>
+<li><p>Zhang, Z., Duan, Z., 2005. Prediction of the PVT properties of water over wide range of temperatures and pressures from molecular dynamics simulation. Phys. Earth Planet. Inter. 149, 335–354. https://doi.org/10.1016/j.pepi.2004.11.003.</p></li>
+<li><p>Johnson, J.W., Norton, D., 1991. Critical phenomena in hydrothermal systems: state, thermodynamic, electrostatic, and transport properties of H2O in the critical region. Am. J. Sci. 291, 541–648. https://doi.org/10.2475/ajs.291.6.541</p></li>
+<li><p>Maier, C.G., Kelley, K.K., 1932. An equation for the representation of high-temperature heat content data. J. Am. Chem. Soc. https://doi.org/10.1021/ja01347a029</p></li>
+<li><p>Haas, J.L., Fisher, J.R., 1976. Simultaneous evaluation and correlation of thermodynamic data. Am. J. Sci. https://doi.org/10.2475/ajs.276.4.525</p></li>
+<li><p>Helgeson, H.C., Delany, J.M., Nesbitt, H.W., Bird, D.K., 1978. Summary and critique of the thermodynamic properties of the rock-forming minerals. Am. J. Sci. 278A, 229</p></li>
+</ul>
+<p>Thank you and have fun utilizing pyGeochemCalc</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Example_1.html" class="btn btn-neutral float-right" title="General Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Adedapo Awolayo and Benjamin Tutolo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

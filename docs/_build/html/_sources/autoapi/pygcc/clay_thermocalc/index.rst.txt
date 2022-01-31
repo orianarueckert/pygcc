@@ -1,0 +1,141 @@
+:py:mod:`pygcc.clay_thermocalc`
+===============================
+
+.. py:module:: pygcc.clay_thermocalc
+
+.. autoapi-nested-parse::
+
+   Created on Wed Mar 17 16:02:22 2021
+
+   @author: Adedapo Awolayo and Ben Tutolo, University of Calgary
+
+   Copyright (c) 2020 - 2021, Adedapo Awolayo and Ben Tutolo, University of Calgary
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+   See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   pygcc.clay_thermocalc.roundup_tenth
+   pygcc.clay_thermocalc.Molecularweight
+   pygcc.clay_thermocalc.calclogKclays
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   pygcc.clay_thermocalc.MW
+   pygcc.clay_thermocalc.J_to_cal
+
+
+.. py:function:: roundup_tenth(x)
+
+
+.. py:function:: Molecularweight()
+
+   This function stores the Molecular weight of all elements
+
+
+.. py:data:: MW
+   
+
+   
+
+.. py:data:: J_to_cal
+   :annotation: = 4.184
+
+   
+
+.. py:function:: calclogKclays(TC, P, *elem, dbaccessdic=None, group=None, cation_order=None, Dielec_method=None, Mintype=None, **rhoEG)
+
+   This function calculates logK values and reaction parameters of clay reactions using below references:
+
+   :param TC: Temperature [°C]
+   :type TC: float, vector
+   :param P: Pressure [bar]
+   :type P: float, vector
+   :param elem: list containing nine parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li']
+   :type elem: list
+   :param dbacessdic: dictionary of species from direct-access database, optional, default is speq21
+   :type dbacessdic: dict
+   :param group: specify the structural layering of the phyllosilicate, for layers composed of ``1 tetrahedral + 1 octahedral sheet (1:1 layer)`` - specify '7A', ``2 tetrahedral + 1 octahedral sheet (2:1 layer)`` - specify '10A', or the latter with a ``brucitic sheet in the interlayer (2:1:1 layer)``  - specify '14A' (optional), if not specified, default is '10A' for smectites, micas, et cetera
+   :type group: string
+   :param cation_order: specify ordering of Si and Al ions either 'Eastonite', 'Ordered', 'Random', or 'HDC'  (optional), if not specified, default is based on guidelines  by Vinograd (1995)
+   :type cation_order: string
+   :param Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified, default - 'JN91'
+   :type Dielec_method: string
+   :param rhoEG: dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy  (optional)
+   :type rhoEG: dict
+
+   :returns: * **logK_clay** (*float, vector*) -- logarithmic K values
+             * **Rxn** (*dict*) -- dictionary of reaction thermodynamic properties
+
+   Usage
+   -------
+       The general usage of calclogKclays is as follows:
+
+       (1) Without the optional arguments, not on steam saturation curve:
+
+           [logK, Rxn] = calclogKclays(TC, P, *elem),
+
+           where T is temperature in celsius and P is pressure in bar;
+       (2) Without the optional arguments, on steam saturation curve:
+
+           [logK, Rxn] = calclogKclays(TC, 'T', *elem),
+
+           where T is temperature in celsius, followed with a quoted char 'T'
+
+           [logK, Rxn] = calclogKclays(P, 'P', *elem),
+
+           where P is pressure in bar, followed with a quoted char 'P'.
+       (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
+           condition not on steam saturation curve is as follows. Default method is 'JN91'
+
+           [logK, Rxn] = calclogKclays(TC, P, *elem, dbacessdic = dbacessdic, group = '10A', cation_order = 'HDC', Dielec_method = 'FGL97')
+
+   .. rubric:: Examples
+
+   >>> logK, Rxn = calclogKclays(50, 'T', *['Clinochlore', '3', '2', '0', '0',
+                                            '5', '0', '0', '0', '0'],
+                                 group = '14A')
+   >>> logK
+       57.56820225
+
+   .. rubric:: References
+
+   (1) Blanc, P., Vieillard, P., Gailhanou, H., Gaboreau, S., Gaucher, É., Fialips, C. I.,
+       Madé, B & Giffaut, E. (2015). A generalized model for predicting the thermodynamic properties
+       of clay minerals. American journal of science, 315(8), 734-780.
+
+   (2) Blanc, P., Gherardi, F., Vieillard, P., Marty, N. C. M., Gailhanou, H., Gaboreau, S.,
+       Letat, B., Geloni, C., Gaucher, E.C. and Madé, B. (2021). Thermodynamics for clay minerals:
+       calculation tools and application to the case of illite/smectite interstratified minerals.
+       Applied Geochemistry, 104986.
+
+   (3) Vinograd, V.L., 1995. Substitution of [4]Al in layer silicates: Calculation of the Al-Si
+       configurational entropy according to 29Si NMR Spectra. Physics and Chemistry of Minerals
+       22, 87-98.
+
+

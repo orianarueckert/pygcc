@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>General Usage &mdash; pygcc  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Integrate pygcc with GWB" href="Example_2.html" />
+    <link rel="prev" title="An Introduction to pyGeochemCalc" href="pygcc_overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/PyGCC-logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pygcc_overview.html">An Introduction to pyGeochemCalc</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">General Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#import-pygcc">Import pygcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#read-database-by-specifying-the-direct-access-and-source-database">Read database by specifying the direct-access and source database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-calculating-water-properties">Example: calculating water properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-calculating-water-dielectric-constants">Example: calculating water dielectric constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-calculation-for-olivine-solid-solutions">Example: calculation for olivine solid solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-create-new-reactions-and-calculate-equilibrium-constants">Example: create new reactions and calculate equilibrium constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-generate-gwb-thermodynamic-database">Example: Generate GWB thermodynamic database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-generate-eq3-6-thermodynamic-database">Example: Generate EQ3/6 thermodynamic database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-generate-toughreact-thermodynamic-database">Example: Generate ToughReact thermodynamic database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-generate-pflotran-thermodynamic-database">Example: Generate Pflotran thermodynamic database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-calculate-clay-mineral-thermodynamics">Example: Calculate clay mineral thermodynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-calculate-plagioclase-solid-solution-thermodynamics">Example: Calculate Plagioclase solid-solution thermodynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-calculate-co-2-activity-and-molality">Example: Calculate CO<span class="math notranslate nohighlight">\(_2\)</span> activity and molality</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Example_2.html">Integrate pygcc with GWB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Example_3.html">Integrate pygcc with EQ3/6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pygcc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>General Usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Example_1.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="general-usage">
+<h1>General Usage<a class="headerlink" href="#general-usage" title="Permalink to this headline"></a></h1>
+<section id="import-pygcc">
+<h2>Import pygcc<a class="headerlink" href="#import-pygcc" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#import pygcc</span>
+<span class="c1">#print(pygcc.__version__)</span>
+<span class="kn">from</span> <span class="nn">pygcc.pygcc_utils</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="read-database-by-specifying-the-direct-access-and-source-database">
+<h2>Read database by specifying the direct-access and source database<a class="headerlink" href="#read-database-by-specifying-the-direct-access-and-source-database" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ps</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">(</span><span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/thermo.2021.dat&#39;</span><span class="p">,</span> <span class="n">sourceformat</span> <span class="o">=</span> <span class="s1">&#39;gwb&#39;</span><span class="p">)</span>
+<span class="c1"># ps.dbaccessdic, ps.sourcedic,  ps.specielist</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-calculating-water-properties">
+<h2>Example: calculating water properties<a class="headerlink" href="#example-calculating-water-properties" title="Permalink to this headline"></a></h2>
+<p>With IAPWS95</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">water</span> <span class="o">=</span> <span class="n">iapws95</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>  <span class="mf">0.01</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span>  <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span>  <span class="mi">200</span><span class="p">,</span>  <span class="mi">250</span><span class="p">,</span>  <span class="mi">300</span><span class="p">]),</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">water</span><span class="o">.</span><span class="n">rho</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">water</span><span class="o">.</span><span class="n">G</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">water</span><span class="o">.</span><span class="n">H</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">water</span><span class="o">.</span><span class="n">S</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1009.7358093  1005.83998998  991.70588249  967.43838404  927.6905422
+  877.9652085   816.08878794  734.71208434]
+[-56194.26867325 -56592.33889827 -57211.87993473 -58000.04190135
+ -59093.00868807 -60294.40876238 -61596.26593904 -62995.11966425]
+[-68680.33499737 -68236.29564263 -67613.18053974 -66897.34619207
+ -65991.92792715 -65062.66635139 -64087.83220993 -63021.29280088]
+[15.14005087 16.69550855 18.67153539 20.7005717  22.97720284 25.05223509
+ 27.00976077 28.9549847 ]
+</pre></div>
+</div>
+</div>
+</div>
+<p>With ZhangDuan</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">water</span> <span class="o">=</span> <span class="n">ZhangDuan</span><span class="p">(</span><span class="n">T</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1050</span><span class="p">]),</span> <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">water</span><span class="o">.</span><span class="n">rho</span><span class="p">,</span> <span class="n">water</span><span class="o">.</span><span class="n">G</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[175.8286937  314.74510733] [-91457.05964074 -92350.23024927]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-calculating-water-dielectric-constants">
+<h2>Example: calculating water dielectric constants<a class="headerlink" href="#example-calculating-water-dielectric-constants" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dielect</span> <span class="o">=</span> <span class="n">water_dielec</span><span class="p">(</span><span class="n">T</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1050</span><span class="p">]),</span> <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">]),</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;DEW&#39;</span><span class="p">)</span>
+<span class="n">dielect</span><span class="o">.</span><span class="n">E</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">rhohat</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Ah</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bh</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([1.19637079, 2.52660344]),
+ array([0.17582869, 0.31474511]),
+ array([12.8720893 ,  5.29642074]),
+ array([0.5403405 , 0.48797969]))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dielect</span> <span class="o">=</span> <span class="n">water_dielec</span><span class="p">(</span><span class="n">T</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">]),</span> <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">]),</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;JN91&#39;</span><span class="p">)</span>
+<span class="n">dielect</span><span class="o">.</span><span class="n">E</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">rhohat</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Ah</span><span class="p">,</span> <span class="n">dielect</span><span class="o">.</span><span class="n">Bh</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([55.83017195, 44.79388023]),
+ array([0.96293375, 0.92769054]),
+ array([0.59551378, 0.67352582]),
+ array([0.34191435, 0.35183609]))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-calculation-for-olivine-solid-solutions">
+<h2>Example: calculation for olivine solid solutions<a class="headerlink" href="#example-calculation-for-olivine-solid-solutions" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calc</span> <span class="o">=</span> <span class="n">calcRxnlogK</span><span class="p">(</span> <span class="n">X</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">,</span><span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">450</span><span class="p">]),</span> <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">]),</span>
+                   <span class="n">Specie</span> <span class="o">=</span> <span class="s1">&#39;olivine&#39;</span><span class="p">,</span> <span class="n">dbaccessdic</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">,</span> <span class="n">densityextrap</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">calc</span><span class="o">.</span><span class="n">logK</span><span class="p">,</span> <span class="n">calc</span><span class="o">.</span><span class="n">Rxn</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([ 9.1687495 , 21.15012305, 17.0669597 ]),
+ {&#39;type&#39;: &#39;ol&#39;,
+  &#39;name&#39;: &#39;Fo85&#39;,
+  &#39;formula&#39;: &#39;Mg1.70Fe0.30Si1O4&#39;,
+  &#39;MW&#39;: 150.1557,
+  &#39;min&#39;: [&#39;Mg1.70Fe0.30Si1O4&#39;,
+   &#39; R&amp;H95, Stef2001&#39;,
+   -466862.12264868076,
+   nan,
+   26.21037219328013,
+   44.049,
+   24.058078393881452,
+   0.017393236137667304,
+   -890893.8814531548,
+   171.38145315487571,
+   -3.6586998087954105e-06],
+  &#39;spec&#39;: [&#39;H+&#39;, &#39;Mg++&#39;, &#39;Fe++&#39;, &#39;SiO2(aq)&#39;, &#39;H2O&#39;],
+  &#39;coeff&#39;: [-4, 1.7, 0.30000000000000004, 1, 2],
+  &#39;nSpec&#39;: 5,
+  &#39;V&#39;: 44.049,
+  &#39;source&#39;: &#39; R&amp;H95, Stef2001&#39;,
+  &#39;elements&#39;: [&#39;1.7000&#39;, &#39;Mg&#39;, &#39;0.3000&#39;, &#39;Fe&#39;, &#39;1.0000&#39;, &#39;Si&#39;, &#39;4.0000&#39;, &#39;O&#39;]})
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-create-new-reactions-and-calculate-equilibrium-constants">
+<h2>Example: create new reactions and calculate equilibrium constants<a class="headerlink" href="#example-create-new-reactions-and-calculate-equilibrium-constants" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># An example with PPM</span>
+<span class="n">ps</span><span class="o">.</span><span class="n">sourcedic</span><span class="p">[</span><span class="s1">&#39;Pyrite&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span> <span class="s1">&#39;H2S(aq)&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;Magnetite&#39;</span><span class="p">,</span>  <span class="s1">&#39;-2&#39;</span><span class="p">,</span> <span class="s1">&#39;Pyrrhotite&#39;</span><span class="p">,</span> <span class="s1">&#39;-4&#39;</span><span class="p">,</span> <span class="s1">&#39;H2O&#39;</span><span class="p">]</span>
+<span class="n">Temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">300.0000</span><span class="p">,</span> <span class="mi">325</span><span class="p">,</span> <span class="mf">350.0000</span><span class="p">,</span> <span class="mf">400.0000</span><span class="p">,</span> <span class="mi">415</span><span class="p">,</span> <span class="mf">425.0000</span><span class="p">,</span> <span class="mi">435</span><span class="p">,</span> <span class="mf">450.0000</span><span class="p">])</span>
+<span class="n">Press</span> <span class="o">=</span> <span class="mi">500</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">Temp</span><span class="p">))</span>
+<span class="n">log_K_PPM</span> <span class="o">=</span> <span class="n">calcRxnlogK</span><span class="p">(</span> <span class="n">T</span> <span class="o">=</span> <span class="n">Temp</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">Press</span><span class="p">,</span> <span class="n">Specie</span> <span class="o">=</span> <span class="s1">&#39;Pyrite&#39;</span><span class="p">,</span> <span class="n">dbaccessdic</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">,</span>
+                        <span class="n">sourcedic</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">sourcedic</span><span class="p">,</span> <span class="n">specielist</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">specielist</span><span class="p">)</span><span class="o">.</span><span class="n">logK</span>
+<span class="n">log_K_PPM</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\scipy\optimize\minpack.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the 
+  improvement from the last ten iterations.
+  warnings.warn(msg, RuntimeWarning)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-9.61842043, -8.38750599, -6.29123074, -4.94288369, -4.26348089,
+       -3.81869681, -3.38030713, -2.73438817])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-generate-gwb-thermodynamic-database">
+<h2>Example: Generate GWB thermodynamic database<a class="headerlink" href="#example-generate-gwb-thermodynamic-database" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Vectors for Temperature (K) and Pressure (bar) inputs</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>  <span class="mf">0.010</span><span class="p">,</span>   <span class="mf">25.0000</span> <span class="p">,</span>  <span class="mf">60.0000</span><span class="p">,</span>  <span class="mf">100.0000</span><span class="p">,</span> <span class="mf">120.0000</span><span class="p">,</span>  <span class="mf">150.0000</span><span class="p">,</span>  <span class="mf">250.0000</span><span class="p">,</span>  <span class="mf">300.0000</span><span class="p">])</span>
+<span class="n">P</span> <span class="o">=</span> <span class="mi">350</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">T</span><span class="p">))</span>
+<span class="n">nCa</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>write GWB using default sourced database, with inclusion of solid_solution and clay thermo properties</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">P</span><span class="p">,</span> <span class="n">cpx_Ca</span> <span class="o">=</span> <span class="n">nCa</span><span class="p">,</span> <span class="n">solid_solution</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span>  <span class="n">clay_thermo</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> 
+               <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:2266: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
+Wall time: 8.83 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c459d3f5c8&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>write GWB using user-specified sourced database, with inclusion of solid_solution and clay thermo properties</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">175</span><span class="p">,</span> <span class="n">cpx_Ca</span> <span class="o">=</span> <span class="n">nCa</span><span class="p">,</span> <span class="n">solid_solution</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="n">clay_thermo</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span>
+                <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/thermo.29Sep15.dat&#39;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
+Wall time: 7.61 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45a540ec8&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>write GWB using Jan2020 formatted sourced database</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">125</span><span class="p">,</span> <span class="n">cpx_Ca</span> <span class="o">=</span> <span class="n">nCa</span><span class="p">,</span> <span class="n">solid_solution</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">clay_thermo</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/thermo.com.tdat&#39;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
+Wall time: 8.62 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45a540d48&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>write GWB using Jan2020 formatted sourced database with logK as polynomial coefficients, using Tmax and Tmin</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="c1">#write_database(T = [0, 450], P = 200, cpx_Ca = nCa, solid_solution = &#39;Yes&#39;, clay_thermo = &#39;Yes&#39;,</span>
+<span class="c1">#                logK_form = &#39;polycoeffs&#39;, sourcedb =  &#39;./database/thermo.com.tdat&#39;, dataset = &#39;GWB&#39;)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wall time: 0 ns
+</pre></div>
+</div>
+</div>
+</div>
+<p>write GWB using user-specified sourced database and direct-access database (slop07) and FGL97 dielectric constant</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">400</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">cpx_Ca</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">solid_solution</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;FGL97&#39;</span><span class="p">,</span>
+                <span class="n">dbaccess</span> <span class="o">=</span> <span class="s1">&#39;./database/slop07.dat&#39;</span><span class="p">,</span>
+                <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/thermo.29Sep15.dat&#39;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Duplicate found for species &quot;AlOH++&quot; in slop07.dat
+Duplicate found for species &quot;MgCO3(aq)&quot; in slop07.dat
+Duplicate found for species &quot;CaCO3(aq)&quot; in slop07.dat
+Duplicate found for species &quot;SrCO3(aq)&quot; in slop07.dat
+Duplicate found for species &quot;BaCO3(aq)&quot; in slop07.dat
+Duplicate found for species &quot;BaF+&quot; in slop07.dat
+Duplicate found for species &quot;Sr(Succ)(aq)&quot; in slop07.dat
+Duplicate found for species &quot;Sc(Glut)+(aq)&quot; in slop07.dat
+Duplicate found for species &quot;AMP2-&quot; in slop07.dat
+Duplicate found for species &quot;HAMP-&quot; in slop07.dat
+Duplicate found for species &quot;+H2AMP-&quot; in slop07.dat
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
+Wall time: 7.75 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45b536908&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>write GWB using default sourced database and direct-access database (slop07 with Berman mineral data) and FGL97 dielectric constant</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">340</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">150</span><span class="p">,</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;FGL97&#39;</span><span class="p">,</span>  <span class="n">dbaccess</span> <span class="o">=</span> <span class="s1">&#39;./database/slop07.dat&#39;</span><span class="p">,</span>
+                <span class="n">dbBerman_dir</span> <span class="o">=</span> <span class="s1">&#39;./database/Berman.dat&#39;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">,</span>
+                <span class="n">mineral_eos</span> <span class="o">=</span> <span class="s1">&#39;Berman88&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Duplicate found for species &quot;AlOH++&quot; in slop07.dat
+Duplicate found for species &quot;MgCO3(aq)&quot; in slop07.dat
+Duplicate found for species &quot;CaCO3(aq)&quot; in slop07.dat
+Duplicate found for species &quot;SrCO3(aq)&quot; in slop07.dat
+Duplicate found for species &quot;BaCO3(aq)&quot; in slop07.dat
+Duplicate found for species &quot;BaF+&quot; in slop07.dat
+Duplicate found for species &quot;Sr(Succ)(aq)&quot; in slop07.dat
+Duplicate found for species &quot;Sc(Glut)+(aq)&quot; in slop07.dat
+Duplicate found for species &quot;AMP2-&quot; in slop07.dat
+Duplicate found for species &quot;HAMP-&quot; in slop07.dat
+Duplicate found for species &quot;+H2AMP-&quot; in slop07.dat
+Duplicate found for species &quot;Cordierite&quot; in Berman.dat
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
+Wall time: 4.5 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45b536c88&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>write GWB using user-specified sourced Pitzer database and default direct-access database along the saturation curve</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">350</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">,</span>  <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/thermo_hmw.tdat&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
+Wall time: 1.59 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45b9c2408&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>write GWB using user-specified sourced EQ3/6 Pitzer database and default direct-access database</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">350</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">,</span> <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/data0.fmt&#39;</span><span class="p">,</span>
+               <span class="n">sourceformat</span> <span class="o">=</span> <span class="s1">&#39;EQ36&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
+Wall time: 2.5 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45b9c2708&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-generate-eq3-6-thermodynamic-database">
+<h2>Example: Generate EQ3/6 thermodynamic database<a class="headerlink" href="#example-generate-eq3-6-thermodynamic-database" title="Permalink to this headline"></a></h2>
+<p>write EQ3/6 using default sourced database</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">P</span><span class="p">,</span> <span class="n">cpx_Ca</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">solid_solution</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="n">clay_thermo</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> 
+               <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;EQ36&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:3327: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new EQ3/6 database is ready for download
+Wall time: 9.84 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45b9c2948&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>write EQ3/6 user-specified sourced database</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">400</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">350</span><span class="p">,</span> <span class="n">cpx_Ca</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">solid_solution</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="n">clay_thermo</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span>
+                <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/data0.geo&#39;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;EQ36&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new EQ3/6 database is ready for download
+Wall time: 9.29 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45b6d4548&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>write EQ3/6 using user-specified sourced Pitzer database</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">350</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/data0.hmw&#39;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;EQ36&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new EQ3/6 database is ready for download
+Wall time: 1.67 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45bcdb2c8&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>write EQ3/6 user-specified sourced database using FGL97 dielectric constant</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">400</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">cpx_Ca</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/data0.geo&#39;</span><span class="p">,</span> 
+               <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;EQ36&#39;</span><span class="p">,</span> <span class="n">solid_solution</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;FGL97&#39;</span><span class="p">,</span> <span class="n">clay_thermo</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new EQ3/6 database is ready for download
+Wall time: 9.35 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45bdeeac8&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>write EQ3/6 user-specified sourced database using DEW model</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">Temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">700</span><span class="p">])</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="n">Temp</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">,</span> <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/data0.geo&#39;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;EQ36&#39;</span><span class="p">,</span> 
+               <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;DEW&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new EQ3/6 database is ready for download
+Wall time: 5.11 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45d907d48&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-generate-toughreact-thermodynamic-database">
+<h2>Example: Generate ToughReact thermodynamic database<a class="headerlink" href="#example-generate-toughreact-thermodynamic-database" title="Permalink to this headline"></a></h2>
+<p>write ToughReact using user-specified EQ3/6 database</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">P</span><span class="p">,</span> <span class="n">cpx_Ca</span> <span class="o">=</span> <span class="n">nCa</span><span class="p">,</span> <span class="n">solid_solution</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/data0.dat&#39;</span><span class="p">,</span>
+                <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;ToughReact&#39;</span><span class="p">,</span> <span class="n">sourceformat</span> <span class="o">=</span> <span class="s1">&#39;EQ36&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:4365: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new ToughReact database is ready for download
+Wall time: 9.6 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45dd07ec8&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>write ToughReact using user-specified GWB database</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">350</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span> <span class="n">cpx_Ca</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">clay_thermo</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;ToughReact&#39;</span><span class="p">,</span>
+                <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/thermo.com.tdat&#39;</span><span class="p">,</span> <span class="n">sourceformat</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new ToughReact database is ready for download
+Wall time: 4.33 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45de8d648&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>write ToughReact using EQ3/6 user-specified Ptizer sourced database and JN91 dielectric constant</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">300</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">sourceformat</span> <span class="o">=</span> <span class="s1">&#39;EQ36&#39;</span><span class="p">,</span> <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/data0.hmw&#39;</span><span class="p">,</span>
+                <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;ToughReact&#39;</span><span class="p">,</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;JN91&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new ToughReact database is ready for download
+Wall time: 1.72 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45de8dbc8&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-generate-pflotran-thermodynamic-database">
+<h2>Example: Generate Pflotran thermodynamic database<a class="headerlink" href="#example-generate-pflotran-thermodynamic-database" title="Permalink to this headline"></a></h2>
+<p>write Pflotran using user-specified EQ3/6 database</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">P</span><span class="p">,</span> <span class="n">clay_thermo</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/data0.dat&#39;</span><span class="p">,</span>
+                <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;Pflotran&#39;</span><span class="p">,</span> <span class="n">sourceformat</span> <span class="o">=</span> <span class="s1">&#39;EQ36&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:3938: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new Pflotran database is ready for download
+Wall time: 5.66 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45de8d7c8&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>write Pflotran using user-specified GWB database</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">write_database</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">350</span><span class="p">],</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span> <span class="n">cpx_Ca</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">solid_solution</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">clay_thermo</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+               <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/thermo.com.tdat&#39;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;Pflotran&#39;</span><span class="p">,</span> <span class="n">sourceformat</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new Pflotran database is ready for download
+Wall time: 7.46 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x2c45e6fd9c8&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-calculate-clay-mineral-thermodynamics">
+<h2>Example: Calculate clay mineral thermodynamics<a class="headerlink" href="#example-calculate-clay-mineral-thermodynamics" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#%% specify the direct access thermodynamic database</span>
+<span class="n">db_dic</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">(</span><span class="n">dbaccess</span> <span class="o">=</span> <span class="s1">&#39;./database/speq21.dat&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dbaccessdic</span>
+
+<span class="n">folder_to_save</span> <span class="o">=</span> <span class="s1">&#39;output&#39;</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">folder_to_save</span><span class="p">))</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">folder_to_save</span><span class="p">))</span> 
+<span class="n">fid</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./output/logK_05.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+<span class="n">logKRxn</span> <span class="o">=</span> <span class="n">calcRxnlogK</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">P</span><span class="p">,</span> <span class="n">Specie</span> <span class="o">=</span> <span class="s1">&#39;Clay&#39;</span><span class="p">,</span> <span class="n">dbaccessdic</span> <span class="o">=</span> <span class="n">db_dic</span><span class="p">,</span>
+                        <span class="n">elem</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Clinochlore&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;5&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">],</span>
+                        <span class="n">densityextrap</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>  <span class="n">group</span> <span class="o">=</span> <span class="s1">&#39;14A&#39;</span><span class="p">)</span>
+<span class="n">logK</span><span class="p">,</span> <span class="n">Rxn</span> <span class="o">=</span> <span class="n">logKRxn</span><span class="o">.</span><span class="n">logK</span><span class="p">,</span> <span class="n">logKRxn</span><span class="o">.</span><span class="n">Rxn</span>
+
+<span class="c1"># output in EQ36 format</span>
+<span class="n">outputfmt</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span> <span class="n">logK</span><span class="p">,</span> <span class="n">Rxn</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;EQ36&#39;</span><span class="p">)</span>
+<span class="c1"># output in GWB format</span>
+<span class="n">outputfmt</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span> <span class="n">logK</span><span class="p">,</span> <span class="n">Rxn</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">)</span>
+<span class="c1"># output in Pflotran format</span>
+<span class="n">outputfmt</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span> <span class="n">logK</span><span class="p">,</span> <span class="n">Rxn</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;Pflotran&#39;</span><span class="p">)</span>
+<span class="c1"># output in ToughReact format</span>
+<span class="n">outputfmt</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span> <span class="n">logK</span><span class="p">,</span> <span class="n">Rxn</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;ToughReact&#39;</span><span class="p">)</span>
+<span class="n">fid</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-calculate-plagioclase-solid-solution-thermodynamics">
+<h2>Example: Calculate Plagioclase solid-solution thermodynamics<a class="headerlink" href="#example-calculate-plagioclase-solid-solution-thermodynamics" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#%% specify the direct access thermodynamic database</span>
+<span class="n">db_dic</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">(</span><span class="n">dbaccess</span> <span class="o">=</span> <span class="s1">&#39;./database/speq21.dat&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dbaccessdic</span>
+
+<span class="n">folder_to_save</span> <span class="o">=</span> <span class="s1">&#39;output&#39;</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">folder_to_save</span><span class="p">))</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">folder_to_save</span><span class="p">))</span> 
+<span class="n">fid</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./output/logK_05.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+<span class="n">logKRxn</span> <span class="o">=</span> <span class="n">calcRxnlogK</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">dbaccessdic</span> <span class="o">=</span> <span class="n">db_dic</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="mf">0.634</span><span class="p">,</span> <span class="n">Specie</span> <span class="o">=</span> <span class="s1">&#39;Plagioclase&#39;</span><span class="p">,</span>
+                        <span class="n">densityextrap</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">logK</span><span class="p">,</span> <span class="n">Rxn</span> <span class="o">=</span> <span class="n">logKRxn</span><span class="o">.</span><span class="n">logK</span><span class="p">,</span> <span class="n">logKRxn</span><span class="o">.</span><span class="n">Rxn</span>
+
+<span class="c1"># output in EQ36 format</span>
+<span class="n">outputfmt</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span> <span class="n">logK</span><span class="p">,</span> <span class="n">Rxn</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;EQ36&#39;</span><span class="p">)</span>
+<span class="c1"># output in GWB format</span>
+<span class="n">outputfmt</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span> <span class="n">logK</span><span class="p">,</span> <span class="n">Rxn</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">)</span>
+<span class="c1"># output in Pflotran format</span>
+<span class="n">outputfmt</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span> <span class="n">logK</span><span class="p">,</span> <span class="n">Rxn</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;Pflotran&#39;</span><span class="p">)</span>
+<span class="c1"># output in ToughReact format</span>
+<span class="n">outputfmt</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span> <span class="n">logK</span><span class="p">,</span> <span class="n">Rxn</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s1">&#39;ToughReact&#39;</span><span class="p">)</span>
+<span class="n">fid</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-calculate-co-2-activity-and-molality">
+<h2>Example: Calculate CO<span class="math notranslate nohighlight">\(_2\)</span> activity and molality<a class="headerlink" href="#example-calculate-co-2-activity-and-molality" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>  <span class="mf">0.010</span><span class="p">,</span>   <span class="mi">25</span> <span class="p">,</span>  <span class="mi">60</span><span class="p">,</span>  <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span>  <span class="mi">175</span><span class="p">,</span>  <span class="mi">200</span><span class="p">,</span>  <span class="mi">250</span><span class="p">])</span>
+<span class="n">P</span> <span class="o">=</span> <span class="mi">250</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">T</span><span class="p">))</span>
+
+<span class="n">TK</span> <span class="o">=</span> <span class="n">convert_temperature</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">Out_Unit</span> <span class="o">=</span> <span class="s1">&#39;K&#39;</span><span class="p">)</span>
+
+<span class="c1">#%% Calculate CO2 activity and molality at ionic strength of 0.5M</span>
+<span class="c1"># with Duan_Sun</span>
+<span class="n">log10_co2_gamma</span><span class="p">,</span> <span class="n">mco2</span> <span class="o">=</span> <span class="n">Henry_duan_sun</span><span class="p">(</span><span class="n">TK</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">co2_activity</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">log10_co2_gamma</span>
+
+<span class="c1"># with Drummond</span>
+<span class="n">log10_co2_gamma</span> <span class="o">=</span> <span class="n">drummondgamma</span><span class="p">(</span><span class="n">TK</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">co2_activityD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">log10_co2_gamma</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fluid Temperature [C]: &#39;</span><span class="p">,</span> <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fluid Pressure [bar]: &#39;</span><span class="p">,</span> <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Molality of CO2 in aqueous phase: &#39;</span><span class="p">,</span> <span class="n">mco2</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">i</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Activity of CO2 in aqueous phase (Duan_Sun): &#39;</span><span class="p">,</span> <span class="n">co2_activity</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">i</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Activity of CO2 in aqueous phase (Drummond): &#39;</span><span class="p">,</span> <span class="n">co2_activityD</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">i</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fluid Temperature [C]:  0.01
+Fluid Pressure [bar]:  250.0
+Molality of CO2 in aqueous phase:  3.231443164427958
+Activity of CO2 in aqueous phase (Duan_Sun):  1.1291811186477334
+Activity of CO2 in aqueous phase (Drummond):  1.1340282640704162
+
+
+Fluid Temperature [C]:  25.0
+Fluid Pressure [bar]:  250.0
+Molality of CO2 in aqueous phase:  2.089130347640426
+Activity of CO2 in aqueous phase (Duan_Sun):  1.117606348338049
+Activity of CO2 in aqueous phase (Drummond):  1.1228777554452154
+
+
+Fluid Temperature [C]:  60.0
+Fluid Pressure [bar]:  250.0
+Molality of CO2 in aqueous phase:  1.4387910250773501
+Activity of CO2 in aqueous phase (Duan_Sun):  1.1097025985737983
+Activity of CO2 in aqueous phase (Drummond):  1.1184645553679928
+
+
+Fluid Temperature [C]:  100.0
+Fluid Pressure [bar]:  250.0
+Molality of CO2 in aqueous phase:  1.1971664693082034
+Activity of CO2 in aqueous phase (Duan_Sun):  1.109458812741491
+Activity of CO2 in aqueous phase (Drummond):  1.1250331593722136
+
+
+Fluid Temperature [C]:  150.0
+Fluid Pressure [bar]:  250.0
+Molality of CO2 in aqueous phase:  1.2118240598869028
+Activity of CO2 in aqueous phase (Duan_Sun):  1.1191485747389718
+Activity of CO2 in aqueous phase (Drummond):  1.1457708279040804
+
+
+Fluid Temperature [C]:  175.0
+Fluid Pressure [bar]:  250.0
+Molality of CO2 in aqueous phase:  1.3020035729997392
+Activity of CO2 in aqueous phase (Duan_Sun):  1.1276219378379773
+Activity of CO2 in aqueous phase (Drummond):  1.1602093887224851
+
+
+Fluid Temperature [C]:  200.0
+Fluid Pressure [bar]:  250.0
+Molality of CO2 in aqueous phase:  1.4355254214647033
+Activity of CO2 in aqueous phase (Duan_Sun):  1.1385618727912967
+Activity of CO2 in aqueous phase (Drummond):  1.1769259206651324
+
+
+Fluid Temperature [C]:  250.0
+Fluid Pressure [bar]:  250.0
+Molality of CO2 in aqueous phase:  1.7777156189018843
+Activity of CO2 in aqueous phase (Duan_Sun):  1.1700221965116315
+Activity of CO2 in aqueous phase (Drummond):  1.2163347543456382
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#%% Calculate Water activity, osmotic coefficient and NaCl mean activity coefficient at an ionic strength of 0.5M</span>
+<span class="n">aw</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">mean_act</span> <span class="o">=</span> <span class="n">Helgeson_activity</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;JN91&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fluid Temperature [C]: &#39;</span><span class="p">,</span> <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fluid Pressure [bar]: &#39;</span><span class="p">,</span> <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Water activity: &#39;</span><span class="p">,</span> <span class="n">aw</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">i</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Water osmotic coefficient: &#39;</span><span class="p">,</span> <span class="n">phi</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">i</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;NaCl mean activity coefficient: &#39;</span><span class="p">,</span> <span class="n">mean_act</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">i</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fluid Temperature [C]:  0.01
+Fluid Pressure [bar]:  250.0
+Water activity:  0.983412433698784
+Water osmotic coefficient:  0.9284718584433971
+NaCl mean activity coefficient:  0.6926294758605518
+
+
+Fluid Temperature [C]:  25.0
+Fluid Pressure [bar]:  250.0
+Water activity:  0.9834694019509086
+Water osmotic coefficient:  0.9252563947920361
+NaCl mean activity coefficient:  0.6830156908317317
+
+
+Fluid Temperature [C]:  60.0
+Fluid Pressure [bar]:  250.0
+Water activity:  0.9834545247516545
+Water osmotic coefficient:  0.9260960917803105
+NaCl mean activity coefficient:  0.674127423413536
+
+
+Fluid Temperature [C]:  100.0
+Fluid Pressure [bar]:  250.0
+Water activity:  0.9836228186833588
+Water osmotic coefficient:  0.9165980079014355
+NaCl mean activity coefficient:  0.6470880031602849
+
+
+Fluid Temperature [C]:  150.0
+Fluid Pressure [bar]:  250.0
+Water activity:  0.9839613772269228
+Water osmotic coefficient:  0.8974955418879642
+NaCl mean activity coefficient:  0.6014993581954272
+
+
+Fluid Temperature [C]:  175.0
+Fluid Pressure [bar]:  250.0
+Water activity:  0.9841773024634842
+Water osmotic coefficient:  0.8853158391631066
+NaCl mean activity coefficient:  0.5748511235270349
+
+
+Fluid Temperature [C]:  200.0
+Fluid Pressure [bar]:  250.0
+Water activity:  0.9843727067517636
+Water osmotic coefficient:  0.8742959654168483
+NaCl mean activity coefficient:  0.5490393132857664
+
+
+Fluid Temperature [C]:  250.0
+Fluid Pressure [bar]:  250.0
+Water activity:  0.9850872802771495
+Water osmotic coefficient:  0.8340160306808939
+NaCl mean activity coefficient:  0.47686249155879995
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pygcc_overview.html" class="btn btn-neutral float-left" title="An Introduction to pyGeochemCalc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Example_2.html" class="btn btn-neutral float-right" title="Integrate pygcc with GWB" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Adedapo Awolayo and Benjamin Tutolo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

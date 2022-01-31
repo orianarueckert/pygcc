@@ -1,0 +1,52 @@
+An63                      Ca0.63Na0.37Al1.63Si2.37O8 
+     sp.type =  solid
+*    EQ3/6   =  com, alt, sup
+     revised =  01-Jan-2020
+*    mol.wt. = 272.357 g/mol
+     V0PrTr  =  100.526 cm**3/mol [source:  R&H95, Stef2001 ]
+****
+     5 element(s):
+       0.6340 Ca               0.3660 Na               1.6340 Al            
+       2.3660 Si               8.0000 O             
+****
+     7 species in reaction:
+    -1.0000  An63                          -6.5360  H+                        
+     1.6340  Al+++                          0.3660  Na+                       
+     0.6340  Ca++                           2.3660  SiO2(aq)                  
+     3.2680  H2O                       
+*
+**** logK grid [T, P @ Miscellaneous parameters]
+        22.2319    18.2333    13.6980     9.6189
+         7.9007     5.6191    -0.4343    -3.1061
+*    gflag = 1 [reported delG0f used]
+*    extrapolation algorithm: supcrt92 [92joh/oel]
+*    ref-state data  [source:    R&H95, Stef2001 ]
+*         delG0f =   -929.557  kcal/mol
+*         delH0f =   NaN  kcal/mol
+*         S0PrTr =     46.723  cal/(mol*K)
+*    Cp coefficients [source:    R&H95, Stef2001  ]
+*         T**0   =   1.29389476e+02  
+*         T**1   =   -2.21371319e-02  
+*         T**-2  =  -6.65688429e+04  
+*         T**-0.5 =   -1.25731492e+03  
+*         T**2   =   8.33351805e-06  
++--------------------------------------------------------------------
+An63                       type= plagioclase
+     formula= Ca0.63Na0.37Al1.63Si2.37O8
+     mole vol.=   100.526 cc      mole wt.=  272.3570 g
+     6 species in reaction
+  -6.5360 H+                    1.6340 Al+++                 0.3660 Na+                
+   0.6340 Ca++                  2.3660 SiO2(aq)              3.2680 H2O                
+         22.2319    18.2333    13.6980     9.6189
+          7.9007     5.6191    -0.4343    -3.1061
+*    gflag = 1 [reported delG0f used]
+*    extrapolation algorithm: supcrt92 [92joh/oel]
+*    reference-state data source =  R&H95, Stef2001
+*         delG0f =   -929.557  kcal/mol
+*         delH0f =   NaN  kcal/mol
+*         S0PrTr =     46.723  cal/mol
+
+'An63' 100.526 6  -6.5360 'H+'   1.6340 'Al+++'   0.3660 'Na+'   0.6340 'Ca++'   2.3660 'SiO2(aq)'   3.2680 'H2O'   22.2319   18.2333   13.6980    9.6189    7.9007    5.6191   -0.4343   -3.1061 272.3570
+'An63'                           272.357 100.526 6  -6.5360 'H+'    1.6340 'Al+3'    0.3660 'Na+'    0.6340 'Ca+2'    2.3660 'SiO2(aq)'    3.2680 'H2O'
+'An63'                                22.2319    18.2333    13.6980     9.6189     7.9007     5.6191    -0.4343    -3.1061
+'An63'                               -7.67356E+03 1.91465E+03 1.07824E+03 2.98681E+06 -7.72710E+07

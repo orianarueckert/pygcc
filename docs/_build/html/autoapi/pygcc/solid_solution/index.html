@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pygcc.solid_solution &mdash; pygcc  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="pygcc.species_eos" href="../species_eos/index.html" />
+    <link rel="prev" title="pygcc.read_db" href="../read_db/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html">
+            <img src="../../../_static/PyGCC-logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pygcc_overview.html">An Introduction to pyGeochemCalc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_1.html">General Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_2.html">Integrate pygcc with GWB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_3.html">Integrate pygcc with EQ3/6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../clay_thermocalc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.clay_thermocalc</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pygcc_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.pygcc_utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../read_db/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.read_db</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.solid_solution</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../species_eos/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.species_eos</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../water_eos/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.water_eos</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pygcc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+          <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc</span></code></a> &raquo;</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.solid_solution</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/pygcc/solid_solution/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pygcc.solid_solution">
+<span id="pygcc-solid-solution"></span><h1><a class="reference internal" href="#module-pygcc.solid_solution" title="pygcc.solid_solution"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.solid_solution</span></code></a><a class="headerlink" href="#module-pygcc.solid_solution" title="Permalink to this headline"></a></h1>
+<p>Created on Wed Mar 17 16:02:22 2021</p>
+<p>&#64;author: adedapo.awolayo and Ben Tutolo, University of Calgary</p>
+<p>Copyright (c) 2020 - 2021, Adedapo Awolayo and Ben Tutolo, University of Calgary</p>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.solid_solution.solidsolution_thermo" title="pygcc.solid_solution.solidsolution_thermo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solidsolution_thermo</span></code></a></p></td>
+<td><p>Class to calculate Ideal mixing model for solid-solutions, supporting multisite ideal formalism</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.solid_solution.roundup_tenth" title="pygcc.solid_solution.roundup_tenth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">roundup_tenth</span></code></a>(x)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.solid_solution.Molecularweight" title="pygcc.solid_solution.Molecularweight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Molecularweight</span></code></a>()</p></td>
+<td><p>This function stores the Molecular weight of all elements</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.solid_solution.MW" title="pygcc.solid_solution.MW"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MW</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.solid_solution.J_to_cal" title="pygcc.solid_solution.J_to_cal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">J_to_cal</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.solid_solution.roundup_tenth">
+<span class="sig-prename descclassname"><span class="pre">pygcc.solid_solution.</span></span><span class="sig-name descname"><span class="pre">roundup_tenth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#roundup_tenth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.roundup_tenth" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.solid_solution.Molecularweight">
+<span class="sig-prename descclassname"><span class="pre">pygcc.solid_solution.</span></span><span class="sig-name descname"><span class="pre">Molecularweight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#Molecularweight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.Molecularweight" title="Permalink to this definition"></a></dt>
+<dd><p>This function stores the Molecular weight of all elements</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="pygcc.solid_solution.MW">
+<span class="sig-prename descclassname"><span class="pre">pygcc.solid_solution.</span></span><span class="sig-name descname"><span class="pre">MW</span></span><a class="headerlink" href="#pygcc.solid_solution.MW" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="pygcc.solid_solution.J_to_cal">
+<span class="sig-prename descclassname"><span class="pre">pygcc.solid_solution.</span></span><span class="sig-name descname"><span class="pre">J_to_cal</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">4.184</span></em><a class="headerlink" href="#pygcc.solid_solution.J_to_cal" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pygcc.solid_solution.solidsolution_thermo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygcc.solid_solution.</span></span><span class="sig-name descname"><span class="pre">solidsolution_thermo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo" title="Permalink to this definition"></a></dt>
+<dd><p>Class to calculate Ideal mixing model for solid-solutions, supporting multisite ideal formalism</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>float</em>) – End member mineral volume fraction or mole fraction of Mg in clinopyroxene</p></li>
+<li><p><strong>cpx_Ca</strong> (<em>float</em>) – number of moles of Ca in clinopyroxene formula unit (=1 for Di, Hed)</p></li>
+<li><p><strong>T</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [°C]</p></li>
+<li><p><strong>P</strong> (<em>float</em><em>, </em><em>vector</em>) – Pressure [bar]</p></li>
+<li><p><strong>dbacessdic</strong> (<em>dict</em>) – dictionary of species from direct-access database, optional, default is speq21</p></li>
+<li><p><strong>solidsolution_type</strong> (<em>string</em>) – specify either ‘All’ or ‘plagioclase’ or ‘olivine’ or ‘pyroxene’ or ‘cpx’ or ‘alk-feldspar’ or ‘biotite’ to carry-out all or any solid-solution calculations, default is ‘All’</p></li>
+<li><p><strong>Dielec_method</strong> (<em>string</em>) – specify either ‘FGL97’ or ‘JN91’ or ‘DEW’ as the method to calculate dielectric constant (optional), if not specified default - ‘JN91’</p></li>
+<li><p><strong>rhoEG</strong> (<em>dict</em>) – dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy  (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>if ‘All’ is specified for solidsolution_type, each case has the follwowing prefix - AnAb_, FoFa_, EnFe_, cpx_, AlkFed_, Biotite_</em></p></li>
+<li><p><strong>logK</strong> (<em>float, vector</em>) – logarithmic K values</p></li>
+<li><p><strong>Rxn</strong> (<em>dict</em>) – The calculated dictionary of reaction thermodynamic properties has the following properties:</p>
+<ul>
+<li><p>type: solid-solution mineral type, [-]</p></li>
+<li><p>name: solid-solution name, [K]</p></li>
+<li><p>formula: solid-solution mineral formula, [-]</p></li>
+<li><p>MW: Molecular weight, [g/mol]</p></li>
+<li><p>min: solid-solution mineral properties, [‘formula’, ‘source date’, dG[cal/ml], dH[cal/mol], S[cal/mol-K], V[cm3/mol], a[cal/mol-K], b[10^3 cal/mol/K^2], c[10^-5 cal/mol/K]]</p></li>
+<li><p>spec: list of species, [-]</p></li>
+<li><p>coeff: list of corresponding coefficients of species above, [-]</p></li>
+<li><p>nSpec: Total number of species, [-]</p></li>
+<li><p>V: Molar volume, [cm3/mol]</p></li>
+<li><p>source: Source of thermo data, [kJ/kg·K]</p></li>
+<li><p>elements: list of elements and their total numbers, [-]</p></li>
+</ul>
+</li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of water_dielec is as follows:</p>
+<ol class="arabic">
+<li><p>For water dielectric properties at any Temperature and Pressure:</p>
+<p>ss = solidsolution_thermo(T = T, P = P, X = X, solidsolution_type = ‘All’, Dielec_method = ‘JN91’),</p>
+<p>where T is temperature in celsius and P is pressure in bar</p>
+</li>
+<li><p>For water dielectric properties at any Temperature and density :</p>
+<p>ss = solidsolution_thermo(T = T, rho = rho, X = X, solidsolution_type = ‘All’, Dielec_method = ‘JN91’),</p>
+<p>where T is temperature in celsius and rho is density in kg/m³</p>
+</li>
+<li><p>For water dielectric properties at any Temperature and Pressure on steam saturation curve:</p>
+<p>ss = solidsolution_thermo(T = T, P = ‘T’, X = X, solidsolution_type = ‘All’, Dielec_method = ‘JN91’),</p>
+<p>where T is temperature in celsius and P is assigned a quoted character ‘T’ to reflect steam saturation pressure</p>
+<p>ss = solidsolution_thermo(P = P, T = ‘P’, X = X, solidsolution_type = ‘All’, Dielec_method = ‘JN91’),</p>
+<p>where P is pressure in bar and T is assigned a quoted character ‘P’ to reflect steam saturation temperature</p>
+</li>
+</ol>
+</div></blockquote>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ss</span> <span class="o">=</span> <span class="n">solidsolution_thermo</span><span class="p">(</span><span class="n">cpx_Ca</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+<span class="go">                              solidsolution_type = &#39;All&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ss</span><span class="o">.</span><span class="n">AnAb_logK</span><span class="p">,</span> <span class="n">ss</span><span class="o">.</span><span class="n">FoFa_logK</span><span class="p">,</span> <span class="n">ss</span><span class="o">.</span><span class="n">EnFe_logK</span><span class="p">,</span> <span class="n">ss</span><span class="o">.</span><span class="n">cpx_logK</span><span class="p">,</span> <span class="n">ss</span><span class="o">.</span><span class="n">AlkFed_logK</span><span class="p">,</span>
+<span class="go">    ss.Biotite_logK</span>
+<span class="go">    21.750590, 26.570902, 10.793372, 20.577152,  3.756792, 32.96363</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ss</span> <span class="o">=</span> <span class="n">solidsolution_thermo</span><span class="p">(</span><span class="n">cpx_Ca</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+<span class="go">                              solidsolution_type = &#39;cpx&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ss</span><span class="o">.</span><span class="n">logK</span>
+<span class="go">    18.81769186</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ss</span><span class="o">.</span><span class="n">Rxn</span>
+<span class="go">    {&#39;type&#39;: &#39;cpx&#39;, &#39;name&#39;: &#39;Di85Hed15&#39;,</span>
+<span class="go">     &#39;formula&#39;: &#39;Ca1.00Mg0.85Fe0.15Si2O6&#39;, &#39;MW&#39;: 221.2817,</span>
+<span class="go">     &#39;min&#39;: [&#39;Ca1.00Mg0.85Fe0.15Si2O6&#39;, &#39; R&amp;H95, Stef2001&#39;,</span>
+<span class="go">             -711392.7391800061, nan, 37.032850185405415, 66.369,</span>
+<span class="go">             106.66383843212236, -0.019588551625239002, -16326.4818355,</span>
+<span class="go">             -1052.9517208413004, 5.714746653919693e-06],</span>
+<span class="go">     &#39;spec&#39;: [&#39;H+&#39;, &#39;Ca++&#39;, &#39;Mg++&#39;, &#39;Fe++&#39;, &#39;SiO2(aq)&#39;, &#39;H2O&#39;],</span>
+<span class="go">     &#39;coeff&#39;: [-4, 1.0, 0.85, 0.15, 2, 2], &#39;nSpec&#39;: 6, &#39;V&#39;: 66.369,</span>
+<span class="go">     &#39;source&#39;: &#39; R&amp;H95, Stef2001&#39;, &#39;elements&#39;: [&#39;1.0000&#39;, &#39;Ca&#39;, &#39;0.8500&#39;,</span>
+<span class="go">                                                &#39;Mg&#39;, &#39;0.1500&#39;, &#39;Fe&#39;, &#39;2.0000&#39;,</span>
+<span class="go">                                                &#39;Si&#39;, &#39;6.0000&#39;, &#39;O&#39;]}</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ss</span> <span class="o">=</span> <span class="n">solidsolution_thermo</span><span class="p">(</span><span class="n">X</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+<span class="go">                              solidsolution_type = &#39;plagioclase&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ss</span><span class="o">.</span><span class="n">logK</span>
+<span class="go">    12.62488394</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ss</span><span class="o">.</span><span class="n">Rxn</span>
+<span class="go">    {&#39;type&#39;: &#39;plag&#39;, &#39;name&#39;: &#39;An50&#39;, &#39;formula&#39;: &#39;Ca0.50Na0.50Al1.50Si2.50O8&#39;,</span>
+<span class="go">     &#39;MW&#39;: 270.215145, &#39;min&#39;: [&#39;Ca0.50Na0.50Al1.50Si2.50O8&#39;, &#39; R&amp;H95,</span>
+<span class="go">                               Stef2001&#39;, -919965.222804649, nan,</span>
+<span class="go">                               47.33081919017781, 100.43, 131.53908221797,</span>
+<span class="go">                               -0.022148661567686426, 32265.761759082205,</span>
+<span class="go">                               -1316.0836615678777, 7.719885114722753e-06],</span>
+<span class="go">     &#39;spec&#39;: [&#39;H+&#39;, &#39;Al+++&#39;, &#39;Na+&#39;, &#39;Ca++&#39;, &#39;SiO2(aq)&#39;, &#39;H2O&#39;],</span>
+<span class="go">     &#39;coeff&#39;: [-6.0, 1.5, 0.5, 0.5, 2.5, 3.0], &#39;nSpec&#39;: 6, &#39;V&#39;: 100.43,</span>
+<span class="go">     &#39;source&#39;: &#39; R&amp;H95, Stef2001&#39;, &#39;elements&#39;: [&#39;0.5000&#39;, &#39;Ca&#39;, &#39;0.5000&#39;,</span>
+<span class="go">                                                &#39;Na&#39;, &#39;1.5000&#39;, &#39;Al&#39;, &#39;2.5000&#39;,</span>
+<span class="go">                                                &#39;Si&#39;, &#39;8.0000&#39;, &#39;O&#39;]}</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pygcc.solid_solution.solidsolution_thermo.kwargs">
+<span class="sig-name descname"><span class="pre">kwargs</span></span><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.kwargs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.solid_solution.solidsolution_thermo.__calc__">
+<span class="sig-name descname"><span class="pre">__calc__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.__calc__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.__calc__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.solid_solution.solidsolution_thermo.__checker__">
+<span class="sig-name descname"><span class="pre">__checker__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.__checker__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.__checker__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.solid_solution.solidsolution_thermo.calclogKAnAb">
+<span class="sig-name descname"><span class="pre">calclogKAnAb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XAn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbaccessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKAnAb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKAnAb" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates thermodynamic properties of solid solution of Plagioclase minerals</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>XAn</strong> (<em>volume fraction of Anorthite</em>) – </p></li>
+<li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
+<li><p><strong>dbacessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
+<li><p><strong>Dielec_method</strong> (<em>specify either 'FGL97'</em><em> or </em><em>'JN91'</em><em> or </em><em>'DEW' as the method to calculate</em>) – dielectric constant (optional), if not specified default - ‘JN91’</p></li>
+<li><p><strong>rhoEG</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>,</em>) – dielectric factor (E) and Gibbs Energy  (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>logKplag</strong> (<em>logarithmic K values</em>)</p></li>
+<li><p><strong>Rxn</strong> (<em>dictionary of reaction thermodynamic properties</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of calclogKAnAb without the optional argument is as follows:</p>
+<ol class="arabic">
+<li><p>Not on steam saturation curve:</p>
+<p>[logK, Rxn] = calclogKAnAb(XAn, TC, P, dbacessdic),</p>
+<p>where T is temperature in celsius and P is pressure in bar;</p>
+</li>
+<li><p>On steam saturation curve:</p>
+<p>[logK, Rxn] = calclogKAnAb(XAn, TC, ‘T’, dbacessdic),</p>
+<p>where T is temperature in celsius, followed with a quoted char ‘T’</p>
+<p>[logK, Rxn] = calclogKAnAb(XAn, P, ‘P’, dbacessdic),</p>
+<p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
+</li>
+<li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
+condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
+<p>[logK, Rxn] = calclogKAnAb(XAn, TC, P, dbacessdic, Dielec_method = ‘FGL97’)</p>
+</li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.solid_solution.solidsolution_thermo.calclogKFoFa">
+<span class="sig-name descname"><span class="pre">calclogKFoFa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XFo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbacessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKFoFa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKFoFa" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates thermodynamic properties of solid solution of olivine minerals</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>XFo</strong> (<em>volume fraction of Forsterite</em>) – </p></li>
+<li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
+<li><p><strong>dbacessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
+<li><p><strong>Dielec_method</strong> (<em>specify either 'FGL97'</em><em> or </em><em>'JN91'</em><em> or </em><em>'DEW' as the method to calculate</em>) – dielectric constant (optional), if not specified default - ‘JN91’</p></li>
+<li><p><strong>rhoEG</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>,</em>) – dielectric factor (E) and Gibbs Energy  (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>logK_ol</strong> (<em>logarithmic K values</em>)</p></li>
+<li><p><strong>Rxn</strong> (<em>dictionary of reaction thermodynamic properties</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of calclogKFoFa without the optional argument is as follows:</p>
+<ol class="arabic">
+<li><p>Not on steam saturation curve:</p>
+<p>[logK, Rxn] = calclogKFoFa(XFo, TC, P, dbacessdic),</p>
+<p>where T is temperature in celsius and P is pressure in bar;</p>
+</li>
+<li><p>On steam saturation curve:</p>
+<p>[logK, Rxn] = calclogKFoFa(XFo, TC, ‘T’, dbacessdic),</p>
+<p>where T is temperature in celsius, followed with a quoted char ‘T’</p>
+<p>[logK, Rxn] = calclogKFoFa(XFo, P, ‘P’, dbacessdic),</p>
+<p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
+</li>
+<li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
+condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
+<p>[logK, Rxn] = calclogKFoFa(XFo, TC, P, dbacessdic, Dielec_method = ‘FGL97’)</p>
+</li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.solid_solution.solidsolution_thermo.calclogKEnFe">
+<span class="sig-name descname"><span class="pre">calclogKEnFe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XEn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbacessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKEnFe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKEnFe" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates thermodynamic properties of solid solution of pyroxene minerals</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>XEn</strong> (<em>volume fraction of Enstatite</em>) – </p></li>
+<li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
+<li><p><strong>dbacessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
+<li><p><strong>Dielec_method</strong> (<em>specify either 'FGL97'</em><em> or </em><em>'JN91'</em><em> or </em><em>'DEW' as the method to calculate</em>) – dielectric constant (optional), if not specified default - ‘JN91’</p></li>
+<li><p><strong>rhoEG</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>,</em>) – dielectric factor (E) and Gibbs Energy  (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>logK_opx</strong> (<em>logarithmic K values</em>)</p></li>
+<li><p><strong>Rxn</strong> (<em>dictionary of reaction thermodynamic properties</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of calclogKEnFe without the optional argument is as follows:</p>
+<ol class="arabic">
+<li><p>Not on steam saturation curve:</p>
+<p>[logK, Rxn] = calclogKEnFe(XEn, TC, P, dbacessdic),</p>
+<p>where T is temperature in celsius and P is pressure in bar;</p>
+</li>
+<li><p>On steam saturation curve:</p>
+<p>[logK, Rxn] = calclogKEnFe(XEn, TC, ‘T’, dbacessdic),</p>
+<p>where T is temperature in celsius, followed with a quoted char ‘T’</p>
+<p>[logK, Rxn] = calclogKEnFe(XEn, P, ‘P’, dbacessdic),</p>
+<p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
+</li>
+<li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
+condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
+<p>[logK, Rxn] = calclogKEnFe(XEn, TC, P, dbacessdic, Dielec_method = ‘FGL97’)</p>
+</li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.solid_solution.solidsolution_thermo.calclogKDiHedEnFe">
+<span class="sig-name descname"><span class="pre">calclogKDiHedEnFe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nCa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XMg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbacessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKDiHedEnFe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKDiHedEnFe" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates thermodynamic properties of solid solution of clinopyroxene
+minerals (Di, Hed, En and Fe)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nCa</strong> (<em>number of moles of Ca in formula unit</em><em> (</em><em>=1 for Di</em><em>, </em><em>Hed</em><em>)</em>) – and must be greater than zero</p></li>
+<li><p><strong>XMg</strong> (<em>mole fraction of Mg</em>) – XMg = (nMg/(nFe + nMg))</p></li>
+<li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
+<li><p><strong>dbacessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
+<li><p><strong>Dielec_method</strong> (<em>specify either 'FGL97'</em><em> or </em><em>'JN91'</em><em> or </em><em>'DEW' as the method to calculate</em>) – dielectric constant (optional), if not specified default - ‘JN91’</p></li>
+<li><p><strong>rhoEG</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>,</em>) – dielectric factor (E) and Gibbs Energy  (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>logK_cpx</strong> (<em>logarithmic K values</em>)</p></li>
+<li><p><strong>Rxn</strong> (<em>dictionary of reaction thermodynamic properties</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of calclogKDiHedEnFe without the optional argument is as follows:</p>
+<ol class="arabic">
+<li><p>Not on steam saturation curve:</p>
+<p>[logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbacessdic),</p>
+<p>where T is temperature in celsius and P is pressure in bar;</p>
+</li>
+<li><p>On steam saturation curve:</p>
+<p>[logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, ‘T’, dbacessdic),</p>
+<p>where T is temperature in celsius, followed with a quoted char ‘T’</p>
+<p>[logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, P, ‘P’, dbacessdic),</p>
+<p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
+</li>
+<li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
+condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
+<p>[logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbacessdic, Dielec_method = ‘FGL97’)</p>
+</li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.solid_solution.solidsolution_thermo.calclogKAbOr">
+<span class="sig-name descname"><span class="pre">calclogKAbOr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XAb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbacessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKAbOr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKAbOr" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates thermodynamic properties of solid solution of Alkaline-Feldspar minerals</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>XAb</strong> (<em>volume fraction of Albite</em>) – </p></li>
+<li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
+<li><p><strong>dbacessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
+<li><p><strong>Dielec_method</strong> (<em>specify either 'FGL97'</em><em> or </em><em>'JN91'</em><em> or </em><em>'DEW' as the method to calculate</em>) – dielectric constant (optional), if not specified default - ‘JN91’</p></li>
+<li><p><strong>rhoEG</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>,</em>) – dielectric factor (E) and Gibbs Energy  (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>logKalkfeld</strong> (<em>logarithmic K values</em>)</p></li>
+<li><p><strong>Rxn</strong> (<em>dictionary of reaction thermodynamic properties</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of calclogKAnAb without the optional argument is as follows:</p>
+<ol class="arabic">
+<li><p>Not on steam saturation curve:</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic),</p>
+<p>where T is temperature in celsius and P is pressure in bar;</p>
+</li>
+<li><p>On steam saturation curve:</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, TC, ‘T’, dbacessdic),</p>
+<p>where T is temperature in celsius, followed with a quoted char ‘T’</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, P, ‘P’, dbacessdic),</p>
+<p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
+</li>
+<li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
+condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic, Dielec_method = ‘FGL97’)</p>
+</li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.solid_solution.solidsolution_thermo.calclogKBiotite">
+<span class="sig-name descname"><span class="pre">calclogKBiotite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XPh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbacessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKBiotite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKBiotite" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates thermodynamic properties of solid solution of Biotite minerals</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>XAb</strong> (<em>volume fraction of Albite</em>) – </p></li>
+<li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
+<li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
+<li><p><strong>dbacessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
+<li><p><strong>Dielec_method</strong> (<em>specify either 'FGL97'</em><em> or </em><em>'JN91'</em><em> or </em><em>'DEW' as the method to calculate</em>) – dielectric constant (optional), if not specified default - ‘JN91’</p></li>
+<li><p><strong>rhoEG</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>,</em>) – dielectric factor (E) and Gibbs Energy  (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>logKalkfeld</strong> (<em>logarithmic K values</em>)</p></li>
+<li><p><strong>Rxn</strong> (<em>dictionary of reaction thermodynamic properties</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of calclogKAnAb without the optional argument is as follows:</p>
+<ol class="arabic">
+<li><p>Not on steam saturation curve:</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic),</p>
+<p>where T is temperature in celsius and P is pressure in bar;</p>
+</li>
+<li><p>On steam saturation curve:</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, TC, ‘T’, dbacessdic),</p>
+<p>where T is temperature in celsius, followed with a quoted char ‘T’</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, P, ‘P’, dbacessdic),</p>
+<p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
+</li>
+<li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
+condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic, Dielec_method = ‘FGL97’)</p>
+</li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../read_db/index.html" class="btn btn-neutral float-left" title="pygcc.read_db" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../species_eos/index.html" class="btn btn-neutral float-right" title="pygcc.species_eos" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Adedapo Awolayo and Benjamin Tutolo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

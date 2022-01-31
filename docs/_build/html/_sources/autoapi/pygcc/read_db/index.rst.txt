@@ -1,0 +1,175 @@
+:py:mod:`pygcc.read_db`
+=======================
+
+.. py:module:: pygcc.read_db
+
+.. autoapi-nested-parse::
+
+   Created on Wed Mar 17 16:02:22 2021
+
+   @author: adedapo.awolayo and Ben Tutolo, University of Calgary
+
+   Copyright (c) 2020 - 2021, Adedapo Awolayo and Ben Tutolo, University of Calgary
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+   See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   pygcc.read_db.db_reader
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   pygcc.read_db.findcodecs
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   pygcc.read_db.J_to_cal
+
+
+.. py:data:: J_to_cal
+   :annotation: = 4.184
+
+   
+
+.. py:function:: findcodecs(filename)
+
+
+.. py:class:: db_reader(**kwargs)
+
+   Class to read direct-access and source thermodynamic database
+
+   :param dbaccess: filename and location of the direct-access database, optional, default is speq21
+   :type dbaccess: string
+   :param dbBerman_dir: filename and location of the Berman mineral database, optional
+   :type dbBerman_dir: string
+   :param sourcedb: filename of the source database, optional
+   :type sourcedb: string
+   :param sourcedb: filename of the source database, optional
+   :type sourcedb: string
+   :param sourceformat: specify the source database format, either 'GWB' or 'EQ36', optional
+   :type sourceformat: string
+
+   :returns: * **dbaccessdic** (*dict*) -- dictionary of minerals, gases, redox and aqueous species
+             * **dbaccess** (*string*) -- direct-access database file name
+             * **sourcedic** (*dict*) -- dictionary of reaction coefficients and species
+             * **specielist** (*list*) -- list of species segmented into the different categories [element, basis, redox, aqueous, minerals, gases, oxides]
+             * **speciecat** (*list*) -- list of species categories listed in 'specielist'
+             * **chargedic** (*dict*) -- dictionary of charges of species
+             * **MWdic** (*dict*) -- dictionary of MW of species
+             * **Mineraltype** (*dict*) -- mineral type for minerals
+             * **fugacity_info** (*dict*) -- fugacity information as stored in new tdat database for chi and critical ppts
+             * **Sptype** (*dict*) -- specie types and eq3/6 and revised date info
+             * **Elemlist** (*dict*) -- dictionary of elements and coefficients
+
+   .. rubric:: Examples
+
+   >>> ps = db_reader(sourcedb = './default_db/thermo.com.dat',
+                      sourceformat = 'gwb',
+                      dbaccess = './default_db/speq21.dat')
+   >>> ps.sourcedic, ps.dbaccessdic, ps.specielist
+
+   .. py:attribute:: kwargs
+      
+
+      
+
+   .. py:method:: __calc__(self, **kwargs)
+
+
+   .. py:method:: readAqspecdb(self)
+
+      This function reads direct access thermodynamic database and can add other database sources
+      at the bottom returns all constants of Maier-Kelley power function  for minerals and gases
+      (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm3/mol] a [cal/mol-K], b [*10**3 cal/mol/K^2],
+       c [*10^-5 cal/mol/K], Ttrans [K], Htr [cal/mol], Vtr [cm³/mol], dPdTtr [bar/K] ) and
+      aqueous species (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm3/mol], a1 [*10 cal/mol/bar],
+      a2 [*10**-2 cal/mol], a3 [cal-K/mol/bar], a4 [*10**-4 cal-K/mol], c1 [cal/mol/K], c2 [*10**-4 cal-K/mol],
+      ω [*10**-5 cal/mol] ) packed into a dbacess dictionary. In addition, the function can read Berman's
+      mineral properties such as (dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, k3,
+      v1 [*10^5 K^-1], v2 [*10^5 K^-2], v3 [*10^5 bar^-1], v4 [*10^8 bar^-2], dTdP [K/bar], Tlambda [K],
+      Tref [K], l1 [(J/mol)^0.5/K], l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], d2 [J/mol],
+      d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K])
+
+      :param dbaccess        filename and location of the direct-access database:
+      :param dbBerman_dir    filename and location of the Berman mineral database:
+
+      :returns: * *dbaccessdic      dictionary of minerals, gases, redox and aqueous species*
+                * *dbaccess        dat file name*
+
+      Usage:
+      ----------
+      [dbaccessdic, dbname] = readAqspecdb(dbaccess)
+
+
+   .. py:method:: readSourceGWBdb(self)
+
+      This function reads source GWB thermodynamic database and reaction coefficients of 'eh'
+      and 'e-' has been added at the bottom returns all reaction coefficients and species,
+      group species into redox, minerals, gases, oxides and aqueous species
+      :param sourcedb:
+      :type sourcedb: filename of the source database
+
+      :returns: * **sourcedic** (*dictionary of reaction coefficients and species*)
+                * **specielist** (*list of species segmented into the different categories*) -- [element, basis, redox, aqueous, minerals, gases, oxides]
+                * **speciecat** (*list of species categories listed in 'specielist'*)
+                * **chargedic** (*dictionary of charges of species*)
+                * **MWdic** (*dictionary of MW of species*)
+                * **Mineraltype** (*mineral type for minerals*)
+                * **fugacity_info** (*fugacity information as stored in new tdat database for chi and critical ppts*)
+
+      Usage:
+      ----------
+      [sourcedic, specielist, chargedic, MWdic, Mineraltype, fugacity_info, activity_model] = readSourceGWBdb()
+
+
+   .. py:method:: readSourceEQ36db(self)
+
+      This function reads source EQ3/6 thermodynamic database and reaction coefficients of 'eh'
+      and 'e-' has been added at the bottom returns all reaction coefficients and species,
+      group species into basis, auxiliary basis, minerals, gases, liquids and aqueous species
+      :param sourcedb:
+      :type sourcedb: filename of the source database
+
+      :returns: * **sourcedic** (*dictionary of reaction coefficients and species*)
+                * **specielist** (*list of species segmented into the different categories*) -- [element, basis, redox, aqueous, minerals, gases, oxides]
+                * **speciecat** (*list of species categories listed in 'specielist'*)
+                * **chargedic** (*dictionary of charges of species and DHazero info*)
+                * **MWdic** (*dictionary of MW of species*)
+                * **Sptype** (*specie types and eq3/6 and revised date info*)
+                * **Elemlist** (*dictionary of elements and coefficients*)
+
+      Usage:
+      ----------
+      [sourcedic, specielist, chargedic, MWdic, block_info, Elemlist, act_param] = readSourceEQ36db(sourcedb)
+
+
+

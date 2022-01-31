@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pygcc.read_db &mdash; pygcc  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="pygcc.solid_solution" href="../solid_solution/index.html" />
+    <link rel="prev" title="pygcc.pygcc_utils" href="../pygcc_utils/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html">
+            <img src="../../../_static/PyGCC-logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pygcc_overview.html">An Introduction to pyGeochemCalc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_1.html">General Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_2.html">Integrate pygcc with GWB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_3.html">Integrate pygcc with EQ3/6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../clay_thermocalc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.clay_thermocalc</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pygcc_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.pygcc_utils</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.read_db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../solid_solution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.solid_solution</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../species_eos/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.species_eos</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../water_eos/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.water_eos</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pygcc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+          <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc</span></code></a> &raquo;</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.read_db</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/pygcc/read_db/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pygcc.read_db">
+<span id="pygcc-read-db"></span><h1><a class="reference internal" href="#module-pygcc.read_db" title="pygcc.read_db"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.read_db</span></code></a><a class="headerlink" href="#module-pygcc.read_db" title="Permalink to this headline"></a></h1>
+<p>Created on Wed Mar 17 16:02:22 2021</p>
+<p>&#64;author: adedapo.awolayo and Ben Tutolo, University of Calgary</p>
+<p>Copyright (c) 2020 - 2021, Adedapo Awolayo and Ben Tutolo, University of Calgary</p>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.read_db.db_reader" title="pygcc.read_db.db_reader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">db_reader</span></code></a></p></td>
+<td><p>Class to read direct-access and source thermodynamic database</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.read_db.findcodecs" title="pygcc.read_db.findcodecs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">findcodecs</span></code></a>(filename)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.read_db.J_to_cal" title="pygcc.read_db.J_to_cal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">J_to_cal</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="pygcc.read_db.J_to_cal">
+<span class="sig-prename descclassname"><span class="pre">pygcc.read_db.</span></span><span class="sig-name descname"><span class="pre">J_to_cal</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">4.184</span></em><a class="headerlink" href="#pygcc.read_db.J_to_cal" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.read_db.findcodecs">
+<span class="sig-prename descclassname"><span class="pre">pygcc.read_db.</span></span><span class="sig-name descname"><span class="pre">findcodecs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/read_db.html#findcodecs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.read_db.findcodecs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pygcc.read_db.db_reader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygcc.read_db.</span></span><span class="sig-name descname"><span class="pre">db_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/read_db.html#db_reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.read_db.db_reader" title="Permalink to this definition"></a></dt>
+<dd><p>Class to read direct-access and source thermodynamic database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dbaccess</strong> (<em>string</em>) – filename and location of the direct-access database, optional, default is speq21</p></li>
+<li><p><strong>dbBerman_dir</strong> (<em>string</em>) – filename and location of the Berman mineral database, optional</p></li>
+<li><p><strong>sourcedb</strong> (<em>string</em>) – filename of the source database, optional</p></li>
+<li><p><strong>sourcedb</strong> – filename of the source database, optional</p></li>
+<li><p><strong>sourceformat</strong> (<em>string</em>) – specify the source database format, either ‘GWB’ or ‘EQ36’, optional</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>dbaccessdic</strong> (<em>dict</em>) – dictionary of minerals, gases, redox and aqueous species</p></li>
+<li><p><strong>dbaccess</strong> (<em>string</em>) – direct-access database file name</p></li>
+<li><p><strong>sourcedic</strong> (<em>dict</em>) – dictionary of reaction coefficients and species</p></li>
+<li><p><strong>specielist</strong> (<em>list</em>) – list of species segmented into the different categories [element, basis, redox, aqueous, minerals, gases, oxides]</p></li>
+<li><p><strong>speciecat</strong> (<em>list</em>) – list of species categories listed in ‘specielist’</p></li>
+<li><p><strong>chargedic</strong> (<em>dict</em>) – dictionary of charges of species</p></li>
+<li><p><strong>MWdic</strong> (<em>dict</em>) – dictionary of MW of species</p></li>
+<li><p><strong>Mineraltype</strong> (<em>dict</em>) – mineral type for minerals</p></li>
+<li><p><strong>fugacity_info</strong> (<em>dict</em>) – fugacity information as stored in new tdat database for chi and critical ppts</p></li>
+<li><p><strong>Sptype</strong> (<em>dict</em>) – specie types and eq3/6 and revised date info</p></li>
+<li><p><strong>Elemlist</strong> (<em>dict</em>) – dictionary of elements and coefficients</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">(</span><span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./default_db/thermo.com.dat&#39;</span><span class="p">,</span>
+<span class="go">                   sourceformat = &#39;gwb&#39;,</span>
+<span class="go">                   dbaccess = &#39;./default_db/speq21.dat&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">sourcedic</span><span class="p">,</span> <span class="n">ps</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">,</span> <span class="n">ps</span><span class="o">.</span><span class="n">specielist</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pygcc.read_db.db_reader.kwargs">
+<span class="sig-name descname"><span class="pre">kwargs</span></span><a class="headerlink" href="#pygcc.read_db.db_reader.kwargs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.read_db.db_reader.__calc__">
+<span class="sig-name descname"><span class="pre">__calc__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/read_db.html#db_reader.__calc__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.read_db.db_reader.__calc__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.read_db.db_reader.readAqspecdb">
+<span class="sig-name descname"><span class="pre">readAqspecdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/read_db.html#db_reader.readAqspecdb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.read_db.db_reader.readAqspecdb" title="Permalink to this definition"></a></dt>
+<dd><p>This function reads direct access thermodynamic database and can add other database sources
+at the bottom returns all constants of Maier-Kelley power function  for minerals and gases
+(dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm3/mol] a [cal/mol-K], b [<a href="#id1"><span class="problematic" id="id2">*</span></a>10**3 cal/mol/K^2],</p>
+<blockquote>
+<div><p>c [<a href="#id3"><span class="problematic" id="id4">*</span></a>10^-5 cal/mol/K], Ttrans [K], Htr [cal/mol], Vtr [cm³/mol], dPdTtr [bar/K] ) and</p>
+</div></blockquote>
+<p>aqueous species (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm3/mol], a1 [<em>10 cal/mol/bar],
+a2 [*10*</em>-2 cal/mol], a3 [cal-K/mol/bar], a4 [<em>10*</em>-4 cal-K/mol], c1 [cal/mol/K], c2 [<em>10*</em>-4 cal-K/mol],
+ω [<em>10*</em>-5 cal/mol] ) packed into a dbacess dictionary. In addition, the function can read Berman’s
+mineral properties such as (dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, k3,
+v1 [<a href="#id5"><span class="problematic" id="id6">*</span></a>10^5 K^-1], v2 [<a href="#id7"><span class="problematic" id="id8">*</span></a>10^5 K^-2], v3 [<a href="#id9"><span class="problematic" id="id10">*</span></a>10^5 bar^-1], v4 [<a href="#id11"><span class="problematic" id="id12">*</span></a>10^8 bar^-2], dTdP [K/bar], Tlambda [K],
+Tref [K], l1 [(J/mol)^0.5/K], l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], d2 [J/mol],
+d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K])</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>database</strong> (<em>dbBerman_dir    filename and location of the Berman mineral</em>) – </p></li>
+<li><p><strong>database</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>dbaccessdic      dictionary of minerals, gases, redox and aqueous species</em></p></li>
+<li><p><em>dbaccess        dat file name</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p>[dbaccessdic, dbname] = readAqspecdb(dbaccess)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.read_db.db_reader.readSourceGWBdb">
+<span class="sig-name descname"><span class="pre">readSourceGWBdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/read_db.html#db_reader.readSourceGWBdb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.read_db.db_reader.readSourceGWBdb" title="Permalink to this definition"></a></dt>
+<dd><p>This function reads source GWB thermodynamic database and reaction coefficients of ‘eh’
+and ‘e-’ has been added at the bottom returns all reaction coefficients and species,
+group species into redox, minerals, gases, oxides and aqueous species
+:param sourcedb:
+:type sourcedb: filename of the source database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>sourcedic</strong> (<em>dictionary of reaction coefficients and species</em>)</p></li>
+<li><p><strong>specielist</strong> (<em>list of species segmented into the different categories</em>) – [element, basis, redox, aqueous, minerals, gases, oxides]</p></li>
+<li><p><strong>speciecat</strong> (<em>list of species categories listed in ‘specielist’</em>)</p></li>
+<li><p><strong>chargedic</strong> (<em>dictionary of charges of species</em>)</p></li>
+<li><p><strong>MWdic</strong> (<em>dictionary of MW of species</em>)</p></li>
+<li><p><strong>Mineraltype</strong> (<em>mineral type for minerals</em>)</p></li>
+<li><p><strong>fugacity_info</strong> (<em>fugacity information as stored in new tdat database for chi and critical ppts</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p>[sourcedic, specielist, chargedic, MWdic, Mineraltype, fugacity_info, activity_model] = readSourceGWBdb()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.read_db.db_reader.readSourceEQ36db">
+<span class="sig-name descname"><span class="pre">readSourceEQ36db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/read_db.html#db_reader.readSourceEQ36db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.read_db.db_reader.readSourceEQ36db" title="Permalink to this definition"></a></dt>
+<dd><p>This function reads source EQ3/6 thermodynamic database and reaction coefficients of ‘eh’
+and ‘e-’ has been added at the bottom returns all reaction coefficients and species,
+group species into basis, auxiliary basis, minerals, gases, liquids and aqueous species
+:param sourcedb:
+:type sourcedb: filename of the source database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>sourcedic</strong> (<em>dictionary of reaction coefficients and species</em>)</p></li>
+<li><p><strong>specielist</strong> (<em>list of species segmented into the different categories</em>) – [element, basis, redox, aqueous, minerals, gases, oxides]</p></li>
+<li><p><strong>speciecat</strong> (<em>list of species categories listed in ‘specielist’</em>)</p></li>
+<li><p><strong>chargedic</strong> (<em>dictionary of charges of species and DHazero info</em>)</p></li>
+<li><p><strong>MWdic</strong> (<em>dictionary of MW of species</em>)</p></li>
+<li><p><strong>Sptype</strong> (<em>specie types and eq3/6 and revised date info</em>)</p></li>
+<li><p><strong>Elemlist</strong> (<em>dictionary of elements and coefficients</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p>[sourcedic, specielist, chargedic, MWdic, block_info, Elemlist, act_param] = readSourceEQ36db(sourcedb)</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../pygcc_utils/index.html" class="btn btn-neutral float-left" title="pygcc.pygcc_utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../solid_solution/index.html" class="btn btn-neutral float-right" title="pygcc.solid_solution" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Adedapo Awolayo and Benjamin Tutolo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

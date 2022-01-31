@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pygcc.clay_thermocalc &mdash; pygcc  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="pygcc.pygcc_utils" href="../pygcc_utils/index.html" />
+    <link rel="prev" title="pygcc" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html">
+            <img src="../../../_static/PyGCC-logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pygcc_overview.html">An Introduction to pyGeochemCalc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_1.html">General Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_2.html">Integrate pygcc with GWB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Example_3.html">Integrate pygcc with EQ3/6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.clay_thermocalc</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pygcc_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.pygcc_utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../read_db/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.read_db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../solid_solution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.solid_solution</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../species_eos/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.species_eos</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../water_eos/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.water_eos</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pygcc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+          <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc</span></code></a> &raquo;</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.clay_thermocalc</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/pygcc/clay_thermocalc/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pygcc.clay_thermocalc">
+<span id="pygcc-clay-thermocalc"></span><h1><a class="reference internal" href="#module-pygcc.clay_thermocalc" title="pygcc.clay_thermocalc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygcc.clay_thermocalc</span></code></a><a class="headerlink" href="#module-pygcc.clay_thermocalc" title="Permalink to this headline"></a></h1>
+<p>Created on Wed Mar 17 16:02:22 2021</p>
+<p>&#64;author: Adedapo Awolayo and Ben Tutolo, University of Calgary</p>
+<p>Copyright (c) 2020 - 2021, Adedapo Awolayo and Ben Tutolo, University of Calgary</p>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.clay_thermocalc.roundup_tenth" title="pygcc.clay_thermocalc.roundup_tenth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">roundup_tenth</span></code></a>(x)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.clay_thermocalc.Molecularweight" title="pygcc.clay_thermocalc.Molecularweight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Molecularweight</span></code></a>()</p></td>
+<td><p>This function stores the Molecular weight of all elements</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.clay_thermocalc.calclogKclays" title="pygcc.clay_thermocalc.calclogKclays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calclogKclays</span></code></a>(TC, P, *elem, dbaccessdic=None, group=None, cation_order=None, Dielec_method=None, Mintype=None, **rhoEG)</p></td>
+<td><p>This function calculates logK values and reaction parameters of clay reactions using below references:</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.clay_thermocalc.MW" title="pygcc.clay_thermocalc.MW"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MW</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.clay_thermocalc.J_to_cal" title="pygcc.clay_thermocalc.J_to_cal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">J_to_cal</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.clay_thermocalc.roundup_tenth">
+<span class="sig-prename descclassname"><span class="pre">pygcc.clay_thermocalc.</span></span><span class="sig-name descname"><span class="pre">roundup_tenth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/clay_thermocalc.html#roundup_tenth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.clay_thermocalc.roundup_tenth" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.clay_thermocalc.Molecularweight">
+<span class="sig-prename descclassname"><span class="pre">pygcc.clay_thermocalc.</span></span><span class="sig-name descname"><span class="pre">Molecularweight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/clay_thermocalc.html#Molecularweight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.clay_thermocalc.Molecularweight" title="Permalink to this definition"></a></dt>
+<dd><p>This function stores the Molecular weight of all elements</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="pygcc.clay_thermocalc.MW">
+<span class="sig-prename descclassname"><span class="pre">pygcc.clay_thermocalc.</span></span><span class="sig-name descname"><span class="pre">MW</span></span><a class="headerlink" href="#pygcc.clay_thermocalc.MW" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="pygcc.clay_thermocalc.J_to_cal">
+<span class="sig-prename descclassname"><span class="pre">pygcc.clay_thermocalc.</span></span><span class="sig-name descname"><span class="pre">J_to_cal</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">4.184</span></em><a class="headerlink" href="#pygcc.clay_thermocalc.J_to_cal" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.clay_thermocalc.calclogKclays">
+<span class="sig-prename descclassname"><span class="pre">pygcc.clay_thermocalc.</span></span><span class="sig-name descname"><span class="pre">calclogKclays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">elem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbaccessdic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cation_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mintype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">rhoEG</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/clay_thermocalc.html#calclogKclays"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.clay_thermocalc.calclogKclays" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates logK values and reaction parameters of clay reactions using below references:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TC</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [°C]</p></li>
+<li><p><strong>P</strong> (<em>float</em><em>, </em><em>vector</em>) – Pressure [bar]</p></li>
+<li><p><strong>elem</strong> (<em>list</em>) – list containing nine parameters with clay names and elements compositions with the following format [‘Montmorillonite_Lc_MgK’, ‘Si’, ‘Al’, ‘FeIII’, ‘FeII’, ‘Mg’, ‘K’, ‘Na’, ‘Ca’, ‘Li’]</p></li>
+<li><p><strong>dbacessdic</strong> (<em>dict</em>) – dictionary of species from direct-access database, optional, default is speq21</p></li>
+<li><p><strong>group</strong> (<em>string</em>) – specify the structural layering of the phyllosilicate, for layers composed of <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">tetrahedral</span> <span class="pre">+</span> <span class="pre">1</span> <span class="pre">octahedral</span> <span class="pre">sheet</span> <span class="pre">(1:1</span> <span class="pre">layer)</span></code> - specify ‘7A’, <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">tetrahedral</span> <span class="pre">+</span> <span class="pre">1</span> <span class="pre">octahedral</span> <span class="pre">sheet</span> <span class="pre">(2:1</span> <span class="pre">layer)</span></code> - specify ‘10A’, or the latter with a <code class="docutils literal notranslate"><span class="pre">brucitic</span> <span class="pre">sheet</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">interlayer</span> <span class="pre">(2:1:1</span> <span class="pre">layer)</span></code>  - specify ‘14A’ (optional), if not specified, default is ‘10A’ for smectites, micas, et cetera</p></li>
+<li><p><strong>cation_order</strong> (<em>string</em>) – specify ordering of Si and Al ions either ‘Eastonite’, ‘Ordered’, ‘Random’, or ‘HDC’  (optional), if not specified, default is based on guidelines  by Vinograd (1995)</p></li>
+<li><p><strong>Dielec_method</strong> (<em>string</em>) – specify either ‘FGL97’ or ‘JN91’ or ‘DEW’ as the method to calculate dielectric constant (optional), if not specified, default - ‘JN91’</p></li>
+<li><p><strong>rhoEG</strong> (<em>dict</em>) – dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy  (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>logK_clay</strong> (<em>float, vector</em>) – logarithmic K values</p></li>
+<li><p><strong>Rxn</strong> (<em>dict</em>) – dictionary of reaction thermodynamic properties</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of calclogKclays is as follows:</p>
+<ol class="arabic">
+<li><p>Without the optional arguments, not on steam saturation curve:</p>
+<p>[logK, Rxn] = calclogKclays(TC, P, <a href="#id1"><span class="problematic" id="id2">*</span></a>elem),</p>
+<p>where T is temperature in celsius and P is pressure in bar;</p>
+</li>
+<li><p>Without the optional arguments, on steam saturation curve:</p>
+<p>[logK, Rxn] = calclogKclays(TC, ‘T’, <a href="#id3"><span class="problematic" id="id4">*</span></a>elem),</p>
+<p>where T is temperature in celsius, followed with a quoted char ‘T’</p>
+<p>[logK, Rxn] = calclogKclays(P, ‘P’, <a href="#id5"><span class="problematic" id="id6">*</span></a>elem),</p>
+<p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
+</li>
+<li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
+condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
+<p>[logK, Rxn] = calclogKclays(TC, P, <a href="#id7"><span class="problematic" id="id8">*</span></a>elem, dbacessdic = dbacessdic, group = ‘10A’, cation_order = ‘HDC’, Dielec_method = ‘FGL97’)</p>
+</li>
+</ol>
+</div></blockquote>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logK</span><span class="p">,</span> <span class="n">Rxn</span> <span class="o">=</span> <span class="n">calclogKclays</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="o">*</span><span class="p">[</span><span class="s1">&#39;Clinochlore&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+<span class="go">                                         &#39;5&#39;, &#39;0&#39;, &#39;0&#39;, &#39;0&#39;, &#39;0&#39;],</span>
+<span class="go">                              group = &#39;14A&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logK</span>
+<span class="go">    57.56820225</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p>Blanc, P., Vieillard, P., Gailhanou, H., Gaboreau, S., Gaucher, É., Fialips, C. I.,
+Madé, B &amp; Giffaut, E. (2015). A generalized model for predicting the thermodynamic properties
+of clay minerals. American journal of science, 315(8), 734-780.</p></li>
+<li><p>Blanc, P., Gherardi, F., Vieillard, P., Marty, N. C. M., Gailhanou, H., Gaboreau, S.,
+Letat, B., Geloni, C., Gaucher, E.C. and Madé, B. (2021). Thermodynamics for clay minerals:
+calculation tools and application to the case of illite/smectite interstratified minerals.
+Applied Geochemistry, 104986.</p></li>
+<li><p>Vinograd, V.L., 1995. Substitution of [4]Al in layer silicates: Calculation of the Al-Si
+configurational entropy according to 29Si NMR Spectra. Physics and Chemistry of Minerals
+22, 87-98.</p></li>
+</ol>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="pygcc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../pygcc_utils/index.html" class="btn btn-neutral float-right" title="pygcc.pygcc_utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Adedapo Awolayo and Benjamin Tutolo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
