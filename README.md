@@ -23,9 +23,9 @@ request features or examples; see [Contributing](#contributing) below).
 
 ## Installation
 
-[![PyPI](https://img.shields.io/pypi/v/pyrolite.svg?style=flat)](https://pypi.python.org/pypi/pyrolite)
-[![Compatible Python Versions](https://img.shields.io/pypi/pyversions/pyrolite.svg?style=flat)](https://pypi.python.org/pypi/pyrolite/)
-[![pygcc downloads](https://img.shields.io/pypi/dm/pyrolite.svg?style=flat)](https://pypistats.org/packages/pyrolite)
+#[![PyPI](https://img.shields.io/pypi/v/pyrolite.svg?style=flat)](https://pypi.python.org/pypi/pyrolite)
+#[![Compatible Python Versions](https://img.shields.io/pypi/pyversions/pyrolite.svg?style=flat)](https://pypi.python.org/pypi/pyrolite/)
+#[![pygcc downloads](https://img.shields.io/pypi/dm/pyrolite.svg?style=flat)](https://pypistats.org/packages/pyrolite)
 
 ```bash
 $ pip install pygcc
@@ -39,7 +39,10 @@ If you would prefer to flip through notebooks on Bitbucket, these same examples 
 
 ## Contributing
 
-Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms. For more information, see the [documentation](https://pyrolite.readthedocs.io/), particularly the [Contributing page](https://pyrolite.readthedocs.io/en/main/dev/contributing.html) and [Code of Conduct](https://pyrolite.readthedocs.io/en/main/dev/conduct.html). 
+Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. 
+By contributing to this project, you agree to abide by its terms. For more information, see the [documentation](https://pygcc.readthedocs.io/), 
+particularly the [Contributing page](https://pygcc.readthedocs.io/en/latest/contributing.html) and 
+[Code of Conduct](https://pygcc.readthedocs.io/en/latest/conduct.html). 
 
 ## License
 
@@ -47,7 +50,9 @@ Interested in contributing? Check out the contributing guidelines. Please note t
 
 ## Citation
 
-If you use pygcc extensively for your research, citation of the software would be appreciated. It helps quantify the impact of the project, and is one way to get the message out and help build the pygcc community. For information on citing pygcc, [see the relevant docs page](https://pyrolite.readthedocs.io/en/main/cite.html)
+If you use pygcc for your research, citation of the software would be appreciated. It helps to quantify the impact of 
+pygcc, and build the pygcc community. For information on citing pygcc, 
+[see the relevant docs page](https://pygcc.readthedocs.io/en/latest/pygcc_overview.html#citation-and-contact-information-a-class-anchor-id-section-6-a)
 
 ## Credits
 
