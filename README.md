@@ -23,6 +23,8 @@ request features or examples; see [Contributing](#contributing) below).
 
 ## Installation
 
+[![PyPI](https://img.shields.io/pypi/v/pygcc.svg?style=flat)](https://pypi.org/project/pygcc/)
+[![Compatible Python Versions](https://img.shields.io/pypi/pyversions/pygcc.svg?style=flat)](https://pypi.python.org/pypi/pygcc/)
 
 ```bash
 $ pip install pygcc

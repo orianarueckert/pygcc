@@ -132,7 +132,7 @@ class db_reader:
             self.dbaccess_codecs = findcodecs(self.dbaccess_dir)
         else:
             self.dbaccess_codecs = self.kwargs['dbaccess_codecs']
-        if self.kwargs['sourcedb_codecs'] is None:
+        if self.kwargs["sourcedb"] is not None and self.kwargs['sourcedb_codecs'] is None:
             self.sourcedb_codecs = findcodecs(self.sourcedb_dir)
         else:
             self.sourcedb_codecs = self.kwargs['sourcedb_codecs']

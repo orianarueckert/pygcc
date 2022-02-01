@@ -2,7 +2,7 @@ dataset of thermodynamic data for gwb programs
 dataset format: apr20
 activity model: h-m-w
 fugacity model: tsonopoulos
-* -- based harv: pyGeochemCalc, Tue Feb  1 00:07:41 2022
+* -- based harv: pyGeochemCalc, Tue Feb  1 00:47:17 2022
 *    data file data0.3245r46
 *             1 atm steam saturation curve data
 
