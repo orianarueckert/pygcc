@@ -10,7 +10,6 @@
 
 import os, subprocess, re, numpy as np, pandas as pd, sys
 import shutil
-import matplotlib.pyplot as plt
 from pygcc.pygcc_utils import *
 # print(pygcc.__version__)
 from output_reader import read_eq36output
@@ -361,6 +360,7 @@ data_df.columns
 # In[23]:
 
 
+import matplotlib.pyplot as plt
 y = data_df.SI_Pyrite
 x = data_df.Temperature_C
 plt.figure()

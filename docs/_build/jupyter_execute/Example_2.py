@@ -9,7 +9,6 @@
 
 
 import sys, pygcc, pandas as pd
-import matplotlib.pyplot as plt
 from pygcc.pygcc_utils import *
 # print(pygcc.__version__)
 
@@ -124,6 +123,7 @@ print(rerun)
 # In[ ]:
 
 
+import matplotlib.pyplot as plt
 y = data.SI_Pyrite
 x = data.Temperature
 plt.figure()
