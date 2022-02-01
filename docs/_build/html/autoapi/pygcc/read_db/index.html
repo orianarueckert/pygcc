@@ -136,7 +136,7 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.read_db.findcodecs" title="pygcc.read_db.findcodecs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">findcodecs</span></code></a>(filename)</p></td>
-<td><p></p></td>
+<td><p>Function to find the name of the encoding used to decode or encode any file</p></td>
 </tr>
 </tbody>
 </table>
@@ -162,7 +162,8 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 <dl class="py function">
 <dt class="sig sig-object py" id="pygcc.read_db.findcodecs">
 <span class="sig-prename descclassname"><span class="pre">pygcc.read_db.</span></span><span class="sig-name descname"><span class="pre">findcodecs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/read_db.html#findcodecs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.read_db.findcodecs" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Function to find the name of the encoding used to decode or encode any file</p>
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pygcc.read_db.db_reader">
@@ -176,6 +177,8 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 <li><p><strong>sourcedb</strong> (<em>string</em>) – filename of the source database, optional</p></li>
 <li><p><strong>sourcedb</strong> – filename of the source database, optional</p></li>
 <li><p><strong>sourceformat</strong> (<em>string</em>) – specify the source database format, either ‘GWB’ or ‘EQ36’, optional</p></li>
+<li><p><strong>sourcedb_codecs</strong> (<em>string</em>) – specify the name of the encoding used to decode or encode the sourcedb file, optional</p></li>
+<li><p><strong>dbaccess_codecs</strong> (<em>string</em>) – specify the name of the encoding used to decode or encode the dbaccess file, optional</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

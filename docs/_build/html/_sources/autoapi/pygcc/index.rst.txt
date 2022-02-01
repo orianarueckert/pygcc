@@ -112,6 +112,10 @@ Attributes
    :type sourcedb: string
    :param sourceformat: specify the source database format, either 'GWB' or 'EQ36', optional
    :type sourceformat: string
+   :param sourcedb_codecs: specify the name of the encoding used to decode or encode the sourcedb file, optional
+   :type sourcedb_codecs: string
+   :param dbaccess_codecs: specify the name of the encoding used to decode or encode the dbaccess file, optional
+   :type dbaccess_codecs: string
 
    :returns: * **dbaccessdic** (*dict*) -- dictionary of minerals, gases, redox and aqueous species
              * **dbaccess** (*string*) -- direct-access database file name
@@ -1374,6 +1378,10 @@ Attributes
    :type sourcedb: string
    :param sourceformat: specify the source database format, either 'GWB' or 'EQ36', optional
    :type sourceformat: string
+   :param sourcedb_codecs: specify the name of the encoding used to decode or encode the sourcedb file, optional
+   :type sourcedb_codecs: string
+   :param dbaccess_codecs: specify the name of the encoding used to decode or encode the dbaccess file, optional
+   :type dbaccess_codecs: string
 
    :returns: * **dbaccessdic** (*dict*) -- dictionary of minerals, gases, redox and aqueous species
              * **dbaccess** (*string*) -- direct-access database file name

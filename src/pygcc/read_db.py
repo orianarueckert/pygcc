@@ -29,6 +29,7 @@ J_to_cal = 4.184
 # from sys import platform
 
 def findcodecs(filename):
+    """Function to find the name of the encoding used to decode or encode any file    """
     data = open(filename, "rb").read()
     # data = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), filename), 'rb').read()
     all_codecs = ['ascii', 'latin_1', 'utf_8']
@@ -68,6 +69,10 @@ class db_reader:
             filename of the source database, optional
         sourceformat : string
             specify the source database format, either 'GWB' or 'EQ36', optional
+        sourcedb_codecs : string
+            specify the name of the encoding used to decode or encode the sourcedb file, optional
+        dbaccess_codecs : string
+            specify the name of the encoding used to decode or encode the dbaccess file, optional
 
     Returns
     -------
@@ -106,7 +111,9 @@ class db_reader:
     kwargs = {"dbaccess": None,
               "dbBerman_dir": None,
               "sourcedb": None,
-              "sourceformat": None,}
+              "sourceformat": None,
+              "sourcedb_codecs": None,
+              "dbaccess_codecs": None}
 
     def __init__(self, **kwargs):
         self.kwargs = db_reader.kwargs.copy()
@@ -121,6 +128,14 @@ class db_reader:
             self.dbaccess_dir = self.kwargs["dbaccess"]
         self.dbBerman_dir = self.kwargs["dbBerman_dir"]
         self.sourcedb_dir = self.kwargs["sourcedb"]
+        if self.kwargs['dbaccess_codecs'] is None:
+            self.dbaccess_codecs = findcodecs(self.dbaccess_dir)
+        else:
+            self.dbaccess_codecs = self.kwargs['dbaccess_codecs']
+        if self.kwargs['sourcedb_codecs'] is None:
+            self.sourcedb_codecs = findcodecs(self.sourcedb_dir)
+        else:
+            self.sourcedb_codecs = self.kwargs['sourcedb_codecs']
         if self.dbaccess_dir is not None:
             self.dbaccess = self.dbaccess_dir.split('/')[-1]
         if self.sourcedb_dir is not None:
@@ -157,7 +172,7 @@ class db_reader:
         [dbaccessdic, dbname] = readAqspecdb(dbaccess)
         """
         # check if its a single liner data
-        codecs = findcodecs(self.dbaccess_dir)
+        codecs = self.dbaccess_codecs
         with open(self.dbaccess_dir, encoding = codecs) as g:
             Rd = g.readlines()
 
@@ -447,7 +462,7 @@ class db_reader:
         ----------
         [sourcedic, specielist, chargedic, MWdic, Mineraltype, fugacity_info, activity_model] = readSourceGWBdb()
         """
-        codecs = findcodecs(self.sourcedb_dir)
+        codecs = self.sourcedb_codecs
         with open(self.sourcedb_dir, encoding = codecs) as g:
             for line in g:
                 if line.startswith('activity model'):
@@ -672,7 +687,7 @@ class db_reader:
         ----------
         [sourcedic, specielist, chargedic, MWdic, block_info, Elemlist, act_param] = readSourceEQ36db(sourcedb)
         """
-        codecs = findcodecs(self.sourcedb_dir)
+        codecs = self.sourcedb_codecs
         with open(self.sourcedb_dir, encoding = codecs) as g:
             for line in g:
                 if line.startswith(('bdot parameters', 'single-salt parameters', 'ca combinations')):

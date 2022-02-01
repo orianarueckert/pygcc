@@ -157,7 +157,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 'T', 
 # In[17]:
 
 
-get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 250, dataset = 'GWB', sourcedb = './database/data0.fmt',\n               sourceformat = 'EQ36')")
+get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 250, dataset = 'GWB', sourcedb = './database/data0.fmt',\n               sourceformat = 'EQ36', sourcedb_codecs = 'utf-8')")
 
 
 # ### Example: Generate EQ3/6 thermodynamic database
@@ -175,7 +175,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = T, P = P, cpx_Ca = 
 # In[19]:
 
 
-get_ipython().run_cell_magic('time', '', "write_database(T = [0, 400], P = 350, cpx_Ca = 0.5, solid_solution = 'Yes', clay_thermo = 'Yes',\n                sourcedb = './database/data0.geo', dataset = 'EQ36')")
+get_ipython().run_cell_magic('time', '', "write_database(T = [0, 400], P = 350, cpx_Ca = 0.5, solid_solution = 'Yes', clay_thermo = 'Yes',\n                sourcedb = './database/data0.geo', dataset = 'EQ36', sourcedb_codecs = 'latin-1')")
 
 
 # write EQ3/6 using user-specified sourced Pitzer database
