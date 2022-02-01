@@ -141,7 +141,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = [0, 400], P = 300, 
 # In[15]:
 
 
-get_ipython().run_cell_magic('time', '', "write_database(T = [0, 340], P = 150, Dielec_method = 'FGL97',  dbaccess = './database/slop07.dat',\n                dbBerman_dir = './database/Berman.dat', dataset = 'GWB',\n                mineral_eos = 'Berman88')")
+get_ipython().run_cell_magic('time', '', "write_database(T = [0, 340], P = 150, Dielec_method = 'FGL97',  dbaccess = './database/slop07.dat',\n                dbBerman_dir = './database/berman.dat', dataset = 'GWB',\n                mineral_eos = 'Berman88')")
 
 
 # write GWB using user-specified sourced Pitzer database and default direct-access database along the saturation curve
