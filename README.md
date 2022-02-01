@@ -23,9 +23,6 @@ request features or examples; see [Contributing](#contributing) below).
 
 ## Installation
 
-#[![PyPI](https://img.shields.io/pypi/v/pyrolite.svg?style=flat)](https://pypi.python.org/pypi/pyrolite)
-#[![Compatible Python Versions](https://img.shields.io/pypi/pyversions/pyrolite.svg?style=flat)](https://pypi.python.org/pypi/pyrolite/)
-#[![pygcc downloads](https://img.shields.io/pypi/dm/pyrolite.svg?style=flat)](https://pypistats.org/packages/pyrolite)
 
 ```bash
 $ pip install pygcc
