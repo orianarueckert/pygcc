@@ -590,7 +590,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 32,
+   "execution_count": 38,
    "metadata": {},
    "outputs": [
     {
@@ -598,16 +598,16 @@
      "output_type": "stream",
      "text": [
       "Success, your new GWB database is ready for download\n",
-      "Wall time: 2.54 s\n"
+      "Wall time: 2.77 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x25b914d20d0>"
+       "<pygcc.pygcc_utils.write_database at 0x25b927b7040>"
       ]
      },
-     "execution_count": 32,
+     "execution_count": 38,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -615,7 +615,7 @@
    "source": [
     "%%time\n",
     "write_database(T = [0, 350], P = 250, dataset = 'GWB', sourcedb = './database/data0.fmt',\n",
-    "               sourceformat = 'EQ36', sourcedb_codecs = 'utf-8')"
+    "               sourceformat = 'EQ36', sourcedb_codecs = 'latin-1')"
    ]
   },
   {

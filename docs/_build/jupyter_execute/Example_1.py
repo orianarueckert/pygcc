@@ -157,7 +157,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 'T', 
 # In[17]:
 
 
-get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 250, dataset = 'GWB', sourcedb = './database/data0.fmt',\n               sourceformat = 'EQ36', sourcedb_codecs = 'utf-8')")
+get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 250, dataset = 'GWB', sourcedb = './database/data0.fmt',\n               sourceformat = 'EQ36', sourcedb_codecs = 'latin-1')")
 
 
 # ### Example: Generate EQ3/6 thermodynamic database
