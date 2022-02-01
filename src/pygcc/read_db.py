@@ -26,7 +26,7 @@ import re, os
 import textwrap
 J_to_cal = 4.184
 
-from sys import platform
+# from sys import platform
 
 def findcodecs(filename):
     data = open(filename, "rb").read()
@@ -46,10 +46,11 @@ def findcodecs(filename):
     if all(f) == True:
         return None
     else:
-        if platform == "darwin": # OS X
-            return all_codecs[1]
-        elif platform in ["linux", "linux2", "win32"]:   # linux and # Windows...
-            return None
+        return all_codecs[1]
+        # if platform == "darwin": # OS X
+        #     return all_codecs[1]
+        # elif platform in ["linux", "linux2", "win32"]:   # linux and # Windows...
+        #     return None
 
 
 class db_reader:

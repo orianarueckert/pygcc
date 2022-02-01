@@ -3,7 +3,7 @@
 
 # # An Introduction to pyGeochemCalc
 # 
-# `Adedapo Awolayo` and `Benjamin Tutolo` 2022-01-20
+# `Adedapo Awolayo` and `Benjamin Tutolo` 2022-01-31
 
 # ## Overview  <a class="anchor" id="section_1"></a>
 # The pyGeochemCalc (pygcc) tool, a package for the python software environment, serves as an upgrade over the `DBCreate` and `SUPCRT92` software package. `DBCreate` has been developed based on `SUPCRT92` as a tool for creating thermodynamic database for geochemical calulations in tools like GWB, EQ36 and ToughReact (Kong et al., 2013). This community-driven, open-source Python package incorporates existing and newly implemented functions for calculating the thermodynamic properties of gas, aqueous, and mineral (including solid solutions - plagioclase, alkali-feldspar, olivine, pyroxene and clinopyroxene, and variable-formula clays) species, as well as reactions amongst these species, over a broad range of temperature and pressure conditions using the *`International Association for the Properties of Water and Steam`* (IAWPS) Formulation 1995 (Wagner and Pruß, 2002) equation of state and *`Zhang & Duan model Formulation`* (Zhang and Duan, 2005 and 2009) for Deep Earth Water (DEW) conditions. In addition, pygcc incorporates functions that permit the seamless integration and usage of these newly produced thermodynamic data in popular geochemical software including the Geochemist’s Workbench, EQ3/6, TOUGHREACT, and PFLOTRAN. The package is swift for ordinary stand-alone calculations and could be modified to support direct incorporation into other software, such as reactive-transport codes. The package is open-source and intended to be community-driven, such that the package and its capabilities can evolve in tandem with the needs of the geochemical modeling community
@@ -84,8 +84,7 @@ Db_thermo = db_reader(dbaccess = './database/speq21.dat')
 
 # The function `db_reader(dbaccess = None, dbBerman_dir = None)` requires the users to specify the file location, name and its extension, of the direct-access or sequential-access thermodynamic database, if nothing is specified, the function reads the default database, `speq21.dat`. The *dbBerman_dir* input only needs to specified if the users prefers Berman dataset for mineral species, then the filename and location needs to be specified (see *dbBerman_dir = './database/berman.dat'*). The above function returns two parameters; *a dictionary* containing the thermodynamic properties of each species (gas, minerals, aqueous and redox) within the direct-access/sequential-access thermodynamic database and *a string* containing the filename without the file location. The format of this dictionary contains a list, for example for a mineral using Maier-Kelley power function with no phase transition, as follows:
 # 
-# > Db_thermo.dbaccessdic['mineral name'] = 
-# ['formula', 'source  date', dG[cal/ml], dH[cal/mol], S[cal/mol-K], V[cm3/mol], a[cal/mol-K], b[*10^3 cal/mol/K^2], c[*10^-5 cal/mol/K], Ttrans [K]]
+# > Db_thermo.dbaccessdic['mineral name'] = ['formula',  'source  date',  dG[cal/ml],  dH[cal/mol], S[cal/mol-K], V[cm$^{3}$/mol], a[cal/mol-K], b[*10$^{3}$ cal/mol/K$^{2}$], c[*10$^{-5}$ cal/mol/K], Ttrans [K]]
 # 
 # For example, we can output the thermo properties of `'Diopside'` with:
 
@@ -96,16 +95,7 @@ print(Db_thermo.dbaccessdic['Diopside'])
 print(Db_thermo.dbaccess)
 
 
-# **Note:** ***'speq21.dat'*** contains properties in the following format - for minerals species (dG [cal/mol], 
-# 	       dH [cal/mol], S [cal/mol-K], V [cm3/mol] a [cal/mol-K], b [*10**3 cal/mol/K^2], 
-# 	       c [*10^-5 cal/mol/K], Ttrans [K], Htr [cal/mol], Vtr [cm³/mol], dPdTtr [bar/K] ) and aqueous 
-# 	       species (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm3/mol], a1 [*10 cal/mol/bar],
-# 	       a2 [*10**-2 cal/mol], a3 [cal-K/mol/bar], a4 [*10**-4 cal-K/mol], c1 [cal/mol/K], 
-# 	       c2 [*10**-4 cal-K/mol], ω [*10**-5 cal/mol] ), while ***'Berman.dat'*** contains properties in the 
-# 	       following format - for minerals (dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, 
-# 	       k3, v1 [*10^5 K^-1], v2 [*10^5 K^-2], v3 [*10^5 bar^-1], v4 [*10^8 bar^-2], dTdP [K/bar], 
-# 	       Tlambda [K], Tref [K], l1 [(J/mol)^0.5/K], l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], 
-# 	       d2 [J/mol], d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K])
+# **Note:** ***'speq21.dat'*** contains properties in the following format - for minerals species (dG [cal/mol],  dH [cal/mol], S [cal/mol-K], V [cm$^{3}$/mol], a [cal/mol-K], b [*10$^{3}$ cal/mol/K$^{2}$], c [*10$^{-5}$ cal/mol/K], Ttrans [K], Htr [cal/mol], Vtr [cm$^{3}$/mol], dPdTtr [bar/K] ) and aqueous  species (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm$^{3}$/mol], a1 [*10 cal/mol/bar], a2 [*10$^{-2}$ cal/mol], a3 [cal-K/mol/bar], a4 [*10$^{-4}$ cal-K/mol], c1 [cal/mol/K], c2 [*10$^{-4}$ cal-K/mol], ω [*10$^{-5}$ cal/mol] ), while ***'Berman.dat'*** contains properties in the following format - for minerals (dG [J/mol], dH [J/mol], S [J/mol-K], V [cm$^{3}$/mol], k0, k1, k2, k3, v1 [*10$^{5}$ K$^{-1}$], v2 [*10$^{5}$ K$^{-2}$], v3 [*10$^{5}$ bar^-1], v4 [*10$^{8}$ bar^-2], dTdP [K/bar], Tlambda [K], Tref [K], l1 [(J/mol)$^{0.5}$/K], l2 [(J/mol)$^{0.5}$/K$^{2}$], DtH, d0 [J/mol], d1 [J/mol],  d2 [J/mol], d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K])
 #            
 # If the user wants to use the default database and needs to add any species properties that is not already included, a quick way is to follow the above commands and add the properties of the new species. For example:
 # 
@@ -131,7 +121,7 @@ print(Db_thermo.sourcedic['Diopside'])
 
 
 # ### Search function    <a class="anchor" id="section_2_2"></a>
-# Suppose the user is interested in finding the naming system for a particular species, this function searches through any of the database (either direct-access or source) for any name that contains the declared string and returns species that matching the search. This is highly critical when it is important to know exactly how the species name is written within each of the database to get the right match for various geochemical calculations, such as thermodynamic properties or chemical reaction. For example, gather all species containing HCO3 in its compositions from source dictionary:
+# Suppose the user is interested in finding the naming system for a particular species, this function searches through any of the database (either direct-access or source) for any name that contains the declared string and returns species that matching the search. This is highly critical when it is important to know exactly how the species name is written within each of the database to get the right match for various geochemical calculations, such as thermodynamic properties or chemical reaction. For example, gather all species containing HCO$_{3}$ in its compositions from source dictionary:
 
 # In[9]:
 
@@ -152,10 +142,10 @@ print(info('Rb', Db_thermo.dbaccessdic))
 # *IAPWS95* (Wagner and Pruß, 2002) and *FGL* (Fernández et al., 1997) formulations are implemented in pygcc for the calculation of the thermodynamic and dielectric properties of water and steam, while the *ZhangDuan* (Zhang and Duan, 2005 and 2009) and *DEW* (Sverjensky et al., 2014) formulations are implemented for high temperature and pressure conditions. However since many of the coefficients in the HKF equations (especially dielectric constant) required to calculate thermodynamic properties of other species are based on the *IAPWS84* formulation (popularly known as HGK84 or NBS/NRC-84, Haar et al. (1984)) incorporated in the H2O92 subroutine from *SUPCRT92* (Johnson et al., 1992) and to avoid regressing those parameters, Johnson and Norton formulation for dielectric constant (Johnson and Norton, 1991) was implemented in pygcc. Hence, the users have the option of choosing either formulation (*FGL97* or *JN91*) for dielectric constant calculation. Other water properties are calculated using the *IAPWS95* formulation, in part because of the intrinsic thermodynamic differences between *IAPWS84* and *IAPWS95*, and also that the *IAPWS95* equations can be extrapolated to a greater range of Temperatures and Pressures than *IAPWS84*. In addition, . 
 # 
 # ### IAPWS-95 Formulation   <a class="anchor" id="section_3_1"></a>
-# The function `iapws95(T = None, P = None, rho = None, rho0 = None, FullEOSppt = False, v = None, Out_Unit = 'standard')` is designed to take a combination of different inputs - temperature [C], density [kg/m3], pressure [bar] and output equation of state properties such as pressure [bar], Helmholtz energy [cal/mol/K or kJ/kg/K], Entropy [cal/mol/K or kJ/kg/K], Enthalpy [cal/mol or kJ/kg], Gibbs energy [cal/mol or kJ/kg], Volume [m3/mol or m3/kg], Derivative of pressure with respect to delta [bar], Helmholtz energy derivative with respect to reduced density (delta), zeta value (needed to calculate viscosity), Derivative of pressure with respect to reduced temperature (tau) [bar], Compressibility [/bar], Thermal expansion coefficient (thermal expansivity). Other water properties such as viscosity [Pa-s], Internal energy [cal/mol or kJ/kg], Isobaric heat capacity [cal/mol/K or kJ/kg/K], Isochoric heat capacity [cal/mol/K or kJ/kg/K], Joule-Thomsen coefficient [K-m3/kJ], Isothermal throttling coefficient [kJ/kg/bar], Isentropic temperature-pressure coefficient [K-m3/kJ], Speed of sound [m/s] are returned as outputs only when `FullEOSppt` input is set as `True` as they are not currently utilized in any calculation in pygcc. Also, the `Out_Unit` has the option of converting the properties to `'standard'` (calorie units) or 'kilogram' (kilogram units). There are three basic types of problems in evaluating this equation-of-state model and these problems are distinguished by their specified inputs as below:
+# The function `iapws95(T = None, P = None, rho = None, rho0 = None, FullEOSppt = False, v = None, Out_Unit = 'standard')` is designed to take a combination of different inputs - temperature [°C], density [kg/m$^{3}$], pressure [bar] and output equation of state properties such as pressure [bar], Helmholtz energy [cal/mol/K or kJ/kg/K], Entropy [cal/mol/K or kJ/kg/K], Enthalpy [cal/mol or kJ/kg], Gibbs energy [cal/mol or kJ/kg], Volume [m$^{3}$/mol or m$^{3}$/kg], Derivative of pressure with respect to delta [bar], Helmholtz energy derivative with respect to reduced density (delta), zeta value (needed to calculate viscosity), Derivative of pressure with respect to reduced temperature (tau) [bar], Compressibility [/bar], Thermal expansion coefficient (thermal expansivity). Other water properties such as viscosity [Pa-s], Internal energy [cal/mol or kJ/kg], Isobaric heat capacity [cal/mol/K or kJ/kg/K], Isochoric heat capacity [cal/mol/K or kJ/kg/K], Joule-Thomsen coefficient [K-m$^{3}$/kJ], Isothermal throttling coefficient [kJ/kg/bar], Isentropic temperature-pressure coefficient [K-m$^{3}$/kJ], Speed of sound [m/s] are returned as outputs only when `FullEOSppt` input is set as `True` as they are not currently utilized in any calculation in pygcc. Also, the `Out_Unit` has the option of converting the properties to `'standard'` (calorie units) or 'kilogram' (kilogram units). There are three basic types of problems in evaluating this equation-of-state model and these problems are distinguished by their specified inputs as below:
 # 
 # #### Properties as a Function of Temperature and Density   <a class="anchor" id="section_3_1_1"></a>
-# This is a straightforward approach that does not require any iteration. Here, the temperature [C] and density [kg/m3] are specified as inputs in `iapws95` and returns various thermodynamic properties as previously mentioned. An example of utilizing `iapws95` for calculating properties at 500 K and 838.025 kg/m3 is as follows:
+# This is a straightforward approach that does not require any iteration. Here, the temperature [°C] and density [kg/m$^{3}$] are specified as inputs in `iapws95` and returns various thermodynamic properties as previously mentioned. An example of utilizing `iapws95` for calculating properties at 500 K and 838.025 kg/m$^{3}$ is as follows:
 
 # In[11]:
 
@@ -172,7 +162,7 @@ water.P, water.F, water.S, water.H, water.G, water.V, water.mu, water.Cp
 
 
 # #### Properties as a Function of Temperature and Pressure   <a class="anchor" id="section_3_1_2"></a>
-# This approach involves an iterative solution to the above approach by finding and revising the value of density that is consistent with the desired input pressure using Newton-Raphson method. The implementation of this approach is carried out by function `iapws95` where a user-specified starting estimate of density `(rho0)` can be optionally utilized. The approached used in generating starting guess is similar to that described in Wolery (2020). The function `iapws95` takes temperature [C] and pressure [bar] as inputs and returns various thermodynamic properties. An example of utilizing `iapws95` for calculating properties at 25 °C and 1 bar is as follows:
+# This approach involves an iterative solution to the above approach by finding and revising the value of density that is consistent with the desired input pressure using Newton-Raphson method. The implementation of this approach is carried out by function `iapws95` where a user-specified starting estimate of density `(rho0)` can be optionally utilized. The approached used in generating starting guess is similar to that described in Wolery (2020). The function `iapws95` takes temperature [°C] and pressure [bar] as inputs and returns various thermodynamic properties. An example of utilizing `iapws95` for calculating properties at 25 °C and 1 bar is as follows:
 
 # In[13]:
 
@@ -227,7 +217,7 @@ water.rho, water.G, water.H, water.S, water.V, water.P, water.TC
 
 
 # ### ZhangDuan Formulation   <a class="anchor" id="section_3_2"></a>
-# Zhang and Duan (2005) proposed an empirical pressure-volume-temperature equation of state for water at high temperature and pressure, which Sverjensky et al. (2014) developed into Deep Earth Water model. Its implementation in pygcc takes the first two forms described above, which are estimating *Properties as a Function of Temperature and Pressure* and *Properties as a Function of Temperature and Density*. However, in both cases, the outputs are density [kg/m3]/pressure [bar], Gibbs energy [cal/mol], derivative of density to pressure at constant temperature and derivative of density to temperature at constant pressure. The typical usage of the `ZhangDuan()` function is as below:
+# Zhang and Duan (2005) proposed an empirical pressure-volume-temperature equation of state for water at high temperature and pressure, which Sverjensky et al. (2014) developed into Deep Earth Water model. Its implementation in pygcc takes the first two forms described above, which are estimating *Properties as a Function of Temperature and Pressure* and *Properties as a Function of Temperature and Density*. However, in both cases, the outputs are density [kg/m$^{3}$]/pressure [bar], Gibbs energy [cal/mol], derivative of density to pressure at constant temperature and derivative of density to temperature at constant pressure. The typical usage of the `ZhangDuan()` function is as below:
 
 # In[17]:
 
@@ -237,7 +227,7 @@ water.rho, water.G, water.drhodP_T, water.drhodT_P
 
 
 # ### Dielectric Constants Calculation  <a class="anchor" id="section_3_3"></a>
-# The dielectric constant is one of the most critical properties of water required in calculating Born functions, Debye-Hückel parameters and molal properties of species and reactions at varying temperature and pressure conditions. Like earlier noted, two different formulations were implemented for non-extreme temperature and pressure conditions, and users have a choice to pick the preferred formulation using `Dielec_method` and as further described below. The function `water_dielec()` takes any two combinations of temperature [°C], pressure [bar] and density [kg/m3] as inputs, and returns various properties of water such as dielectric constant of water [cal/mol], density [g/cm3], Debye-Huckel "A" parameters [kg^1/2 mol^-1/2], Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1], bdot, Debye-Huckel "A" parameters derivatives associated with apparent molar enthalpy and apparent molar volume, and Debye-Huckel "B" parameters derivatives associated with apparent molar enthalpy and apparent molar volume. 
+# The dielectric constant is one of the most critical properties of water required in calculating Born functions, Debye-Hückel parameters and molal properties of species and reactions at varying temperature and pressure conditions. Like earlier noted, two different formulations were implemented for non-extreme temperature and pressure conditions, and users have a choice to pick the preferred formulation using `Dielec_method` and as further described below. The function `water_dielec()` takes any two combinations of temperature [°C], pressure [bar] and density [kg/m$^{3}$] as inputs, and returns various properties of water such as dielectric constant of water [cal/mol], density [g/cm$^{3}$], Debye-Huckel "A" parameters [kg$^{1/2}$ mol$^{-1/2}$], Debye-Huckel "B" parameters [kg$^{1/2}$ mol$^{-1/2}$ Angstrom$^{-1}$], bdot, Debye-Huckel "A" parameters derivatives associated with apparent molar enthalpy and apparent molar volume, and Debye-Huckel "B" parameters derivatives associated with apparent molar enthalpy and apparent molar volume. 
 # 
 # #### FGL Electrostatic Formulation   <a class="anchor" id="section_3_3_1"></a>
 # The IAPWS-sanctioned model for the dielectric constant of water is described in IAPWS (1997) and the relevant equations and constants for the model are given in the source document and the paper by Fernández et al. (1997). An example of utilizing `FGL97` for calculating properties at 50°C and 1.0133 bar (at saturation curve) is as follows:
@@ -275,9 +265,7 @@ dielect.E, dielect.rhohat, dielect.Ah, dielect.Bh, dielect.bdot, dielect.Adhh, d
 # ### Thermodynamic Properties of Reactions among species      <a class="anchor" id="section_4_1"></a>
 # The calculation of equilibrium constants for reactions among aqueous, gas, and mineral species is implemented in the pygcc `calcRxnlogK(T = None, P = None, Specie = None, dbaccessdic = None, sourcedic = None, specielist = None, mineral_eos = None, sourceformat = None, densityextrap = False)` function. The logarithm (base 10) of the equilibrium constant ($ K_{eq} $) of any reaction is calculated via: 
 # 
-# \begin{equation}
-#  log K_{eq} = \frac{G^{reactants}_{T, P} - G^{products}_{(T, P)}}{-RTln(10)}  
-# \end{equation}
+# $$log K_{eq} = \frac{G^{reactants}_{T, P} - G^{products}_{(T, P)}}{-RTln(10)}  $$
 # 
 # The function outputs logarithm of the equilibrium constant, Gibbs free energy of the reaction, total Gibbs free energy of the product species and total Gibbs free energy of the reactant species. The required inputs are temperature [°C], pressure [bar], Specie (a *string* that specifies the name of the product species), direct-access database dictionary (for example above, *Db_thermo.dbaccessdic*), source database dictionary and species list (for example above, *Db_thermo.sourcedic, Db_thermo.specielist*), `densityextrap` (bool - True or False - to indicate usage of density extrapolation), `sourceformat` (either *GWB* or *EQ36*) and `mineral_eos` (specifying either `'SUPCRT'` or `'Berman88'` for using either `heatcap` or `heatcap_Berman` function respectively) and other optional inputs like `Dielec_method` and `rhoEGextrap`.
 
@@ -305,11 +293,9 @@ supcrtaq(100, 1000, Db_thermo.dbaccessdic['NaCl(aq)'], Dielec_method = 'DEW')
 # #### Mineral and gas species     <a class="anchor" id="section_4_1_2"></a>
 # The standard molal Gibbs free energy and heat capacity with temperature and pressure of mineral and gas species can be calculated in pygcc using the `heatcap` function based on Maier-Kelly powerlaw (Maier and Kelley, 1932). The 5-term Haas-Fisher polynomial equation (Haas and Fisher 1976) was also implemented to calculate Gibbs free energy and heat capacity for some minerals as reported by Robie and Hemingway (1995), as implemented in the `heatcapusgscal`. In addition, Berman (1988) reported an internally consistent standard state thermodynamic data set for 67 minerals using a different thermodynamic conventions as compared with that used by Helgeson et al. (1978). The equation of state by Berman (1988) was converted to the Helgeson Convention used in pygcc by considering the equation below as implemented in `heatcap_Berman` function. 
 # 
-# \begin{equation}
-#  G_{Helgeson} = G_{Berman} + T_{r} S^{elements}_{(Tr, Pr)} 
-# \end{equation}
+# $$ G_{Helgeson} = G_{Berman} + T_{r} S^{elements}_{(Tr, Pr)} $$
 # 
-# Examples of utilizing `heatcap`, `heatcapusgscal` and `heatcap_Berman` for calculating Gibbs free energy and heat capacity of *'CO2(g)'*, *'Fluorapatite'*, and *'Quartz'* respectively at 60°C and 100 bar with the default `JN91 Dielec_method` are as follows:
+# Examples of utilizing `heatcap`, `heatcapusgscal` and `heatcap_Berman` for calculating Gibbs free energy and heat capacity of *'CO$_{2}$(g)'*, *'Fluorapatite'*, and *'Quartz'* respectively at 60°C and 100 bar with the default `JN91 Dielec_method` are as follows:
 
 # In[24]:
 
