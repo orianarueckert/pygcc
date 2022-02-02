@@ -1571,6 +1571,7 @@ class Dummy(object):
             P = P.ravel()
 
         rho0 = rho0[0]
+
         Pout = P # cases where 'T' is used as input
         Tout = TC # cases where 'P' is used as input
         TK = convert_temperature( TC, Out_Unit = 'K' )
@@ -1586,9 +1587,9 @@ class Dummy(object):
         # btxtol = 1.0e-8
 
         # Obtain a description (udescr) of the H2O fluid.
-        rho = np.zeros([len(TK), 1]).ravel()
+        rho = np.zeros(len(TK)).ravel()
         for i in range(len(TK)):
-            if np.ndim(rho0) != 0:
+            if (np.ndim(rho0) != 0):
                 [phase, rhosl, rhosv] = self.fluidDescriptor(P[i], TK[i], rho0[i])
             else:
                 [phase, rhosl, rhosv] = self.fluidDescriptor(P[i], TK[i])
@@ -1632,12 +1633,8 @@ class Dummy(object):
                 # of density could not be established, try three times the critical density.
                 rho[i] = 4*rhoc
 
-        funct_tsat = lambda rho: self.vEOSIAPWS95(TK, rho, FullEOSppt = FullEOSppt)[0]*0.1 - P*0.1
-        # rho = root_scalar(funct_tsat, method = 'secant',
-        #                   bracket=[0.01, 1e4], x0 = 0.01, x1 = 1e4, xtol = btxtol).root
-        #rho = brentq(funct_tsat, 0.01, 1e4, xtol=btxtol)
-        rho = fsolve(funct_tsat, rho)
-        #rho = newton(funct_tsat, rho, fprime = None, args=(), tol=btxtol, maxiter=itermx, fprime2 = None)
+            funct_tsat = lambda rho: self.EOSIAPWS95(TK[i], rho, FullEOSppt = FullEOSppt)[0] - P[i]
+            rho[i] = fsolve(funct_tsat, rho[i])
 
         if FullEOSppt == True:
             [Px, ax, sx, hx, gx, vx,  _, _, _, _, _, _, ux, _, _, _, _, cpx, _, _] = self.vEOSIAPWS95(TK, rho, FullEOSppt = FullEOSppt)
@@ -1714,8 +1711,8 @@ class Dummy(object):
                 TK[i] = Tc
             else:
                 TK[i] = self.calcsatpropP(P[i])[0]
-        funct_tsat = lambda TK: self.vEOSIAPWS95(TK, rho)[0] - P
-        TK = fsolve(funct_tsat, TK)
+            funct_tsat = lambda TK: self.EOSIAPWS95(TK, rho[i])[0] - P[i]
+            TK[i] = fsolve(funct_tsat, TK[i])
         Pout = P; Tout = convert_temperature( TK, Out_Unit = 'C' )
         if FullEOSppt == True:
             [Px, ax, sx, hx, gx, vx,  _, _, _, _, _, _, ux, _, _, _, _, cpx, _, _] = self.vEOSIAPWS95(TK, rho, FullEOSppt = FullEOSppt)
@@ -1810,7 +1807,6 @@ class Dummy(object):
             gxcu = hx*J_to_cal/1000/mwH2O - dg + TK*(sxcu + ds)
 
             return gxcu, hxcu, sxcu, vxcu, axcu, uxcu, cpxcu
-
 
 class iapws95:
     """
@@ -2003,7 +1999,7 @@ class iapws95:
 
         if self.rho0 is not None:
             if np.size(self.rho0) < np.size(self.TC):
-                self.rho0 = (self.rho0*np.ones_like(self.TC)).ravel()
+                self.rho0 = (self.rho0*np.ones(len(self.TC))).ravel()
 
         """Check if inputs are enough to define state"""
         if type(self.P) != str and type(self.TC) != str:
@@ -2012,31 +2008,31 @@ class iapws95:
                 if np.size(self.P) < np.size(self.TC):
                     if np.ndim(self.P) == 0:
                         self.P = np.ravel(self.P)
-                    self.P = (self.P[0]*np.ones_like(self.TC)).ravel()
+                    self.P = (self.P[0]*np.ones(len(self.TC))).ravel()
                 if np.size(self.TC) < np.size(self.P):
                     if np.ndim(self.TC) == 0:
                         self.TC = np.ravel(self.TC)
-                    self.TC = (self.TC[0]*np.ones_like(self.P)).ravel()
+                    self.TC = (self.TC[0]*np.ones(len(self.P))).ravel()
             elif np.ravel(self.TC).any() and np.ravel(self.rho).any():
                 self.mode = "T_rho"
                 if np.size(self.rho) < np.size(self.TC):
                     if np.ndim(self.rho) == 0:
                         self.rho = np.ravel(self.rho)
-                    self.rho = (self.rho[0]*np.ones_like(self.TC)).ravel()
+                    self.rho = (self.rho[0]*np.ones(len(self.TC))).ravel()
                 if np.size(self.TC) < np.size(self.rho):
                     if np.ndim(self.TC) == 0:
                         self.TC = np.ravel(self.TC)
-                    self.TC = (self.TC[0]*np.ones_like(self.rho)).ravel()
+                    self.TC = (self.TC[0]*np.ones(len(self.rho))).ravel()
             elif np.ravel(self.P).any() and np.ravel(self.rho).any():
                 self.mode = "P_rho"
                 if np.size(self.P) < np.size(self.rho):
                     if np.ndim(self.P) == 0:
                         self.P = np.ravel(self.P)
-                    self.P = (self.P[0]*np.ones_like(self.rho)).ravel()
+                    self.P = (self.P[0]*np.ones(len(self.rho))).ravel()
                 if np.size(self.rho) < np.size(self.P):
                     if np.ndim(self.rho) == 0:
                         self.rho = np.ravel(self.rho)
-                    self.rho = (self.rho[0]*np.ones_like(self.P)).ravel()
+                    self.rho = (self.rho[0]*np.ones(len(self.P))).ravel()
             elif np.ravel(self.TC).any() and np.ravel(self.P).any() is None:
                 self.mode = "T_x"
             elif np.ravel(self.P).any() and np.ravel(self.TC).any() is None:
