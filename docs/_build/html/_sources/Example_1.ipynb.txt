@@ -270,7 +270,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "# Vectors for Temperature (K) and Pressure (bar) inputs\n",
+    "# Vectors for Temperature (C) and Pressure (bar) inputs\n",
     "T = np.array([  0.010,   25.0000 ,  60.0000,  100.0000, 120.0000,  150.0000,  250.0000,  300.0000])\n",
     "P = 350*np.ones(np.size(T))\n",
     "nCa = 1"
@@ -614,8 +614,8 @@
    ],
    "source": [
     "%%time\n",
-    "write_database(T = [0, 350], P = 250, dataset = 'GWB', sourcedb = './database/data0.fmt',\n",
-    "               sourceformat = 'EQ36', sourcedb_codecs = 'latin-1')"
+    "write_database(T = [0, 350], P = 250, dataset = 'GWB', sourcedb = './database/data0.hmw',\n",
+    "               sourceformat = 'EQ36')"
    ]
   },
   {

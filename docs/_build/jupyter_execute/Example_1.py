@@ -90,7 +90,7 @@ log_K_PPM
 # In[9]:
 
 
-# Vectors for Temperature (K) and Pressure (bar) inputs
+# Vectors for Temperature (C) and Pressure (bar) inputs
 T = np.array([  0.010,   25.0000 ,  60.0000,  100.0000, 120.0000,  150.0000,  250.0000,  300.0000])
 P = 350*np.ones(np.size(T))
 nCa = 1
@@ -157,7 +157,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 'T', 
 # In[17]:
 
 
-get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 250, dataset = 'GWB', sourcedb = './database/data0.fmt',\n               sourceformat = 'EQ36', sourcedb_codecs = 'latin-1')")
+get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 250, dataset = 'GWB', sourcedb = './database/data0.hmw',\n               sourceformat = 'EQ36')")
 
 
 # ### Example: Generate EQ3/6 thermodynamic database
