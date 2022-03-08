@@ -237,8 +237,10 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
     else:
         if group == '7A':
             T_Al = 2 - float(elem[1]) if float(elem[2]) != 0 else 0
+            T_Al = T_Al if float(elem[2]) >= T_Al else float(elem[2])
         else:
             T_Al = 4 - float(elem[1]) if float(elem[2]) != 0 else 0
+            T_Al = T_Al if float(elem[2]) >= T_Al else float(elem[2])
     if len(elem) == 0:
         O_Al = 0
     elif (float(elem[2]) > T_Al):
@@ -256,6 +258,9 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
         T_FeIII = float(elem[3]) - O_FeIII
     O_FeII = 0 if len(elem) == 0 else float(elem[4])
 
+    I_K = 0 if len(elem) == 0 else float(elem[6])
+    I_Na = 0 if len(elem) == 0 else float(elem[7])
+    I_Ca = 0 if len(elem) == 0 else float(elem[8])
     if len(elem) == 0:
         I_Mg = 0; I_Li = 0
         O_Mg = 0; O_Li = 0
@@ -268,7 +273,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
             Tot_Oxy = 0.43
         else:
             Tot_Oxy = 0.0
-        Calc_Oxy = (float(elem[6]) + float(elem[7]))*0.5 + float(elem[8])
+        Calc_Oxy = (I_K + I_Na + float(elem[9]))*0.5 + I_Ca
         if Calc_Oxy == 0:
             I_Mg = Tot_Oxy if float(elem[5]) != 0 else 0
             I_Li = Tot_Oxy if float(elem[9]) != 0 else 0
@@ -276,9 +281,6 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
             I_Mg = 0; I_Li = 0
         O_Mg = float(elem[5]) - I_Mg
         O_Li = float(elem[9]) - I_Li
-    I_K = 0 if len(elem) == 0 else float(elem[6])
-    I_Na = 0 if len(elem) == 0 else float(elem[7])
-    I_Ca = 0 if len(elem) == 0 else float(elem[8])
     TK = convert_temperature( TC, Out_Unit = 'K' )
 
     Interlayer = {'Tot' : {'Cs+' : 0, 'Rb+' : 0, 'K+' : I_K, 'Na+' : I_Na, 'Li+' : I_Li,
@@ -1110,6 +1112,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
             np.sum([Tetrahedral['Tot'][j]*charge[j] for j in list(Tetrahedral['Tot'].keys())[1:]])
     nH = round(nH, 3)
     nH2O = (Oxy - nH3O - 2*nSi - 2*nTi)
+    nH = (nH2O*2 - OH) if (nH2O*2 - OH) != nH else nH
     Rxn['formula'] = Rxn['formula'] + 'Si%s' % nSi + 'O%d(OH)%d' % (Oxy - OH, OH)
     Rxn['MW'] = Rxn['MW'] + nSi*MW['Si'] + Oxy*MW['O'] + OH*MW['H']
     Rxn['min']=[dG*1000/J_to_cal, dHf*1000/J_to_cal, S/J_to_cal,
