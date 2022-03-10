@@ -138,9 +138,9 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
         dbacessdic : dict
             dictionary of species from direct-access database, optional, default is speq21  \n
         group : string
-            specify the structural layering of the phyllosilicate, for layers composed of ``1 tetrahedral + 1 octahedral sheet (1:1 layer)`` - specify '7A', ``2 tetrahedral + 1 octahedral sheet (2:1 layer)`` - specify '10A', or the latter with a ``brucitic sheet in the interlayer (2:1:1 layer)``  - specify '14A' (optional), if not specified, default is '10A' for smectites, micas, et cetera \n
+            specify the structural layering of the phyllosilicate, for layers composed of ``1 tetrahedral + 1 octahedral sheet (1:1 layer)`` - specify '7A', ``2 tetrahedral + 1 octahedral sheet (2:1 layer)`` - specify '10A', or the latter with a ``brucitic sheet in the interlayer (2:1:1 layer)``  - specify '14A' (optional), if not specified, default is based on charge balance on the cations and anions \n
         cation_order : string
-            specify ordering of Si and Al ions either 'Eastonite', 'Ordered', 'Random', or 'HDC'  (optional), if not specified, default is based on guidelines  by Vinograd (1995) \n
+            specify ordering of Si and Al ions either 'Eastonite', 'Ordered', 'Random', or 'HDC'  (optional), if not specified, default is based on guidelines by Vinograd (1995) \n
         Dielec_method : string
             specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified, default - 'JN91'
         rhoEG : dict
@@ -213,7 +213,13 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
         dbaccessdic = db_reader(dbaccess = dbaccess_dir).dbaccessdic
 
     Dielec_method = 'JN91' if Dielec_method is None else Dielec_method
-    group = '10A' if group is None else group
+
+    mass_bal = round(np.sum([j*float(k) for j,k in zip([4, 3, 3, 2, 2, 1, 1, 2, 1], elem[1:])]), 2)
+    if mass_bal not in [14, 22, 28]:
+        raise Exception("Mass/Charge balance error: the summation of the product of charge and mass of each element must equal 14 for '7A' group, 22 for '10A' group and 28 for  '14A' group")
+    if group is None:
+        group = '10A' if mass_bal == 22 else '7A' if mass_bal == 14 else '14A' if mass_bal == 28 else None
+
     Mintype = 'Smectites' if Mintype is None else Mintype
 
     if rhoEG.__len__() != 0:
@@ -1112,7 +1118,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
             np.sum([Tetrahedral['Tot'][j]*charge[j] for j in list(Tetrahedral['Tot'].keys())[1:]])
     nH = round(nH, 3)
     nH2O = (Oxy - nH3O - 2*nSi - 2*nTi)
-    nH = (nH2O*2 - OH) if (nH2O*2 - OH) != nH else nH
+    # nH = (nH2O*2 - OH) if (nH2O*2 - OH) != nH else nH
     Rxn['formula'] = Rxn['formula'] + 'Si%s' % nSi + 'O%d(OH)%d' % (Oxy - OH, OH)
     Rxn['MW'] = Rxn['MW'] + nSi*MW['Si'] + Oxy*MW['O'] + OH*MW['H']
     Rxn['min']=[dG*1000/J_to_cal, dHf*1000/J_to_cal, S/J_to_cal,

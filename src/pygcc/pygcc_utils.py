@@ -2520,15 +2520,15 @@ class write_database():
         # clay minerals
         if clay_thermo.lower() == 'yes':
             for i in range(len(Rd)):
-                if Rd[i].split(',')[0] in ['Berthierine_FeII', 'Berthierine_FeIII', 'Lizardite',
-                                           'Cronstedtite', 'Mg-Cronstedtite', 'Greenalite', 'Hisingerite']:
-                    layering = '7A'
-                elif Rd[i].split(',')[0] in ['Clinochlore', 'Chamosite', 'Amesite']:
-                    layering = '14A'
-                else:
-                    layering = '10A'
+                # if Rd[i].split(',')[0] in ['Berthierine_FeII', 'Berthierine_FeIII', 'Lizardite',
+                #                            'Cronstedtite', 'Mg-Cronstedtite', 'Greenalite', 'Hisingerite']:
+                #     layering = '7A'
+                # elif Rd[i].split(',')[0] in ['Clinochlore', 'Chamosite', 'Amesite']:
+                #     layering = '14A'
+                # else:
+                #     layering = '10A'
                 ss = calcRxnlogK(T = T, P = P, Specie = 'Clay', elem = Rd[i].split(','),
-                                 dbaccessdic = dbaccessdic, group = layering, rhoEG = rhoEG,
+                                 dbaccessdic = dbaccessdic, rhoEG = rhoEG, #group = layering,
                                  rhoEGextrap = rhoEGextrap, densityextrap = densityextrap)
                 logK, Rxn = ss.logK, ss.Rxn
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
@@ -3427,15 +3427,15 @@ class write_database():
             Rd = fclay.readlines()
             Rd = [j.replace('-','_').strip('\n') for j in Rd]
             for i in range(len(Rd)):
-                if Rd[i].split(',')[0] in ['Berthierine_FeII', 'Berthierine_FeIII', 'Lizardite',
-                                            'Cronstedtite', 'Mg-Cronstedtite', 'Greenalite', 'Hisingerite']:
-                    layering = '7A'
-                elif Rd[i].split(',')[0] in ['Clinochlore', 'Chamosite', 'Amesite']:
-                    layering = '14A'
-                else:
-                    layering = '10A'
+                # if Rd[i].split(',')[0] in ['Berthierine_FeII', 'Berthierine_FeIII', 'Lizardite',
+                #                             'Cronstedtite', 'Mg-Cronstedtite', 'Greenalite', 'Hisingerite']:
+                #     layering = '7A'
+                # elif Rd[i].split(',')[0] in ['Clinochlore', 'Chamosite', 'Amesite']:
+                #     layering = '14A'
+                # else:
+                #     layering = '10A'
                 ss = calcRxnlogK(T = T, P = P, Specie = 'Clay', elem = Rd[i].split(','),
-                                 dbaccessdic = dbaccessdic, group = layering, rhoEG = rhoEG,
+                                 dbaccessdic = dbaccessdic, rhoEG = rhoEG, #group = layering,
                                  rhoEGextrap = rhoEGextrap, densityextrap = densityextrap)
                 logK, Rxn = ss.logK, ss.Rxn
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
@@ -4002,16 +4002,16 @@ class write_database():
             Rd = fclay.readlines()
             Rd = [j.replace('-','_').strip('\n') for j in Rd]
             for i in range(len(Rd)):
-                if Rd[i].split(',')[0] in ['Berthierine_FeII', 'Berthierine_FeIII', 'Lizardite',
-                                            'Cronstedtite', 'Mg-Cronstedtite', 'Greenalite', 'Hisingerite']:
-                    layering = '7A'
-                elif Rd[i].split(',')[0] in ['Clinochlore', 'Chamosite', 'Amesite']:
-                    layering = '14A'
-                else:
-                    layering = '10A'
+                # if Rd[i].split(',')[0] in ['Berthierine_FeII', 'Berthierine_FeIII', 'Lizardite',
+                #                             'Cronstedtite', 'Mg-Cronstedtite', 'Greenalite', 'Hisingerite']:
+                #     layering = '7A'
+                # elif Rd[i].split(',')[0] in ['Clinochlore', 'Chamosite', 'Amesite']:
+                #     layering = '14A'
+                # else:
+                #     layering = '10A'
 
                 ss = calcRxnlogK(T = T, P = P, Specie = 'Clay', elem = Rd[i].split(','),
-                                 dbaccessdic = dbaccessdic, group = layering, rhoEG = rhoEG,
+                                 dbaccessdic = dbaccessdic, rhoEG = rhoEG, #group = layering,
                                  rhoEGextrap = rhoEGextrap, densityextrap = densityextrap)
                 logK, Rxn = ss.logK, ss.Rxn
 
@@ -4396,15 +4396,15 @@ class write_database():
             Rd = fclay.readlines()
             Rd = [j.replace('-','_').strip('\n') for j in Rd]
             for i in range(len(Rd)):
-                if Rd[i].split(',')[0] in ['Berthierine_FeII', 'Berthierine_FeIII', 'Lizardite',
-                                            'Cronstedtite', 'Mg-Cronstedtite', 'Greenalite', 'Hisingerite']:
-                    layering = '7A'
-                elif Rd[i].split(',')[0] in ['Clinochlore', 'Chamosite', 'Amesite']:
-                    layering = '14A'
-                else:
-                    layering = '10A'
+                # if Rd[i].split(',')[0] in ['Berthierine_FeII', 'Berthierine_FeIII', 'Lizardite',
+                #                             'Cronstedtite', 'Mg-Cronstedtite', 'Greenalite', 'Hisingerite']:
+                #     layering = '7A'
+                # elif Rd[i].split(',')[0] in ['Clinochlore', 'Chamosite', 'Amesite']:
+                #     layering = '14A'
+                # else:
+                #     layering = '10A'
                 ss = calcRxnlogK(T = T, P = P, Specie = 'Clay', elem = Rd[i].split(','),
-                                 dbaccessdic = dbaccessdic, group = layering, rhoEG = rhoEG,
+                                 dbaccessdic = dbaccessdic, rhoEG = rhoEG, #group = layering,
                                  rhoEGextrap = rhoEGextrap, densityextrap = densityextrap)
                 logK, Rxn = ss.logK, ss.Rxn
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
