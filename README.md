@@ -55,5 +55,5 @@ pygcc, and build the pygcc community. For information on citing pygcc,
 [see the relevant docs page](https://pygcc.readthedocs.io/en/latest/pygcc_overview.html#citation-and-contact-information-a-class-anchor-id-section-6-a)
 
 ## Credits
-
+`pygcc Logo` was designed by [`Yury Klyukin`](https://www.linkedin.com/in/yury-klyukin-68517ba2/)
 `pygcc` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).

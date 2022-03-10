@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Integrate pygcc with EQ3/6
+# # Integration of pygcc with EQ3/6
 
 # #### Import pygcc, EQ3/6 environment and other modules
+
+# All files used in this tutorial can be downloaded from https://bitbucket.org/Tutolo-RTG/pygcc/src/master/docs/
+# 
+# Download [output_reader](https://bitbucket.org/Tutolo-RTG/pygcc/src/master/docs/output_reader.py) into your working directory
 
 # In[1]:
 
@@ -11,7 +15,8 @@
 import os, subprocess, re, numpy as np, pandas as pd, sys
 import shutil
 from pygcc.pygcc_utils import *
-# print(pygcc.__version__)
+import pygcc
+print(pygcc.__version__)
 from output_reader import read_eq36output
 
 
@@ -383,10 +388,4 @@ sc = plt.scatter(x, y)
 plt.xlim([0, 350])
 plt.xlabel('Temperature [C]')
 plt.ylabel('pH')
-
-
-# In[ ]:
-
-
-
 

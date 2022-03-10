@@ -25,7 +25,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Integrate pygcc with GWB" href="Example_2.html" />
+    <link rel="next" title="Integration of pygcc with GWB" href="Example_2.html" />
     <link rel="prev" title="An Introduction to pyGeochemCalc" href="pygcc_overview.html" /> 
 </head>
 
@@ -50,22 +50,30 @@
 <li class="toctree-l1"><a class="reference internal" href="pygcc_overview.html">An Introduction to pyGeochemCalc</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">General Usage</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#import-pygcc">Import pygcc</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#read-database-by-specifying-the-direct-access-and-source-database">Read database by specifying the direct-access and source database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#example-calculating-water-properties">Example: calculating water properties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#example-calculating-water-dielectric-constants">Example: calculating water dielectric constants</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#example-calculation-for-olivine-solid-solutions">Example: calculation for olivine solid solutions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#example-create-new-reactions-and-calculate-equilibrium-constants">Example: create new reactions and calculate equilibrium constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#read-database-by-specifying-the-direct-or-sequential-access-and-source-database">Read database by specifying the direct- or sequential- access and source database</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-default-sequential-access-database-speq21-dat">Using the default sequential-access database - speq21.dat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-user-specified-sequential-access-database">Using the user-specified sequential-access database</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#example-calculate-water-properties">Example: Calculate water properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-calculate-water-dielectric-constants">Example: Calculate water dielectric constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-calculate-olivine-solid-solutions">Example: Calculate olivine solid solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-create-new-reactions-and-calculate-equilibrium-constants">Example: Create new reactions and calculate equilibrium constants</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#an-example-with-pyrite-pyrrhotite-magnetite-ppm-reaction">An example with pyrite, pyrrhotite, magnetite (PPM) reaction</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#example-generate-gwb-thermodynamic-database">Example: Generate GWB thermodynamic database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example-generate-eq3-6-thermodynamic-database">Example: Generate EQ3/6 thermodynamic database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example-generate-toughreact-thermodynamic-database">Example: Generate ToughReact thermodynamic database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example-generate-pflotran-thermodynamic-database">Example: Generate Pflotran thermodynamic database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example-calculate-clay-mineral-thermodynamics">Example: Calculate clay mineral thermodynamics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#example-calculate-plagioclase-solid-solution-thermodynamics">Example: Calculate Plagioclase solid-solution thermodynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-calculate-plagioclase-solid-solution-thermodynamics">Example: Calculate plagioclase solid-solution thermodynamics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example-calculate-co-2-activity-and-molality">Example: Calculate CO<span class="math notranslate nohighlight">\(_2\)</span> activity and molality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-calculate-water-activity">Example: Calculate water activity</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Example_2.html">Integrate pygcc with GWB</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Example_3.html">Integrate pygcc with EQ3/6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Example_2.html">Integration of pygcc with GWB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Example_3.html">Integration of pygcc with EQ3/6</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
@@ -102,16 +110,104 @@
 <h2>Import pygcc<a class="headerlink" href="#import-pygcc" title="Permalink to this headline"></a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#import pygcc</span>
-<span class="c1">#print(pygcc.__version__)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pygcc</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pygcc</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pygcc.pygcc_utils</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">691</span><span class="n">b5549329d</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">pygcc</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="n">pygcc</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">from</span> <span class="nn">pygcc.pygcc_utils</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\pygcc\__init__.py in &lt;module&gt;
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="sd">&quot;&quot;&quot;Init file&quot;&quot;&quot;</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">.pygcc_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">from</span> <span class="nn">.read_db</span> <span class="kn">import</span> <span class="n">db_reader</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">from</span> <span class="nn">.water_eos</span> <span class="kn">import</span> <span class="n">iapws95</span><span class="p">,</span> <span class="n">ZhangDuan</span><span class="p">,</span> <span class="n">water_dielec</span><span class="p">,</span> <span class="n">readIAPWS95data</span><span class="p">,</span> <span class="n">convert_temperature</span>
+
+<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py in &lt;module&gt;
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span><span class="sd"> from .read_db import db_reader</span>
+<span class="ne">---&gt; </span><span class="mi">25</span><span class="sd"> from .water_eos import iapws95, ZhangDuan, water_dielec, readIAPWS95data, convert_temperature</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span><span class="sd"> from .species_eos import heatcap, heatcap_Berman, heatcapusgscal, supcrtaq</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span><span class="sd"> from .solid_solution import solidsolution_thermo</span>
+
+<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\pygcc\water_eos.py in &lt;module&gt;
+<span class="g g-Whitespace">     </span><span class="mi">26</span><span class="sd"> </span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span><span class="sd"> import numpy as np, math</span>
+<span class="ne">---&gt; </span><span class="mi">28</span><span class="sd"> from scipy.optimize import root_scalar, fsolve, brentq</span>
+<span class="g g-Whitespace">     </span><span class="mi">29</span><span class="sd"> from scipy.linalg import lu_factor, lu_solve</span>
+<span class="g g-Whitespace">     </span><span class="mi">30</span><span class="sd"> </span>
+
+<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\scipy\optimize\__init__.py in &lt;module&gt;
+<span class="g g-Whitespace">    </span><span class="mi">398</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">399</span> 
+<span class="ne">--&gt; </span><span class="mi">400</span> <span class="kn">from</span> <span class="nn">.optimize</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="g g-Whitespace">    </span><span class="mi">401</span> <span class="kn">from</span> <span class="nn">._minimize</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="g g-Whitespace">    </span><span class="mi">402</span> <span class="kn">from</span> <span class="nn">._root</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\scipy\optimize\optimize.py in &lt;module&gt;
+<span class="g g-Whitespace">     </span><span class="mi">34</span>                          <span class="n">line_search_wolfe2</span> <span class="k">as</span> <span class="n">line_search</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">35</span>                          <span class="n">LineSearchWarning</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">36</span> <span class="kn">from</span> <span class="nn">._numdiff</span> <span class="kn">import</span> <span class="n">approx_derivative</span>
+<span class="g g-Whitespace">     </span><span class="mi">37</span> <span class="kn">from</span> <span class="nn">scipy._lib._util</span> <span class="kn">import</span> <span class="n">getfullargspec_no_self</span> <span class="k">as</span> <span class="n">_getfullargspec</span>
+<span class="g g-Whitespace">     </span><span class="mi">38</span> <span class="kn">from</span> <span class="nn">scipy._lib._util</span> <span class="kn">import</span> <span class="n">MapWrapper</span>
+
+<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\scipy\optimize\_numdiff.py in &lt;module&gt;
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+<span class="ne">----&gt; </span><span class="mi">6</span> <span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">LinearOperator</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">from</span> <span class="nn">..sparse</span> <span class="kn">import</span> <span class="n">issparse</span><span class="p">,</span> <span class="n">csc_matrix</span><span class="p">,</span> <span class="n">csr_matrix</span><span class="p">,</span> <span class="n">coo_matrix</span><span class="p">,</span> <span class="n">find</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">._group_columns</span> <span class="kn">import</span> <span class="n">group_dense</span><span class="p">,</span> <span class="n">group_sparse</span>
+
+<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\scipy\sparse\linalg\__init__.py in &lt;module&gt;
+<span class="g g-Whitespace">    </span><span class="mi">109</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">110</span><span class="s2"> </span>
+<span class="ne">--&gt; </span><span class="mi">111</span><span class="s2"> from .isolve import *</span>
+<span class="g g-Whitespace">    </span><span class="mi">112</span><span class="s2"> from .dsolve import *</span>
+<span class="g g-Whitespace">    </span><span class="mi">113</span><span class="s2"> from .interface import *</span>
+
+<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\scipy\sparse\linalg\isolve\__init__.py in &lt;module&gt;
+<span class="g g-Whitespace">      </span><span class="mi">4</span><span class="s2"> from .iterative import *</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span><span class="s2"> from .minres import minres</span>
+<span class="ne">----&gt; </span><span class="mi">6</span><span class="s2"> from .lgmres import lgmres</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span><span class="s2"> from .lsqr import lsqr</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span><span class="s2"> from .lsmr import lsmr</span>
+
+<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\scipy\sparse\linalg\isolve\lgmres.py in &lt;module&gt;
+<span class="g g-Whitespace">      </span><span class="mi">5</span><span class="s2"> import numpy as np</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span><span class="s2"> from numpy.linalg import LinAlgError</span>
+<span class="ne">----&gt; </span><span class="mi">7</span><span class="s2"> from scipy.linalg import get_blas_funcs</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span><span class="s2"> from .utils import make_system</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span><span class="s2"> </span>
+
+<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\scipy\linalg\__init__.py in &lt;module&gt;
+<span class="g g-Whitespace">    </span><span class="mi">210</span><span class="s2"> from ._solvers import *</span>
+<span class="g g-Whitespace">    </span><span class="mi">211</span><span class="s2"> from ._procrustes import *</span>
+<span class="ne">--&gt; </span><span class="mi">212</span><span class="s2"> from ._decomp_update import *</span>
+<span class="g g-Whitespace">    </span><span class="mi">213</span><span class="s2"> from ._sketches import *</span>
+<span class="g g-Whitespace">    </span><span class="mi">214</span><span class="s2"> from ._decomp_cossin import *</span>
+
+<span class="nn">_decomp_update.pyx</span> in <span class="ni">init scipy.linalg._decomp_update</span><span class="nt">()</span>
+
+<span class="nn">D:\ProgramData\Anaconda3\lib\importlib\_bootstrap.py</span> in <span class="ni">parent</span><span class="nt">(self)</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="read-database-by-specifying-the-direct-access-and-source-database">
-<h2>Read database by specifying the direct-access and source database<a class="headerlink" href="#read-database-by-specifying-the-direct-access-and-source-database" title="Permalink to this headline"></a></h2>
+<section id="read-database-by-specifying-the-direct-or-sequential-access-and-source-database">
+<h2>Read database by specifying the direct- or sequential- access and source database<a class="headerlink" href="#read-database-by-specifying-the-direct-or-sequential-access-and-source-database" title="Permalink to this headline"></a></h2>
+<section id="using-the-default-sequential-access-database-speq21-dat">
+<h3>Using the default sequential-access database - speq21.dat<a class="headerlink" href="#using-the-default-sequential-access-database-speq21-dat" title="Permalink to this headline"></a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ps</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">(</span><span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/thermo.2021.dat&#39;</span><span class="p">,</span> <span class="n">sourceformat</span> <span class="o">=</span> <span class="s1">&#39;gwb&#39;</span><span class="p">)</span>
@@ -121,9 +217,36 @@
 </div>
 </div>
 </section>
-<section id="example-calculating-water-properties">
-<h2>Example: calculating water properties<a class="headerlink" href="#example-calculating-water-properties" title="Permalink to this headline"></a></h2>
-<p>With IAPWS95</p>
+<section id="using-the-user-specified-sequential-access-database">
+<h3>Using the user-specified sequential-access database<a class="headerlink" href="#using-the-user-specified-sequential-access-database" title="Permalink to this headline"></a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ps</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">(</span><span class="n">dbaccess</span> <span class="o">=</span> <span class="s1">&#39;./database/slop07.dat&#39;</span><span class="p">,</span> <span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;./database/thermo.2021.dat&#39;</span><span class="p">,</span> <span class="n">sourceformat</span> <span class="o">=</span> <span class="s1">&#39;gwb&#39;</span><span class="p">)</span>
+<span class="c1"># ps.dbaccessdic, ps.sourcedic,  ps.specielist</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Duplicate found for species &quot;AlOH++&quot; in slop07.dat
+Duplicate found for species &quot;MgCO3(aq)&quot; in slop07.dat
+Duplicate found for species &quot;CaCO3(aq)&quot; in slop07.dat
+Duplicate found for species &quot;SrCO3(aq)&quot; in slop07.dat
+Duplicate found for species &quot;BaCO3(aq)&quot; in slop07.dat
+Duplicate found for species &quot;BaF+&quot; in slop07.dat
+Duplicate found for species &quot;Sr(Succ)(aq)&quot; in slop07.dat
+Duplicate found for species &quot;Sc(Glut)+(aq)&quot; in slop07.dat
+Duplicate found for species &quot;AMP2-&quot; in slop07.dat
+Duplicate found for species &quot;HAMP-&quot; in slop07.dat
+Duplicate found for species &quot;+H2AMP-&quot; in slop07.dat
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="example-calculate-water-properties">
+<h2>Example: Calculate water properties<a class="headerlink" href="#example-calculate-water-properties" title="Permalink to this headline"></a></h2>
+<p><em>With IAPWS95</em></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">water</span> <span class="o">=</span> <span class="n">iapws95</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>  <span class="mf">0.01</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span>  <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span>  <span class="mi">200</span><span class="p">,</span>  <span class="mi">250</span><span class="p">,</span>  <span class="mi">300</span><span class="p">]),</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span>
@@ -147,7 +270,7 @@
 </div>
 </div>
 </div>
-<p>With ZhangDuan</p>
+<p><em>With ZhangDuan</em></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">water</span> <span class="o">=</span> <span class="n">ZhangDuan</span><span class="p">(</span><span class="n">T</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1050</span><span class="p">]),</span> <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">]))</span>
@@ -162,8 +285,8 @@
 </div>
 </div>
 </section>
-<section id="example-calculating-water-dielectric-constants">
-<h2>Example: calculating water dielectric constants<a class="headerlink" href="#example-calculating-water-dielectric-constants" title="Permalink to this headline"></a></h2>
+<section id="example-calculate-water-dielectric-constants">
+<h2>Example: Calculate water dielectric constants<a class="headerlink" href="#example-calculate-water-dielectric-constants" title="Permalink to this headline"></a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dielect</span> <span class="o">=</span> <span class="n">water_dielec</span><span class="p">(</span><span class="n">T</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1050</span><span class="p">]),</span> <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">]),</span> <span class="n">Dielec_method</span> <span class="o">=</span> <span class="s1">&#39;DEW&#39;</span><span class="p">)</span>
@@ -197,8 +320,8 @@
 </div>
 </div>
 </section>
-<section id="example-calculation-for-olivine-solid-solutions">
-<h2>Example: calculation for olivine solid solutions<a class="headerlink" href="#example-calculation-for-olivine-solid-solutions" title="Permalink to this headline"></a></h2>
+<section id="example-calculate-olivine-solid-solutions">
+<h2>Example: Calculate olivine solid solutions<a class="headerlink" href="#example-calculate-olivine-solid-solutions" title="Permalink to this headline"></a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calc</span> <span class="o">=</span> <span class="n">calcRxnlogK</span><span class="p">(</span> <span class="n">X</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">,</span><span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">450</span><span class="p">]),</span> <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">]),</span>
@@ -236,11 +359,23 @@
 </div>
 </section>
 <section id="example-create-new-reactions-and-calculate-equilibrium-constants">
-<h2>Example: create new reactions and calculate equilibrium constants<a class="headerlink" href="#example-create-new-reactions-and-calculate-equilibrium-constants" title="Permalink to this headline"></a></h2>
+<h2>Example: Create new reactions and calculate equilibrium constants<a class="headerlink" href="#example-create-new-reactions-and-calculate-equilibrium-constants" title="Permalink to this headline"></a></h2>
+<section id="an-example-with-pyrite-pyrrhotite-magnetite-ppm-reaction">
+<h3>An example with pyrite, pyrrhotite, magnetite (PPM) reaction<a class="headerlink" href="#an-example-with-pyrite-pyrrhotite-magnetite-ppm-reaction" title="Permalink to this headline"></a></h3>
+<p>Pyrite + 4 H<sub>2</sub>O + 2 Pyrrhotite → 4 H<sub>2</sub>S<sub>(aq)</sub> + Magnetite</p>
+<p>Then we can include the reaction in sourcedic, one of the output of db_reader, which is a dictionary of list of reaction coefficients and species. An example with the format for sourcedic is as follows:</p>
+<blockquote>
+<div><p>ps.sourcedic[‘Name’] = [‘formula’, number of reactants in the reaction, ‘coefficient of specie 1’, ‘specie 1’, ‘coefficient of specie 2’, ‘specie 2’]</p>
+</div></blockquote>
+<blockquote>
+<div><p>AB → 0.5 A<sub>2</sub><sub>(aq)</sub> + B</p>
+</div></blockquote>
+<blockquote>
+<div><p>ps.sourcedic[‘AB’] = [‘AB’, 2, ‘0.5’, ‘A2(aq), ‘1’, ‘B’]</p>
+</div></blockquote>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># An example with PPM</span>
-<span class="n">ps</span><span class="o">.</span><span class="n">sourcedic</span><span class="p">[</span><span class="s1">&#39;Pyrite&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span> <span class="s1">&#39;H2S(aq)&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;Magnetite&#39;</span><span class="p">,</span>  <span class="s1">&#39;-2&#39;</span><span class="p">,</span> <span class="s1">&#39;Pyrrhotite&#39;</span><span class="p">,</span> <span class="s1">&#39;-4&#39;</span><span class="p">,</span> <span class="s1">&#39;H2O&#39;</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ps</span><span class="o">.</span><span class="n">sourcedic</span><span class="p">[</span><span class="s1">&#39;Pyrite&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span> <span class="s1">&#39;H2S(aq)&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;Magnetite&#39;</span><span class="p">,</span>  <span class="s1">&#39;-2&#39;</span><span class="p">,</span> <span class="s1">&#39;Pyrrhotite&#39;</span><span class="p">,</span> <span class="s1">&#39;-4&#39;</span><span class="p">,</span> <span class="s1">&#39;H2O&#39;</span><span class="p">]</span>
 <span class="n">Temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">300.0000</span><span class="p">,</span> <span class="mi">325</span><span class="p">,</span> <span class="mf">350.0000</span><span class="p">,</span> <span class="mf">400.0000</span><span class="p">,</span> <span class="mi">415</span><span class="p">,</span> <span class="mf">425.0000</span><span class="p">,</span> <span class="mi">435</span><span class="p">,</span> <span class="mf">450.0000</span><span class="p">])</span>
 <span class="n">Press</span> <span class="o">=</span> <span class="mi">500</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">Temp</span><span class="p">))</span>
 <span class="n">log_K_PPM</span> <span class="o">=</span> <span class="n">calcRxnlogK</span><span class="p">(</span> <span class="n">T</span> <span class="o">=</span> <span class="n">Temp</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">Press</span><span class="p">,</span> <span class="n">Specie</span> <span class="o">=</span> <span class="s1">&#39;Pyrite&#39;</span><span class="p">,</span> <span class="n">dbaccessdic</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">,</span>
@@ -250,7 +385,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\scipy\optimize\minpack.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\ProgramData\Anaconda3\lib\site-packages\scipy\optimize\minpack.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the 
   improvement from the last ten iterations.
   warnings.warn(msg, RuntimeWarning)
 </pre></div>
@@ -261,6 +396,7 @@
 </div>
 </div>
 </div>
+</section>
 </section>
 <section id="example-generate-gwb-thermodynamic-database">
 <h2>Example: Generate GWB thermodynamic database<a class="headerlink" href="#example-generate-gwb-thermodynamic-database" title="Permalink to this headline"></a></h2>
@@ -284,15 +420,15 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:2266: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:2266: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
   warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
-Wall time: 9.62 s
+Wall time: 9.04 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c135b948&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1f87e69eb80&gt;
 </pre></div>
 </div>
 </div>
@@ -308,10 +444,10 @@ Wall time: 9.62 s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
-Wall time: 7.65 s
+Wall time: 7.27 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c1ac2988&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1f87e633e80&gt;
 </pre></div>
 </div>
 </div>
@@ -327,10 +463,10 @@ Wall time: 7.65 s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
-Wall time: 8.73 s
+Wall time: 8.11 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c1ac2788&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1f87e69eeb0&gt;
 </pre></div>
 </div>
 </div>
@@ -345,7 +481,11 @@ Wall time: 8.73 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wall time: 0 ns
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
+Wall time: 3min 7s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1f800360fa0&gt;
 </pre></div>
 </div>
 </div>
@@ -374,11 +514,15 @@ Duplicate found for species &quot;HAMP-&quot; in slop07.dat
 Duplicate found for species &quot;+H2AMP-&quot; in slop07.dat
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
-Wall time: 7.78 s
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:2266: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c2a24108&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
+Wall time: 7.53 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x25b8a34a820&gt;
 </pre></div>
 </div>
 </div>
@@ -406,13 +550,11 @@ Duplicate found for species &quot;AMP2-&quot; in slop07.dat
 Duplicate found for species &quot;HAMP-&quot; in slop07.dat
 Duplicate found for species &quot;+H2AMP-&quot; in slop07.dat
 Duplicate found for species &quot;Cordierite&quot; in berman.dat
+Success, your new GWB database is ready for download
+Wall time: 4.5 s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
-Wall time: 4.54 s
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c2a24708&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x25b917b1700&gt;
 </pre></div>
 </div>
 </div>
@@ -427,10 +569,10 @@ Wall time: 4.54 s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
-Wall time: 1.6 s
+Wall time: 1.53 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c2f2cc88&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1f800e7d850&gt;
 </pre></div>
 </div>
 </div>
@@ -446,10 +588,10 @@ Wall time: 1.6 s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
-Wall time: 1.96 s
+Wall time: 2.77 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c2f2c948&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x25b927b7040&gt;
 </pre></div>
 </div>
 </div>
@@ -467,15 +609,15 @@ Wall time: 1.96 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:3327: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:3327: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
   warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new EQ3/6 database is ready for download
-Wall time: 9.81 s
+Wall time: 9.14 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c2f2c5c8&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1f802a7f2e0&gt;
 </pre></div>
 </div>
 </div>
@@ -491,10 +633,10 @@ Wall time: 9.81 s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new EQ3/6 database is ready for download
-Wall time: 9.3 s
+Wall time: 8.9 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c2b67588&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x25b921fd130&gt;
 </pre></div>
 </div>
 </div>
@@ -509,10 +651,10 @@ Wall time: 9.3 s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new EQ3/6 database is ready for download
-Wall time: 1.68 s
+Wall time: 1.66 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c37fc508&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1f87e62daf0&gt;
 </pre></div>
 </div>
 </div>
@@ -528,10 +670,10 @@ Wall time: 1.68 s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new EQ3/6 database is ready for download
-Wall time: 9.46 s
+Wall time: 9.4 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c3664cc8&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x25b8e7a0c40&gt;
 </pre></div>
 </div>
 </div>
@@ -548,10 +690,10 @@ Wall time: 9.46 s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new EQ3/6 database is ready for download
-Wall time: 5.21 s
+Wall time: 4.88 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c3cb2788&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1f80155da00&gt;
 </pre></div>
 </div>
 </div>
@@ -569,15 +711,15 @@ Wall time: 5.21 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:4365: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:4365: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
   warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new ToughReact database is ready for download
-Wall time: 9.95 s
+Wall time: 9.2 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c3cb7f08&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1f87e6934f0&gt;
 </pre></div>
 </div>
 </div>
@@ -593,10 +735,10 @@ Wall time: 9.95 s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new ToughReact database is ready for download
-Wall time: 4.34 s
+Wall time: 4.33 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c53a4048&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x25b90ce0d90&gt;
 </pre></div>
 </div>
 </div>
@@ -612,10 +754,10 @@ Wall time: 4.34 s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new ToughReact database is ready for download
-Wall time: 1.71 s
+Wall time: 1.77 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c53a4148&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x25b8da52190&gt;
 </pre></div>
 </div>
 </div>
@@ -633,15 +775,15 @@ Wall time: 1.71 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:3938: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:3938: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
   warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new Pflotran database is ready for download
-Wall time: 5.73 s
+Wall time: 5.47 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c53a41c8&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1f800558f70&gt;
 </pre></div>
 </div>
 </div>
@@ -656,11 +798,15 @@ Wall time: 5.73 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new Pflotran database is ready for download
-Wall time: 7.47 s
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:3938: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1d8c59ff8c8&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new Pflotran database is ready for download
+Wall time: 7.56 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x25b8d21c610&gt;
 </pre></div>
 </div>
 </div>
@@ -698,7 +844,7 @@ Wall time: 7.47 s
 </div>
 </section>
 <section id="example-calculate-plagioclase-solid-solution-thermodynamics">
-<h2>Example: Calculate Plagioclase solid-solution thermodynamics<a class="headerlink" href="#example-calculate-plagioclase-solid-solution-thermodynamics" title="Permalink to this headline"></a></h2>
+<h2>Example: Calculate plagioclase solid-solution thermodynamics<a class="headerlink" href="#example-calculate-plagioclase-solid-solution-thermodynamics" title="Permalink to this headline"></a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#%% specify the direct access thermodynamic database</span>
@@ -819,6 +965,9 @@ Activity of CO2 in aqueous phase (Drummond):  1.2163347543456382
 </div>
 </div>
 </div>
+</section>
+<section id="example-calculate-water-activity">
+<h2>Example: Calculate water activity<a class="headerlink" href="#example-calculate-water-activity" title="Permalink to this headline"></a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#%% Calculate Water activity, osmotic coefficient and NaCl mean activity coefficient at an ionic strength of 0.5M</span>
@@ -900,7 +1049,7 @@ NaCl mean activity coefficient:  0.47686249155879995
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="pygcc_overview.html" class="btn btn-neutral float-left" title="An Introduction to pyGeochemCalc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Example_2.html" class="btn btn-neutral float-right" title="Integrate pygcc with GWB" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Example_2.html" class="btn btn-neutral float-right" title="Integration of pygcc with GWB" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

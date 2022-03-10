@@ -1300,9 +1300,9 @@ Attributes
    :type elem: list
    :param dbacessdic: dictionary of species from direct-access database, optional, default is speq21
    :type dbacessdic: dict
-   :param group: specify the structural layering of the phyllosilicate, for layers composed of ``1 tetrahedral + 1 octahedral sheet (1:1 layer)`` - specify '7A', ``2 tetrahedral + 1 octahedral sheet (2:1 layer)`` - specify '10A', or the latter with a ``brucitic sheet in the interlayer (2:1:1 layer)``  - specify '14A' (optional), if not specified, default is '10A' for smectites, micas, et cetera
+   :param group: specify the structural layering of the phyllosilicate, for layers composed of ``1 tetrahedral + 1 octahedral sheet (1:1 layer)`` - specify '7A', ``2 tetrahedral + 1 octahedral sheet (2:1 layer)`` - specify '10A', or the latter with a ``brucitic sheet in the interlayer (2:1:1 layer)``  - specify '14A' (optional), if not specified, default is based on charge balance on the cations and anions
    :type group: string
-   :param cation_order: specify ordering of Si and Al ions either 'Eastonite', 'Ordered', 'Random', or 'HDC'  (optional), if not specified, default is based on guidelines  by Vinograd (1995)
+   :param cation_order: specify ordering of Si and Al ions either 'Eastonite', 'Ordered', 'Random', or 'HDC'  (optional), if not specified, default is based on guidelines by Vinograd (1995)
    :type cation_order: string
    :param Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified, default - 'JN91'
    :type Dielec_method: string
@@ -2549,9 +2549,9 @@ Attributes
    :type elem: list
    :param dbacessdic: dictionary of species from direct-access database, optional, default is speq21
    :type dbacessdic: dict
-   :param group: specify the structural layering of the phyllosilicate, for layers composed of ``1 tetrahedral + 1 octahedral sheet (1:1 layer)`` - specify '7A', ``2 tetrahedral + 1 octahedral sheet (2:1 layer)`` - specify '10A', or the latter with a ``brucitic sheet in the interlayer (2:1:1 layer)``  - specify '14A' (optional), if not specified, default is '10A' for smectites, micas, et cetera
+   :param group: specify the structural layering of the phyllosilicate, for layers composed of ``1 tetrahedral + 1 octahedral sheet (1:1 layer)`` - specify '7A', ``2 tetrahedral + 1 octahedral sheet (2:1 layer)`` - specify '10A', or the latter with a ``brucitic sheet in the interlayer (2:1:1 layer)``  - specify '14A' (optional), if not specified, default is based on charge balance on the cations and anions
    :type group: string
-   :param cation_order: specify ordering of Si and Al ions either 'Eastonite', 'Ordered', 'Random', or 'HDC'  (optional), if not specified, default is based on guidelines  by Vinograd (1995)
+   :param cation_order: specify ordering of Si and Al ions either 'Eastonite', 'Ordered', 'Random', or 'HDC'  (optional), if not specified, default is based on guidelines by Vinograd (1995)
    :type cation_order: string
    :param Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified, default - 'JN91'
    :type Dielec_method: string

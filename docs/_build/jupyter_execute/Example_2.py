@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Integrate pygcc with GWB
+# # Integration of pygcc with GWB
 
 # #### Import pygcc, GWBplugin and other modules
 
@@ -10,10 +10,16 @@
 
 import sys, pygcc, pandas as pd
 from pygcc.pygcc_utils import *
-# print(pygcc.__version__)
+print(pygcc.__version__)
 
 
-# In[2]:
+# Ensure you have GWB license to run and test this script.
+# 
+# All files used in this tutorial can be downloaded from https://bitbucket.org/Tutolo-RTG/pygcc/src/master/docs/
+# 
+# Download [output_reader](https://bitbucket.org/Tutolo-RTG/pygcc/src/master/docs/output_reader.py) into your working directory
+
+# In[9]:
 
 
 # load GWB plugin
@@ -22,7 +28,6 @@ sys.path.append(os.path.abspath('.'))
 
 # import GWBplugin class
 from GWBplugin import *
-
 # create the plug-in object
 myGWBrun = GWBplugin()
 
@@ -96,7 +101,7 @@ print("\nFinished run." )
 
 # #### Extract simulation results
 
-# In[ ]:
+# In[5]:
 
 
 rerun = []
@@ -112,7 +117,7 @@ for i, f in enumerate(files):
 print(rerun)
 
 
-# In[ ]:
+# In[6]:
 
 
 # data
@@ -120,7 +125,7 @@ print(rerun)
 
 # Plot pyrite saturation with temperature
 
-# In[ ]:
+# In[7]:
 
 
 import matplotlib.pyplot as plt
@@ -136,7 +141,7 @@ plt.ylabel('$Log_{10}$(Q/K)$_{Pyrite}$')
 
 # pH versus temperature
 
-# In[ ]:
+# In[8]:
 
 
 y = data.pH

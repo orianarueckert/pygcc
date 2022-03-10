@@ -92,8 +92,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Example_1.html">General Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Example_2.html">Integrate pygcc with GWB</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Example_3.html">Integrate pygcc with EQ3/6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Example_2.html">Integration of pygcc with GWB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Example_3.html">Integration of pygcc with EQ3/6</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
@@ -215,7 +215,7 @@ Helgeson_activity(TC, P, I, Dielec_method=None, **rhoEDB)
 <p>pyGeochemCalc contains the following major datasets and folders:</p>
 <ol class="simple">
 <li><p><strong>clay_elements.dat</strong> contain 42 clay names and fractional elemental composition of the clay mineral arranged in this specific order <em>[‘Si’, ‘Al’, ‘FeIII’, ‘FeII’, ‘Mg’, ‘K’, ‘Na’, ‘Ca’, ‘Li’]</em>. The function <strong><code class="docutils literal notranslate"><span class="pre">calclogKclays</span></code></strong> or <strong><code class="docutils literal notranslate"><span class="pre">calcRxnlogK</span></code></strong> uses this dataset to estimate the thermodynamic properties of the clay minerals to be included in the newly-generated database.</p></li>
-<li><p><strong>default_db</strong> is a folder that contains default thermodynamic databases utilized in several calculations in pygcc in case the user failed to provide any database. It can be categorized into:</p>
+<li><p><a class="reference external" href="https://bitbucket.org/Tutolo-RTG/pygcc/src/master/src/pygcc/default_db/"><strong>default_db</strong></a> is a folder that contains default thermodynamic databases utilized in several calculations in pygcc in case the user failed to provide any database. It can be categorized into:</p>
 <ul class="simple">
 <li><p><em>direct-access:</em></p>
 <ul>
@@ -231,7 +231,7 @@ Helgeson_activity(TC, P, I, Dielec_method=None, **rhoEDB)
 </li>
 </ul>
 </li>
-<li><p><strong>test_db</strong> is a folder that contains several other databases that could be used with pygcc</p>
+<li><p><a class="reference external" href="https://bitbucket.org/Tutolo-RTG/pygcc/src/master/docs/database/"><strong>database</strong></a> is a folder that contains several other databases including files in <strong>default_db</strong> that could be used with pygcc</p>
 <ul class="simple">
 <li><p><strong>data0.geo</strong>, <strong>thermo.29Sep15.dat</strong>, and <strong>slop07.dat</strong> and <strong>dpumn2012.dat</strong> are example databases (<em>first is an EQ3/6 source database, second is a GWB source database and last two are sequential-access and direct-access</em>) used for testing purposes.</p></li>
 <li><p><strong>data0.hmw</strong>, <strong>thermo_hmw.tdat</strong>, and <strong>thermo_ymp.R2.tdat</strong> are example Ptifer databases (<em>first is the EQ3/6 source database, and last two are GWB source databases</em>) used for testing purposes.</p></li>
@@ -681,7 +681,7 @@ equilibrium) curve, extending from the triple point (273.16K, 0.00611657 bar) up
 </section>
 <section id="solid-solution-species-a-class-anchor-id-section-4-2-a">
 <h3>Solid-solution species     <a class="anchor" id="section_4_2"></a><a class="headerlink" href="#solid-solution-species-a-class-anchor-id-section-4-2-a" title="Permalink to this headline"></a></h3>
-<p>The standard molal properties of solid-solution species and reactions are computed differently from other minerals, interaction parameters and mixing rules as described in Stefánsson (2001) are applied in combining the properties of various end-members thermodynamic data from Robie and Hemingway (1995). The function <code class="docutils literal notranslate"><span class="pre">solidsolution_thermo</span></code> or <code class="docutils literal notranslate"><span class="pre">calcRxnlogK</span></code> computes reaction species and coefficient, and molal properties of solid-solutions of plagioclase, olivine, pyroxene, alkali-feldspar and clinopyroxene minerals. The inputs are fractions of Anorthite, Forsterite, Enstatite or Albite as the case may be and number of moles of Calcium in the clinopyroxene formula units and the <span class="math notranslate nohighlight">\(\frac{Mg}{Mg+Fe}\)</span> ratio for clinopyroxene, coupled with temperature [°C], pressure [bar], solidsolution_type (specifying either ‘All’ or ‘plagioclase’ or ‘olivine’ or ‘pyroxene’ or ‘cpx’ or ‘alk-feldspar’) and a direct-access dictionary (for example above, [Db_thermo.dbaccessdic]). If the moles of calcium is zero, the solid-solution is reduced to pyroxene end-member, which is is a binary solid solution between orthoenstatite and ferrosilite. Hence, <code class="docutils literal notranslate"><span class="pre">calclogKDiHedEnFe</span></code> should only be used if moles of calcium is greater than zero. The structure of the output includes an <em>array</em> of equilibrium constants and a <em>dictionary</em> containing mineral type, name, formula, molecular weight, list of properties (like Db_thermo.dbaccessdic), reaction species and coefficient, mineral volume, data source and elements species and moles. An example that calculates solid-solution properties for <em>‘Di45Hed25En19Fe11’</em> at 60°C and 100 bar with the default <code class="docutils literal notranslate"><span class="pre">JN91</span></code> formulation is:</p>
+<p>The standard molal properties of solid-solution species and reactions are computed differently from other minerals, interaction parameters and mixing rules as described in Stefánsson (2001) are applied in combining the properties of various end-members thermodynamic data from Robie and Hemingway (1995). The function <code class="docutils literal notranslate"><span class="pre">solidsolution_thermo</span></code> or <code class="docutils literal notranslate"><span class="pre">calcRxnlogK</span></code> computes reaction species and coefficient, and molal properties of solid-solutions of plagioclase, olivine, pyroxene, alkali-feldspar and clinopyroxene minerals. The inputs are mole fractions of Anorthite, Forsterite, Enstatite or Albite as the case may be and number of moles of Calcium in the clinopyroxene formula units and the <span class="math notranslate nohighlight">\(\frac{Mg}{Mg+Fe}\)</span> ratio for clinopyroxene, coupled with temperature [°C], pressure [bar], solidsolution_type (specifying either ‘All’ or ‘plagioclase’ or ‘olivine’ or ‘pyroxene’ or ‘cpx’ or ‘alk-feldspar’) and a direct-access dictionary (for example above, [Db_thermo.dbaccessdic]). If the moles of calcium is zero, the solid-solution is reduced to pyroxene end-member, which is is a binary solid solution between orthoenstatite and ferrosilite. Hence, <code class="docutils literal notranslate"><span class="pre">calclogKDiHedEnFe</span></code> should only be used if moles of calcium is greater than zero. The structure of the output includes an <em>array</em> of equilibrium constants and a <em>dictionary</em> containing mineral type, name, formula, molecular weight, list of properties (like Db_thermo.dbaccessdic), reaction species and coefficient, mineral volume, data source and elements species and moles. An example that calculates solid-solution properties for <em>‘Di45Hed25En19Fe11’</em> at 60°C and 100 bar with the default <code class="docutils literal notranslate"><span class="pre">JN91</span></code> formulation is:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">=</span> <span class="n">solidsolution_thermo</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">solidsolution_type</span> <span class="o">=</span> <span class="s1">&#39;cpx&#39;</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">cpx_Ca</span> <span class="o">=</span> <span class="mf">0.646</span><span class="p">,</span>
@@ -945,7 +945,7 @@ equilibrium) curve, extending from the triple point (273.16K, 0.00611657 bar) up
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1c34c4a9b08&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x15830dc7848&gt;
 </pre></div>
 </div>
 </div>
@@ -963,7 +963,7 @@ equilibrium) curve, extending from the triple point (273.16K, 0.00611657 bar) up
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1c34c5ea148&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x15830c354c8&gt;
 </pre></div>
 </div>
 </div>
@@ -985,7 +985,7 @@ equilibrium) curve, extending from the triple point (273.16K, 0.00611657 bar) up
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new EQ3/6 database is ready for download
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1c34e4dba08&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x15832cd1c88&gt;
 </pre></div>
 </div>
 </div>
@@ -1006,7 +1006,7 @@ equilibrium) curve, extending from the triple point (273.16K, 0.00611657 bar) up
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new ToughReact database is ready for download
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1c34e625208&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x15832cd1b48&gt;
 </pre></div>
 </div>
 </div>
@@ -1027,7 +1027,7 @@ equilibrium) curve, extending from the triple point (273.16K, 0.00611657 bar) up
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new Pflotran database is ready for download
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1c34ebfa9c8&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1583350aa88&gt;
 </pre></div>
 </div>
 </div>

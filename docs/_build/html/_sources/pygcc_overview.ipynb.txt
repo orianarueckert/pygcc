@@ -133,7 +133,7 @@
     "\n",
     "1. **clay_elements.dat** contain 42 clay names and fractional elemental composition of the clay mineral arranged in this specific order _['Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li']_. The function **`calclogKclays`** or **`calcRxnlogK`** uses this dataset to estimate the thermodynamic properties of the clay minerals to be included in the newly-generated database.\n",
     "\n",
-    "2. **default_db** is a folder that contains default thermodynamic databases utilized in several calculations in pygcc in case the user failed to provide any database. It can be categorized into:\n",
+    "2. [**default_db**](https://bitbucket.org/Tutolo-RTG/pygcc/src/master/src/pygcc/default_db/) is a folder that contains default thermodynamic databases utilized in several calculations in pygcc in case the user failed to provide any database. It can be categorized into:\n",
     "\n",
     "    * *direct-access:* \n",
     "        * **speq21.dat** is the sequential-access database that contains 1604 species thermodynamic properties, which undergoes timely update as newer information becomes available.\n",
@@ -142,7 +142,7 @@
     "        * **data0.dat** is a sample source thermodynamic database for EQ3/6\n",
     "        * **thermo.com.dat** and **thermo.com.tdat** are sample source thermodynamic databases for older (Oct94) and latest (Apr20) formats of GWB respectively.\n",
     "        \n",
-    "3. **test_db** is a folder that contains several other databases that could be used with pygcc\n",
+    "3. [**database**](https://bitbucket.org/Tutolo-RTG/pygcc/src/master/docs/database/) is a folder that contains several other databases including files in **default_db** that could be used with pygcc\n",
     "\n",
     "    * **data0.geo**, **thermo.29Sep15.dat**, and **slop07.dat** and **dpumn2012.dat** are example databases (*first is an EQ3/6 source database, second is a GWB source database and last two are sequential-access and direct-access*) used for testing purposes.\n",
     "\n",
@@ -214,7 +214,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 38,
+   "execution_count": 7,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -413,7 +413,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 44,
+   "execution_count": 14,
    "metadata": {},
    "outputs": [
     {
@@ -431,7 +431,7 @@
        "Bbox([[112.68, 36.0], [854.951554054054, 253.44]])"
       ]
      },
-     "execution_count": 44,
+     "execution_count": 14,
      "metadata": {},
      "output_type": "execute_result"
     },
@@ -475,7 +475,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 14,
+   "execution_count": 15,
    "metadata": {},
    "outputs": [
     {
@@ -494,7 +494,7 @@
        "        2.000000e+02]))"
       ]
      },
-     "execution_count": 14,
+     "execution_count": 15,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -514,7 +514,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 15,
+   "execution_count": 16,
    "metadata": {},
    "outputs": [
     {
@@ -529,7 +529,7 @@
        " array([365.74925556]))"
       ]
      },
-     "execution_count": 15,
+     "execution_count": 16,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -549,7 +549,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 16,
+   "execution_count": 17,
    "metadata": {},
    "outputs": [
     {
@@ -561,7 +561,7 @@
        " array([-0.00102445]))"
       ]
      },
-     "execution_count": 16,
+     "execution_count": 17,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -584,7 +584,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 17,
+   "execution_count": 18,
    "metadata": {},
    "outputs": [
     {
@@ -601,7 +601,7 @@
        " array([-13.40777756]))"
       ]
      },
-     "execution_count": 17,
+     "execution_count": 18,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -621,7 +621,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 18,
+   "execution_count": 19,
    "metadata": {},
    "outputs": [
     {
@@ -638,7 +638,7 @@
        " array([-18.16464841]))"
       ]
      },
-     "execution_count": 18,
+     "execution_count": 19,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -658,7 +658,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 19,
+   "execution_count": 20,
    "metadata": {},
    "outputs": [
     {
@@ -675,7 +675,7 @@
        " array([-66.08043662]))"
       ]
      },
-     "execution_count": 19,
+     "execution_count": 20,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -710,7 +710,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 20,
+   "execution_count": 21,
    "metadata": {},
    "outputs": [
     {
@@ -719,7 +719,7 @@
        "array([-93847.85528561])"
       ]
      },
-     "execution_count": 20,
+     "execution_count": 21,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -730,7 +730,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 21,
+   "execution_count": 22,
    "metadata": {},
    "outputs": [
     {
@@ -739,7 +739,7 @@
        "array([-93847.82866489])"
       ]
      },
-     "execution_count": 21,
+     "execution_count": 22,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -750,7 +750,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 22,
+   "execution_count": 23,
    "metadata": {},
    "outputs": [
     {
@@ -759,7 +759,7 @@
        "array([-94480.46872573])"
       ]
      },
-     "execution_count": 22,
+     "execution_count": 23,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -782,7 +782,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 23,
+   "execution_count": 24,
    "metadata": {},
    "outputs": [
     {
@@ -791,7 +791,7 @@
        "(array([-96059.91196724]), array([9.41357392]))"
       ]
      },
-     "execution_count": 23,
+     "execution_count": 24,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -802,7 +802,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 24,
+   "execution_count": 25,
    "metadata": {},
    "outputs": [
     {
@@ -811,7 +811,7 @@
        "(array([-1554128.63647955]), array([94.71751487]))"
       ]
      },
-     "execution_count": 24,
+     "execution_count": 25,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -822,16 +822,16 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 37,
+   "execution_count": 26,
    "metadata": {},
    "outputs": [
     {
      "data": {
       "text/plain": [
-       "(array([-204972.30130472]), array([11.51694157]))"
+       "(array([-36210.40881628]), array([2.7890188]))"
       ]
      },
-     "execution_count": 37,
+     "execution_count": 26,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -845,66 +845,7 @@
    "metadata": {},
    "source": [
     "### Solid-solution species     <a class=\"anchor\" id=\"section_4_2\"></a>\n",
-    "The standard molal properties of solid-solution species and reactions are computed differently from other minerals, interaction parameters and mixing rules as described in Stefánsson (2001) are applied in combining the properties of various end-members thermodynamic data from Robie and Hemingway (1995). The function `solidsolution_thermo` or `calcRxnlogK` computes reaction species and coefficient, and molal properties of solid-solutions of plagioclase, olivine, pyroxene, alkali-feldspar and clinopyroxene minerals. The inputs are fractions of Anorthite, Forsterite, Enstatite or Albite as the case may be and number of moles of Calcium in the clinopyroxene formula units and the $\\frac{Mg}{Mg+Fe}$ ratio for clinopyroxene, coupled with temperature [°C], pressure [bar], solidsolution_type (specifying either 'All' or 'plagioclase' or 'olivine' or 'pyroxene' or 'cpx' or 'alk-feldspar') and a direct-access dictionary (for example above, [Db_thermo.dbaccessdic]). If the moles of calcium is zero, the solid-solution is reduced to pyroxene end-member, which is is a binary solid solution between orthoenstatite and ferrosilite. Hence, `calclogKDiHedEnFe` should only be used if moles of calcium is greater than zero. The structure of the output includes an *array* of equilibrium constants and a *dictionary* containing mineral type, name, formula, molecular weight, list of properties (like Db_thermo.dbaccessdic), reaction species and coefficient, mineral volume, data source and elements species and moles. An example that calculates solid-solution properties for *'Di45Hed25En19Fe11'* at 60°C and 100 bar with the default `JN91` formulation is:"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 26,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "(array([17.81356522]),\n",
-       " {'type': 'cpx',\n",
-       "  'name': 'Di45Hed19En25Fe11',\n",
-       "  'formula': 'Ca0.65Mg0.95Fe0.41Si2O6',\n",
-       "  'MW': 224.20512,\n",
-       "  'min': ['Ca0.65Mg0.95Fe0.41Si2O6',\n",
-       "   ' R&H95, Stef2001',\n",
-       "   -681678.7564868213,\n",
-       "   nan,\n",
-       "   39.535095090743326,\n",
-       "   65.566176,\n",
-       "   95.86780066921605,\n",
-       "   -0.01085667447418738,\n",
-       "   -89154.23518164441,\n",
-       "   -887.9544455066921,\n",
-       "   3.040245219885277e-06],\n",
-       "  'spec': ['H+', 'Ca++', 'Mg++', 'Fe++', 'SiO2(aq)', 'H2O'],\n",
-       "  'coeff': [-4, 0.65, 0.95, 0.41, 2, 2],\n",
-       "  'nSpec': 6,\n",
-       "  'V': 65.566176,\n",
-       "  'source': ' R&H95, Stef2001',\n",
-       "  'elements': ['0.6500',\n",
-       "   'Ca',\n",
-       "   '0.9500',\n",
-       "   'Mg',\n",
-       "   '0.4100',\n",
-       "   'Fe',\n",
-       "   '2.0000',\n",
-       "   'Si',\n",
-       "   '6.0000',\n",
-       "   'O']})"
-      ]
-     },
-     "execution_count": 26,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "ss = solidsolution_thermo(T = 60, P = 100, solidsolution_type = 'cpx', X = 0.7, cpx_Ca = 0.646,\n",
-    "                          dbaccessdic = Db_thermo.dbaccessdic)\n",
-    "ss.logK, ss.Rxn"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "A similar result can be generated using `calcRxnlogK` as below and the difference is that `calcRxnlogK` allows computation of equilibrium constants using density extrapolation."
+    "The standard molal properties of solid-solution species and reactions are computed differently from other minerals, interaction parameters and mixing rules as described in Stefánsson (2001) are applied in combining the properties of various end-members thermodynamic data from Robie and Hemingway (1995). The function `solidsolution_thermo` or `calcRxnlogK` computes reaction species and coefficient, and molal properties of solid-solutions of plagioclase, olivine, pyroxene, alkali-feldspar and clinopyroxene minerals. The inputs are mole fractions of Anorthite, Forsterite, Enstatite or Albite as the case may be and number of moles of Calcium in the clinopyroxene formula units and the $\\frac{Mg}{Mg+Fe}$ ratio for clinopyroxene, coupled with temperature [°C], pressure [bar], solidsolution_type (specifying either 'All' or 'plagioclase' or 'olivine' or 'pyroxene' or 'cpx' or 'alk-feldspar') and a direct-access dictionary (for example above, [Db_thermo.dbaccessdic]). If the moles of calcium is zero, the solid-solution is reduced to pyroxene end-member, which is is a binary solid solution between orthoenstatite and ferrosilite. Hence, `calclogKDiHedEnFe` should only be used if moles of calcium is greater than zero. The structure of the output includes an *array* of equilibrium constants and a *dictionary* containing mineral type, name, formula, molecular weight, list of properties (like Db_thermo.dbaccessdic), reaction species and coefficient, mineral volume, data source and elements species and moles. An example that calculates solid-solution properties for *'Di45Hed25En19Fe11'* at 60°C and 100 bar with the default `JN91` formulation is:"
    ]
   },
   {
@@ -954,6 +895,65 @@
     }
    ],
    "source": [
+    "ss = solidsolution_thermo(T = 60, P = 100, solidsolution_type = 'cpx', X = 0.7, cpx_Ca = 0.646,\n",
+    "                          dbaccessdic = Db_thermo.dbaccessdic)\n",
+    "ss.logK, ss.Rxn"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A similar result can be generated using `calcRxnlogK` as below and the difference is that `calcRxnlogK` allows computation of equilibrium constants using density extrapolation."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(array([17.81356522]),\n",
+       " {'type': 'cpx',\n",
+       "  'name': 'Di45Hed19En25Fe11',\n",
+       "  'formula': 'Ca0.65Mg0.95Fe0.41Si2O6',\n",
+       "  'MW': 224.20512,\n",
+       "  'min': ['Ca0.65Mg0.95Fe0.41Si2O6',\n",
+       "   ' R&H95, Stef2001',\n",
+       "   -681678.7564868213,\n",
+       "   nan,\n",
+       "   39.535095090743326,\n",
+       "   65.566176,\n",
+       "   95.86780066921605,\n",
+       "   -0.01085667447418738,\n",
+       "   -89154.23518164441,\n",
+       "   -887.9544455066921,\n",
+       "   3.040245219885277e-06],\n",
+       "  'spec': ['H+', 'Ca++', 'Mg++', 'Fe++', 'SiO2(aq)', 'H2O'],\n",
+       "  'coeff': [-4, 0.65, 0.95, 0.41, 2, 2],\n",
+       "  'nSpec': 6,\n",
+       "  'V': 65.566176,\n",
+       "  'source': ' R&H95, Stef2001',\n",
+       "  'elements': ['0.6500',\n",
+       "   'Ca',\n",
+       "   '0.9500',\n",
+       "   'Mg',\n",
+       "   '0.4100',\n",
+       "   'Fe',\n",
+       "   '2.0000',\n",
+       "   'Si',\n",
+       "   '6.0000',\n",
+       "   'O']})"
+      ]
+     },
+     "execution_count": 28,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
     "ss = calcRxnlogK(T = 60, P = 100, Specie = 'cpx', X = 0.7, cpx_Ca = 0.646,\n",
     "                 dbaccessdic = Db_thermo.dbaccessdic)\n",
     "ss.logK, ss.Rxn"
@@ -965,58 +965,6 @@
    "source": [
     "### Clay Mineral species     <a class=\"anchor\" id=\"section_4_3\"></a>\n",
     "The thermodynamic properties for any clay minerals, including 42 of which are compiled in **clay_elements.dat**, can be calculated based on techniques detailed by Blanc et al (2015, 2021). These techniques have been implemented in function `calclogKclays`, which takes inputs as temperature [°C], pressure [bar], a *list* containing clay mineral name and elemental composition in this particular order ['clay_name', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li'], a *dictionary* containing the thermodynamic properties of each species (for example above, [Db_thermo.dbaccessdic]) and a *string* that specifies the structural layering of the phyllosilicate. Examples of utilizing `calclogKclays` and `calcRxnlogK` for calculating properties of *'Chamosite'* at 60°C and 100 bar with the default `Dielec_method` are:\n"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 28,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "(array([40.01276655]),\n",
-       " {'type': 'Smectites',\n",
-       "  'name': 'Chamosite',\n",
-       "  'formula': 'Fe5.00Al2.00Si3.0O10(OH)8',\n",
-       "  'MW': 713.5073000000001,\n",
-       "  'min': ['Fe5.00Al2.00Si3.0O10(OH)8',\n",
-       "   'B2015, B2021',\n",
-       "   -1553442.9682398445,\n",
-       "   -1699939.053537285,\n",
-       "   134.53834562298331,\n",
-       "   215.92,\n",
-       "   146.64913957934988,\n",
-       "   86.36591778202677,\n",
-       "   -30.076481835564053],\n",
-       "  'spec': ['H+', 'Fe++', 'Al+++', 'SiO2(aq)', 'H2O'],\n",
-       "  'coeff': [-16.0, 5.0, 2.0, 3.0, 12.0],\n",
-       "  'nSpec': 5,\n",
-       "  'V': 215.92,\n",
-       "  'dG': -6499.60537911551,\n",
-       "  'dHf': -7112.545000000001,\n",
-       "  'Cp': 579.765,\n",
-       "  'source': 'B2015, B2021',\n",
-       "  'elements': ['5.0000',\n",
-       "   'Fe',\n",
-       "   '2.0000',\n",
-       "   'Al',\n",
-       "   '3.0000',\n",
-       "   'Si',\n",
-       "   '8.0000',\n",
-       "   'H',\n",
-       "   '18.0000',\n",
-       "   'O']})"
-      ]
-     },
-     "execution_count": 28,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "calclogKclays(60, 100, *['Chamosite','3','2','0','5','0','0','0','0','0'], \n",
-    "              dbaccessdic = Db_thermo.dbaccessdic,  group='14A')"
    ]
   },
   {
@@ -1067,6 +1015,58 @@
     }
    ],
    "source": [
+    "calclogKclays(60, 100, *['Chamosite','3','2','0','5','0','0','0','0','0'], \n",
+    "              dbaccessdic = Db_thermo.dbaccessdic,  group='14A')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(array([40.01276655]),\n",
+       " {'type': 'Smectites',\n",
+       "  'name': 'Chamosite',\n",
+       "  'formula': 'Fe5.00Al2.00Si3.0O10(OH)8',\n",
+       "  'MW': 713.5073000000001,\n",
+       "  'min': ['Fe5.00Al2.00Si3.0O10(OH)8',\n",
+       "   'B2015, B2021',\n",
+       "   -1553442.9682398445,\n",
+       "   -1699939.053537285,\n",
+       "   134.53834562298331,\n",
+       "   215.92,\n",
+       "   146.64913957934988,\n",
+       "   86.36591778202677,\n",
+       "   -30.076481835564053],\n",
+       "  'spec': ['H+', 'Fe++', 'Al+++', 'SiO2(aq)', 'H2O'],\n",
+       "  'coeff': [-16.0, 5.0, 2.0, 3.0, 12.0],\n",
+       "  'nSpec': 5,\n",
+       "  'V': 215.92,\n",
+       "  'dG': -6499.60537911551,\n",
+       "  'dHf': -7112.545000000001,\n",
+       "  'Cp': 579.765,\n",
+       "  'source': 'B2015, B2021',\n",
+       "  'elements': ['5.0000',\n",
+       "   'Fe',\n",
+       "   '2.0000',\n",
+       "   'Al',\n",
+       "   '3.0000',\n",
+       "   'Si',\n",
+       "   '8.0000',\n",
+       "   'H',\n",
+       "   '18.0000',\n",
+       "   'O']})"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
     "clay = calcRxnlogK(T = 60, P = 100, elem = ['Chamosite','3','2','0','5','0','0','0','0','0'], \n",
     "              Specie = 'clay',  dbaccessdic = Db_thermo.dbaccessdic, group='14A')\n",
     "clay.logK, clay.Rxn"
@@ -1082,7 +1082,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 46,
+   "execution_count": 31,
    "metadata": {},
    "outputs": [
     {
@@ -1112,7 +1112,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 30,
+   "execution_count": 32,
    "metadata": {},
    "outputs": [
     {
@@ -1121,7 +1121,7 @@
        "array([-14.26282955])"
       ]
      },
-     "execution_count": 30,
+     "execution_count": 32,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -1135,7 +1135,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 31,
+   "execution_count": 33,
    "metadata": {},
    "outputs": [
     {
@@ -1144,7 +1144,7 @@
        "array([9.97884849])"
       ]
      },
-     "execution_count": 31,
+     "execution_count": 33,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -1157,7 +1157,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 32,
+   "execution_count": 34,
    "metadata": {},
    "outputs": [
     {
@@ -1166,7 +1166,7 @@
        "array([36.02176691])"
       ]
      },
-     "execution_count": 32,
+     "execution_count": 34,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -1190,9 +1190,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
+   "execution_count": 35,
    "metadata": {},
    "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\pygcc\\pygcc_utils.py:2266: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied\n",
+      "  warnings.warn('Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied')\n"
+     ]
+    },
     {
      "name": "stdout",
      "output_type": "stream",
@@ -1203,10 +1211,10 @@
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x1a5310a93d0>"
+       "<pygcc.pygcc_utils.write_database at 0x29de1527370>"
       ]
      },
-     "execution_count": 3,
+     "execution_count": 35,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -1227,7 +1235,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 34,
+   "execution_count": 36,
    "metadata": {},
    "outputs": [
     {
@@ -1240,10 +1248,10 @@
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x1af9eb6a280>"
+       "<pygcc.pygcc_utils.write_database at 0x29de1be02b0>"
       ]
      },
-     "execution_count": 34,
+     "execution_count": 36,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -1262,9 +1270,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 39,
+   "execution_count": 37,
    "metadata": {},
    "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\pygcc\\pygcc_utils.py:3327: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied\n",
+      "  warnings.warn('Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied')\n"
+     ]
+    },
     {
      "name": "stdout",
      "output_type": "stream",
@@ -1275,10 +1291,10 @@
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x1af9fdba1c0>"
+       "<pygcc.pygcc_utils.write_database at 0x29de1781a60>"
       ]
      },
-     "execution_count": 39,
+     "execution_count": 37,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -1298,9 +1314,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 6,
+   "execution_count": 38,
    "metadata": {},
    "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\pygcc\\pygcc_utils.py:4365: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied\n",
+      "  warnings.warn('Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied')\n"
+     ]
+    },
     {
      "name": "stdout",
      "output_type": "stream",
@@ -1311,10 +1335,10 @@
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x1a531e51be0>"
+       "<pygcc.pygcc_utils.write_database at 0x29de2701a30>"
       ]
      },
-     "execution_count": 6,
+     "execution_count": 38,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -1333,9 +1357,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 7,
+   "execution_count": 39,
    "metadata": {},
    "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\pygcc\\pygcc_utils.py:3938: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied\n",
+      "  warnings.warn('Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied')\n"
+     ]
+    },
     {
      "name": "stdout",
      "output_type": "stream",
@@ -1346,10 +1378,10 @@
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x1a531e51a90>"
+       "<pygcc.pygcc_utils.write_database at 0x29de2d3eb20>"
       ]
      },
-     "execution_count": 7,
+     "execution_count": 39,
      "metadata": {},
      "output_type": "execute_result"
     }
