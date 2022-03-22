@@ -1284,9 +1284,9 @@ def outputfmt(fid, logK, Rxn, *T, dataset = None, logK_form = None):
             x0 = [-31.9605, 20.6576, 3.73497e-2, -9.01862, 6.0111, 2.5]
             logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
             fid.writelines('     a= %15.6f   ' % logKcorr[0] + 'b= %15.6f   ' % logKcorr[1] + \
-                            'c= %15.5f\n' % logKcorr[2])
-            fid.writelines('     d= %15.2f   ' % logKcorr[3] + 'e= %15.2f   ' % logKcorr[4] + \
-                            'f= %15.3f \n' % logKcorr[5])
+                            'c= %15.5e\n' % logKcorr[2])
+            fid.writelines('     d= %15.5f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
+                            'f= %15.5f \n' % logKcorr[5])
             fid.writelines('     TminK= %-15.2f ' % np.min(TK) + 'TmaxK= %-7.2f\n' % np.max(TK))
         else:
             for i in range(len(logK)):
@@ -2233,9 +2233,9 @@ class write_database():
                     TK = convert_temperature( T, Out_Unit = 'K' )
                     logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
                     fout.writelines('     a= %15.6f   ' % logKcorr[0] + 'b= %15.6f   ' % logKcorr[1] + \
-                                    'c= %15.5f\n' % logKcorr[2])
-                    fout.writelines('     d= %15.2f   ' % logKcorr[3] + 'e= %15.2f   ' % logKcorr[4] + \
-                                    'f= %15.2f \n' % logKcorr[5])
+                                    'c= %15.5e\n' % logKcorr[2])
+                    fout.writelines('     d= %15.5f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
+                                    'f= %15.5f \n' % logKcorr[5])
                     fout.writelines('     TminK= %-15.2f ' % np.min(TK) + 'TmaxK= %-7.2f\n' % np.max(TK))
                 else:
                     for i in range(len(logK)):
@@ -2344,9 +2344,9 @@ class write_database():
                     TK = convert_temperature( T, Out_Unit = 'K' )
                     logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
                     fout.writelines('     a= %15.6f   ' % logKcorr[0] + 'b= %15.6f   ' % logKcorr[1] + \
-                                    'c= %15.5f\n' % logKcorr[2])
-                    fout.writelines('     d= %15.2f   ' % logKcorr[3] + 'e= %15.2f   ' % logKcorr[4] + \
-                                    'f= %15.2f \n' % logKcorr[5])
+                                    'c= %15.5e\n' % logKcorr[2])
+                    fout.writelines('     d= %15.5f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
+                                    'f= %15.5f \n' % logKcorr[5])
                     fout.writelines('     TminK= %-15.2f ' % np.min(TK) + 'TmaxK= %-7.2f\n' % np.max(TK))
                 else:
                     for i in range(len(logK)):
@@ -2413,9 +2413,9 @@ class write_database():
                     TK = convert_temperature( T, Out_Unit = 'K' )
                     logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
                     fout.writelines('     a= %15.6f   ' % logKcorr[0] + 'b= %15.6f   ' % logKcorr[1] + \
-                                    'c= %15.5f\n' % logKcorr[2])
-                    fout.writelines('     d= %15.2f   ' % logKcorr[3] + 'e= %15.2f   ' % logKcorr[4] + \
-                                    'f= %15.2f \n' % logKcorr[5])
+                                    'c= %15.5e\n' % logKcorr[2])
+                    fout.writelines('     d= %15.5f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
+                                    'f= %15.5f \n' % logKcorr[5])
                     fout.writelines('     TminK= %-15.2f ' % np.min(TK) + 'TmaxK= %-7.2f\n' % np.max(TK))
                 else:
                     for i in range(len(logK)):
@@ -2594,9 +2594,9 @@ class write_database():
                         TK = convert_temperature( T, Out_Unit = 'K' )
                         logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
                         fout.writelines('     a= %15.6f   ' % logKcorr[0] + 'b= %15.6f   ' % logKcorr[1] + \
-                                        'c= %15.5f\n' % logKcorr[2])
-                        fout.writelines('     d= %15.2f   ' % logKcorr[3] + 'e= %15.2f   ' % logKcorr[4] + \
-                                        'f= %15.2f \n' % logKcorr[5])
+                                        'c= %15.5e\n' % logKcorr[2])
+                        fout.writelines('     d= %15.5f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
+                                        'f= %15.5f \n' % logKcorr[5])
                         fout.writelines('     TminK= %-15.2f ' % np.min(TK) + 'TmaxK= %-7.2f\n' % np.max(TK))
                     else:
                         for i in range(len(logK)):
@@ -2706,9 +2706,9 @@ class write_database():
                     TK = convert_temperature( T, Out_Unit = 'K' )
                     logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
                     fout.writelines('     a= %15.6f   ' % logKcorr[0] + 'b= %15.6f   ' % logKcorr[1] + \
-                                    'c= %15.5f\n' % logKcorr[2])
-                    fout.writelines('     d= %15.2f   ' % logKcorr[3] + 'e= %15.2f   ' % logKcorr[4] + \
-                                    'f= %15.2f \n' % logKcorr[5])
+                                    'c= %15.5e\n' % logKcorr[2])
+                    fout.writelines('     d= %15.5f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
+                                    'f= %15.5f \n' % logKcorr[5])
                     fout.writelines('     TminK= %-15.2f ' % np.min(TK) + 'TmaxK= %-7.2f\n' % np.max(TK))
                 else:
                     for i in range(len(logK)):
