@@ -10,10 +10,10 @@ All notable changes to this project are documented here.
 - Added Holland and Power heat capacity equation using SUPCRTBL database, tagged as `heatcaphp`.
 - Added an option in `supcrtaq` function to allow users specify input units for direct-access or
   sequential-access thermodynamic database. The keyword "InUnit" can take 'cal' or 'KJ' and converts
-  to 'cal' which is used in `supcrtaq` function
+  to 'cal' which is used in `supcrtaq` function.
 - Added a sequential-access thermodynamic database "supcrtbl.dat" containing Holland and Power datasets  
   as documented in SUPCRTBL by Zimmer et al. (2016) SUPCRTBL: A revised and extended thermodynamic dataset 
-  and software package of SUPCRT92. Computer and Geosciences 90:97-111
+  and software package of SUPCRT92. Computer and Geosciences 90:97-111.
 - Added an option in `calcRxnlogK` to automatically identify species class based on last letter/number
   of the species. This means species ending with '(aq)', '+', '-' or last letter/number isdigit are
   classified as aqueous species and others are gases or mineral species. This is used incase the user
