@@ -68,7 +68,7 @@ Attributes
 
    
 
-.. py:function:: calclogKclays(TC, P, *elem, dbaccessdic=None, group=None, cation_order=None, Dielec_method=None, Mintype=None, **rhoEG)
+.. py:function:: calclogKclays(TC, P, *elem, dbaccessdic=None, group=None, cation_order=None, Dielec_method=None, ClayMintype=None, ThermoInUnit='cal', **rhoEG)
 
    This function calculates logK values and reaction parameters of clay reactions using below references:
 
@@ -86,6 +86,10 @@ Attributes
    :type cation_order: string
    :param Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified, default - 'JN91'
    :type Dielec_method: string
+   :param ClayMintype: specify either 'Smectite' or 'Chlorite' or 'Mica' as the clay type, if not specified default - 'Smectites'
+   :type ClayMintype: string
+   :param ThermoInUnit: specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
+   :type ThermoInUnit: string
    :param rhoEG: dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy  (optional)
    :type rhoEG: dict
 

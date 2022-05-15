@@ -31,17 +31,22 @@
 Module Contents
 ---------------
 
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   pygcc.species_eos.heatcap
+
+
 
 Functions
 ~~~~~~~~~
 
 .. autoapisummary::
 
-   pygcc.species_eos.heatcap
-   pygcc.species_eos.heatcapusgscal
-   pygcc.species_eos.supcrtaq
    pygcc.species_eos.Element_counts
-   pygcc.species_eos.heatcap_Berman
+   pygcc.species_eos.supcrtaq
 
 
 
@@ -51,6 +56,7 @@ Attributes
 .. autoapisummary::
 
    pygcc.species_eos.J_to_cal
+   pygcc.species_eos.KJ_to_cal
 
 
 .. py:data:: J_to_cal
@@ -58,33 +64,94 @@ Attributes
 
    
 
-.. py:function:: heatcap(TC, P, species, **kwargs)
+.. py:data:: KJ_to_cal
+   
 
-   This function evaluates Gibbs energy and heat capacity as a function of temperature
-   and pressure for any mineral or gas specie using Helgeson et al (1978) equations and Maier-Kelley
-   power function for heat capacity
+   
 
-   :param TC: Temperature [°C]
-   :type TC: float, vector
+.. py:function:: Element_counts(formula)
+
+   This function calculates the elemental composition of a substance given by its chemical formula
+   It was a modified version of https://github.com/cgohlke/molmass/blob/master/molmass/molmass.py
+
+   :param formula: Chemical formula
+   :type formula: string
+
+   :returns: **elements** -- dictionary of elemental composition and their respective number of atoms
+   :rtype: dict
+
+   Usage:
+   ----------
+       [elements] = Element_counts(formula)
+           Examples of valid formulas are "H2O", "[2H]2O", "CH3COOH", "EtOH", "CuSO4:5H2O", "(COOH)2", "AgCuRu4(H)2[CO]12{PPh3}2", "CGCGAATTCGCG", and, "MDRGEQGLLK" .
+
+
+.. py:class:: heatcap(**kwargs)
+
+   Class to heat capacity for mineral and gases using Maier-Kelley powerlaw, Haas-Fisher powerlaw, Holland and Powell and Berman's function
+
+   :param T: Temperature [°C]
+   :type T: float, vector
    :param P: Pressure [bar]
    :type P: float, vector
-   :param species: Properties such as ( dG [cal/ml], dH [cal/mol], S [cal/mol-K], V [cm³/mol], a [cal/mol-K],b [*10^3 cal/mol/K^2], c [*10^-5 cal/mol/K], Ttrans [K], Htr [cal/mol], Vtr [cm³/mol], dPdTtr [bar/K] ), etc
-   :type species: array
-   :param spec_name: species name, optional for all cases except Coesite and Quartz
-   :type spec_name: string
+   :param Species_ppt:
+                       Properties such as Supcrt92 (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm3/mol] a [cal/mol-K], b [*10**3 cal/mol/K^2],
+                        c [*10^-5 cal/mol/K], Ttrans [K], Htr [cal/mol], Vtr [cm³/mol], dPdTtr [bar/K] ): Berman's database
+                       properties such as (dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, k3,
+                       v1 [*10^5 K^-1], v2 [*10^5 K^-2], v3 [*10^5 bar^-1], v4 [*10^8 bar^-2], dTdP [K/bar], Tlambda [K],
+                       Tref [K], l1 [(J/mol)^0.5/K], l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], d2 [J/mol],
+                       d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K]): Supcrtbl's database properties such as (dG [kJ/mol], dH [kJ/mol], S [J/mol-K], V [J/bar], a [kJ/mol-K],
+                       b [*10^5 kJ/mol/K^2], c [kJ-mol-K], d [kJ/mol/K^0.5], alpha [*10^5 K^-1], kappa0 [kbar],
+                       kappa0_d [kbar], kappa0_dd [kbar], n_atom [-], Tc0 [K], Smax [J/mol-K], Vmax [J/bar], dH [KJ/mol],
+                       dV [J/bar], W [kJ/mol], Wv [J/bar], n [-], SF [-]), etc
+   :type Species_ppt: array
+   :param Species: species name, optional for all cases except gases, Coesite and Quartz
+   :type Species: string
+   :param method: specify either 'SUPCRT' or 'berman88' or 'HP11' or 'HF76' to carry-out any mineral or gas
+                  heat capacity calculations, default is 'SUPCRT'
+   :type method: string
 
-   :returns: * **delGfPT** (*float, vector*) -- Gibbs Energy [cal/mol]
-             * **delCp** (*float, vector*) -- Heat capacity [cal/mol/K]
+   :returns: * **dG** (*float, vector*) -- Gibbs Energy [cal/mol]
+             * **dCp** (*float, vector*) -- Heat capacity [cal/mol/K]
 
    .. rubric:: Examples
 
+   >>> # Example with Maier-Kelley powerlaw function as implemented in SUPCRT92
    >>> from pygcc.pygcc_utils import db_reader
    >>> ps = db_reader() # utilizes the default direct-access database, speq21
-   >>> [delGfPT, delCp] = heatcap( 100, 50, ps.dbaccessdic['H2S(g)'])
+   >>> sp = heatcap( T = 100, P = 50, Species = 'H2S(g)', Species_ppt = ps.dbaccessdic['H2S(g)'], method = 'SUPCRT')
+   >>> sp.dG, sp.dCp
        -11782.47165818, 8.58416135
-   >>> [delGfPT, delCp] = heatcap( 100, 50, ps.dbaccessdic['Quartz'],
-                              spec_name = 'Quartz')
+   >>> sp = heatcap( T = 100, P = 50, Species_ppt = ps.dbaccessdic['Quartz'], method = 'SUPCRT',
+                         Species = 'Quartz')
+   >>> sp.dG, sp.dCp
        -205292.75498942, 12.34074489
+
+   >>> # Example with Haas-Fisher powerlaw function
+   >>> from pygcc.pygcc_utils import db_reader
+   >>> ps = db_reader() # utilizes the default direct-access database, speq21
+   >>> sp = heatcap( T = 100, P = 50, Species_ppt = ps.dbaccessdic['ss_Anorthite'], method = 'HF76',
+                    Species = 'ss_Anorthite')
+   >>> sp.dG, sp.dCp
+       -960440.79915641, 57.46776903
+
+   >>> # Example with Berman's function
+   >>> from pygcc.pygcc_utils import db_reader
+   >>> # utilizes the default speq21 and specified Berman dataset database
+   >>> ps = db_reader(dbBerman_dir = './default_db/Berman.dat')
+   >>> sp = heatcap( T = 100, P = 50, Species_ppt = ps.dbaccessdic['Quartz'], method = 'berman88',
+                    Species = 'Quartz')
+   >>> sp.dG, sp.dCp
+       -205472.3365716, 12.32381279
+
+   >>> # Example with Holland and Powell's function
+   >>> from pygcc.pygcc_utils import db_reader
+   >>> # utilizes the default speq21 and specified SUPCRTBL (HP2011) dataset database
+   >>> ps = db_reader(dbHP_dir = './default_db/supcrtbl.dat')
+   >>> sp = heatcap( T = 100, P = 50, Species_ppt = ps.dbaccessdic['Hematite'], method = 'HP11',
+                    Species = 'Hematite')
+   >>> sp.dG, sp.dCp
+       -179494.62259123, 28.09545987
 
    .. rubric:: References
 
@@ -92,37 +159,144 @@ Attributes
        thermodynamic properties of rock-forming minerals.
    (2) Kelley K. K (1960) Contributions to the data on theoretical metallurgy. XIII. High
        temperature heat content, heat capacity and entropy data for elements and inorganic compounds US Bur Mines Bull 548: 232 p
-
-
-.. py:function:: heatcapusgscal(TC, P, species)
-
-   This function evaluates Gibbs energy and heat capacity as a function of temperature and pressure
-   for any mineral or gas specie using Haas and Fisher (1976)'s heat capacity parameter fit (utilized for solid-solutions)
-
-   :param TC: Temperature [°C]
-   :type TC: float, vector
-   :param P: Pressure [bar]
-   :type P: float, vector
-   :param species: Properties such as [dG [cal/ml], dH [cal/mol], S [cal/mol-K], V [cm³/mol], a [cal/mol-K], b [cal/mol/K^2], c [cal/mol/K], g [cal/mol/K^0.5], f [cal/mol/K^3] )
-   :type species: array
-
-   :returns: * **delGfPT** (*float, vector*) -- Gibbs Energy [cal/mol]
-             * **delCp** (*float, vector*) -- Heat capacity [cal/mol/K]
-
-   .. rubric:: Examples
-
-   >>> from pygcc.pygcc_utils import db_reader
-   >>> ps = db_reader() # utilizes the default direct-access database, speq21
-   >>> [delGfPT, delCp] = heatcapusgscal( 100, 50, ps.dbaccessdic['ss_Anorthite'])
-       -960440.79915641, 57.46776903
-
-   .. rubric:: References
-
-   (1) Haas JL Jr, Fisher JR (1976) Simultaneous evaluation and correlation of thermodynamic data.
+   (3) Haas JL Jr, Fisher JR (1976) Simultaneous evaluation and correlation of thermodynamic data.
        American Journal of Science 276:525-545
+   (4) Berman, R. G. (1988). Internally-consistent thermodynamic data for minerals in the system
+       Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2. Journal of petrology, 29(2), 445-522.
+   (5) Berman RG, Brown TH (1985) Heat Capacities of minerals in the system Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2:
+       Representation, estimation, and high temperature extrapolation. Contrib Mineral Petrol 89:168-183
+   (6) Holland, T. and Powell, R., 2011. An improved and extended internally consistent thermodynamic
+       dataset for phases of petrological interest, involving a new equation of state for solids.
+       Journal of Metamorphic Geology. 29, 333–383.
+   (7) Holland, T.J.B. and Powell, R., 1998. An internally-consistent thermodynamic dataset for phases
+       of petrological interest. Journal of Metamorphic Geology, 16, 309–344.
+   (8) Zimmer, K., Zhang, Y.L., Lu, P., Chen, Y.Y., Zhang, G.R., Dalkilic, M. and Zhu, C. (2016)
+       SUPCRTBL: A revised and extended thermodynamic dataset and software package of SUPCRT92.
+       Computer and Geosciences 90:97-111
+
+   .. py:attribute:: kwargs
+      
+
+      
+
+   .. py:method:: __calc__(self, **kwargs)
 
 
-.. py:function:: supcrtaq(TC, P, specieppt, Dielec_method=None, **rhoE)
+   .. py:method:: heatcapusgscal(self, TC, P, species)
+
+      This function evaluates Gibbs energy and heat capacity as a function of temperature and pressure
+      for any mineral or gas specie using Haas and Fisher (1976)'s heat capacity parameter fit (utilized for solid-solutions)
+
+      :param TC: Temperature [°C]
+      :type TC: float, vector
+      :param P: Pressure [bar]
+      :type P: float, vector
+      :param species: Properties such as [dG [cal/ml], dH [cal/mol], S [cal/mol-K], V [cm³/mol], a [cal/mol-K], b [cal/mol/K^2], c [cal/mol/K], g [cal/mol/K^0.5], f [cal/mol/K^3] )
+      :type species: array
+
+      :returns: * **delGfPT** (*float, vector*) -- Gibbs Energy [cal/mol]
+                * **delCp** (*float, vector*) -- Heat capacity [cal/mol/K]
+
+      .. rubric:: References
+
+      (1) Haas JL Jr, Fisher JR (1976) Simultaneous evaluation and correlation of thermodynamic data.
+          American Journal of Science 276:525-545
+
+
+   .. py:method:: heatcap_Berman(self, TC, P, species)
+
+      This function evaluates Gibbs energy and heat capacity as a function of temperature
+      and pressure for any mineral or gas specie using Berman (1988) equations and datasets with
+      Berman and Brown (1985)'s heat capacity parameter fit
+
+      :param TC: Temperature [°C]
+      :type TC: float, vector
+      :param P: Pressure [bar]
+      :type P: float, vector
+      :param species:
+                      Properties such as [dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, k3,
+                                          v1 [*10^5 K^-1], v2 [*10^5 K^-2], v3 [*10^5 bar^-1], v4 [*10^8 bar^-2],
+                                          dTdP [K/bar], Tlambda [K], Tref [K], l1 [(J/mol)^0.5/K],
+                                          l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], d2 [J/mol],
+                                          d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K]]
+      :type species: array
+
+      :returns: * **delGfPT** (*float, vector*) -- Gibbs Energy [cal/mol]
+                * **delCp** (*float, vector*) -- Heat capacity [cal/mol/K]
+
+      .. rubric:: References
+
+      (1) Berman, R. G. (1988). Internally-consistent thermodynamic data for minerals in the system
+          Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2. Journal of petrology, 29(2), 445-522.
+      (2) Berman RG, Brown TH (1985) Heat Capacities of minerals in the system Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2:
+          Representation, estimation, and high temperature extrapolation. Contrib Mineral Petrol 89:168-183
+
+
+   .. py:method:: heatcapsup(self, TC, P, species, **kwargs)
+
+      This function evaluates Gibbs energy and heat capacity as a function of temperature
+      and pressure for any mineral or gas specie using Helgeson et al (1978) equations and Maier-Kelley
+      power function for heat capacity as implemented in SUPCRT92
+
+      :param TC: Temperature [°C]
+      :type TC: float, vector
+      :param P: Pressure [bar]
+      :type P: float, vector
+      :param species:
+                      Properties such as ( dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm³/mol], a [cal/mol-K],
+                                          b [*10^3 cal/mol/K^2], c [*10^-5 cal/mol/K], Ttrans [K], Htr [cal/mol],
+                                          Vtr [cm³/mol], dPdTtr [bar/K] ), etc
+      :type species: array
+      :param spec_name: species name, optional for all cases except gases, Coesite and Quartz
+      :type spec_name: string
+
+      :returns: * **delGfPT** (*float, vector*) -- Gibbs Energy [cal/mol]
+                * **delCp** (*float, vector*) -- Heat capacity [cal/mol/K]
+
+      .. rubric:: References
+
+      (1) Helgeson, H. C., Delany, J. M., Nesbitt, H. W. and Bird, D. K.(1978). Summary and critique of the
+          thermodynamic properties of rock-forming minerals.
+      (2) Kelley K. K (1960) Contributions to the data on theoretical metallurgy. XIII. High
+          temperature heat content, heat capacity and entropy data for elements and inorganic compounds US Bur Mines Bull 548: 232 p
+
+
+   .. py:method:: heatcaphp(self, TC, P, species)
+
+      This function evaluates Gibbs energy and heat capacity as a function of temperature and pressure
+      for any mineral or gas specie using Holland and Powell (2011)'s heat capacity parameter fit and
+      database based on SUPCRTBL
+
+      :param TC: Temperature [°C]
+      :type TC: float, vector
+      :param P: Pressure [bar]
+      :type P: float, vector
+      :param species:
+                      Properties such as [dG [kJ/mol], dH [kJ/mol], S [J/mol-K], V [J/bar], a [kJ/mol-K],
+                                          b [*10^5 kJ/mol/K^2], c [kJ-mol-K], d [kJ/mol/K^0.5],
+                                          alpha [*10^5 K^-1], kappa0 [kbar], kappa0_d [kbar], kappa0_dd [kbar],
+                                          n_atom [-], Tc0 [K], Smax [J/mol-K], Vmax [J/bar],
+                                          dH [KJ/mol], dV [J/bar], W [kJ/mol], Wv [J/bar],
+                                          n [-], SF [-]]
+      :type species: array
+
+      :returns: * **delGfPT** (*float, vector*) -- Gibbs Energy [cal/mol]
+                * **delCp** (*float, vector*) -- Heat capacity [cal/mol/K]
+
+      .. rubric:: References
+
+      (1) Holland, T. and Powell, R., 2011. An improved and extended internally consistent thermodynamic
+          dataset for phases of petrological interest, involving a new equation of state for solids.
+          Journal of Metamorphic Geology. 29, 333–383.
+      (2) Zimmer, K., Zhang, Y.L., Lu, P., Chen, Y.Y., Zhang, G.R., Dalkilic, M. and Zhu, C. (2016)
+          SUPCRTBL: A revised and extended thermodynamic dataset and software package of SUPCRT92.
+          Computer and Geosciences 90:97-111
+      (3) Holland, T.J.B. and Powell, R., 1998. An internally-consistent thermodynamic dataset for phases
+          of petrological interest. Journal of Metamorphic Geology, 16, 309–344.
+
+
+
+.. py:function:: supcrtaq(TC, P, specieppt, Dielec_method=None, ThermoInUnit='cal', **rhoE)
 
    This function evaluates the Gibbs free energy of aqueous species at T and P
    using the revised HKF equation of state
@@ -131,10 +305,12 @@ Attributes
    :type TC: float, vector
    :param P: Pressure [bar]
    :type P: float, vector
-   :param specieppt: Properties such as (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm3/mol], a1 [*10 cal/mol/bar], a2 [*10**-2 cal/mol], a3 [cal-K/mol/bar], a4 [*10**-4 cal-K/mol], c1 [cal/mol/K], c2 [*10**-4 cal-K/mol], ω [*10**-5 cal/mol] )
+   :param specieppt: Properties such as (dG [cal/mol], dH [cal/mol], S [cal/mol-K], a1 [*10 cal/mol/bar], a2 [*10**-2 cal/mol], a3 [cal-K/mol/bar], a4 [*10**-4 cal-K/mol], c1 [cal/mol/K], c2 [*10**-4 cal-K/mol], ω [*10**-5 cal/mol] )
    :type specieppt: array
    :param Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified default - 'JN91'
    :type Dielec_method: string
+   :param ThermoInUnit: specify either 'cal' or 'KJ' as the input units for species properties (optional), if not specified default - 'cal'
+   :type ThermoInUnit: string
    :param rhoE: dictionary of water properties like density (rho) and dielectric factor (E) (optional)
    :type rhoE: dict
 
@@ -179,54 +355,5 @@ Attributes
        the standard molal thermodynamic properties of minerals, gases, aqueous species, and
        reactions from 1 to 5000 bar and 0 to 1000°C. Computers & Geosciences 18(7): 899-947.
        doi: 10.1016/0098-3004(92)90029-Q
-
-
-.. py:function:: Element_counts(formula)
-
-   This function calculates the elemental composition of a substance given by its chemical formula
-   It was a modified version of https://github.com/cgohlke/molmass/blob/master/molmass/molmass.py
-
-   :param formula: Chemical formula
-   :type formula: string
-
-   :returns: **elements** -- dictionary of elemental composition and their respective number of atoms
-   :rtype: dict
-
-   Usage:
-   ----------
-       [elements] = Element_counts(formula)
-           Examples of valid formulas are "H2O", "[2H]2O", "CH3COOH", "EtOH", "CuSO4:5H2O", "(COOH)2", "AgCuRu4(H)2[CO]12{PPh3}2", "CGCGAATTCGCG", and, "MDRGEQGLLK" .
-
-
-.. py:function:: heatcap_Berman(TC, P, species)
-
-   This function evaluates Gibbs energy and heat capacity as a function of temperature
-   and pressure for any mineral or gas specie using Berman (1988) equations and datasets with
-   Berman and Brown (1985)'s heat capacity parameter fit
-
-   :param TC: Temperature [°C]
-   :type TC: float, vector
-   :param P: Pressure [bar]
-   :type P: float, vector
-   :param species: Properties such as [dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, k3, v1 [*10^5 K^-1], v2 [*10^5 K^-2], v3 [*10^5 bar^-1], v4 [*10^8 bar^-2], dTdP [K/bar], Tlambda [K], Tref [K], l1 [(J/mol)^0.5/K], l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], d2 [J/mol], d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K]]
-   :type species: array
-
-   :returns: * **delGfPT** (*float, vector*) -- Gibbs Energy [cal/mol]
-             * **delCp** (*float, vector*) -- Heat capacity [cal/mol/K]
-
-   .. rubric:: Examples
-
-   >>> from pygcc.pygcc_utils import db_reader
-   >>> # utilizes the default speq21 and specified Berman dataset database
-   >>> ps = db_reader(dbBerman_dir = './default_db/Berman.dat')
-   >>> [delGfPT, delCp] = heatcap_Berman( 100, 50, ps.dbaccessdic['Quartz'])
-       -205472.3365716, 12.32381279
-
-   .. rubric:: References
-
-   (1) Berman, R. G. (1988). Internally-consistent thermodynamic data for minerals in the system
-       Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2. Journal of petrology, 29(2), 445-522.
-   (2) Berman RG, Brown TH (1985) Heat Capacities of minerals in the system Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2:
-       Representation, estimation, and high temperature extrapolation. Contrib Mineral Petrol 89:168-183
 
 

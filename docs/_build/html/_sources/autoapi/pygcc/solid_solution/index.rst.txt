@@ -87,14 +87,19 @@ Attributes
    :type T: float, vector
    :param P: Pressure [bar]
    :type P: float, vector
-   :param dbacessdic: dictionary of species from direct-access database, optional, default is speq21
-   :type dbacessdic: dict
+   :param dbaccessdic: dictionary of species from direct-access database, optional, default is speq21
+   :type dbaccessdic: dict
    :param solidsolution_type: specify either 'All' or 'plagioclase' or 'olivine' or 'pyroxene' or 'cpx' or 'alk-feldspar' or 'biotite' to carry-out all or any solid-solution calculations, default is 'All'
    :type solidsolution_type: string
    :param Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified default - 'JN91'
    :type Dielec_method: string
-   :param rhoEG: dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy  (optional)
-   :type rhoEG: dict
+
+      ThermoInUnit : string
+          specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
+      Al_Si : string
+          specify either 'pygcc' or 'Arnórsson_Stefánsson' as the input to express Al and Si species in solid solution (optional), 'Arnórsson_Stefánsson' expresses them as 'Al(OH)4-' and 'H4SiO4(aq)', respectively while pygcc uses 'Al3+' and 'SiO2(aq)', respectively if not specified default - 'pygcc'
+       rhoEG      : dict
+           dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy  (optional)
 
    :returns: * *if 'All' is specified for solidsolution_type, each case has the follwowing prefix - AnAb_, FoFa_, EnFe_, cpx_, AlkFed_, Biotite_*
              * **logK** (*float, vector*) -- logarithmic K values
@@ -199,8 +204,8 @@ Attributes
       :type TC: temperature [°C]
       :param P:
       :type P: pressure [bar]
-      :param dbacessdic:
-      :type dbacessdic: dictionary of species from direct-access database
+      :param dbaccessdic:
+      :type dbaccessdic: dictionary of species from direct-access database
       :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
       :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
       :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
@@ -215,25 +220,25 @@ Attributes
 
           (1) Not on steam saturation curve:
 
-              [logK, Rxn] = calclogKAnAb(XAn, TC, P, dbacessdic),
+              [logK, Rxn] = calclogKAnAb(XAn, TC, P, dbaccessdic),
 
               where T is temperature in celsius and P is pressure in bar;
           (2) On steam saturation curve:
 
-              [logK, Rxn] = calclogKAnAb(XAn, TC, 'T', dbacessdic),
+              [logK, Rxn] = calclogKAnAb(XAn, TC, 'T', dbaccessdic),
 
               where T is temperature in celsius, followed with a quoted char 'T'
 
-              [logK, Rxn] = calclogKAnAb(XAn, P, 'P', dbacessdic),
+              [logK, Rxn] = calclogKAnAb(XAn, P, 'P', dbaccessdic),
 
               where P is pressure in bar, followed with a quoted char 'P'.
           (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
               condition not on steam saturation curve is as follows. Default method is 'JN91'
 
-              [logK, Rxn] = calclogKAnAb(XAn, TC, P, dbacessdic, Dielec_method = 'FGL97')
+              [logK, Rxn] = calclogKAnAb(XAn, TC, P, dbaccessdic, Dielec_method = 'FGL97')
 
 
-   .. py:method:: calclogKFoFa(self, XFo, TC, P, dbacessdic, rhoEG, Dielec_method=None)
+   .. py:method:: calclogKFoFa(self, XFo, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
 
       This function calculates thermodynamic properties of solid solution of olivine minerals
 
@@ -243,8 +248,8 @@ Attributes
       :type TC: temperature [°C]
       :param P:
       :type P: pressure [bar]
-      :param dbacessdic:
-      :type dbacessdic: dictionary of species from direct-access database
+      :param dbaccessdic:
+      :type dbaccessdic: dictionary of species from direct-access database
       :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
       :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
       :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
@@ -259,25 +264,25 @@ Attributes
 
           (1) Not on steam saturation curve:
 
-              [logK, Rxn] = calclogKFoFa(XFo, TC, P, dbacessdic),
+              [logK, Rxn] = calclogKFoFa(XFo, TC, P, dbaccessdic),
 
               where T is temperature in celsius and P is pressure in bar;
           (2) On steam saturation curve:
 
-              [logK, Rxn] = calclogKFoFa(XFo, TC, 'T', dbacessdic),
+              [logK, Rxn] = calclogKFoFa(XFo, TC, 'T', dbaccessdic),
 
               where T is temperature in celsius, followed with a quoted char 'T'
 
-              [logK, Rxn] = calclogKFoFa(XFo, P, 'P', dbacessdic),
+              [logK, Rxn] = calclogKFoFa(XFo, P, 'P', dbaccessdic),
 
               where P is pressure in bar, followed with a quoted char 'P'.
           (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
               condition not on steam saturation curve is as follows. Default method is 'JN91'
 
-              [logK, Rxn] = calclogKFoFa(XFo, TC, P, dbacessdic, Dielec_method = 'FGL97')
+              [logK, Rxn] = calclogKFoFa(XFo, TC, P, dbaccessdic, Dielec_method = 'FGL97')
 
 
-   .. py:method:: calclogKEnFe(self, XEn, TC, P, dbacessdic, rhoEG, Dielec_method=None)
+   .. py:method:: calclogKEnFe(self, XEn, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
 
       This function calculates thermodynamic properties of solid solution of pyroxene minerals
 
@@ -287,8 +292,8 @@ Attributes
       :type TC: temperature [°C]
       :param P:
       :type P: pressure [bar]
-      :param dbacessdic:
-      :type dbacessdic: dictionary of species from direct-access database
+      :param dbaccessdic:
+      :type dbaccessdic: dictionary of species from direct-access database
       :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
       :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
       :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
@@ -303,25 +308,25 @@ Attributes
 
           (1) Not on steam saturation curve:
 
-              [logK, Rxn] = calclogKEnFe(XEn, TC, P, dbacessdic),
+              [logK, Rxn] = calclogKEnFe(XEn, TC, P, dbaccessdic),
 
               where T is temperature in celsius and P is pressure in bar;
           (2) On steam saturation curve:
 
-              [logK, Rxn] = calclogKEnFe(XEn, TC, 'T', dbacessdic),
+              [logK, Rxn] = calclogKEnFe(XEn, TC, 'T', dbaccessdic),
 
               where T is temperature in celsius, followed with a quoted char 'T'
 
-              [logK, Rxn] = calclogKEnFe(XEn, P, 'P', dbacessdic),
+              [logK, Rxn] = calclogKEnFe(XEn, P, 'P', dbaccessdic),
 
               where P is pressure in bar, followed with a quoted char 'P'.
           (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
               condition not on steam saturation curve is as follows. Default method is 'JN91'
 
-              [logK, Rxn] = calclogKEnFe(XEn, TC, P, dbacessdic, Dielec_method = 'FGL97')
+              [logK, Rxn] = calclogKEnFe(XEn, TC, P, dbaccessdic, Dielec_method = 'FGL97')
 
 
-   .. py:method:: calclogKDiHedEnFe(self, nCa, XMg, TC, P, dbacessdic, rhoEG, Dielec_method=None)
+   .. py:method:: calclogKDiHedEnFe(self, nCa, XMg, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
 
       This function calculates thermodynamic properties of solid solution of clinopyroxene
       minerals (Di, Hed, En and Fe)
@@ -334,8 +339,8 @@ Attributes
       :type TC: temperature [°C]
       :param P:
       :type P: pressure [bar]
-      :param dbacessdic:
-      :type dbacessdic: dictionary of species from direct-access database
+      :param dbaccessdic:
+      :type dbaccessdic: dictionary of species from direct-access database
       :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
       :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
       :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
@@ -350,25 +355,25 @@ Attributes
 
           (1) Not on steam saturation curve:
 
-              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbacessdic),
+              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbaccessdic),
 
               where T is temperature in celsius and P is pressure in bar;
           (2) On steam saturation curve:
 
-              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, 'T', dbacessdic),
+              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, 'T', dbaccessdic),
 
               where T is temperature in celsius, followed with a quoted char 'T'
 
-              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, P, 'P', dbacessdic),
+              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, P, 'P', dbaccessdic),
 
               where P is pressure in bar, followed with a quoted char 'P'.
           (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
               condition not on steam saturation curve is as follows. Default method is 'JN91'
 
-              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbacessdic, Dielec_method = 'FGL97')
+              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbaccessdic, Dielec_method = 'FGL97')
 
 
-   .. py:method:: calclogKAbOr(self, XAb, TC, P, dbacessdic, rhoEG, Dielec_method=None)
+   .. py:method:: calclogKAbOr(self, XAb, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
 
       This function calculates thermodynamic properties of solid solution of Alkaline-Feldspar minerals
 
@@ -378,8 +383,8 @@ Attributes
       :type TC: temperature [°C]
       :param P:
       :type P: pressure [bar]
-      :param dbacessdic:
-      :type dbacessdic: dictionary of species from direct-access database
+      :param dbaccessdic:
+      :type dbaccessdic: dictionary of species from direct-access database
       :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
       :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
       :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
@@ -394,25 +399,25 @@ Attributes
 
           (1) Not on steam saturation curve:
 
-              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic),
+              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic),
 
               where T is temperature in celsius and P is pressure in bar;
           (2) On steam saturation curve:
 
-              [logK, Rxn] = calclogKAbOr(XAb, TC, 'T', dbacessdic),
+              [logK, Rxn] = calclogKAbOr(XAb, TC, 'T', dbaccessdic),
 
               where T is temperature in celsius, followed with a quoted char 'T'
 
-              [logK, Rxn] = calclogKAbOr(XAb, P, 'P', dbacessdic),
+              [logK, Rxn] = calclogKAbOr(XAb, P, 'P', dbaccessdic),
 
               where P is pressure in bar, followed with a quoted char 'P'.
           (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
               condition not on steam saturation curve is as follows. Default method is 'JN91'
 
-              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic, Dielec_method = 'FGL97')
+              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic, Dielec_method = 'FGL97')
 
 
-   .. py:method:: calclogKBiotite(self, XPh, TC, P, dbacessdic, rhoEG, Dielec_method=None)
+   .. py:method:: calclogKBiotite(self, XPh, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
 
       This function calculates thermodynamic properties of solid solution of Biotite minerals
 
@@ -422,8 +427,8 @@ Attributes
       :type TC: temperature [°C]
       :param P:
       :type P: pressure [bar]
-      :param dbacessdic:
-      :type dbacessdic: dictionary of species from direct-access database
+      :param dbaccessdic:
+      :type dbaccessdic: dictionary of species from direct-access database
       :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
       :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
       :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
@@ -438,22 +443,22 @@ Attributes
 
           (1) Not on steam saturation curve:
 
-              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic),
+              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic),
 
               where T is temperature in celsius and P is pressure in bar;
           (2) On steam saturation curve:
 
-              [logK, Rxn] = calclogKAbOr(XAb, TC, 'T', dbacessdic),
+              [logK, Rxn] = calclogKAbOr(XAb, TC, 'T', dbaccessdic),
 
               where T is temperature in celsius, followed with a quoted char 'T'
 
-              [logK, Rxn] = calclogKAbOr(XAb, P, 'P', dbacessdic),
+              [logK, Rxn] = calclogKAbOr(XAb, P, 'P', dbaccessdic),
 
               where P is pressure in bar, followed with a quoted char 'P'.
           (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
               condition not on steam saturation curve is as follows. Default method is 'JN91'
 
-              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic, Dielec_method = 'FGL97')
+              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic, Dielec_method = 'FGL97')
 
 
 

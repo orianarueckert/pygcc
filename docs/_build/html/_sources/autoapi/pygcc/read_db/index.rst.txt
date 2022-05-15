@@ -69,16 +69,20 @@ Attributes
 
    Class to read direct-access and source thermodynamic database
 
-   :param dbaccess: filename and location of the direct-access database, optional, default is speq21
+   :param dbaccess: filename and location of the direct-access/sequential-access database, optional, default is speq21
    :type dbaccess: string
    :param dbBerman_dir: filename and location of the Berman mineral database, optional
    :type dbBerman_dir: string
+   :param dbHP_dir: filename and location of the supcrtbl mineral and gas database, optional
+   :type dbHP_dir: string
    :param sourcedb: filename of the source database, optional
    :type sourcedb: string
    :param sourcedb: filename of the source database, optional
    :type sourcedb: string
    :param sourceformat: specify the source database format, either 'GWB' or 'EQ36', optional
    :type sourceformat: string
+   :param dbaccessformat: specify the direct-access/sequential-access database format, either 'speq' or 'supcrtbl', default is 'speq'
+   :type dbaccessformat: string, optional
    :param sourcedb_codecs: specify the name of the encoding used to decode or encode the sourcedb file, optional
    :type sourcedb_codecs: string
    :param dbaccess_codecs: specify the name of the encoding used to decode or encode the dbaccess file, optional
@@ -123,10 +127,15 @@ Attributes
       mineral properties such as (dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, k3,
       v1 [*10^5 K^-1], v2 [*10^5 K^-2], v3 [*10^5 bar^-1], v4 [*10^8 bar^-2], dTdP [K/bar], Tlambda [K],
       Tref [K], l1 [(J/mol)^0.5/K], l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], d2 [J/mol],
-      d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K])
+      d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K]). In addition, the function can read supcrtbl's
+      mineral and gas properties such as (dG [kJ/mol], dH [kJ/mol], S [J/mol-K], V [J/bar], a [kJ/mol-K],
+      b [*10^5 kJ/mol/K^2], c [kJ-mol-K], d [kJ/mol/K^0.5], alpha [*10^5 K^-1], kappa0 [kbar],
+      kappa0_d [kbar], kappa0_dd [kbar], n_atom [-], Tc0 [K], Smax [J/mol-K], Vmax [J/bar], dH [KJ/mol],
+      dV [J/bar], W [kJ/mol], Wv [J/bar], n [-], SF [-])
 
       :param dbaccess        filename and location of the direct-access database:
       :param dbBerman_dir    filename and location of the Berman mineral database:
+      :param dbHP_dir        filename and location of the supcrtbl (Holland and Powell) mineral and gas database:
 
       :returns: * *dbaccessdic      dictionary of minerals, gases, redox and aqueous species*
                 * *dbaccess        dat file name*

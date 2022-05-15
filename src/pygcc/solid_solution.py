@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import math, os
 import numpy as np
 from .water_eos import iapws95, ZhangDuan, water_dielec, convert_temperature
-from .species_eos import heatcapusgscal, supcrtaq
+from .species_eos import heatcap, supcrtaq
 from .read_db import db_reader
 
 def roundup_tenth(x):
@@ -135,12 +135,16 @@ class solidsolution_thermo():
             Temperature [°C]  \n
         P : float, vector
             Pressure [bar]  \n
-        dbacessdic : dict
+        dbaccessdic : dict
             dictionary of species from direct-access database, optional, default is speq21  \n
         solidsolution_type : string
             specify either 'All' or 'plagioclase' or 'olivine' or 'pyroxene' or 'cpx' or 'alk-feldspar' or 'biotite' to carry-out all or any solid-solution calculations, default is 'All'
         Dielec_method   : string
             specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified default - 'JN91'
+       ThermoInUnit : string
+           specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
+       Al_Si : string
+           specify either 'pygcc' or 'Arnórsson_Stefánsson' as the input to express Al and Si species in solid solution (optional), 'Arnórsson_Stefánsson' expresses them as 'Al(OH)4-' and 'H4SiO4(aq)', respectively while pygcc uses 'Al3+' and 'SiO2(aq)', respectively if not specified default - 'pygcc'
         rhoEG      : dict
             dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy  (optional)
 
@@ -224,9 +228,9 @@ class solidsolution_thermo():
     kwargs = {"X": None,
               "cpx_Ca": 0.5,
               "T": None,
-              "P": None,
+              "P": None, "ThermoInUnit": 'cal',
               "Dielec_method": None, "solidsolution_type": 'All',
-              "rhoEG": None, "dbaccessdic": None}
+              "rhoEG": None, "dbaccessdic": None, "Al_Si": 'pygcc'}
 
     def __init__(self, **kwargs):
         self.kwargs = solidsolution_thermo.kwargs.copy()
@@ -236,6 +240,8 @@ class solidsolution_thermo():
         self.kwargs.update(kwargs)
         self.X = self.kwargs["X"]
         self.cpx_Ca = self.kwargs["cpx_Ca"]
+        self.ThermoInUnit = self.kwargs["ThermoInUnit"]
+        self.Al_Si = self.kwargs["Al_Si"]
         self.__checker__(**kwargs)
         if self.kwargs["solidsolution_type"].lower() == 'all':
             self.AnAb_logK, self.AnAb_Rxn = self.calclogKAnAb(self.X, self.T, self.P, self.dbaccessdic,
@@ -320,7 +326,7 @@ class solidsolution_thermo():
             XAn        : volume fraction of Anorthite  \n
             TC         : temperature [°C]  \n
             P          : pressure [bar]  \n
-            dbacessdic : dictionary of species from direct-access database  \n
+            dbaccessdic : dictionary of species from direct-access database  \n
             Dielec_method   : specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
                             dielectric constant (optional), if not specified default - 'JN91'
             rhoEG      : dictionary of water properties like  density (rho),
@@ -333,16 +339,16 @@ class solidsolution_thermo():
         -------
             The general usage of calclogKAnAb without the optional argument is as follows:  \n
             (1) Not on steam saturation curve:  \n
-                [logK, Rxn] = calclogKAnAb(XAn, TC, P, dbacessdic),  \n
+                [logK, Rxn] = calclogKAnAb(XAn, TC, P, dbaccessdic),  \n
                 where T is temperature in celsius and P is pressure in bar;
             (2) On steam saturation curve:  \n
-                [logK, Rxn] = calclogKAnAb(XAn, TC, 'T', dbacessdic),   \n
+                [logK, Rxn] = calclogKAnAb(XAn, TC, 'T', dbaccessdic),   \n
                 where T is temperature in celsius, followed with a quoted char 'T'  \n
-                [logK, Rxn] = calclogKAnAb(XAn, P, 'P', dbacessdic), \n
+                [logK, Rxn] = calclogKAnAb(XAn, P, 'P', dbaccessdic), \n
                 where P is pressure in bar, followed with a quoted char 'P'.
             (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
                 condition not on steam saturation curve is as follows. Default method is 'JN91' \n
-                [logK, Rxn] = calclogKAnAb(XAn, TC, P, dbacessdic, Dielec_method = 'FGL97')
+                [logK, Rxn] = calclogKAnAb(XAn, TC, P, dbaccessdic, Dielec_method = 'FGL97')
         """
 
         dGH2O = rhoEG['dGH2O'].ravel()
@@ -370,13 +376,17 @@ class solidsolution_thermo():
         Rxn['MW'] = nCa*MW['Ca'] + nNa* MW['Na'] + nAl*MW['Al'] + nSi*MW['Si'] + 8*MW['O']
         R = 1.9872041
 
+        if self.Al_Si == 'pygcc':
+            dGAl = supcrtaq(TC, P, dbaccessdic['Al+++'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+            dGSiO2aq  = supcrtaq(TC, P, dbaccessdic['SiO2(aq)'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+            dGH = supcrtaq(TC, P, dbaccessdic['H+'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        elif self.Al_Si == 'Arnórsson_Stefánsson':
+            dGAl = supcrtaq(TC, P, dbaccessdic['Al(OH)4-'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+            dGSiO2aq  = supcrtaq(TC, P, dbaccessdic['H4SiO4(aq)'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+            nH2O = nH2O + 2*nSi
 
-        dGAl = supcrtaq(TC, P, dbaccessdic['Al+++'], Dielec_method = Dielec_method, **rhoEG)
-        dGSiO2aq  = supcrtaq(TC, P, dbaccessdic['SiO2(aq)'], Dielec_method = Dielec_method, **rhoEG)
-
-        dGH = supcrtaq(TC, P, dbaccessdic['H+'], Dielec_method = Dielec_method, **rhoEG)
-        dGNa = supcrtaq(TC, P, dbaccessdic['Na+'], Dielec_method = Dielec_method, **rhoEG)
-        dGCa = supcrtaq(TC, P, dbaccessdic['Ca++'], Dielec_method = Dielec_method, **rhoEG)
+        dGNa = supcrtaq(TC, P, dbaccessdic['Na+'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        dGCa = supcrtaq(TC, P, dbaccessdic['Ca++'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
 
 
         if (XAn < 1) & (XAn != 0):
@@ -394,14 +404,21 @@ class solidsolution_thermo():
         Rxn['min'].insert(0, Rxn['formula'])
         Rxn['min'].insert(1,' R&H95, Stef2001')
         plag = Rxn['min']
-        dGplagTP, _ = heatcapusgscal(TC, P, plag)
-        coeff = [-nH, nAl, nNa, nCa, nSi, nH2O]
-        spec = ['H+', 'Al+++', 'Na+', 'Ca++', 'SiO2(aq)', 'H2O']
+        dGplagTP = heatcap( T = TC, P = P, method = 'HF76', Species_ppt = plag).dG
+        if self.Al_Si == 'pygcc':
+            coeff = [-nH, nAl, nNa, nCa, nSi, nH2O]
+            spec = ['H+', 'Al+++', 'Na+', 'Ca++', 'SiO2(aq)', 'H2O']
+        elif self.Al_Si == 'Arnórsson_Stefánsson':
+            coeff = [nAl, nNa, nCa, nSi, -nH2O]
+            spec = ['Al(OH)4-', 'Na+', 'Ca++', 'H4SiO4(aq)', 'H2O']
         Rxn['spec'] = [x for x, y in zip(spec, coeff) if y!=0]
         Rxn['coeff'] = [y for y in coeff if y!=0]
         Rxn['nSpec'] = len(Rxn['coeff'])
 
-        dGrxn = -dGplagTP - nH*dGH + nAl*dGAl + nH2O*dGH2O + nNa*dGNa+ nCa*dGCa + nSi*dGSiO2aq
+        if self.Al_Si == 'pygcc':
+            dGrxn = -dGplagTP - nH*dGH + nAl*dGAl + nH2O*dGH2O + nNa*dGNa+ nCa*dGCa + nSi*dGSiO2aq
+        elif self.Al_Si == 'Arnórsson_Stefánsson':
+            dGrxn = -dGplagTP + nAl*dGAl - nH2O*dGH2O + nNa*dGNa+ nCa*dGCa + nSi*dGSiO2aq
         logKplag = (-dGrxn/R/(TK)/np.log(10))   #np.log10(np.exp(-dGrxn/R/(TK)))
 
         Rxn['V'] = Rxn['min'][5]  #,'%8.3f')
@@ -414,7 +431,7 @@ class solidsolution_thermo():
 
         return logKplag, Rxn
 
-    def calclogKFoFa( self, XFo, TC, P, dbacessdic, rhoEG, Dielec_method = None ):
+    def calclogKFoFa( self, XFo, TC, P, dbaccessdic, rhoEG, Dielec_method = None ):
         """
         This function calculates thermodynamic properties of solid solution of olivine minerals  \n
         Parameters
@@ -422,7 +439,7 @@ class solidsolution_thermo():
             XFo        : volume fraction of Forsterite  \n
             TC         : temperature [°C]  \n
             P          : pressure [bar]  \n
-            dbacessdic : dictionary of species from direct-access database  \n
+            dbaccessdic : dictionary of species from direct-access database  \n
             Dielec_method   : specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
                             dielectric constant (optional), if not specified default - 'JN91'
             rhoEG      : dictionary of water properties like  density (rho),
@@ -435,16 +452,16 @@ class solidsolution_thermo():
         -------
             The general usage of calclogKFoFa without the optional argument is as follows:  \n
             (1) Not on steam saturation curve:  \n
-                [logK, Rxn] = calclogKFoFa(XFo, TC, P, dbacessdic),  \n
+                [logK, Rxn] = calclogKFoFa(XFo, TC, P, dbaccessdic),  \n
                 where T is temperature in celsius and P is pressure in bar;
             (2) On steam saturation curve:  \n
-                [logK, Rxn] = calclogKFoFa(XFo, TC, 'T', dbacessdic),   \n
+                [logK, Rxn] = calclogKFoFa(XFo, TC, 'T', dbaccessdic),   \n
                 where T is temperature in celsius, followed with a quoted char 'T'  \n
-                [logK, Rxn] = calclogKFoFa(XFo, P, 'P', dbacessdic), \n
+                [logK, Rxn] = calclogKFoFa(XFo, P, 'P', dbaccessdic), \n
                 where P is pressure in bar, followed with a quoted char 'P'.
             (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
                 condition not on steam saturation curve is as follows. Default method is 'JN91' \n
-                [logK, Rxn] = calclogKFoFa(XFo, TC, P, dbacessdic, Dielec_method = 'FGL97')
+                [logK, Rxn] = calclogKFoFa(XFo, TC, P, dbaccessdic, Dielec_method = 'FGL97')
         """
         Tref = 25; Pref = 1
         rho = rhoEG['rho'].ravel();   E = rhoEG['E'].ravel()
@@ -486,36 +503,45 @@ class solidsolution_thermo():
         WH = 10366.2/J_to_cal
         WS = 4/J_to_cal
 
-        dGSiO2aq  = supcrtaq(TC, P, dbacessdic['SiO2(aq)'], Dielec_method = Dielec_method, **rhoEG)
-        dGH = supcrtaq(TC, P, dbacessdic['H+'], Dielec_method = Dielec_method, **rhoEG)
-        dGFe = supcrtaq(TC, P, dbacessdic['Fe++'], Dielec_method = Dielec_method, **rhoEG)
-        dGMg = supcrtaq(TC, P, dbacessdic['Mg++'], Dielec_method = Dielec_method, **rhoEG)
+        if self.Al_Si == 'pygcc':
+            dGSiO2aq  = supcrtaq(TC, P, dbaccessdic['SiO2(aq)'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        elif self.Al_Si == 'Arnórsson_Stefánsson':
+            dGSiO2aq  = supcrtaq(TC, P, dbaccessdic['H4SiO4(aq)'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+            nH2O = nH2O - 2*nSi
+
+        dGH = supcrtaq(TC, P, dbaccessdic['H+'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        dGFe = supcrtaq(TC, P, dbaccessdic['Fe++'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        dGMg = supcrtaq(TC, P, dbaccessdic['Mg++'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
 
         if (XFo == 1) | (XFo == 0):
             Sconf = 0
         else:
             Sconf = -2*R*(XFo*np.log(XFo) + XFa*np.log(XFa))
 
-        dG_ol = XFa*dbacessdic['ss_Fayalite'][2] + XFo*dbacessdic['ss_Forsterite'][2]
-        S_ol = XFa*dbacessdic['ss_Fayalite'][4] + XFo*dbacessdic['ss_Forsterite'][4] + Sconf
-        V_ol = XFa*dbacessdic['ss_Fayalite'][5] + XFo*dbacessdic['ss_Forsterite'][5]
-        Cp_ol = [a + b for a, b in zip([XFa*x for x in dbacessdic['ss_Fayalite'][6:11] ],
-                                        [XFo*y for y in dbacessdic['ss_Forsterite'][6:11] ])]
+        dG_ol = XFa*dbaccessdic['ss_Fayalite'][2] + XFo*dbaccessdic['ss_Forsterite'][2]
+        S_ol = XFa*dbaccessdic['ss_Fayalite'][4] + XFo*dbaccessdic['ss_Forsterite'][4] + Sconf
+        V_ol = XFa*dbaccessdic['ss_Fayalite'][5] + XFo*dbaccessdic['ss_Forsterite'][5]
+        Cp_ol = [a + b for a, b in zip([XFa*x for x in dbaccessdic['ss_Fayalite'][6:11] ],
+                                        [XFo*y for y in dbaccessdic['ss_Forsterite'][6:11] ])]
         WG = WH - TK*WS
         Gex = WG*XFo*XFa
         dG_ol = dG_ol + Gex - 298.15*Sconf
         Rxn['min'] = [dG_ol, np.nan, S_ol, V_ol] + Cp_ol
         Rxn['min'].insert(0, Rxn['formula'])
         Rxn['min'].insert(1,' R&H95, Stef2001')
-        coeff = [-nH, nMg, nFe, nSi, nH2O]
-        spec = ['H+', 'Mg++', 'Fe++', 'SiO2(aq)', 'H2O']
+        if self.Al_Si == 'pygcc':
+            coeff = [-nH, nMg, nFe, nSi, nH2O]
+            spec = ['H+', 'Mg++', 'Fe++', 'SiO2(aq)', 'H2O']
+        elif self.Al_Si == 'Arnórsson_Stefánsson':
+            coeff = [-nH, nMg, nFe, nSi]
+            spec = ['H+', 'Mg++', 'Fe++', 'H4SiO4(aq)']
         Rxn['spec'] = [x for x, y in zip(spec, coeff) if y!=0]
         Rxn['coeff'] = [y for y in coeff if y!=0]
         Rxn['nSpec'] = len(Rxn['coeff'])
 
         logK_ol = np.zeros([len(TK), 1])
         ol = Rxn['min']
-        dGolTP, _ = heatcapusgscal(TC, P, ol)
+        dGolTP = heatcap( T = TC, P = P, method = 'HF76', Species_ppt = ol).dG
         dGrxn = -dGolTP - nH*dGH + nMg*dGMg + nFe*dGFe + nH2O*dGH2O + nSi*dGSiO2aq
         logK_ol = (-dGrxn/R/(TK)/np.log(10))   #np.log10(np.exp(-dGrxn/R/(TK)))
 
@@ -533,7 +559,7 @@ class solidsolution_thermo():
 
         return logK_ol, Rxn
 
-    def calclogKEnFe( self, XEn, TC, P, dbacessdic, rhoEG, Dielec_method = None ):
+    def calclogKEnFe( self, XEn, TC, P, dbaccessdic, rhoEG, Dielec_method = None ):
         """
         This function calculates thermodynamic properties of solid solution of pyroxene minerals  \n
         Parameters
@@ -541,7 +567,7 @@ class solidsolution_thermo():
             XEn        : volume fraction of Enstatite  \n
             TC         : temperature [°C]  \n
             P          : pressure [bar]  \n
-            dbacessdic : dictionary of species from direct-access database  \n
+            dbaccessdic : dictionary of species from direct-access database  \n
             Dielec_method   : specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
                             dielectric constant (optional), if not specified default - 'JN91'
             rhoEG      : dictionary of water properties like  density (rho),
@@ -554,16 +580,16 @@ class solidsolution_thermo():
         -------
             The general usage of calclogKEnFe without the optional argument is as follows:  \n
             (1) Not on steam saturation curve:  \n
-                [logK, Rxn] = calclogKEnFe(XEn, TC, P, dbacessdic),  \n
+                [logK, Rxn] = calclogKEnFe(XEn, TC, P, dbaccessdic),  \n
                 where T is temperature in celsius and P is pressure in bar;
             (2) On steam saturation curve:  \n
-                [logK, Rxn] = calclogKEnFe(XEn, TC, 'T', dbacessdic),   \n
+                [logK, Rxn] = calclogKEnFe(XEn, TC, 'T', dbaccessdic),   \n
                 where T is temperature in celsius, followed with a quoted char 'T'  \n
-                [logK, Rxn] = calclogKEnFe(XEn, P, 'P', dbacessdic), \n
+                [logK, Rxn] = calclogKEnFe(XEn, P, 'P', dbaccessdic), \n
                 where P is pressure in bar, followed with a quoted char 'P'.
             (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
                 condition not on steam saturation curve is as follows. Default method is 'JN91' \n
-                [logK, Rxn] = calclogKEnFe(XEn, TC, P, dbacessdic, Dielec_method = 'FGL97')
+                [logK, Rxn] = calclogKEnFe(XEn, TC, P, dbaccessdic, Dielec_method = 'FGL97')
         """
         rho = rhoEG['rho'].ravel()
         E = rhoEG['E'].ravel()
@@ -605,35 +631,44 @@ class solidsolution_thermo():
         WH = -2600.4/J_to_cal
         WS = -1.34/J_to_cal
 
-        dGSiO2aq  = supcrtaq(TC, P, dbacessdic['SiO2(aq)'], Dielec_method = Dielec_method, **rhoEG)
-        dGH = supcrtaq(TC, P, dbacessdic['H+'], Dielec_method = Dielec_method, **rhoEG)
-        dGFe = supcrtaq(TC, P, dbacessdic['Fe++'], Dielec_method = Dielec_method, **rhoEG)
-        dGMg = supcrtaq(TC, P, dbacessdic['Mg++'], Dielec_method = Dielec_method, **rhoEG)
+        if self.Al_Si == 'pygcc':
+            dGSiO2aq  = supcrtaq(TC, P, dbaccessdic['SiO2(aq)'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        elif self.Al_Si == 'Arnórsson_Stefánsson':
+            dGSiO2aq  = supcrtaq(TC, P, dbaccessdic['H4SiO4(aq)'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+            nH2O = nH2O - 2*nSi
+
+        dGH = supcrtaq(TC, P, dbaccessdic['H+'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        dGFe = supcrtaq(TC, P, dbaccessdic['Fe++'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        dGMg = supcrtaq(TC, P, dbaccessdic['Mg++'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
 
         if (XEn == 1) | (XEn == 0):
             Sconf = 0
         else:
             Sconf = -1*R*(XEn*np.log(XEn) + XFe*np.log(XFe))
 
-        dG_opx = XEn*dbacessdic['ss_Enstatite'][2] + XFe*dbacessdic['ss_Ferrosilite'][2]
-        S_opx = XEn*dbacessdic['ss_Enstatite'][4] + XFe*dbacessdic['ss_Ferrosilite'][4] + Sconf
-        V_opx = XEn*dbacessdic['ss_Enstatite'][5] + XFe*dbacessdic['ss_Ferrosilite'][5]
-        Cp_opx = [a + b for a, b in zip([XEn*x for x in dbacessdic['ss_Enstatite'][6:11] ],
-                                        [XFe*y for y in dbacessdic['ss_Ferrosilite'][6:11] ])]
+        dG_opx = XEn*dbaccessdic['ss_Enstatite'][2] + XFe*dbaccessdic['ss_Ferrosilite'][2]
+        S_opx = XEn*dbaccessdic['ss_Enstatite'][4] + XFe*dbaccessdic['ss_Ferrosilite'][4] + Sconf
+        V_opx = XEn*dbaccessdic['ss_Enstatite'][5] + XFe*dbaccessdic['ss_Ferrosilite'][5]
+        Cp_opx = [a + b for a, b in zip([XEn*x for x in dbaccessdic['ss_Enstatite'][6:11] ],
+                                        [XFe*y for y in dbaccessdic['ss_Ferrosilite'][6:11] ])]
         WG = WH-TK*WS
         Gex = WG*XEn*XFe
         dG_opx = dG_opx + Gex - 298.15*Sconf
         Rxn['min'] = [dG_opx, np.nan, S_opx, V_opx] + Cp_opx
         Rxn['min'].insert(0, Rxn['formula'])
         Rxn['min'].insert(1, ' R&H95, Stef2001')
-        coeff = [-nH, nMg, nFe, nSi, nH2O]
-        spec = ['H+', 'Mg++', 'Fe++', 'SiO2(aq)', 'H2O']
+        if self.Al_Si == 'pygcc':
+            coeff = [-nH, nMg, nFe, nSi, nH2O]
+            spec = ['H+', 'Mg++', 'Fe++', 'SiO2(aq)', 'H2O']
+        elif self.Al_Si == 'Arnórsson_Stefánsson':
+            coeff = [-nH, nMg, nFe, nSi, nH2O]
+            spec = ['H+', 'Mg++', 'Fe++', 'H4SiO4(aq)', 'H2O']
         Rxn['spec'] = [x for x, y in zip(spec, coeff) if y != 0]
         Rxn['coeff'] = [y for y in coeff if y != 0]
         Rxn['nSpec'] = len(Rxn['coeff'])
 
         opx = Rxn['min']
-        dGopxTP, _ = heatcapusgscal(TC, P, opx)
+        dGopxTP = heatcap( T = TC, P = P, method = 'HF76', Species_ppt = opx).dG
         dGrxn = -dGopxTP - nH*dGH + nMg*dGMg + nFe*dGFe + nH2O*dGH2O + nSi*dGSiO2aq
         logK_opx = (-dGrxn/R/(TK)/np.log(10))   # np.log10(np.exp(-dGrxn/R/(TK)))
 
@@ -651,7 +686,7 @@ class solidsolution_thermo():
 
         return logK_opx, Rxn
 
-    def calclogKDiHedEnFe( self, nCa, XMg, TC, P, dbacessdic, rhoEG, Dielec_method = None ):
+    def calclogKDiHedEnFe( self, nCa, XMg, TC, P, dbaccessdic, rhoEG, Dielec_method = None ):
         """
         This function calculates thermodynamic properties of solid solution of clinopyroxene
         minerals (Di, Hed, En and Fe) \n
@@ -663,7 +698,7 @@ class solidsolution_thermo():
                             XMg = (nMg/(nFe + nMg))  \n
             TC         : temperature [°C]  \n
             P          : pressure [bar]  \n
-            dbacessdic : dictionary of species from direct-access database  \n
+            dbaccessdic : dictionary of species from direct-access database  \n
             Dielec_method   : specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
                             dielectric constant (optional), if not specified default - 'JN91'
             rhoEG      : dictionary of water properties like  density (rho),
@@ -676,16 +711,16 @@ class solidsolution_thermo():
         -------
             The general usage of calclogKDiHedEnFe without the optional argument is as follows:  \n
             (1) Not on steam saturation curve:  \n
-                [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbacessdic),  \n
+                [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbaccessdic),  \n
                 where T is temperature in celsius and P is pressure in bar;
             (2) On steam saturation curve:  \n
-                [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, 'T', dbacessdic),   \n
+                [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, 'T', dbaccessdic),   \n
                 where T is temperature in celsius, followed with a quoted char 'T'  \n
-                [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, P, 'P', dbacessdic), \n
+                [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, P, 'P', dbaccessdic), \n
                 where P is pressure in bar, followed with a quoted char 'P'.
             (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
                 condition not on steam saturation curve is as follows. Default method is 'JN91' \n
-                [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbacessdic, Dielec_method = 'FGL97')
+                [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbaccessdic, Dielec_method = 'FGL97')
         """
         rho = rhoEG['rho'].ravel()
         E = rhoEG['E'].ravel()
@@ -818,39 +853,49 @@ class solidsolution_thermo():
         Rxn['MW'] = nCa*MW['Ca'] + nMg*MW['Mg'] + nFe*MW['Fe'] + nSi*MW['Si'] + 6*MW['O']
         R = 1.9872041
 
-        dGSiO2aq  = supcrtaq(TC, P, dbacessdic['SiO2(aq)'], Dielec_method = Dielec_method, **rhoEG)
-        dGH = supcrtaq(TC, P, dbacessdic['H+'], Dielec_method = Dielec_method, **rhoEG)
-        dGFe = supcrtaq(TC, P, dbacessdic['Fe++'], Dielec_method = Dielec_method, **rhoEG)
-        dGMg = supcrtaq(TC, P, dbacessdic['Mg++'], Dielec_method = Dielec_method, **rhoEG)
-        dGCa = supcrtaq(TC, P, dbacessdic['Ca++'], Dielec_method = Dielec_method, **rhoEG)
+        if self.Al_Si == 'pygcc':
+            dGSiO2aq  = supcrtaq(TC, P, dbaccessdic['SiO2(aq)'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        elif self.Al_Si == 'Arnórsson_Stefánsson':
+            dGSiO2aq  = supcrtaq(TC, P, dbaccessdic['H4SiO4(aq)'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+            nH2O = nH2O - 2*nSi
+
+        dGH = supcrtaq(TC, P, dbaccessdic['H+'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        dGFe = supcrtaq(TC, P, dbaccessdic['Fe++'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        dGMg = supcrtaq(TC, P, dbaccessdic['Mg++'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        dGCa = supcrtaq(TC, P, dbaccessdic['Ca++'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
 
         # Addition of M1 and M2 sites
         Sconf = Sconf_M1 + Sconf_M2
-        dG_cpx_noGex = 2*XFs*dbacessdic['ss_Ferrosilite'][2] + 2*XEn*dbacessdic['ss_Clinoenstatite'][2] + \
-            XHed*dbacessdic['ss_Hedenbergite'][2] + XDi*dbacessdic['ss_Diopside'][2]
+        dG_cpx_noGex = 2*XFs*dbaccessdic['ss_Ferrosilite'][2] + 2*XEn*dbaccessdic['ss_Clinoenstatite'][2] + \
+            XHed*dbaccessdic['ss_Hedenbergite'][2] + XDi*dbaccessdic['ss_Diopside'][2]
         dG_cpx_25 = dG_cpx_noGex + Gex_M1_25 + Gex_M2_25
 
-        S_cpx = 2*XFs*dbacessdic['ss_Ferrosilite'][4] + 2*XEn*dbacessdic['ss_Clinoenstatite'][4] + \
-            XHed*dbacessdic['ss_Hedenbergite'][4] + XDi*dbacessdic['ss_Diopside'][4] + Sconf
-        V_cpx = 2*XFs*dbacessdic['ss_Ferrosilite'][5] + 2*XEn*dbacessdic['ss_Clinoenstatite'][5] + \
-            XHed*dbacessdic['ss_Hedenbergite'][5] + XDi*dbacessdic['ss_Diopside'][5]
-        Cp_cpx = [i + j + k + l for i, j, k, l in zip([2*XFs*a for a in dbacessdic['ss_Ferrosilite'][6:11] ],
-                                                      [2*XEn*b for b in dbacessdic['ss_Clinoenstatite'][6:11] ],
-                                                      [XHed*c for c in dbacessdic['ss_Hedenbergite'][6:11] ],
-                                                      [XDi*d for d in dbacessdic['ss_Diopside'][6:11] ] ) ]
+        S_cpx = 2*XFs*dbaccessdic['ss_Ferrosilite'][4] + 2*XEn*dbaccessdic['ss_Clinoenstatite'][4] + \
+            XHed*dbaccessdic['ss_Hedenbergite'][4] + XDi*dbaccessdic['ss_Diopside'][4] + Sconf
+        V_cpx = 2*XFs*dbaccessdic['ss_Ferrosilite'][5] + 2*XEn*dbaccessdic['ss_Clinoenstatite'][5] + \
+            XHed*dbaccessdic['ss_Hedenbergite'][5] + XDi*dbaccessdic['ss_Diopside'][5]
+        Cp_cpx = [i + j + k + l for i, j, k, l in zip([2*XFs*a for a in dbaccessdic['ss_Ferrosilite'][6:11] ],
+                                                      [2*XEn*b for b in dbaccessdic['ss_Clinoenstatite'][6:11] ],
+                                                      [XHed*c for c in dbaccessdic['ss_Hedenbergite'][6:11] ],
+                                                      [XDi*d for d in dbaccessdic['ss_Diopside'][6:11] ] ) ]
         # because of the entropy term in WG, Gex and dGol are T-dependent, thus must do the logK calculation on a piecewise basis.
         dG_cpx = dG_cpx_25 + Gex_M1 + Gex_M2 - TK*Sconf
         Rxn['min'] = [dG_cpx, np.nan, S_cpx, V_cpx] + Cp_cpx
         Rxn['min'].insert(0, Rxn['formula'])
         Rxn['min'].insert(1,' R&H95, Stef2001')
-        coeff = [-nH, nCa, nMg, nFe, nSi, nH2O]
-        spec = ['H+', 'Ca++', 'Mg++', 'Fe++', 'SiO2(aq)', 'H2O']
+        if self.Al_Si == 'pygcc':
+            coeff = [-nH, nCa, nMg, nFe, nSi, nH2O]
+            spec = ['H+', 'Ca++', 'Mg++', 'Fe++', 'SiO2(aq)', 'H2O']
+        elif self.Al_Si == 'Arnórsson_Stefánsson':
+            coeff = [-nH, nCa, nMg, nFe, nSi, nH2O]
+            spec = ['H+', 'Ca++', 'Mg++', 'Fe++', 'H4SiO4(aq)', 'H2O']
+
         Rxn['spec'] = [x for x, y in zip(spec, coeff) if y != 0]
         Rxn['coeff'] = [y for y in coeff if y != 0]
         Rxn['nSpec'] = len(Rxn['coeff'])
 
         cpx = Rxn['min']
-        dGcpxTP, _ = heatcapusgscal(TC, P, cpx)
+        dGcpxTP = heatcap( T = TC, P = P, method = 'HF76', Species_ppt = cpx).dG
         dGrxn = - dGcpxTP - nH*dGH + nCa*dGCa + nMg*dGMg + nFe*dGFe + nH2O*dGH2O + nSi*dGSiO2aq
         logK_cpx = (-dGrxn/R/(TK)/np.log(10))   # np.log10(np.exp(-dGrxn/R/(TK)))
 
@@ -868,7 +913,7 @@ class solidsolution_thermo():
 
         return logK_cpx, Rxn
 
-    def calclogKAbOr( self, XAb, TC, P, dbacessdic, rhoEG, Dielec_method = None):
+    def calclogKAbOr( self, XAb, TC, P, dbaccessdic, rhoEG, Dielec_method = None):
         """
         This function calculates thermodynamic properties of solid solution of Alkaline-Feldspar minerals
 
@@ -877,7 +922,7 @@ class solidsolution_thermo():
             XAb        : volume fraction of Albite  \n
             TC         : temperature [°C]  \n
             P          : pressure [bar]  \n
-            dbacessdic : dictionary of species from direct-access database  \n
+            dbaccessdic : dictionary of species from direct-access database  \n
             Dielec_method   : specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
                             dielectric constant (optional), if not specified default - 'JN91'
             rhoEG      : dictionary of water properties like  density (rho),
@@ -890,16 +935,16 @@ class solidsolution_thermo():
         -------
             The general usage of calclogKAnAb without the optional argument is as follows:  \n
             (1) Not on steam saturation curve:  \n
-                [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic),  \n
+                [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic),  \n
                 where T is temperature in celsius and P is pressure in bar;
             (2) On steam saturation curve:  \n
-                [logK, Rxn] = calclogKAbOr(XAb, TC, 'T', dbacessdic),   \n
+                [logK, Rxn] = calclogKAbOr(XAb, TC, 'T', dbaccessdic),   \n
                 where T is temperature in celsius, followed with a quoted char 'T'  \n
-                [logK, Rxn] = calclogKAbOr(XAb, P, 'P', dbacessdic), \n
+                [logK, Rxn] = calclogKAbOr(XAb, P, 'P', dbaccessdic), \n
                 where P is pressure in bar, followed with a quoted char 'P'.
             (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
                 condition not on steam saturation curve is as follows. Default method is 'JN91' \n
-                [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic, Dielec_method = 'FGL97')
+                [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic, Dielec_method = 'FGL97')
         """
         rho = rhoEG['rho'].ravel()
         E = rhoEG['E'].ravel()
@@ -942,23 +987,28 @@ class solidsolution_thermo():
         WH = 23800/J_to_cal
         WS = 0/J_to_cal
 
-        dGAl = supcrtaq(TC, P, dbacessdic['Al+++'], Dielec_method = Dielec_method, **rhoEG)
-        dGSiO2aq  = supcrtaq(TC, P, dbacessdic['SiO2(aq)'], Dielec_method = Dielec_method, **rhoEG)
+        if self.Al_Si == 'pygcc':
+            dGAl = supcrtaq(TC, P, dbaccessdic['Al+++'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+            dGSiO2aq  = supcrtaq(TC, P, dbaccessdic['SiO2(aq)'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+            dGH = supcrtaq(TC, P, dbaccessdic['H+'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        elif self.Al_Si == 'Arnórsson_Stefánsson':
+            dGAl = supcrtaq(TC, P, dbaccessdic['Al(OH)4-'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+            dGSiO2aq  = supcrtaq(TC, P, dbaccessdic['H4SiO4(aq)'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+            nH2O = nH2O + 2*nSi
 
-        dGH = supcrtaq(TC, P, dbacessdic['H+'], Dielec_method = Dielec_method, **rhoEG)
-        dGNa = supcrtaq(TC, P, dbacessdic['Na+'], Dielec_method = Dielec_method, **rhoEG)
-        dGK = supcrtaq(TC, P, dbacessdic['K+'], Dielec_method = Dielec_method, **rhoEG)
+        dGNa = supcrtaq(TC, P, dbaccessdic['Na+'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        dGK = supcrtaq(TC, P, dbaccessdic['K+'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
 
         if (XAb < 1) & (XAb != 0):
             Sconf = -R*(XOr*np.log(XOr) + XAb*np.log(XAb))
         else:
             Sconf = 0
 
-        dGalk = XOr*dbacessdic['ss_K-feldspar'][2] + XAb*dbacessdic['ss_Albite_high'][2]
-        Salk = XOr*dbacessdic['ss_K-feldspar'][4] + XAb*dbacessdic['ss_Albite_high'][4] + Sconf
-        Valk = (XOr*dbacessdic['ss_K-feldspar'][5] + XAb*dbacessdic['ss_Albite_high'][5]) #*(P - 1)
-        Cpalk = [a + b for a, b in zip([XOr*x for x in dbacessdic['ss_K-feldspar'][6:11] ],
-                                       [XAb*y for y in dbacessdic['ss_Albite_high'][6:11] ])]
+        dGalk = XOr*dbaccessdic['ss_K-feldspar'][2] + XAb*dbaccessdic['ss_Albite_high'][2]
+        Salk = XOr*dbaccessdic['ss_K-feldspar'][4] + XAb*dbaccessdic['ss_Albite_high'][4] + Sconf
+        Valk = (XOr*dbaccessdic['ss_K-feldspar'][5] + XAb*dbaccessdic['ss_Albite_high'][5]) #*(P - 1)
+        Cpalk = [a + b for a, b in zip([XOr*x for x in dbaccessdic['ss_K-feldspar'][6:11] ],
+                                       [XAb*y for y in dbaccessdic['ss_Albite_high'][6:11] ])]
         WG = WH - TK*WS
         Gex = WG*XAb*XOr
         dGalk = dGalk + Gex - 298.15*Sconf
@@ -966,14 +1016,21 @@ class solidsolution_thermo():
         Rxn['min'].insert(0, Rxn['formula'])
         Rxn['min'].insert(1,' R&H95, A&S99')
         alk = Rxn['min']
-        dGalkTP, _ = heatcapusgscal(TC, P, alk)
-        coeff = [-nH, nAl, nNa, nK, nSi, nH2O]
-        spec = ['H+', 'Al+++', 'Na+', 'K+', 'SiO2(aq)', 'H2O']
+        dGalkTP = heatcap( T = TC, P = P, method = 'HF76', Species_ppt = alk).dG
+        if self.Al_Si == 'pygcc':
+            coeff = [-nH, nAl, nNa, nK, nSi, nH2O]
+            spec = ['H+', 'Al+++', 'Na+', 'K+', 'SiO2(aq)', 'H2O']
+        elif self.Al_Si == 'Arnórsson_Stefánsson':
+            coeff = [nAl, nNa, nK, nSi, -nH2O]
+            spec = ['Al(OH)4-', 'Na+', 'K+', 'H4SiO4(aq)', 'H2O']
         Rxn['spec'] = [x for x, y in zip(spec, coeff) if y!=0]
         Rxn['coeff'] = [y for y in coeff if y!=0]
         Rxn['nSpec'] = len(Rxn['coeff'])
 
-        dGrxn = - dGalkTP - nH*dGH + nAl*dGAl + nH2O*dGH2O + nNa*dGNa+ nK*dGK + nSi*dGSiO2aq
+        if self.Al_Si == 'pygcc':
+            dGrxn = - dGalkTP - nH*dGH + nAl*dGAl + nH2O*dGH2O + nNa*dGNa+ nK*dGK + nSi*dGSiO2aq
+        elif self.Al_Si == 'Arnórsson_Stefánsson':
+            dGrxn = -dGalkTP + nAl*dGAl - nH2O*dGH2O + nNa*dGNa+ nK*dGK + nSi*dGSiO2aq
         logKalkfeld = (-dGrxn/R/(TK)/np.log(10))   # np.log10(np.exp(-dGrxn/R/(TK)))
 
         Rxn['min'][2] = dGalk[(TC == Tref) & (P == Pref)][0]
@@ -990,7 +1047,7 @@ class solidsolution_thermo():
 
         return logKalkfeld, Rxn
 
-    def calclogKBiotite( self, XPh, TC, P, dbacessdic, rhoEG, Dielec_method = None):
+    def calclogKBiotite( self, XPh, TC, P, dbaccessdic, rhoEG, Dielec_method = None):
         """
         This function calculates thermodynamic properties of solid solution of Biotite minerals
 
@@ -999,7 +1056,7 @@ class solidsolution_thermo():
             XAb        : volume fraction of Albite  \n
             TC         : temperature [°C]  \n
             P          : pressure [bar]  \n
-            dbacessdic : dictionary of species from direct-access database  \n
+            dbaccessdic : dictionary of species from direct-access database  \n
             Dielec_method   : specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
                             dielectric constant (optional), if not specified default - 'JN91'
             rhoEG      : dictionary of water properties like  density (rho),
@@ -1012,16 +1069,16 @@ class solidsolution_thermo():
         -------
             The general usage of calclogKAnAb without the optional argument is as follows:  \n
             (1) Not on steam saturation curve:  \n
-                [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic),  \n
+                [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic),  \n
                 where T is temperature in celsius and P is pressure in bar;
             (2) On steam saturation curve:  \n
-                [logK, Rxn] = calclogKAbOr(XAb, TC, 'T', dbacessdic),   \n
+                [logK, Rxn] = calclogKAbOr(XAb, TC, 'T', dbaccessdic),   \n
                 where T is temperature in celsius, followed with a quoted char 'T'  \n
-                [logK, Rxn] = calclogKAbOr(XAb, P, 'P', dbacessdic), \n
+                [logK, Rxn] = calclogKAbOr(XAb, P, 'P', dbaccessdic), \n
                 where P is pressure in bar, followed with a quoted char 'P'.
             (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
                 condition not on steam saturation curve is as follows. Default method is 'JN91' \n
-                [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic, Dielec_method = 'FGL97')
+                [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic, Dielec_method = 'FGL97')
         """
         rho = rhoEG['rho'].ravel()
         E = rhoEG['E'].ravel()
@@ -1065,24 +1122,24 @@ class solidsolution_thermo():
         WH = 9000/J_to_cal
         WS = 0/J_to_cal
 
-        dGAl = supcrtaq(TC, P, dbacessdic['Al+++'], Dielec_method = Dielec_method, **rhoEG)
-        dGSiO2aq  = supcrtaq(TC, P, dbacessdic['SiO2(aq)'], Dielec_method = Dielec_method, **rhoEG)
+        dGAl = supcrtaq(TC, P, dbaccessdic['Al+++'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        dGSiO2aq  = supcrtaq(TC, P, dbaccessdic['SiO2(aq)'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
 
-        dGH = supcrtaq(TC, P, dbacessdic['H+'], Dielec_method = Dielec_method, **rhoEG)
-        dGMg = supcrtaq(TC, P, dbacessdic['Mg++'], Dielec_method = Dielec_method, **rhoEG)
-        dGFe = supcrtaq(TC, P, dbacessdic['Fe++'], Dielec_method = Dielec_method, **rhoEG)
-        dGK = supcrtaq(TC, P, dbacessdic['K+'], Dielec_method = Dielec_method, **rhoEG)
+        dGH = supcrtaq(TC, P, dbaccessdic['H+'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        dGMg = supcrtaq(TC, P, dbaccessdic['Mg++'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        dGFe = supcrtaq(TC, P, dbaccessdic['Fe++'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+        dGK = supcrtaq(TC, P, dbaccessdic['K+'], Dielec_method = Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
 
         if (XAn < 1) & (XAn != 0):
             Sconf = -3*R*(XAn*np.log(XAn) + XPh*np.log(XPh))
         else:
             Sconf = 0
 
-        dGbiot = XAn*dbacessdic['ss_Annite'][2] + XPh*dbacessdic['ss_Phlogopite'][2]
-        Sbiot = XAn*dbacessdic['ss_Annite'][4] + XPh*dbacessdic['ss_Phlogopite'][4] + Sconf
-        Vbiot = (XAn*dbacessdic['ss_Annite'][5] + XPh*dbacessdic['ss_Phlogopite'][5])
-        Cpbiot = [a + b for a, b in zip([XAn*x for x in dbacessdic['ss_Annite'][6:11] ],
-                                       [XPh*y for y in dbacessdic['ss_Phlogopite'][6:11] ])]
+        dGbiot = XAn*dbaccessdic['ss_Annite'][2] + XPh*dbaccessdic['ss_Phlogopite'][2]
+        Sbiot = XAn*dbaccessdic['ss_Annite'][4] + XPh*dbaccessdic['ss_Phlogopite'][4] + Sconf
+        Vbiot = (XAn*dbaccessdic['ss_Annite'][5] + XPh*dbaccessdic['ss_Phlogopite'][5])
+        Cpbiot = [a + b for a, b in zip([XAn*x for x in dbaccessdic['ss_Annite'][6:11] ],
+                                       [XPh*y for y in dbaccessdic['ss_Phlogopite'][6:11] ])]
         WG = WH - TK*WS
         Gex = WG*XAn*XPh
         dGbiot = dGbiot + Gex - 298.15*Sconf
@@ -1090,7 +1147,7 @@ class solidsolution_thermo():
         Rxn['min'].insert(0, Rxn['formula'])
         Rxn['min'].insert(1,' R&H95, P&H99')
         biot = Rxn['min']
-        dGbiotTP, _ = heatcapusgscal(TC, P, biot)
+        dGbiotTP = heatcap( T = TC, P = P, method = 'HF76', Species_ppt = biot).dG
         coeff = [-nH, nAl, nK, nMg, nFe, nSi, nH2O]
         spec = ['H+', 'Al+++', 'K+', 'Mg++', 'Fe++', 'SiO2(aq)', 'H2O']
         Rxn['spec'] = [x for x, y in zip(spec, coeff) if y!=0]

@@ -17,7 +17,7 @@ from pygcc.pygcc_utils import *
 
 # ##### Using the default sequential-access database - speq21.dat
 
-# In[3]:
+# In[2]:
 
 
 ps = db_reader(sourcedb = './database/thermo.2021.dat', sourceformat = 'gwb')
@@ -26,7 +26,7 @@ ps = db_reader(sourcedb = './database/thermo.2021.dat', sourceformat = 'gwb')
 
 # ##### Using the user-specified sequential-access database
 
-# In[4]:
+# In[3]:
 
 
 ps = db_reader(dbaccess = './database/slop07.dat', sourcedb = './database/thermo.2021.dat', sourceformat = 'gwb')
@@ -37,19 +37,19 @@ ps = db_reader(dbaccess = './database/slop07.dat', sourcedb = './database/thermo
 
 # *With IAPWS95*
 
-# In[26]:
+# In[4]:
 
 
 water = iapws95(T = np.array([  0.01, 25, 60,  100, 150,  200,  250,  300]), P = 200)
-print(water.rho)
-print(water.G)
-print(water.H)
-print(water.S)
+print('Density:', water.rho)
+print('Gibbs Energy:', water.G)
+print('Enthalpy:', water.H)
+print('Entropy:', water.S)
 
 
 # *With ZhangDuan*
 
-# In[27]:
+# In[5]:
 
 
 water = ZhangDuan(T= np.array([1000, 1050]), P = np.array([1000, 2000]))
@@ -58,27 +58,90 @@ print(water.rho, water.G)
 
 # ### Example: Calculate water dielectric constants
 
-# In[28]:
+# In[6]:
 
 
 dielect = water_dielec(T= np.array([1000, 1050]), P = np.array([1000, 2000]), Dielec_method = 'DEW')
 dielect.E, dielect.rhohat, dielect.Ah, dielect.Bh
 
 
-# In[29]:
+# In[7]:
 
 
 dielect = water_dielec(T= np.array([100, 150]), P = np.array([100, 200]), Dielec_method = 'JN91')
 dielect.E, dielect.rhohat, dielect.Ah, dielect.Bh
 
 
+# ### Example: Calculate quartz properties
+
+# *With Maier-Kelly powerlaw*
+
+# In[8]:
+
+
+Temp = np.array([100, 200, 400, 600, 800, 900])
+ps = db_reader()
+sup = heatcap( T = Temp, P = 1, Species = 'Quartz', Species_ppt = ps.dbaccessdic['Quartz'], 
+             method = 'SUPCRT')
+sup.dG, sup.dCp
+
+
+# *With Holland and Power's formulation*
+
+# In[9]:
+
+
+Temp = np.array([100, 200, 400, 600, 800, 900])
+pshp = db_reader(dbHP_dir = './database/supcrtbl.dat')
+hp = heatcap( T = Temp, P = 10, Species = 'Quartz', Species_ppt = pshp.dbaccessdic['Quartz'], 
+             method = 'HP11')
+hp.dG, hp.dCp
+
+
+# *With Berman's formulation*
+
+# In[10]:
+
+
+Temp = np.array([100, 200, 400, 600, 800, 900])
+ps = db_reader(dbBerman_dir = './database/Berman.dat')
+bm = heatcap( T = Temp, P = 1, Species = 'Quartz', Species_ppt = ps.dbaccessdic['Quartz'], 
+             method = 'berman88')
+bm.dG, bm.dCp
+
+
+# In[11]:
+
+
+import matplotlib.pyplot as plt
+fig, (ax1, ax2) = plt.subplots(1, 2)
+ax1.plot(Temp, sup.dG*4.182/1e3, 'r', Temp, hp.dG*4.182/1e3, 'b', Temp, bm.dG*4.182/1e3, 'k')
+ax1.set_xlabel('Temperature [°C]'); ax1.set_ylabel('Gibbs Energy [kJ/mol] ')
+plt.legend(['SUPCRT', 'HP11', 'Berman88'])
+ax2.plot(Temp, hp.dG*4.182/1e3 - sup.dG*4.182/1e3, 'r', Temp, bm.dG*4.182/1e3 - sup.dG*4.182/1e3, 'b')
+ax2.set_xlabel('Temperature [°C]'); ax2.set_ylabel('Delta Gibbs Energy [kJ/mol] ')
+plt.legend(['SUPCRT - HP11', 'SUPCRT - Berman88'])
+fig.tight_layout()
+
+
 # ### Example: Calculate olivine solid solutions
 
-# In[30]:
+# In[12]:
 
 
 calc = calcRxnlogK( X = 0.85,T = np.array([300, 400, 450]), P = np.array([200, 200, 200]),
                    Specie = 'olivine', dbaccessdic = ps.dbaccessdic, densityextrap = True)
+calc.logK, calc.Rxn
+
+
+# ### Example: Calculate glauconite mineral properties
+
+# In[13]:
+
+
+Temp = np.array([0.01, 20, 30, 40, 60, 80, 100, 150])
+calc = calcRxnlogK(T = Temp, P = 'T', Specie = 'clay', dbaccessdic = ps.dbaccessdic, densityextrap = True,
+                   elem = ['Glauconite', '3.654', '.687', '1.175', '0.079', '0.337', '0.679', '0.212', '0.0359', '0'])
 calc.logK, calc.Rxn
 
 
@@ -95,9 +158,10 @@ calc.logK, calc.Rxn
 # 
 # > ps.sourcedic['AB'] = ['AB', 2, '0.5', 'A2(aq), '1', 'B']
 
-# In[31]:
+# In[14]:
 
 
+ps = db_reader(sourcedb = './database/thermo.2021.dat', sourceformat = 'gwb')
 ps.sourcedic['Pyrite'] = ['', 4, '4', 'H2S(aq)', '1', 'Magnetite',  '-2', 'Pyrrhotite', '-4', 'H2O']
 Temp = np.array([300.0000, 325, 350.0000, 400.0000, 415, 425.0000, 435, 450.0000])
 Press = 500*np.ones(np.size(Temp))
@@ -108,7 +172,7 @@ log_K_PPM
 
 # ### Example: Generate GWB thermodynamic database
 
-# In[9]:
+# In[15]:
 
 
 # Vectors for Temperature (C) and Pressure (bar) inputs
@@ -119,7 +183,7 @@ nCa = 1
 
 # write GWB using default sourced database, with inclusion of solid_solution and clay thermo properties
 
-# In[10]:
+# In[16]:
 
 
 get_ipython().run_cell_magic('time', '', "write_database(T = T, P = P, cpx_Ca = nCa, solid_solution = 'Yes',  clay_thermo = 'Yes', \n               dataset = 'GWB')")
@@ -127,31 +191,39 @@ get_ipython().run_cell_magic('time', '', "write_database(T = T, P = P, cpx_Ca = 
 
 # write GWB using user-specified sourced database, with inclusion of solid_solution and clay thermo properties
 
-# In[11]:
+# In[17]:
 
 
 get_ipython().run_cell_magic('time', '', "write_database(T = T, P = 175, cpx_Ca = nCa, solid_solution = 'Yes', clay_thermo = 'Yes',\n                sourcedb = './database/thermo.29Sep15.dat', dataset = 'GWB')")
 
 
-# write GWB using Jan2020 formatted sourced database
+# write GWB using Jan2020/Apr20 formatted sourced database
 
-# In[12]:
+# In[18]:
 
 
 get_ipython().run_cell_magic('time', '', "write_database(T = T, P = 125, cpx_Ca = nCa, solid_solution = True, clay_thermo = True,\n                sourcedb = './database/thermo.com.tdat', dataset = 'GWB')")
 
 
-# write GWB using Jan2020 formatted sourced database with logK as polynomial coefficients, using Tmax and Tmin
+# write GWB using Jan2020/Apr20 formatted sourced database with logK as polynomial coefficients, using Tmax and Tmin
 
-# In[13]:
+# In[19]:
 
 
-get_ipython().run_cell_magic('time', '', "#write_database(T = [0, 450], P = 200, cpx_Ca = nCa, solid_solution = 'Yes', clay_thermo = 'Yes',\n#                logK_form = 'polycoeffs', sourcedb =  './database/thermo.com.tdat', dataset = 'GWB')")
+get_ipython().run_cell_magic('time', '', "# Temp = np.array([  0.01, 25, 60,  100, 150,  200,  250,  300])\nwrite_database(T = [0, 300], P = 150, clay_thermo = True, logK_form = 'polycoeffs', \n               sourcedb =  './database/thermo.com.tdat', dataset = 'GWB')")
+
+
+# write GWB using Mar21 formatted sourced database with logK as polynomial coefficients
+
+# In[20]:
+
+
+get_ipython().run_cell_magic('time', '', "# Temp = np.array([  0.01, 25, 60,  100, 150,  200,  250,  300])\nwrite_database(T = [0, 300], P = 145, clay_thermo = True, logK_form = 'polycoeffs', \n               sourcedb =  './database/thermo_latest.tdat', dataset = 'GWB')")
 
 
 # write GWB using user-specified sourced database and direct-access database (slop07) and FGL97 dielectric constant
 
-# In[3]:
+# In[21]:
 
 
 get_ipython().run_cell_magic('time', '', "write_database(T = [0, 400], P = 300, cpx_Ca = 0.5, solid_solution = 'Yes', Dielec_method = 'FGL97',\n                dbaccess = './database/slop07.dat',\n                sourcedb = './database/thermo.29Sep15.dat', dataset = 'GWB')")
@@ -159,15 +231,23 @@ get_ipython().run_cell_magic('time', '', "write_database(T = [0, 400], P = 300, 
 
 # write GWB using default sourced database and direct-access database (slop07 with Berman mineral data) and FGL97 dielectric constant
 
-# In[17]:
+# In[22]:
 
 
-get_ipython().run_cell_magic('time', '', "write_database(T = [0, 340], P = 150, Dielec_method = 'FGL97',  dbaccess = './database/slop07.dat',\n                dbBerman_dir = './database/berman.dat', dataset = 'GWB',\n                mineral_eos = 'Berman88')")
+get_ipython().run_cell_magic('time', '', "write_database(T = [0, 340], P = 150, Dielec_method = 'FGL97',  dbaccess = './database/slop07.dat',\n                dbBerman_dir = './database/berman.dat', dataset = 'GWB')")
+
+
+# write GWB using Mar21 formatted sourced database and direct-access database (speq21 with HP mineral data) and DEW dielectric constant
+
+# In[23]:
+
+
+get_ipython().run_cell_magic('time', '', "write_database(T = [0, 275], P = 1100, Dielec_method = 'DEW',  dbaccess = './database/speq21.dat',\n                dbHP_dir = './database/supcrtbl.dat', sourcedb =  './database/thermo_latest.tdat', dataset = 'GWB')")
 
 
 # write GWB using user-specified sourced Pitzer database and default direct-access database along the saturation curve
 
-# In[16]:
+# In[24]:
 
 
 get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 'T', dataset = 'GWB',  sourcedb = './database/thermo_hmw.tdat')")
@@ -175,7 +255,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 'T', 
 
 # write GWB using user-specified sourced EQ3/6 Pitzer database and default direct-access database
 
-# In[38]:
+# In[25]:
 
 
 get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 250, dataset = 'GWB', sourcedb = './database/data0.hmw',\n               sourceformat = 'EQ36')")
@@ -185,7 +265,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 250, 
 
 # write EQ3/6 using default sourced database
 
-# In[18]:
+# In[26]:
 
 
 get_ipython().run_cell_magic('time', '', "write_database(T = T, P = P, cpx_Ca = 1, solid_solution = 'Yes', clay_thermo = 'Yes', \n               dataset = 'EQ36')")
@@ -193,7 +273,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = T, P = P, cpx_Ca = 
 
 # write EQ3/6 user-specified sourced database
 
-# In[37]:
+# In[27]:
 
 
 get_ipython().run_cell_magic('time', '', "write_database(T = [0, 400], P = 350, cpx_Ca = 0.5, solid_solution = 'Yes', clay_thermo = 'Yes',\n                sourcedb = './database/data0.geo', dataset = 'EQ36', sourcedb_codecs = 'latin-1')")
@@ -201,7 +281,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = [0, 400], P = 350, 
 
 # write EQ3/6 using user-specified sourced Pitzer database
 
-# In[20]:
+# In[28]:
 
 
 get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 200, sourcedb = './database/data0.hmw', dataset = 'EQ36')")
@@ -209,7 +289,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 200, 
 
 # write EQ3/6 user-specified sourced database using FGL97 dielectric constant
 
-# In[9]:
+# In[29]:
 
 
 get_ipython().run_cell_magic('time', '', "write_database(T = [0, 400], P = 300, cpx_Ca = 0.1, sourcedb = './database/data0.geo', \n               dataset = 'EQ36', solid_solution = 'Yes', Dielec_method = 'FGL97', clay_thermo = 'Yes')")
@@ -217,7 +297,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = [0, 400], P = 300, 
 
 # write EQ3/6 user-specified sourced database using DEW model
 
-# In[29]:
+# In[30]:
 
 
 get_ipython().run_cell_magic('time', '', "Temp = np.array([50, 100, 150, 300, 450, 500, 600, 700])\nwrite_database(T = Temp, P = 1500, sourcedb = './database/data0.geo', dataset = 'EQ36', \n               Dielec_method = 'DEW')")
@@ -227,7 +307,7 @@ get_ipython().run_cell_magic('time', '', "Temp = np.array([50, 100, 150, 300, 45
 
 # write ToughReact using user-specified EQ3/6 database
 
-# In[24]:
+# In[31]:
 
 
 get_ipython().run_cell_magic('time', '', "write_database(T = T, P = P, cpx_Ca = nCa, solid_solution = 'Yes', sourcedb = './database/data0.dat',\n                dataset = 'ToughReact', sourceformat = 'EQ36')")
@@ -235,7 +315,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = T, P = P, cpx_Ca = 
 
 # write ToughReact using user-specified GWB database
 
-# In[15]:
+# In[32]:
 
 
 get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 250, cpx_Ca = 0.25, clay_thermo = 'Yes', dataset = 'ToughReact',\n                sourcedb = './database/thermo.com.tdat', sourceformat = 'GWB')")
@@ -243,7 +323,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 250, 
 
 # write ToughReact using EQ3/6 user-specified Ptizer sourced database and JN91 dielectric constant
 
-# In[11]:
+# In[33]:
 
 
 get_ipython().run_cell_magic('time', '', "write_database(T = [0, 300], P = 200, sourceformat = 'EQ36', sourcedb = './database/data0.hmw',\n                dataset = 'ToughReact', Dielec_method = 'JN91')")
@@ -253,7 +333,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = [0, 300], P = 200, 
 
 #  write Pflotran using user-specified EQ3/6 database
 
-# In[30]:
+# In[34]:
 
 
 get_ipython().run_cell_magic('time', '', "write_database(T = T, P = P, clay_thermo = 'Yes', sourcedb = './database/data0.dat',\n                dataset = 'Pflotran', sourceformat = 'EQ36')")
@@ -261,7 +341,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = T, P = P, clay_ther
 
 # write Pflotran using user-specified GWB database
 
-# In[13]:
+# In[35]:
 
 
 get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 250, cpx_Ca = 0.1, solid_solution = True, clay_thermo = True,\n               sourcedb = './database/thermo.com.tdat', dataset = 'Pflotran', sourceformat = 'GWB')")
@@ -269,7 +349,7 @@ get_ipython().run_cell_magic('time', '', "write_database(T = [0, 350], P = 250, 
 
 # ### Example: Calculate clay mineral thermodynamics
 
-# In[32]:
+# In[36]:
 
 
 #%% specify the direct access thermodynamic database
@@ -282,7 +362,7 @@ fid = open('./output/logK_05.txt', 'w')
 
 logKRxn = calcRxnlogK(T = T, P = P, Specie = 'Clay', dbaccessdic = db_dic,
                         elem = ['Clinochlore', '3', '2', '0', '0', '5', '0', '0', '0', '0'],
-                        densityextrap = True,  group = '14A')
+                        densityextrap = True)
 logK, Rxn = logKRxn.logK, logKRxn.Rxn
 
 # output in EQ36 format
@@ -298,7 +378,7 @@ fid.close()
 
 # ### Example: Calculate plagioclase solid-solution thermodynamics
 
-# In[33]:
+# In[37]:
 
 
 #%% specify the direct access thermodynamic database
@@ -324,9 +404,54 @@ outputfmt(fid, logK, Rxn, dataset = 'ToughReact')
 fid.close()
 
 
+# ### Example: Calculate new reaction equilibrium constants and export to specific formats
+
+# In[38]:
+
+
+#%% specify the direct access thermodynamic database
+db_dic = db_reader(dbaccess = './database/speq21.dat', sourcedb =  './database/thermo_latest.tdat', sourceformat = 'GWB')
+Temp = np.array([25, 80, 140, 190, 240, 300, 350, 400])
+TK_range = Temp + 273.15
+
+folder_to_save = 'output'
+if os.path.exists(os.path.join(os.getcwd(), folder_to_save)) == False:
+    os.makedirs(os.path.join(os.getcwd(), folder_to_save)) 
+fid = open('./output/logK_05.txt', 'w')
+
+db_dic.sourcedic['HWO4-'] = ['HWO4-', 2, '1.000', 'H+', '1.000', 'WO4--']
+
+logK = calcRxnlogK(T = Temp, P = 250, Specie = 'HWO4-', dbaccessdic = db_dic.dbaccessdic, densityextrap = True,
+                     sourcedic = db_dic.sourcedic, specielist = db_dic.specielist, Specie_class = 'aqueous').logK
+
+Rxn = {}
+Rxn['type'] = 'tungsten'
+Rxn['name'] = 'HWO4-'
+Rxn['formula'] = ps.dbaccessdic['HWO4-'][0]
+Rxn['MW'] = calc_elem_count_molewt(ps.dbaccessdic['HWO4-'][0])[1]
+Rxn['min'] = ps.dbaccessdic['HWO4-']
+Rxn['V'] = Rxn['min'][5]
+Rxn['source'] = Rxn['min'][1]
+Rxn['spec'] = ['H+', 'WO4--']
+Rxn['coeff'] = [1.000, 1.000]
+Rxn['nSpec'] = len(Rxn['coeff'])
+d = calc_elem_count_molewt(ps.dbaccessdic['HWO4-'][0])[0]
+Rxn['elements'] = [item for sublist in [['%s' % v,k] for k,v in d.items()] for item in sublist]
+
+# output in EQ36 format
+outputfmt(fid, logK, Rxn, dataset = 'EQ36')
+# output in GWB format
+outputfmt(fid, logK, Rxn, *TK_range, logK_form = 'polycoeffs', dataset = 'GWB')
+# output in Pflotran format
+outputfmt(fid, logK, Rxn, dataset = 'Pflotran')
+# output in ToughReact format
+outputfmt(fid, logK, Rxn, dataset = 'ToughReact')
+fid.close()
+
+
 # ### Example: Calculate CO$_2$ activity and molality
 
-# In[34]:
+# In[39]:
 
 
 T = np.array([  0.010,   25 ,  60,  100, 150,  175,  200,  250])
@@ -344,7 +469,7 @@ log10_co2_gamma = drummondgamma(TK, 0.5)
 co2_activityD = 10**log10_co2_gamma
 
 
-# In[35]:
+# In[40]:
 
 
 for i in range(len(T)):
@@ -358,7 +483,7 @@ for i in range(len(T)):
 
 # ### Example: Calculate water activity
 
-# In[36]:
+# In[ ]:
 
 
 #%% Calculate Water activity, osmotic coefficient and NaCl mean activity coefficient at an ionic strength of 0.5M

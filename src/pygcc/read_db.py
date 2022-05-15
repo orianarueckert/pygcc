@@ -60,15 +60,19 @@ class db_reader:
     Parameters
     ----------
         dbaccess : string
-            filename and location of the direct-access database, optional, default is speq21
+            filename and location of the direct-access/sequential-access database, optional, default is speq21
         dbBerman_dir : string
             filename and location of the Berman mineral database, optional
+        dbHP_dir : string
+            filename and location of the supcrtbl mineral and gas database, optional
         sourcedb : string
             filename of the source database, optional
         sourcedb : string
             filename of the source database, optional
         sourceformat : string
             specify the source database format, either 'GWB' or 'EQ36', optional
+        dbaccessformat : string, optional
+            specify the direct-access/sequential-access database format, either 'speq' or 'supcrtbl', default is 'speq'
         sourcedb_codecs : string
             specify the name of the encoding used to decode or encode the sourcedb file, optional
         dbaccess_codecs : string
@@ -110,8 +114,10 @@ class db_reader:
     """
     kwargs = {"dbaccess": None,
               "dbBerman_dir": None,
+              "dbHP_dir": None,
               "sourcedb": None,
               "sourceformat": None,
+              "dbaccessformat": 'speq',
               "sourcedb_codecs": None,
               "dbaccess_codecs": None}
 
@@ -126,7 +132,9 @@ class db_reader:
             self.dbaccess_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.dbaccess_dir)
         else:
             self.dbaccess_dir = self.kwargs["dbaccess"]
+        self.dbaccessformat = self.kwargs["dbaccessformat"]
         self.dbBerman_dir = self.kwargs["dbBerman_dir"]
+        self.dbHP_dir = self.kwargs["dbHP_dir"]
         self.sourcedb_dir = self.kwargs["sourcedb"]
         if self.kwargs['dbaccess_codecs'] is None:
             self.dbaccess_codecs = findcodecs(self.dbaccess_dir)
@@ -158,11 +166,16 @@ class db_reader:
         mineral properties such as (dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, k3,
         v1 [*10^5 K^-1], v2 [*10^5 K^-2], v3 [*10^5 bar^-1], v4 [*10^8 bar^-2], dTdP [K/bar], Tlambda [K],
         Tref [K], l1 [(J/mol)^0.5/K], l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], d2 [J/mol],
-        d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K]) \n
+        d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K]). In addition, the function can read supcrtbl's
+        mineral and gas properties such as (dG [kJ/mol], dH [kJ/mol], S [J/mol-K], V [J/bar], a [kJ/mol-K],
+        b [*10^5 kJ/mol/K^2], c [kJ-mol-K], d [kJ/mol/K^0.5], alpha [*10^5 K^-1], kappa0 [kbar],
+        kappa0_d [kbar], kappa0_dd [kbar], n_atom [-], Tc0 [K], Smax [J/mol-K], Vmax [J/bar], dH [KJ/mol],
+        dV [J/bar], W [kJ/mol], Wv [J/bar], n [-], SF [-]) \n
         Parameters
         ----------
             dbaccess        filename and location of the direct-access database     \n
             dbBerman_dir    filename and location of the Berman mineral database     \n
+            dbHP_dir        filename and location of the supcrtbl (Holland and Powell) mineral and gas database     \n
         Returns
         ----------
             dbaccessdic      dictionary of minerals, gases, redox and aqueous species     \n
@@ -175,6 +188,99 @@ class db_reader:
         codecs = self.dbaccess_codecs
         with open(self.dbaccess_dir, encoding = codecs) as g:
             Rd = g.readlines()
+
+        def multiline_reader(Rd, counter, dbaccess_dir):
+            db_dic = {}; last_gas = ''
+            for i in range(len(Rd)): #
+                s1 = Rd[i].rstrip('\n').strip()
+                if (not s1.lstrip().startswith(('*', '!'))) and (s1.lstrip('0123456789.- \t') != ""):
+                    if (s1[:3] != 'ref') and (s1[:3] != 'REF') and (s1.split()[0] not in ['minerals', 'gases', 'gas', 'aqueous', 'abandoned']):
+                        name = s1.strip().split()[0]
+                        name = name.replace('+4', '++++') if name.endswith('+4') else name.replace('+3', '+++') if name.endswith('+3') else name.replace('+2', '++') if name.endswith('+2') else name.replace('-4', '----') if name.endswith('-4') else name.replace('-3', '---') if name.endswith('-3') else name.replace('-2', '--') if name.endswith('-2') else name
+                        if self.dbaccessformat.lower() == 'supcrtbl':
+                            name = name.title() if not name.endswith(('+', '-', ",aq", "(S)", "(am)",
+                                                                      'dis', 'ord')) else name.capitalize() if 'ACID' in name else name
+                            name = name.replace(",aq", "(aq)").replace(",G", "(g)").replace("(S)", "(s)").replace("(Am)", "(am)").replace("(Alpha)", "(alpha)").replace("(Beta)", "(beta)")
+                            name = name.replace("-acid", "_acid").replace("(High)", "_high").replace("(Low)", "_low").replace(" anhyd", "_anhyd").replace(" hydr", "_hydr")
+                            name = name.replace("-Lo", "_low").replace("(-Hi)", "_high").replace("(oh)", "(OH)").replace("(Oh)", "(OH)").replace("(G)", "(g)").replace("(Ordered)", "-ord")
+
+                        if len(s1.split()) > 1:
+                            formula = s1.split()[1]
+                        else:
+                            formula = ''
+                        s2 = Rd[i + 1].strip()
+                        dates = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+                        if (s2[:3] != 'ref') and (s2[:3] != 'REF') and (s2[0].lstrip('0123456789.,- ') != '') and any(k in s2.split()[-1].lower() for k in dates) == False:
+                            s3 = Rd[i+2]; s4 = Rd[i+3]; s5 = Rd[i+4];
+                            if i >= len(Rd) - 5:
+                                s6 = 'Null'; s7 = 'Null'; s8 = 'Null';
+                                s9 = 'Null'; s10 = 'Null'; s11 = 'Null';
+                            elif i >= len(Rd) - 6:
+                                s6  = Rd[i + 5]; s7 = 'Null'; s8 = 'Null';
+                                s9 = 'Null'; s10 = 'Null'; s11 = 'Null';
+                            else:
+                                s6  = Rd[i + 5]; s7 = Rd[i + 6]; s8 = Rd[i + 7];
+                                s9 = Rd[i + 8]; s10 = Rd[i + 9]; s11 = Rd[i + 10];
+
+                            if s3.strip()[:3] == 'ref':
+                                ref = s3#.split()[0][4:]
+                            else:
+                                ref = s3#.split()[0]
+                            if (s6.lower().islower() == True) | s6.startswith('*', 0):
+                                params = s4.split() + s5.split()
+                            elif (s7.lower().islower() == True) | s7.startswith('*', 0):
+                                params = s4.split() + s5.split() + s6.split()
+                            elif (s8.lower().islower() == True) | s8.startswith('*', 0):
+                                params = s4.split() + s5.split() + s6.split() + s7.split()
+                            elif (s9.lower().islower() == True) | s9.startswith('*', 0):
+                                params = s4.split() + s5.split() + s6.split() + s7.split() + s8.split()
+                            elif (s10.lower().islower() == True) | s10.startswith('*', 0):
+                                params = s4.split() + s5.split() + s6.split() + s7.split() + s8.split() + \
+                                    s9.split()
+                            elif (s11.lower().islower() == True) | s11.startswith('*', 0):
+                                params = s4.split() + s5.split() + s6.split() + s7.split() + s8.split() + \
+                                    s9.split() + s10.split()
+                            else:
+                                params = s4.split() + s5.split() + s6.split() + s7.split() + s8.split() + \
+                                    s9.split() + s10.split() + s11.split()
+                            params = [float(i) if float(i) != 999999 else 0 for i in params]
+                            counter += 1
+                            if name in db_dic.keys():
+                                print('Duplicate found for species "%s" in %s' % (name, dbaccess_dir.split('/')[-1]))
+                                continue
+                            else:
+                                db_dic[name] = [formula, ref] + params
+
+                            if len(s5.split()) != 0 and len(s6.split()) and (s5.strip() == '' and s6.strip() == ''):
+                                break
+                            elif len(s7.split()) != 0 and len(s6.split()) and (s6.strip() == '' and s7.strip() == ''):
+                                break
+                            elif len(s7.split()) != 0 and len(s8.split()) and (s7.strip() == '' and s8.strip() == ''):
+                                break
+                            elif len(s8.split()) != 0 and len(s9.split()) and (s8.strip() == '' and s9.strip() == ''):
+                                break
+                            elif len(s9.split()) != 0 and len(s10.split()) and (s9.strip() == '' and s10.strip() == ''):
+                                break
+                            elif len(s6.split()) != 0 and (s6.split()[-1] in ['(nmin1)', '(nmin2)', '(nmin3)', '(nmin4)', '(ngas)', '(naqs)']):
+                                break
+                            elif len(s7.split()) != 0 and (s7.split()[-1] in ['(nmin1)', '(nmin2)', '(nmin3)', '(nmin4)', '(ngas)', '(naqs)']):
+                                break
+                            elif len(s8.split()) != 0 and (s8.split()[-1] in ['(nmin1)', '(nmin2)', '(nmin3)', '(nmin4)', '(ngas)', '(naqs)']) :
+                                break
+                            elif len(s9.split()) != 0 and (s9.split()[-1] in ['(nmin1)', '(nmin2)', '(nmin3)', '(nmin4)', '(ngas)', '(naqs)']) :
+                                break
+                            elif len(s10.split()) != 0 and (s10.split()[-1] in ['(nmin1)', '(nmin2)', '(nmin3)', '(nmin4)', '(ngas)', '(naqs)']):
+                                break
+                            elif s9.strip('*').strip() == '' and s10.strip('*').strip() == '' and s11.strip('*').strip() == '':
+                                break
+                if s1.split()[0] in ['gases', 'gas']:
+                    last_mineral = list(db_dic.keys())[-1] # aqueous
+                if s1.lstrip().split()[0] in ['aqueous']:
+                    last_gas = list(db_dic.keys())[-1]
+
+            # last_gas = '' if last_gas is None else last_gas
+            return db_dic, last_mineral, last_gas
+
 
         self.dbaccessdic = {}; counter = 0
         # if it is single line data like for dpeq20
@@ -234,80 +340,9 @@ class db_reader:
                                 else:
                                     self.dbaccessdic[name] = [formula, ref] + params
         else:
-        # else for multi line data like for speq21
-            for i in range(len(Rd)): #
-                s1 = Rd[i].rstrip('\n').strip()
-                if (not s1.lstrip().startswith(('*', '!'))) and (s1.lstrip('0123456789.- \t') != ""):
-                    if (s1[:3] != 'ref') and (s1[:3] != 'REF') and (s1.split()[0] not in ['minerals', 'gases', 'gas', 'aqueous', 'abandoned']):
-                        name = s1.strip().split()[0]
-                        if len(s1.split()) > 1:
-                            formula = s1.split()[1]
-                        else:
-                            formula = ''
-                        s2 = Rd[i + 1].strip()
-                        if (s2[:3] != 'ref') and (s2[:3] != 'REF') and (s2[0].lstrip('0123456789.,- ') != ''):
-                            s3 = Rd[i+2]; s4 = Rd[i+3]; s5 = Rd[i+4];
-                            if i >= len(Rd) - 5:
-                                s6 = 'Null'; s7 = 'Null'; s8 = 'Null';
-                                s9 = 'Null'; s10 = 'Null'; s11 = 'Null';
-                            elif i >= len(Rd) - 6:
-                                s6  = Rd[i + 5]; s7 = 'Null'; s8 = 'Null';
-                                s9 = 'Null'; s10 = 'Null'; s11 = 'Null';
-                            else:
-                                s6  = Rd[i + 5]; s7 = Rd[i + 6]; s8 = Rd[i + 7];
-                                s9 = Rd[i + 8]; s10 = Rd[i + 9]; s11 = Rd[i + 10];
+            # for multi line data like for speq21
+            self.dbaccessdic, last_mineral, last_gas = multiline_reader(Rd, counter, self.dbaccess_dir)
 
-                            if s3.strip()[:3] == 'ref':
-                                ref = s3#.split()[0][4:]
-                            else:
-                                ref = s3#.split()[0]
-                            if (s6.lower().islower() == True) | s6.startswith('*', 0):
-                                params = s4.split() + s5.split()
-                            elif (s7.lower().islower() == True) | s7.startswith('*', 0):
-                                params = s4.split() + s5.split() + s6.split()
-                            elif (s8.lower().islower() == True) | s8.startswith('*', 0):
-                                params = s4.split() + s5.split() + s6.split() + s7.split()
-                            elif (s9.lower().islower() == True) | s9.startswith('*', 0):
-                                params = s4.split() + s5.split() + s6.split() + s7.split() + s8.split()
-                            elif (s10.lower().islower() == True) | s10.startswith('*', 0):
-                                params = s4.split() + s5.split() + s6.split() + s7.split() + s8.split() + \
-                                    s9.split()
-                            elif (s11.lower().islower() == True) | s11.startswith('*', 0):
-                                params = s4.split() + s5.split() + s6.split() + s7.split() + s8.split() + \
-                                    s9.split() + s10.split()
-                            else:
-                                params = s4.split() + s5.split() + s6.split() + s7.split() + s8.split() + \
-                                    s9.split() + s10.split() + s11.split()
-                            params = [float(i) if float(i) != 999999 else 0 for i in params]
-                            counter += 1
-                            if name in self.dbaccessdic.keys():
-                                print('Duplicate found for species "%s" in %s' % (name, self.dbaccess_dir.split('/')[-1]))
-                                continue
-                            else:
-                                self.dbaccessdic[name] = [formula, ref] + params
-
-                            if len(s5.split()) != 0 and len(s6.split()) and (s5.strip() == '' and s6.strip() == ''):
-                                break
-                            elif len(s7.split()) != 0 and len(s6.split()) and (s6.strip() == '' and s7.strip() == ''):
-                                break
-                            elif len(s7.split()) != 0 and len(s8.split()) and (s7.strip() == '' and s8.strip() == ''):
-                                break
-                            elif len(s8.split()) != 0 and len(s9.split()) and (s8.strip() == '' and s9.strip() == ''):
-                                break
-                            elif len(s9.split()) != 0 and len(s10.split()) and (s9.strip() == '' and s10.strip() == ''):
-                                break
-                            elif len(s6.split()) != 0 and (s6.split()[-1] in ['(nmin1)', '(nmin2)', '(nmin3)', '(nmin4)', '(ngas)', '(naqs)']):
-                                break
-                            elif len(s7.split()) != 0 and (s7.split()[-1] in ['(nmin1)', '(nmin2)', '(nmin3)', '(nmin4)', '(ngas)', '(naqs)']):
-                                break
-                            elif len(s8.split()) != 0 and (s8.split()[-1] in ['(nmin1)', '(nmin2)', '(nmin3)', '(nmin4)', '(ngas)', '(naqs)']) :
-                                break
-                            elif len(s9.split()) != 0 and (s9.split()[-1] in ['(nmin1)', '(nmin2)', '(nmin3)', '(nmin4)', '(ngas)', '(naqs)']) :
-                                break
-                            elif len(s10.split()) != 0 and (s10.split()[-1] in ['(nmin1)', '(nmin2)', '(nmin3)', '(nmin4)', '(ngas)', '(naqs)']):
-                                break
-                    if s1.split()[0] in ['gases', 'gas']:
-                        last_mineral = list(self.dbaccessdic.keys())[-1]
         if self.dbBerman_dir is not None:
             codecs = findcodecs(self.dbBerman_dir)
             mineral_list = list(self.dbaccessdic.keys())[:list(self.dbaccessdic.keys()).index(last_mineral)+1]
@@ -364,6 +399,14 @@ class db_reader:
                         self.dbaccessdic[name] = [formula, ref] + params
             gid.close()
 
+        elif self.dbHP_dir is not None:
+            codecs = findcodecs(self.dbHP_dir)
+            mineralgas_list = list(self.dbaccessdic.keys())[:list(self.dbaccessdic.keys()).index(last_gas)+1]
+            self.dbaccessdic = {k: v for k, v in self.dbaccessdic.items() if k not in mineralgas_list}
+            with open(self.dbHP_dir, encoding = codecs) as g:
+                Rd = g.readlines()
+            self.dbaccessdic.update(multiline_reader(Rd, 0, self.dbHP_dir)[0])
+
         #%% other sources aside speq20 for solid solution calculation
         #dG dH S V a1 a2 a3 a4 a5
         # dG, dH, S from Arnorsson 1999, V and Cp from Robie and Hemingway #1995
@@ -410,17 +453,21 @@ class db_reader:
 
         _Fluorapatite_ = ['Ca5(PO4)3F', 'R&H95', -6489700, -6872000, 387.9, 157.56*J_to_cal,
                       7.543e2, -3.026e-2, -0.9084e6, -6.201e3, 0]
-        self.dbaccessdic['Fluorapatite'] = [x/J_to_cal if type(x)!=str else x for x in _Fluorapatite_]
+        if 'Fluorapatite' not in self.dbaccessdic.keys():
+            self.dbaccessdic['Fluorapatite'] = [x/J_to_cal if type(x)!=str else x for x in _Fluorapatite_]
 
         _Hydroxyapatite_ = ['Ca5(OH)(PO4)3', 'R&H95', -6337100, -6738500, 390.4, 159.6*J_to_cal,
                             3.878e2, 11.186e-2, -12.70e6, 1.811e3, 0]
-        self.dbaccessdic['Hydroxyapatite'] = [x/J_to_cal if type(x)!=str else x for x in _Hydroxyapatite_]
+        if 'Hydroxyapatite' not in self.dbaccessdic.keys():
+            self.dbaccessdic['Hydroxyapatite'] = [x/J_to_cal if type(x)!=str else x for x in _Hydroxyapatite_]
 
-        self.dbaccessdic['Ankerite'] = ['CaFe(CO3)2', 'HP2011               31.DEC.11\n', -434945.7, -471178.3,
-                                  45.043, 66.060,  81.500956, -0.277486, 0, -730.114720, 0]
+        if 'Hydroxyapatite' not in self.dbaccessdic.keys():
+            self.dbaccessdic['Ankerite'] = ['CaFe(CO3)2', 'H&P2011               31.DEC.11\n', -434945.7,
+                                            -471178.3, 45.043, 66.060,  81.500956, -0.277486, 0, -730.114720, 0]
 
-        self.dbaccessdic['Acmite'] = ['NaFeSi2O6', 'HP2011               31.DEC.11\n', -577476.5, -617454.6,
-                                40.774, 64.590,  1.994e2, 6.197e-2, -4.267e6, 0, 0]
+        if 'Acmite' not in self.dbaccessdic.keys():
+            self.dbaccessdic['Acmite'] = ['NaFeSi2O6', 'H&P2011               31.DEC.11\n', -577476.5,
+                                          -617454.6, 40.774, 64.590,  1.994e2, 6.197e-2, -4.267e6, 0, 0]
 
         _Annite_ = ['KFe3AlSi3O10(OH)2', 'R&H95', -4798300, -5149300, 415.0, 154.3*J_to_cal,
                     6.366e2, 8.208e-2, -4.860e6, -3.731e3, 0]
@@ -432,11 +479,13 @@ class db_reader:
                                         #dG dH S V a1 a2 a3 a4 a5
         _Molybdenite_ = ['MoS2', 'R&H95', -262800, -271800, 62.6, 32.02*J_to_cal,
                         1.045e2, -4.812e-3, -6.291e3, -6.817e2, 0]
-        self.dbaccessdic['Molybdenite'] = [x/J_to_cal if type(x)!=str else x for x in _Molybdenite_]
+        if 'Molybdenite' not in self.dbaccessdic.keys():
+            self.dbaccessdic['Molybdenite'] = [x/J_to_cal if type(x)!=str else x for x in _Molybdenite_]
 
         _Molybdite_ = ['MoO3', 'R&H95', -668100, -745200, 77.7, 30.56*J_to_cal,
                         6.433e0, 6.278e-2, -2.46e6, 1.337e3, 0]
-        self.dbaccessdic['Molybdite'] = [x/J_to_cal if type(x)!=str else x for x in _Molybdite_]
+        if 'Molybdite' not in self.dbaccessdic.keys():
+            self.dbaccessdic['Molybdite'] = [x/J_to_cal if type(x)!=str else x for x in _Molybdite_]
 
         return
 
@@ -474,7 +523,7 @@ class db_reader:
         data_fmt = [x for x in Rd if 'dataset format' in x][0].strip('\n').split(':')[-1].strip()
 
         unwanted = ['elements', 'basis species', 'redox couples', 'aqueous species',
-                    'free electron', 'minerals', 'gases', 'oxides', 'stop.' ]
+                    'free electron', 'minerals', 'solid solutions', 'gases', 'oxides', 'stop.' ]
         #capture line numbers with line break
         d=[]; previousline = ''
         with open(self.sourcedb_dir, encoding = codecs) as fid:
@@ -508,46 +557,77 @@ class db_reader:
                     continue
                 else:
                     specie_name = s1.strip().split()[0]
-                    s2 = f.readline(); s3 = f.readline()
-                    s4 = f.readline(); s5 = f.readline();
-                    if (s5.rstrip('\n') != ""):
-                        s6 = f.readline()
-                        if (s6.rstrip('\n') != ""):
-                            s7 = f.readline()
-                            if not s2.startswith('*',0):
-                                if (len(s2.split()) > 1) and (s2.split()[0] != 'formula='):
-                                    if len(s1.split('formula=')) <= 1:
-                                        specie_formula = ""
-                                    else:
-                                        specie_formula = s1.rstrip('\n').split('formula=')[1]
-                                    if not s3.lstrip().startswith(('chi', 'Pcrit'), 0):
-                                        species_num = int(s3.split()[0])
-                                        if species_num <= 3:
-                                            reactant = s4.split()
-                                        elif species_num <= 6:
-                                            reactant = s4.split() + s5.split()
+                    s2 = f.readline(); s3 = f.readline() if s2.rstrip('\n') != '' else ''
+                    s4 = f.readline() if s3.rstrip('\n') != '' else ''
+                    s5 = f.readline() if s4.rstrip('\n') != '' else ''
+                    if data_fmt == 'mar21' and not s3.split()[0].isdigit() and'mole' not in [s3.split()[0], s2.split()[0]] :
+                        if (s2.rstrip('\n') != "" and s3.rstrip('\n') == ""):
+                            ss_details = [s1, s2, s3]
+                        elif (s3.rstrip('\n') != "" and s4.rstrip('\n') == ""):
+                            ss_details = [s1, s2, s3, s4]
+                        elif (s4.rstrip('\n') != "" and s5.rstrip('\n') == ""):
+                            ss_details = [s1, s2, s3, s4, s5]
+                        elif (s5.rstrip('\n') != ""):
+                            s6 = f.readline()
+                            ss_details = [s1, s2, s3, s4, s5, s6]
+                            if (s6.rstrip('\n') != ""):
+                                s7 = f.readline()
+                                ss_details = [s1, s2, s3, s4, s5, s6, s7]
+                                if (s7.rstrip('\n') != ""):
+                                    s8 = f.readline()
+                                    ss_details = [s1, s2, s3, s4, s5, s6, s7, s8]
+                                    if (s8.rstrip('\n') != ""):
+                                        s9 = f.readline()
+                                        ss_details = [s1, s2, s3, s4, s5, s6, s7, s8, s9]
+                        specie_formula = []; species_num = []; reactant = []
+                    else:
+                        if (s5.rstrip('\n') != ""):
+                            s6 = f.readline()
+                            if (s6.rstrip('\n') != ""):
+                                s7 = f.readline()
+                                if not s2.startswith('*',0):
+                                    if (len(s2.split()) > 1) and (s2.split()[0] != 'formula='):
+                                        if len(s1.split('formula=')) <= 1:
+                                            specie_formula = ""
                                         else:
-                                            reactant = s4.split() + s5.split() + s6.split()
-                                    else:
-                                        if not s4.lstrip().startswith(('chi','Pcrit'),0):
-                                            species_num = int(s4.split()[0])
+                                            specie_formula = s1.rstrip('\n').split('formula=')[1]
+                                        if not s3.lstrip().startswith(('chi', 'Pcrit'), 0):
+                                            species_num = int(s3.split()[0])
                                             if species_num <= 3:
-                                                reactant = s5.split()
+                                                reactant = s4.split()
                                             elif species_num <= 6:
-                                                reactant = s5.split() + s6.split()
+                                                reactant = s4.split() + s5.split()
                                             else:
-                                                reactant = s5.split() + s6.split() + s7.split()
+                                                reactant = s4.split() + s5.split() + s6.split()
                                         else:
-                                            species_num = int(s5.split()[0])
-                                            if species_num <= 3:
-                                                reactant = s6.split()
+                                            if not s4.lstrip().startswith(('chi','Pcrit'),0):
+                                                species_num = int(s4.split()[0])
+                                                if species_num <= 3:
+                                                    reactant = s5.split()
+                                                elif species_num <= 6:
+                                                    reactant = s5.split() + s6.split()
+                                                else:
+                                                    reactant = s5.split() + s6.split() + s7.split()
                                             else:
-                                                reactant = s6.split() + s7.split()
-                                else:
-                                    if len(s2.split('formula=')) <= 1:
-                                        specie_formula = ""
+                                                species_num = int(s5.split()[0])
+                                                if species_num <= 3:
+                                                    reactant = s6.split()
+                                                else:
+                                                    reactant = s6.split() + s7.split()
                                     else:
-                                        specie_formula = s2.rstrip('\n').split('formula=')[1]
+                                        if len(s2.split('formula=')) <= 1:
+                                            specie_formula = ""
+                                        else:
+                                            specie_formula = s2.rstrip('\n').split('formula=')[1]
+                                        species_num = int(s4.split()[0])
+                                        if species_num <= 3:
+                                            reactant = s5.split()
+                                        elif species_num <= 6:
+                                            reactant = s5.split() + s6.split()
+                                        else:
+                                            reactant = s5.split() + s6.split() + s7.split()
+                                else:
+                                    specie_formula = s2.split()[2]
                                     species_num = int(s4.split()[0])
                                     if species_num <= 3:
                                         reactant = s5.split()
@@ -556,14 +636,14 @@ class db_reader:
                                     else:
                                         reactant = s5.split() + s6.split() + s7.split()
                             else:
-                                specie_formula = s2.split()[2]
-                                species_num = int(s4.split()[0])
+                                specie_formula = ""
+                                species_num = int(s3.split()[0])
                                 if species_num <= 3:
-                                    reactant = s5.split()
+                                    reactant = s4.split()
                                 elif species_num <= 6:
-                                    reactant = s5.split() + s6.split()
+                                    reactant = s4.split() + s5.split()
                                 else:
-                                    reactant = s5.split() + s6.split() + s7.split()
+                                    reactant = s4.split() + s5.split() + s6.split()
                         else:
                             specie_formula = ""
                             species_num = int(s3.split()[0])
@@ -573,21 +653,17 @@ class db_reader:
                                 reactant = s4.split() + s5.split()
                             else:
                                 reactant = s4.split() + s5.split() + s6.split()
-                    else:
-                        specie_formula = ""
-                        species_num = int(s3.split()[0])
-                        if species_num <= 3:
-                            reactant = s4.split()
-                        elif species_num <= 6:
-                            reactant = s4.split() + s5.split()
-                        else:
-                            reactant = s4.split() + s5.split() + s6.split()
+                        ss_details = []
 
-            self.sourcedic[specie_name] = [specie_formula, species_num] + reactant
+            dt = [specie_formula, species_num] + reactant + ss_details
+            self.sourcedic[specie_name] = dt[2:] if any(isinstance(el, list) for el in dt) else dt
         self.sourcedic['eh'] = ['eh', 3, '-2.0000', 'H2O', '1.0000', 'O2(g)', '4.0000', 'H+']
         self.sourcedic['e-'] = ['e-', 3, '0.50000', 'H2O', '-0.2500', 'O2(g)', '-1.0000', 'H+']
 
+        f.close()
+
         element = []; basis = []; redox = []; aqueous = []; minerals = []; gases = []; oxides = [];
+        solidsolutions = []
         charge = []; MW = []; electron = []; self.Mineraltype = {}; fugacity_chi = {}; fugacity_Pcrit = {}
         with open(self.sourcedb_dir, encoding = codecs) as fid:
             for i, line in enumerate(fid, 1):
@@ -599,38 +675,41 @@ class db_reader:
                 if not line.startswith((' ','*'),0) | (line.rstrip('\n') == "") | (line[0] == "-") :
                     if not line.split()[0].replace('.','',1).isnumeric():
                         if not line.startswith(('charge', 'mole', 'formula'), 0):
-                            if data_fmt == 'oct94':
-                                if d[0] < i < d[1]:
-                                    element.append(line.split()[0])
-                                elif d[1] < i < d[2]:
-                                    basis.append(line.split()[0])
-                                elif d[2] < i < d[3]:
-                                    redox.append(line.split()[0])
-                                elif d[3] < i < d[4]:
-                                    aqueous.append(line.split()[0])
-                                elif d[4] < i < d[5]:
+                            if d[0] < i < d[1]:
+                                element.append(line.split()[0])
+                            elif d[1] < i < d[2]:
+                                basis.append(line.split()[0])
+                            elif d[2] < i < d[3]:
+                                redox.append(line.split()[0])
+                            elif d[3] < i < d[4]:
+                                aqueous.append(line.split()[0])
+                            elif d[4] < i < d[5]:
+                                if data_fmt == 'oct94':
                                     minerals.append(line.split()[0])
-                                elif d[5] < i < d[6]:
-                                    gases.append(line.split()[0])
-                                elif i > d[6]:
-                                    oxides.append(line.split()[0])
-                            elif data_fmt == 'apr20':
-                                if d[0] < i < d[1]:
-                                    element.append(line.split()[0])
-                                elif d[1] < i < d[2]:
-                                    basis.append(line.split()[0])
-                                elif d[2] < i < d[3]:
-                                    redox.append(line.split()[0])
-                                elif d[3] < i < d[4]:
-                                    aqueous.append(line.split()[0])
-                                elif d[4] < i < d[5]:
+                                elif data_fmt in ['apr20', 'mar21'] :
                                     electron.append(line.split()[0])
-                                elif d[5] < i < d[6]:
-                                    minerals.append(line.split()[0])
-                                elif d[6] < i < d[7]:
+                            elif d[5] < i < d[6]:
+                                if data_fmt == 'oct94':
                                     gases.append(line.split()[0])
-                                elif i > d[7]:
+                                elif data_fmt in ['apr20', 'mar21'] :
+                                    minerals.append(line.split()[0])
+                            elif i > d[6]:
+                                if data_fmt == 'oct94':
                                     oxides.append(line.split()[0])
+                                elif d[6] < i < d[7]:
+                                    if data_fmt == 'apr20' :
+                                        gases.append(line.split()[0])
+                                    elif data_fmt == 'mar21':
+                                        solidsolutions.append(line.split()[0])
+                                elif i > d[7]:
+                                    if data_fmt == 'apr20' :
+                                        oxides.append(line.split()[0])
+                                    elif data_fmt == 'mar21':
+                                        if d[7] < i < d[8]:
+                                            gases.append(line.split()[0])
+                                        elif i > d[8]:
+                                            oxides.append(line.split()[0])
+
                 if (re.compile(r"charge").search(line) != None) and not line.startswith('*'):
                     charge.append(line)
                 if (re.compile(r"mole wt.=").search(line) != None) and not line.startswith('*'):
@@ -659,9 +738,12 @@ class db_reader:
         self.chargedic = {res[i]: charge[i].rstrip('\n') for i in range(len(charge))}
         res = element + basis + redox + aqueous + electron + minerals + gases + oxides
         self.MWdic = {res[i]: float(MW[i]) for i in range(len(MW))}
-        self.specielist = [element, basis, redox, aqueous, electron, minerals, gases, oxides]
-        self.speciecat = ['element', 'basis', 'redox', 'aqueous', 'electron', 'minerals', 'gases', 'oxides']
-        fid.close()
+        if data_fmt != 'mar21':
+            self.specielist = [element, basis, redox, aqueous, electron, minerals, gases, oxides]
+            self.speciecat = ['element', 'basis', 'redox', 'aqueous', 'electron', 'minerals', 'gases', 'oxides']
+        else:
+            self.specielist = [element, basis, redox, aqueous, electron, minerals, solidsolutions, gases, oxides]
+            self.speciecat = ['element', 'basis', 'redox', 'aqueous', 'electron', 'minerals', 'solidsolutions', 'gases', 'oxides']
 
         return
 
@@ -929,4 +1011,5 @@ class db_reader:
 
         f.close()
         return
+
 

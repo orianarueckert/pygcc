@@ -17,19 +17,12 @@ If you are reporting a bug, please include:
 
 ### Fix Bugs
 
-Look through the Bitbucket issues for bugs. Anything tagged with "bug" and "help
-wanted" is open to whoever wants to implement it.
-
-### Implement Features
-
-Look through the Bitbucket issues for features. Anything tagged with "enhancement"
-and "help wanted" is open to whoever wants to implement it.
+Look through the [Changelog page](https://pygcc.readthedocs.io/en/latest/changelog.html) for fixes or [see the relevant contact page](https://pygcc.readthedocs.io/en/latest/pygcc_overview.html#citation-and-contact-information-a-class-anchor-id-section-6-a).
 
 ### Write Documentation
 
 You can never have enough documentation! Please feel free to contribute to any
-part of the documentation, such as the official docs, docstrings, or even 
-on the web in blog posts, articles, and such.
+part of the documentation, such as the official docs,  or docstrings.
 
 ### Submit Feedback
 

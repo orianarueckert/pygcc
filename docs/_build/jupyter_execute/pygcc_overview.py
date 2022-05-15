@@ -59,9 +59,10 @@ help(Helgeson_activity)
 #     * *direct-access:* 
 #         * **speq21.dat** is the sequential-access database that contains 1604 species thermodynamic properties, which undergoes timely update as newer information becomes available.
 #         * **berman.dat** is the sequential-access database that contains Berman mineral species thermodynamic properties.
+#         * **supcrtbl.dat** is the sequential-access database that contains Holland and Power (1998, 2011) mineral species thermodynamic properties gathered by Zimmer et al. (2016)
 #     *  *source:* 
 #         * **data0.dat** is a sample source thermodynamic database for EQ3/6
-#         * **thermo.com.dat** and **thermo.com.tdat** are sample source thermodynamic databases for older (Oct94) and latest (Apr20) formats of GWB respectively.
+#         * **thermo.com.dat** and **thermo.com.tdat** and **thermo_latest.tdat** are sample source thermodynamic databases for older (Oct94), previous (Apr20) and latest (Mar21) formats of GWB respectively.
 #         
 # 3. [**database**](https://bitbucket.org/Tutolo-RTG/pygcc/src/master/docs/database/) is a folder that contains several other databases including files in **default_db** that could be used with pygcc
 # 
@@ -82,7 +83,7 @@ help(Helgeson_activity)
 Db_thermo = db_reader(dbaccess = './database/speq21.dat')
 
 
-# The function `db_reader(dbaccess = None, dbBerman_dir = None)` requires the users to specify the file location, name and its extension, of the direct-access or sequential-access thermodynamic database, if nothing is specified, the function reads the default database, `speq21.dat`. The *dbBerman_dir* input only needs to specified if the users prefers Berman dataset for mineral species, then the filename and location needs to be specified (see *dbBerman_dir = './database/berman.dat'*). The above function returns two parameters; *a dictionary* containing the thermodynamic properties of each species (gas, minerals, aqueous and redox) within the direct-access/sequential-access thermodynamic database and *a string* containing the filename without the file location. The format of this dictionary contains a list, for example for a mineral using Maier-Kelley power function with no phase transition, as follows:
+# The function `db_reader(dbaccess = None, dbBerman_dir = None, dbHP_dir = None)` requires the users to specify the file location, name and its extension, of the direct-access or sequential-access thermodynamic database, if nothing is specified, the function reads the default database, `speq21.dat`. The *dbBerman_dir* input only needs to specified if the user(s) prefers Berman dataset for mineral species, then the filename and location needs to be specified (see *dbBerman_dir = './database/berman.dat'*). Similarly, the *dbHP_dir* input (see *dbHP_dir = './database/supcrtbl.dat'*) should only be included if the user(s) prefers Holland and Powell dataset for mineral and gas species. The above function returns two parameters; *a dictionary* containing the thermodynamic properties of each species (gas, minerals, aqueous and redox) within the direct-access/sequential-access thermodynamic database and *a string* containing the filename without the file location. The format of this dictionary contains a list, for example for a mineral using Maier-Kelley power function with no phase transition, as follows:
 # 
 # > Db_thermo.dbaccessdic['mineral name'] = ['formula',  'source  date',  dG[cal/ml],  dH[cal/mol], S[cal/mol-K], V[cm$^{3}$/mol], a[cal/mol-K], b[*10$^{3}$ cal/mol/K$^{2}$], c[*10$^{-5}$ cal/mol/K], Ttrans [K]]
 # 
@@ -95,13 +96,20 @@ print(Db_thermo.dbaccessdic['Diopside'])
 print(Db_thermo.dbaccess)
 
 
-# **Note:** **'speq21.dat'** contains properties in the following format - for minerals species (dG [cal/mol],  dH [cal/mol], S [cal/mol-K], V [cm$^{3}$/mol], a [cal/mol-K], b [*10$^{3}$ cal/mol/K$^{2}$], c [*10$^{-5}$ cal/mol/K], Ttrans [K], Htr [cal/mol], Vtr [cm$^{3}$/mol], dPdTtr [bar/K] ) and aqueous  species (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm$^{3}$/mol], a1 [*10 cal/mol/bar], a2 [*10$^{-2}$ cal/mol], a3 [cal-K/mol/bar], a4 [*10$^{-4}$ cal-K/mol], c1 [cal/mol/K], c2 [*10$^{-4}$ cal-K/mol], ω [*10$^{-5}$ cal/mol] ), while **'Berman.dat'** contains properties in the following format - for minerals (dG [J/mol], dH [J/mol], S [J/mol-K], V [cm$^{3}$/mol], k0, k1, k2, k3, v1 [*10$^{5}$ K$^{-1}$], v2 [*10$^{5}$ K$^{-2}$], v3 [*10$^{5}$ bar^-1], v4 [*10$^{8}$ bar^-2], dTdP [K/bar], Tlambda [K], Tref [K], l1 [(J/mol)$^{0.5}$/K], l2 [(J/mol)$^{0.5}$/K$^{2}$], DtH, d0 [J/mol], d1 [J/mol],  d2 [J/mol], d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K])
+# **Note:** 
+# 
+# **'_speq21.dat_'** contains properties in the following format - for minerals species (dG [cal/mol],  dH [cal/mol], S [cal/mol-K], V [cm$^{3}$/mol], a [cal/mol-K], b [*10$^{3}$ cal/mol/K$^{2}$], c [*10$^{-5}$ cal/mol/K], Ttrans [K], Htr [cal/mol], Vtr [cm$^{3}$/mol], dPdTtr [bar/K] ) and aqueous  species (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm$^{3}$/mol], a1 [*10 cal/mol/bar], a2 [*10$^{-2}$ cal/mol], a3 [cal-K/mol/bar], a4 [*10$^{-4}$ cal-K/mol], c1 [cal/mol/K], c2 [*10$^{-4}$ cal-K/mol], ω [*10$^{-5}$ cal/mol] );
+# 
+# **'_Berman.dat_'** contains properties in the following format - for mineral species (dG [J/mol], dH [J/mol], S [J/mol-K], V [cm$^{3}$/mol], k0, k1, k2, k3, v1 [*10$^{5}$ K$^{-1}$], v2 [*10$^{5}$ K$^{-2}$], v3 [*10$^{5}$ bar^-1], v4 [*10$^{8}$ bar^-2], dTdP [K/bar], Tlambda [K], Tref [K], l1 [(J/mol)$^{0.5}$/K], l2 [(J/mol)$^{0.5}$/K$^{2}$], DtH, d0 [J/mol], d1 [J/mol],  d2 [J/mol], d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K])
+# 
+# **'_supcrtbl.dat_'** contains properties in the following format - for mineral species (dG [kJ/mol], dH [kJ/mol], S [J/mol-K], V [J/bar], a [kJ/mol-K], b [*10^5 kJ/mol/K^2], c [kJ-mol-K], d [kJ/mol/K^0.5], alpha [*10^5 K^-1], kappa0 [kbar], kappa0_d [kbar], kappa0_dd [kbar], n_atom [-], Tc0 [K], Smax [J/mol-K], Vmax [J/bar], dH [KJ/mol], dV [J/bar], W [kJ/mol], Wv [J/bar], n [-], SF [-])
+# 
 #            
-# If the user wants to use the default database and needs to add any species properties that is not already included, a quick way is to follow the above commands and add the properties of the new species. For example:
+# If the user wishes to utilise the default database but needs to add any species properties that aren't already there, a quick way is to follow the above commands and add the properties of the new species. For example:
 # 
 # > Db_thermo.dbaccessdic['Diopside_new'] = ['CaMg(SiO3)2', ' ref:n/a            15.Mar.21', -724780.0, -765878.0, 34.3, 66.19, 52.87, 7.84, -15.74, 1600.0]
 # 
-# Similarly, the source thermodynamic database can be read for either EQ3/6 or GWB to be used in various calculations through the following commands:
+# Similarly, the source thermodynamic database for either EQ3/6 or GWB can be read and used in various calculations using the commands below:
 
 # In[7]:
 
@@ -109,10 +117,11 @@ print(Db_thermo.dbaccess)
 # for GWB database
 Db_thermo = db_reader(sourcedb = './database/thermo.com.dat', sourceformat = 'GWB'
                       #, dbBerman_dir = './database/berman.dat'
+                      #, dbHP_dir = './database/supcrtbl.dat'
                      )
 
 
-# The function `db_reader(dbaccess = None, dbaccess_codecs = None, dbBerman_dir = None, sourcedb = None, sourceformat = None, sourcedb_codecs = None)`above returns six parameters; *a dictionary* containing the reaction coefficient and species from the source thermodynamic database, *a list of list* categorizing the species in the source  database into basis gas, minerals, aqueous and redox species, *a dictionary* containing the charges of each species, *a dictionary* containing the molecular weight of each species, *a dictionary* containing the mineral type of each mineral species, *a list* containing fugacity info for gas species, required for the latest GWB format and *a dictionary* containing the activity coefficient parameters, especially with Pitzer activity model. The codecs input for both or either of the databases (`dbaccess_codecs` or `sourcedb_codecs`) specify the name of the encoding used to decode or encode the respective files. Most files are encoded as `utf-8` as it is an ASCII-compatible encoding that can encode any valid Unicode code point, hence, it is made the default encoding name. The format of the dictionary containing reaction coefficient and species for GWB is as follows:
+# The function `db_reader(dbaccess = None, dbaccess_codecs = None, dbBerman_dir = None, dbHP_dir = None, sourcedb = None, sourceformat = None, sourcedb_codecs = None)`above returns six parameters; *a dictionary* containing the reaction coefficient and species from the source thermodynamic database, *a list of list* categorizing the species in the source  database into basis gas, minerals, aqueous and redox species, *a dictionary* containing the charges of each species, *a dictionary* containing the molecular weight of each species, *a dictionary* containing the mineral type of each mineral species, *a list* containing fugacity info for gas species, required for the latest GWB format and *a dictionary* containing the activity coefficient parameters, especially with Pitzer activity model. The codecs input for both or either of the databases (`dbaccess_codecs` or `sourcedb_codecs`) specify the name of the encoding used to decode or encode the respective files. Most files are encoded as `utf-8` as it is an ASCII-compatible encoding that can encode any valid Unicode code point, hence, it is made the default encoding name. See the [documentation](https://pygcc.readthedocs.io/en/latest/autoapi/pygcc/read_db/index.html#pygcc.read_db.db_reader) for more information. The format of the dictionary containing reaction coefficient and species for GWB is as follows:
 
 # In[8]:
 
@@ -142,7 +151,7 @@ print(info('Rb', Db_thermo.dbaccessdic))
 # *IAPWS95* (Wagner and Pruß, 2002) and *FGL* (Fernández et al., 1997) formulations are implemented in pygcc for the calculation of the thermodynamic and dielectric properties of water and steam, while the *ZhangDuan* (Zhang and Duan, 2005 and 2009) and *DEW* (Sverjensky et al., 2014) formulations are implemented for high temperature and pressure conditions. However since many of the coefficients in the HKF equations (especially dielectric constant) required to calculate thermodynamic properties of other species are based on the *IAPWS84* formulation (popularly known as HGK84 or NBS/NRC-84, Haar et al. (1984)) incorporated in the H2O92 subroutine from *SUPCRT92* (Johnson et al., 1992) and to avoid regressing those parameters, Johnson and Norton formulation for dielectric constant (Johnson and Norton, 1991) was implemented in pygcc. Hence, the users have the option of choosing either formulation (*FGL97* or *JN91*) for dielectric constant calculation. Other water properties are calculated using the *IAPWS95* formulation, in part because of the intrinsic thermodynamic differences between *IAPWS84* and *IAPWS95*, and also that the *IAPWS95* equations can be extrapolated to a greater range of Temperatures and Pressures than *IAPWS84*. In addition, . 
 # 
 # ### IAPWS-95 Formulation   <a class="anchor" id="section_3_1"></a>
-# The function `iapws95(T = None, P = None, rho = None, rho0 = None, FullEOSppt = False, v = None, Out_Unit = 'standard')` is designed to take a combination of different inputs - temperature [°C], density [kg/m$^{3}$], pressure [bar] and output equation of state properties such as pressure [bar], Helmholtz energy [cal/mol/K or kJ/kg/K], Entropy [cal/mol/K or kJ/kg/K], Enthalpy [cal/mol or kJ/kg], Gibbs energy [cal/mol or kJ/kg], Volume [m$^{3}$/mol or m$^{3}$/kg], Derivative of pressure with respect to delta [bar], Helmholtz energy derivative with respect to reduced density (delta), zeta value (needed to calculate viscosity), Derivative of pressure with respect to reduced temperature (tau) [bar], Compressibility [/bar], Thermal expansion coefficient (thermal expansivity). Other water properties such as viscosity [Pa-s], Internal energy [cal/mol or kJ/kg], Isobaric heat capacity [cal/mol/K or kJ/kg/K], Isochoric heat capacity [cal/mol/K or kJ/kg/K], Joule-Thomsen coefficient [K-m$^{3}$/kJ], Isothermal throttling coefficient [kJ/kg/bar], Isentropic temperature-pressure coefficient [K-m$^{3}$/kJ], Speed of sound [m/s] are returned as outputs only when `FullEOSppt` input is set as `True` as they are not currently utilized in any calculation in pygcc. Also, the `Out_Unit` has the option of converting the properties to `'standard'` (calorie units) or 'kilogram' (kilogram units). There are three basic types of problems in evaluating this equation-of-state model and these problems are distinguished by their specified inputs as below:
+# The function `iapws95(T = None, P = None, rho = None, rho0 = None, FullEOSppt = False, v = None, Out_Unit = 'standard')` is designed to take a combination of different inputs - temperature [°C], density [kg/m$^{3}$], pressure [bar] and output equation of state properties such as pressure [bar], Helmholtz energy [cal/mol/K or kJ/kg/K], Entropy [cal/mol/K or kJ/kg/K], Enthalpy [cal/mol or kJ/kg], Gibbs energy [cal/mol or kJ/kg], Volume [m$^{3}$/mol or m$^{3}$/kg], Derivative of pressure with respect to delta [bar], Helmholtz energy derivative with respect to reduced density (delta), zeta value (needed to calculate viscosity), Derivative of pressure with respect to reduced temperature (tau) [bar], Compressibility [/bar], Thermal expansion coefficient (thermal expansivity). Other water properties such as viscosity [Pa-s], Internal energy [cal/mol or kJ/kg], Isobaric heat capacity [cal/mol/K or kJ/kg/K], Isochoric heat capacity [cal/mol/K or kJ/kg/K], Joule-Thomsen coefficient [K-m$^{3}$/kJ], Isothermal throttling coefficient [kJ/kg/bar], Isentropic temperature-pressure coefficient [K-m$^{3}$/kJ], Speed of sound [m/s] are returned as outputs only when `FullEOSppt` input is set as `True` as they are not currently utilized in any calculation in pygcc. Also, the `Out_Unit` has the option of converting the properties to `'standard'` (calorie units) or 'kilogram' (kilogram units). Check the [documentation](https://pygcc.readthedocs.io/en/latest/autoapi/pygcc/water_eos/index.html#pygcc.water_eos.iapws95) for more information. There are three basic types of problems in evaluating this equation-of-state model and these problems are distinguished by their specified inputs as below:
 # 
 # #### Properties as a Function of Temperature and Density   <a class="anchor" id="section_3_1_1"></a>
 # This is a straightforward approach that does not require any iteration. Here, the temperature [°C] and density [kg/m$^{3}$] are specified as inputs in `iapws95` and returns various thermodynamic properties as previously mentioned. An example of utilizing `iapws95` for calculating properties at 500 K and 838.025 kg/m$^{3}$ is as follows:
@@ -196,8 +205,7 @@ ax.grid(False)
 ax.get_tightbbox(fig.canvas.get_renderer(), call_axes_locator = True,  bbox_extra_artists = None)
 
 
-# Here, the users can specify either a temperature or pressure value and the implementation of this type can solve for corresponding pressure (`T`) or temperature (`P`) respectively and their respective vapor and liquid densities. These functions have been implemented in `iapws95` to calculate thermodynamic properties when saturation curve properties are requested. An example of utilizing `iapws95` for calculating properties at temperatures ranging from 0.01°C to 300°C and saturation pressures is as follows: 
-# 
+# Here, the users can specify either a temperature or pressure value and the implementation of this type can solve for corresponding pressure (`T`) or temperature (`P`) respectively and their respective vapor and liquid densities. These functions have been implemented in `iapws95` to calculate thermodynamic properties when saturation curve properties are requested. An example of utilizing `iapws95` for calculating properties at temperatures ranging from 0.01°C to 300°C and saturation pressures is as follows:
 
 # In[15]:
 
@@ -217,7 +225,7 @@ water.rho, water.G, water.H, water.S, water.V, water.P, water.TC
 
 
 # ### ZhangDuan Formulation   <a class="anchor" id="section_3_2"></a>
-# Zhang and Duan (2005) proposed an empirical pressure-volume-temperature equation of state for water at high temperature and pressure, which Sverjensky et al. (2014) developed into Deep Earth Water model. Its implementation in pygcc takes the first two forms described above, which are estimating *Properties as a Function of Temperature and Pressure* and *Properties as a Function of Temperature and Density*. However, in both cases, the outputs are density [kg/m$^{3}$]/pressure [bar], Gibbs energy [cal/mol], derivative of density to pressure at constant temperature and derivative of density to temperature at constant pressure. The typical usage of the `ZhangDuan()` function is as below:
+# Zhang and Duan (2005) proposed an empirical pressure-volume-temperature equation of state for water at high temperature and pressure, which Sverjensky et al. (2014) developed into Deep Earth Water model. Its implementation in pygcc takes the first two forms described above, which are estimating *Properties as a Function of Temperature and Pressure* and *Properties as a Function of Temperature and Density*. However, in both cases, the outputs are density [kg/m$^{3}$]/pressure [bar], Gibbs energy [cal/mol], derivative of density to pressure at constant temperature and derivative of density to temperature at constant pressure. The typical usage of the [`ZhangDuan()`](https://pygcc.readthedocs.io/en/latest/autoapi/pygcc/water_eos/index.html#pygcc.water_eos.ZhangDuan) function is as below:
 
 # In[17]:
 
@@ -227,7 +235,7 @@ water.rho, water.G, water.drhodP_T, water.drhodT_P
 
 
 # ### Dielectric Constants Calculation  <a class="anchor" id="section_3_3"></a>
-# The dielectric constant is one of the most critical properties of water required in calculating Born functions, Debye-Hückel parameters and molal properties of species and reactions at varying temperature and pressure conditions. Like earlier noted, two different formulations were implemented for non-extreme temperature and pressure conditions, and users have a choice to pick the preferred formulation using `Dielec_method` and as further described below. The function `water_dielec()` takes any two combinations of temperature [°C], pressure [bar] and density [kg/m$^{3}$] as inputs, and returns various properties of water such as dielectric constant of water [cal/mol], density [g/cm$^{3}$], Debye-Huckel "A" parameters [kg$^{1/2}$ mol$^{-1/2}$], Debye-Huckel "B" parameters [kg$^{1/2}$ mol$^{-1/2}$ Angstrom$^{-1}$], bdot, Debye-Huckel "A" parameters derivatives associated with apparent molar enthalpy and apparent molar volume, and Debye-Huckel "B" parameters derivatives associated with apparent molar enthalpy and apparent molar volume. 
+# The dielectric constant is one of the most critical properties of water required in calculating Born functions, Debye-Hückel parameters and molal properties of species and reactions at varying temperature and pressure conditions. Like earlier noted, two different formulations were implemented for non-extreme temperature and pressure conditions, and users have a choice to pick the preferred formulation using `Dielec_method` and as further described below. The function [`water_dielec()`](https://pygcc.readthedocs.io/en/latest/autoapi/pygcc/water_eos/index.html#pygcc.water_eos.water_dielec) takes any two combinations of temperature [°C], pressure [bar] and density [kg/m$^{3}$] as inputs, and returns various properties of water such as dielectric constant of water [cal/mol], density [g/cm$^{3}$], Debye-Huckel "A" parameters [kg$^{1/2}$ mol$^{-1/2}$], Debye-Huckel "B" parameters [kg$^{1/2}$ mol$^{-1/2}$ Angstrom$^{-1}$], bdot, Debye-Huckel "A" parameters derivatives associated with apparent molar enthalpy and apparent molar volume, and Debye-Huckel "B" parameters derivatives associated with apparent molar enthalpy and apparent molar volume. 
 # 
 # #### FGL Electrostatic Formulation   <a class="anchor" id="section_3_3_1"></a>
 # The IAPWS-sanctioned model for the dielectric constant of water is described in IAPWS (1997) and the relevant equations and constants for the model are given in the source document and the paper by Fernández et al. (1997). An example of utilizing `FGL97` for calculating properties at 50°C and 1.0133 bar (at saturation curve) is as follows:
@@ -250,7 +258,7 @@ dielect.E, dielect.rhohat, dielect.Ah, dielect.Bh, dielect.bdot, dielect.Adhh, d
 
 
 # #### DEW Electrostatic Formulation   <a class="anchor" id="section_3_3_3"></a>
-# Sverjensky et al (2014) extended the application of the revised HKF model to deep Earth (upper mantle) conditions by developing an empirical correlation for dielectric constant of water up to 60 kbar and 1200°C using experimental data and molecular dynamics simulation data. This implementation is considered with `ZhangDuan` water EoS to model high temperature and pressure conditions, taking inputs and printing output similar to the above description. An example of the utilization of `DEW` to calculate properties at 200°C and 1000 bar is as follows:
+# Sverjensky et al (2014) extended the application of the revised HKF model to deep Earth (upper mantle) conditions by developing an empirical correlation for dielectric constant of water up to 60 kbar and 1200 °C using experimental data and molecular dynamics simulation data. This implementation is considered with `ZhangDuan` water EoS to model high temperature and pressure conditions, taking inputs and printing output similar to the above description. An example of the utilization of `DEW` to calculate properties at 200 °C and 1000 bar is as follows:
 
 # In[20]:
 
@@ -263,14 +271,14 @@ dielect.E, dielect.rhohat, dielect.Ah, dielect.Bh, dielect.bdot, dielect.Adhh, d
 # The molal properties of species and reactions at any temperature and pressure condition are computed using the different classification described below.
 # 
 # ### Thermodynamic Properties of Reactions among species      <a class="anchor" id="section_4_1"></a>
-# The calculation of equilibrium constants for reactions among aqueous, gas, and mineral species is implemented in the pygcc `calcRxnlogK(T = None, P = None, Specie = None, dbaccessdic = None, sourcedic = None, specielist = None, mineral_eos = None, sourceformat = None, densityextrap = False)` function. The logarithm (base 10) of the equilibrium constant ($ K_{eq} $) of any reaction is calculated via: 
+# The calculation of equilibrium constants for reactions among aqueous, gas, and mineral species is implemented in the pygcc `calcRxnlogK(T = None, P = None, Specie = None, dbaccessdic = None, sourcedic = None, specielist = None, heatcap_method = None, sourceformat = None, densityextrap = False)` function. The logarithm (base 10) of the equilibrium constant ($ K_{eq} $) of any reaction is calculated via: 
 # 
 # $$log K_{eq} = \frac{G^{reactants}_{T, P} - G^{products}_{(T, P)}}{-RTln(10)}  $$
 # 
-# The function outputs logarithm of the equilibrium constant, Gibbs free energy of the reaction, total Gibbs free energy of the product species and total Gibbs free energy of the reactant species. The required inputs are temperature [°C], pressure [bar], Specie (a *string* that specifies the name of the product species), direct-access database dictionary (for example above, *Db_thermo.dbaccessdic*), source database dictionary and species list (for example above, *Db_thermo.sourcedic, Db_thermo.specielist*), `densityextrap` (bool - True or False - to indicate usage of density extrapolation), `sourceformat` (either *GWB* or *EQ36*) and `mineral_eos` (specifying either `'SUPCRT'` or `'Berman88'` for using either `heatcap` or `heatcap_Berman` function respectively) and other optional inputs like `Dielec_method` and `rhoEGextrap`.
+# The function outputs logarithm of the equilibrium constant, Gibbs free energy of the reaction, total Gibbs free energy of the product species and total Gibbs free energy of the reactant species. The required inputs are temperature [°C], pressure [bar], Specie (a *string* that specifies the name of the product species), direct-access database dictionary (for example above, *Db_thermo.dbaccessdic*), source database dictionary and species list (for example above, *Db_thermo.sourcedic, Db_thermo.specielist*), `densityextrap` (bool - True or False - to indicate usage of density extrapolation), `sourceformat` (either *GWB* or *EQ36*) and `heatcap_method` (specifying either `'SUPCRT'` or `'HF76'` or `'HP11'` or `'Berman88'` for using either `Maier-Kelley powerlaw`, `Haas-Fisher powerlaw`, `Holland and Powell` and `Berman`'s formulation function respectively) and other optional inputs like `Dielec_method`, `ThermoInUnit`, `Al_Si`, `Specie_class`, `ClayMintype`, `elem`, `group`, `cpx_Ca`, `X` and `rhoEGextrap`. Check the [documentation](https://pygcc.readthedocs.io/en/latest/autoapi/pygcc/pygcc_utils/index.html#pygcc.pygcc_utils.calcRxnlogK) for more information.
 
 # #### Redox and Aqueous species     <a class="anchor" id="section_4_1_1"></a>
-# The standard molal Gibbs energy of aqueous, redox or auxilliary aqueous species  with temperature and pressure can be calculated using the `supcrtaq` function. The name and the different equations implemented in this function is derived from the SUPCRT package (Johnson et al., 1992). An example of utilizing `supcrtaq` for calculating Gibbs free energy of *'NaCl(aq)'* at 60°C and 100 bar with different `Dielec_method` and higher pressure `DEW` is as follows:
+# The standard molal Gibbs energy of aqueous, redox or auxilliary aqueous species  with temperature and pressure can be calculated using the [`supcrtaq`](https://pygcc.readthedocs.io/en/latest/autoapi/pygcc/species_eos/index.html#pygcc.species_eos.supcrtaq) function. The name and the different equations implemented in this function is derived from the SUPCRT package (Johnson et al., 1992). An example of utilizing [`supcrtaq`](https://pygcc.readthedocs.io/en/latest/autoapi/pygcc/species_eos/index.html#pygcc.species_eos.supcrtaq) for calculating Gibbs free energy of *'NaCl(aq)'* at 60°C and 100 bar with different `Dielec_method` and higher pressure `DEW` is as follows:
 
 # In[21]:
 
@@ -291,34 +299,46 @@ supcrtaq(100, 1000, Db_thermo.dbaccessdic['NaCl(aq)'], Dielec_method = 'DEW')
 
 
 # #### Mineral and gas species     <a class="anchor" id="section_4_1_2"></a>
-# The standard molal Gibbs free energy and heat capacity with temperature and pressure of mineral and gas species can be calculated in pygcc using the `heatcap` function based on Maier-Kelly powerlaw (Maier and Kelley, 1932). The 5-term Haas-Fisher polynomial equation (Haas and Fisher 1976) was also implemented to calculate Gibbs free energy and heat capacity for some minerals as reported by Robie and Hemingway (1995), as implemented in the `heatcapusgscal`. In addition, Berman (1988) reported an internally consistent standard state thermodynamic data set for 67 minerals using a different thermodynamic conventions as compared with that used by Helgeson et al. (1978). The equation of state by Berman (1988) was converted to the Helgeson Convention used in pygcc by considering the equation below as implemented in `heatcap_Berman` function. 
+# The standard molal Gibbs free energy and heat capacity with temperature and pressure of mineral and gas species can be calculated in pygcc using the [`heatcap`](https://pygcc.readthedocs.io/en/latest/autoapi/pygcc/species_eos/index.html#pygcc.species_eos.heatcap) function based on Maier-Kelly powerlaw (Maier and Kelley, 1932), Haas-Fisher powerlaw  (Haas and Fisher 1976), and formulation by Holland and Powell (1998) and Berman (1988). The 5-term Haas-Fisher polynomial equation (Haas and Fisher 1976) was implemented to calculate Gibbs free energy and heat capacity for some minerals as reported by Robie and Hemingway (1995), as implemented by setting the `method` to `HF78`. In addition, Berman (1988) reported an internally consistent standard state thermodynamic data set for 67 minerals using a different thermodynamic conventions as compared with that used by Helgeson et al. (1978). The equation of state by Berman (1988) was converted to the Helgeson Convention used in pygcc by considering the equation below as implemented in [`heatcap`](https://pygcc.readthedocs.io/en/latest/autoapi/pygcc/species_eos/index.html#pygcc.species_eos.heatcap) function by setting the `method` to `berman88`. 
 # 
 # $$ G_{Helgeson} = G_{Berman} + T_{r} S^{elements}_{(Tr, Pr)} $$
 # 
-# Examples of utilizing `heatcap`, `heatcapusgscal` and `heatcap_Berman` for calculating Gibbs free energy and heat capacity of *'CO$_{2}$(g)'*, *'Fluorapatite'*, and *'Quartz'* respectively at 60°C and 100 bar with the default `JN91 Dielec_method` are as follows:
+# Because it has been established that expansibilities and compressibilities can have considerable influence on computed Gibbs free energies of minerals, Holland and Powell (1998) recently proposed an equation of state that handles mineral volumes as temperature and pressure dependent. This function can be utilized by setting the `method` to `HP11` as implemented in the [`heatcap`](https://pygcc.readthedocs.io/en/latest/autoapi/pygcc/species_eos/index.html#pygcc.species_eos.heatcap) function. Examples of utilizing `heatcap` for calculating Gibbs free energy and heat capacity of *'CO$_{2}$(g)'*, *'Fluorapatite'*, and *'Quartz'* respectively at 60°C and 100 bar with the default `JN91 Dielec_method` are as follows:
 
 # In[24]:
 
 
-heatcap(60, 100, Db_thermo.dbaccessdic['CO2(g)'])
+sp = heatcap(T = 60, P = 100, Species = 'CO2(g)', Species_ppt = Db_thermo.dbaccessdic['CO2(g)'], method = 'SUPCRT')
+sp.dG, sp.dCp
 
 
 # In[25]:
 
 
-heatcapusgscal(60, 100, Db_thermo.dbaccessdic['Fluorapatite'])
+sp = heatcap(T = 60, P = 100, Species = 'Fluorapatite', Species_ppt = Db_thermo.dbaccessdic['Fluorapatite'], method = 'HF76')
+sp.dG, sp.dCp
 
 
 # In[26]:
 
 
-heatcap_Berman(60, 100, Db_thermo.dbaccessdic['Quartz'])
+ps = db_reader(dbBerman_dir = './database/Berman.dat')
+sp = heatcap( T = 60, P = 100, Species = 'Quartz', Species_ppt = ps.dbaccessdic['Quartz'], method = 'berman88')
+sp.dG, sp.dCp
+
+
+# In[27]:
+
+
+db = db_reader(dbHP_dir = './database/supcrtbl.dat')
+sp = heatcap( T = 60, P = 100, Species = 'Quartz', Species_ppt = db.dbaccessdic['Quartz'], method = 'HP11')
+sp.dG, sp.dCp
 
 
 # ### Solid-solution species     <a class="anchor" id="section_4_2"></a>
-# The standard molal properties of solid-solution species and reactions are computed differently from other minerals, interaction parameters and mixing rules as described in Stefánsson (2001) are applied in combining the properties of various end-members thermodynamic data from Robie and Hemingway (1995). The function `solidsolution_thermo` or `calcRxnlogK` computes reaction species and coefficient, and molal properties of solid-solutions of plagioclase, olivine, pyroxene, alkali-feldspar and clinopyroxene minerals. The inputs are mole fractions of Anorthite, Forsterite, Enstatite or Albite as the case may be and number of moles of Calcium in the clinopyroxene formula units and the $\frac{Mg}{Mg+Fe}$ ratio for clinopyroxene, coupled with temperature [°C], pressure [bar], solidsolution_type (specifying either 'All' or 'plagioclase' or 'olivine' or 'pyroxene' or 'cpx' or 'alk-feldspar') and a direct-access dictionary (for example above, [Db_thermo.dbaccessdic]). If the moles of calcium is zero, the solid-solution is reduced to pyroxene end-member, which is is a binary solid solution between orthoenstatite and ferrosilite. Hence, `calclogKDiHedEnFe` should only be used if moles of calcium is greater than zero. The structure of the output includes an *array* of equilibrium constants and a *dictionary* containing mineral type, name, formula, molecular weight, list of properties (like Db_thermo.dbaccessdic), reaction species and coefficient, mineral volume, data source and elements species and moles. An example that calculates solid-solution properties for *'Di45Hed25En19Fe11'* at 60°C and 100 bar with the default `JN91` formulation is:
+# The standard molal properties of solid-solution species and reactions are computed differently from other minerals, interaction parameters and mixing rules as described in Stefánsson (2001) are applied in combining the properties of various end-members thermodynamic data from Robie and Hemingway (1995). The function [`solidsolution_thermo`](https://pygcc.readthedocs.io/en/latest/autoapi/pygcc/solid_solution/index.html#pygcc.solid_solution.solidsolution_thermo) or [`calcRxnlogK`](#section_4_1) computes reaction species and coefficient, and molal properties of solid-solutions of plagioclase, olivine, pyroxene, alkali-feldspar and clinopyroxene minerals. The inputs are mole fractions of Anorthite, Forsterite, Enstatite or Albite as the case may be and number of moles of Calcium in the clinopyroxene formula units and the $\frac{Mg}{Mg+Fe}$ ratio for clinopyroxene, coupled with temperature [°C], pressure [bar], `solidsolution_type` (specifying either 'All' or 'plagioclase' or 'olivine' or 'pyroxene' or 'cpx' or 'alk-feldspar') and a direct-access dictionary (for example above, [Db_thermo.dbaccessdic]). If the moles of calcium is zero, the solid-solution is reduced to pyroxene end-member, which is is a binary solid solution between orthoenstatite and ferrosilite. Hence, setting the `solidsolution_type` to `'cpx'` should only be used if moles of calcium is greater than zero. The structure of the output includes an *array* of equilibrium constants and a *dictionary* containing mineral type, name, formula, molecular weight, list of properties (like Db_thermo.dbaccessdic), reaction species and coefficient, mineral volume, data source and elements species and moles. An example that calculates solid-solution properties for *'Di45Hed25En19Fe11'* at 60°C and 100 bar with the default `JN91` formulation is:
 
-# In[27]:
+# In[28]:
 
 
 ss = solidsolution_thermo(T = 60, P = 100, solidsolution_type = 'cpx', X = 0.7, cpx_Ca = 0.646,
@@ -326,13 +346,12 @@ ss = solidsolution_thermo(T = 60, P = 100, solidsolution_type = 'cpx', X = 0.7, 
 ss.logK, ss.Rxn
 
 
-# A similar result can be generated using `calcRxnlogK` as below and the difference is that `calcRxnlogK` allows computation of equilibrium constants using density extrapolation.
+# A similar result can be generated using [`calcRxnlogK`] as below and the difference is that `calcRxnlogK` allows computation of equilibrium constants using density extrapolation as [below](#section_4_4) .
 
-# In[28]:
+# In[29]:
 
 
-ss = calcRxnlogK(T = 60, P = 100, Specie = 'cpx', X = 0.7, cpx_Ca = 0.646,
-                 dbaccessdic = Db_thermo.dbaccessdic)
+ss = calcRxnlogK(T = 60, P = 100, Specie = 'cpx', X = 0.7, cpx_Ca = 0.646, dbaccessdic = Db_thermo.dbaccessdic)
 ss.logK, ss.Rxn
 
 
@@ -340,25 +359,25 @@ ss.logK, ss.Rxn
 # The thermodynamic properties for any clay minerals, including 42 of which are compiled in **clay_elements.dat**, can be calculated based on techniques detailed by Blanc et al (2015, 2021). These techniques have been implemented in function `calclogKclays`, which takes inputs as temperature [°C], pressure [bar], a *list* containing clay mineral name and elemental composition in this particular order ['clay_name', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li'], a *dictionary* containing the thermodynamic properties of each species (for example above, [Db_thermo.dbaccessdic]) and a *string* that specifies the structural layering of the phyllosilicate. Examples of utilizing `calclogKclays` and `calcRxnlogK` for calculating properties of *'Chamosite'* at 60°C and 100 bar with the default `Dielec_method` are:
 # 
 
-# In[29]:
+# In[30]:
 
 
 calclogKclays(60, 100, *['Chamosite','3','2','0','5','0','0','0','0','0'], 
               dbaccessdic = Db_thermo.dbaccessdic,  group='14A')
 
 
-# In[30]:
+# In[31]:
 
 
 clay = calcRxnlogK(T = 60, P = 100, elem = ['Chamosite','3','2','0','5','0','0','0','0','0'], 
-              Specie = 'clay',  dbaccessdic = Db_thermo.dbaccessdic, group='14A')
+              Specie = 'clay',  dbaccessdic = Db_thermo.dbaccessdic)
 clay.logK, clay.Rxn
 
 
 # ### Density extrapolation     <a class="anchor" id="section_4_4"></a>
 # The calculation of the standard molal Gibbs free energy of charged species as described by the revised Helgeson-Kirkham-Flowers (HKF) equation of state is limited to temperature-pressure condition for which the water density > 0.35 g/$cm^{3}$, temperature < 350°C, pressure < 500 bar and not valid within the critical water region (350 – 400 °C). Hence, outside this region, the approach that is considered here is to linearly extrapolate thermodynamic properties with 0.35 g/$cm^{3}$ < density < 0.6 g/$cm^{3}$ to calculate corresponding equilibrium constants for region with density < 0.35 g/$cm^{3}$  as show below. However, regions where density > 0.35 g/$cm^{3}$ and critical water region (350 – 400 °C) are still not valid within this density extrapolation range. 
 
-# In[31]:
+# In[32]:
 
 
 from density_extrap import plot_densityextrap
@@ -367,7 +386,7 @@ plot_densityextrap()
 
 # This approach is implemented in `calcRxnlogK` and can be activated by setting `densityextrap` to `True`. Examples are shown below
 
-# In[32]:
+# In[33]:
 
 
 rxncalc = calcRxnlogK(T = 450, P = 300, Specie = 'H2S(aq)',  sourcedic = Db_thermo.sourcedic, 
@@ -376,7 +395,7 @@ rxncalc = calcRxnlogK(T = 450, P = 300, Specie = 'H2S(aq)',  sourcedic = Db_ther
 rxncalc.logK
 
 
-# In[33]:
+# In[34]:
 
 
 ss = calcRxnlogK(T = 450, P = 300, Specie = 'plagioclase', X = 0.7, densityextrap = True,
@@ -384,7 +403,7 @@ ss = calcRxnlogK(T = 450, P = 300, Specie = 'plagioclase', X = 0.7, densityextra
 ss.logK
 
 
-# In[34]:
+# In[35]:
 
 
 clay = calcRxnlogK(T = 450, P = 300, elem = ['Chamosite','3','2','0','5','0','0','0','0','0'], 
@@ -394,32 +413,31 @@ clay.logK
 
 
 # ## Generating thermodynamic database      <a class="anchor" id="section_5"></a>
-# Generating database for any of GWB, EQ3/6, ToughReact, Pflotran or Phreeqc (under development) can be easily achieved through the function `write_database`. This function requires several inputs some of which are compulsory - temperature [°C], pressure [bar] and dataset format (GWB, EQ36, ToughReact, or Pflotran). If the users want default solid_solution and clay_minerals included, then the inputs have to include *'Yes'* or *True* option. By default, density extrapolation is included to generate equilibrium constants for regions outside the revised HKF applicability, however, if the users want to turn off density extrapolation, this can be achieved by setting `densityextrap = 'No'`. Meanwhile, for ToughReact and Pflotran, their source database can be either of GWB or EQ3/6 and this option needs to included as part of the inputs through *'sourceformat'*, see example below.
+# Generating database for any of `GWB`, `EQ3/6`, `ToughReact`, `Pflotran` or Phreeqc (under development) can be easily achieved through the function `write_database`. This function requires several inputs some of which are compulsory - temperature [°C], pressure [bar] and dataset format (`GWB`, `EQ36`, `ToughReact`, or `Pflotran`). If the users want default solid_solution and clay_minerals included, then the inputs have to include *'Yes'* or *True* option. By default, density extrapolation is included to generate equilibrium constants for regions outside the revised HKF applicability, however, if the users want to turn off density extrapolation, this can be achieved by setting `densityextrap = 'No'`. Meanwhile, for `ToughReact` and `Pflotran`, their source database can be either of `GWB` or `EQ3/6` and this option needs to included as part of the inputs through *'sourceformat'*, see example below.
 # 
 # A typical example of the command to generate **GWB** using 0°C to 350°C temperature range, 300 bar and nCa of 0.5 and turning on the inclusion of solid_solution and clay minerals thermodynamics is as follows:
 # 
 
-# In[35]:
+# In[36]:
 
 
-write_database(T = [0, 350], P = 300, nCa_cpx = 0.5, solid_solution = 'Yes', 
-               clay_thermo = 'Yes', dataset = 'GWB')
+write_database(T = [0, 350], P = 300, nCa_cpx = 0.5, solid_solution = 'Yes',  clay_thermo = 'Yes', dataset = 'GWB')
 
 
 # You can scroll to the folder **"output"** to access the newly generated database as well as a text file *"spxNotFound"* containing species that are not found in direct-access database.
 # 
 # Another typical example (converting **EQ3/6** to **GWB**) of the command to generate **GWB** using **EQ3/6** source database, 0°C to 250°C temperature range, 100 bar and turning on the inclusion of solid_solution and clay minerals thermodynamics is as follows:
 
-# In[36]:
+# In[37]:
 
 
-write_database(T = [0, 250], P = 100, solid_solution = 'Yes', clay_thermo = 'Yes', 
+write_database(T = [0, 250], P = 100, solid_solution = True, clay_thermo = True, 
                dataset = 'GWB', sourcedb = './database/data0.geo', sourceformat = 'EQ36')
 
 
 # A typical example of the command to generate **EQ3/6** using specified temperature range, 250 bar and nCa of 0.5 and turning on the inclusion of solid_solution thermodynamics only is as follows:
 
-# In[37]:
+# In[38]:
 
 
 T = np.array([ 0.010, 25.0000 , 60.0000, 100.0000, 150.0000, 200.0000, 250.0000, 300.0000])
@@ -429,7 +447,7 @@ write_database(T = T, P = P, nCa_cpx = 0.5, solid_solution = 'Yes', dataset = 'E
 
 # A typical example of the command to generate **ToughReact** using 0°C to 300°C temperature range, 250 bar, and turning on the inclusion of clay minerals thermodynamics only, also specifying the location of the source database is as follows:
 
-# In[38]:
+# In[39]:
 
 
 write_database(T = [0, 300], P = 250, clay_thermo = 'Yes', sourcedb = './database/thermo.com.tdat', 
@@ -438,7 +456,7 @@ write_database(T = [0, 300], P = 250, clay_thermo = 'Yes', sourcedb = './databas
 
 # A typical example of the command to generate **Pflotran** using 0°C to 300°C temperature range, 250 bar, and turning on the inclusion of clay minerals thermodynamics only, here we can specify EQ36 sourceformat is as follows:
 
-# In[39]:
+# In[40]:
 
 
 write_database(T = [0, 300], P = 250, clay_thermo = 'Yes', dataset = 'Pflotran', 
@@ -499,5 +517,11 @@ write_database(T = [0, 300], P = 250, clay_thermo = 'Yes', dataset = 'Pflotran',
 # * Haas, J.L., Fisher, J.R., 1976. Simultaneous evaluation and correlation of thermodynamic data. Am. J. Sci. https://doi.org/10.2475/ajs.276.4.525
 # 
 # * Helgeson, H.C., Delany, J.M., Nesbitt, H.W., Bird, D.K., 1978. Summary and critique of the thermodynamic properties of the rock-forming minerals. Am. J. Sci. 278A, 229
+# 
+# * Holland, T. and Powell, R., 2011. An improved and extended internally consistent thermodynamic dataset for phases of petrological interest, involving a new equation of state for solids. Journal of Metamorphic Geology. 29, 333–383.
+# 
+# * Holland, T.J.B. and Powell, R., 1998. An internally-consistent thermodynamic dataset for phases of petrological interest. Journal of Metamorphic Geology, 16, 309–344.
+# 
+# * Zimmer, K., Zhang, Y.L., Lu, P., Chen, Y.Y., Zhang, G.R., Dalkilic, M. and Zhu, C. (2016) SUPCRTBL: A revised and extended thermodynamic dataset and software package of SUPCRT92. Computer and Geosciences 90:97-111
 
 # Thank you and have fun utilizing pyGeochemCalc

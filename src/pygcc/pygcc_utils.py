@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 from .read_db import db_reader
 from .water_eos import iapws95, ZhangDuan, water_dielec, readIAPWS95data, convert_temperature
-from .species_eos import heatcap, heatcap_Berman, heatcapusgscal, supcrtaq
+from .species_eos import heatcap, supcrtaq
 from .solid_solution import solidsolution_thermo
 from .clay_thermocalc import calclogKclays
 import warnings
@@ -870,7 +870,7 @@ class calcRxnlogK():
             Pressure [bar]
         Specie : string
             specify the species for logK calculation, either the Product species of any reaction or solid solutions or clay like 'AnAb' or 'AbOr' or 'FoFa' or 'EnFe' or 'DiHedEnFe' or 'clay'  \n
-        Specie_class : string
+        Specie_class : string, optional
             specify the class of species  like 'aqueous', 'minerals', 'liquids', or 'gases'
         elem : list
             list containing nine parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li'] \n
@@ -880,18 +880,24 @@ class calcRxnlogK():
             dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy for density region 350-550kg/m3
         group : string
             specify the structural layering of the phyllosilicate, for layers composed of  ``1 tetrahedral + 1 octahedral sheet (1:1 layer)`` - specify ``'7A'``, ``2 tetrahedral + 1 octahedral sheet (2:1 layer)`` - specify ``'10A'``, or  the latter with ``a brucitic sheet in the interlayer (2:1:1 layer)``  - specify ``'14A'``  (optional), if not specified, default is '10A' for smectites, micas, et cetera \n
+        ClayMintype : string
+            specify either 'Smectite' or 'Chlorite' or 'Mica' as the clay type, if not specified default - 'Smectites'
         X : float
             volume fractions of any (Anorthite, Albite, Forsterite, Enstatite) or mole fraction of Mg
         cpx_Ca : float
             number of moles of Ca in formula unit (=1 for Di, Hed), must be greater than zero
         sourcedic : dict
             source database reactions dictionary
-        specielist : list of list
+        specielist : list of list, optional
             source database species grouped into categories [element, basis, redox, aqueous, minerals, gases, oxides]
         Dielec_method : string
             specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant, default is 'JN91' \n
-        mineral_eos : string
-            specify either 'SUPCRT' or 'Berman88' the method to calculate thermodynamic properties of any mineral, default is 'SUPCRT' \n
+        heatcap_method : string
+            specify either 'SUPCRT' or 'Berman88' or 'HP11' or 'HF76' as the method to calculate thermodynamic properties of any mineral or gas, default is 'SUPCRT' \n
+        ThermoInUnit : string
+            specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
+        Al_Si : string
+            specify either 'pygcc' or 'Arnórsson_Stefánsson' as the input to express Al and Si species in solid solution (optional), 'Arnórsson_Stefánsson' expresses them as 'Al(OH)4-' and 'H4SiO4(aq)', respectively while pygcc uses 'Al3+' and 'SiO2(aq)', respectively if not specified default - 'pygcc'
         sourceformat : string
             specify the source database format, either 'GWB' or 'EQ36'
         densityextrap : float, vector
@@ -930,11 +936,12 @@ class calcRxnlogK():
     >>> calclogK.logK, calclogK.dGrxn
          -6.4713,       11049.3168
     """
-    kwargs = {"T": None, "Specie": None, "Specie_class": None,
+    kwargs = {"T": None, "Specie": None, "Specie_class": None, "ThermoInUnit": 'cal',
               "P": None, "group": None,  "X": None,  "cpx_Ca": None,  "elem": None,
               'rhoEGextrap': None, "sourcedic": None, "specielist": None,
               'dbaccessdic': None, "Dielec_method": None, "sourceformat": None,
-              'mineral_eos': None, "densityextrap": None, 'rhoEG': None }
+              'heatcap_method': None, "densityextrap": None, 'rhoEG': None,
+              'ClayMintype': 'Smectite', "Al_Si": 'pygcc'}
 
     def __init__(self, **kwargs):
         self.kwargs = calcRxnlogK.kwargs.copy()
@@ -946,15 +953,16 @@ class calcRxnlogK():
         self.TC = self.kwargs["T"];                        self.P = self.kwargs["P"]
         self.sourceformat = self.kwargs['sourceformat'];   self.specielist = self.kwargs['specielist'];
         self.sourcedic = self.kwargs['sourcedic'];         self.Dielec_method = self.kwargs['Dielec_method'];
-        self.mineral_eos = self.kwargs['mineral_eos'];     self.rhoEG = self.kwargs['rhoEG'];
+        self.rhoEG = self.kwargs['rhoEG'];                 self.ThermoInUnit = self.kwargs['ThermoInUnit']
         self.rhoEGextrap = self.kwargs['rhoEGextrap'];     self.Specie = self.kwargs['Specie']
         self.Specie_class = self.kwargs['Specie_class'];   self.elem = self.kwargs['elem']
         self.cpx_Ca = self.kwargs['cpx_Ca'];               self.group = self.kwargs['group']
-        self.X = self.kwargs['X']
+        self.X = self.kwargs['X'];                         self.heatcap_method = self.kwargs['heatcap_method']
+        self.ClayMintype = self.kwargs['ClayMintype'];     self.Al_Si = self.kwargs["Al_Si"]
         self.densityextrap = 'No' if (self.kwargs['densityextrap'] is None or self.kwargs['densityextrap'] is False) else 'Yes' if self.kwargs['densityextrap'] is True else self.kwargs['densityextrap']
 
         self.Dielec_method = 'JN91' if self.Dielec_method is None else self.Dielec_method
-        self.mineral_eos = 'SUPCRT' if self.mineral_eos is None else self.mineral_eos
+        self.heatcap_method = 'SUPCRT' if self.heatcap_method is None else self.heatcap_method
         self.sourceformat = 'GWB' if self.sourceformat is None else self.sourceformat
 
         if self.kwargs['dbaccessdic'] == None:
@@ -1075,16 +1083,18 @@ class calcRxnlogK():
         if self.Specie.lower().startswith(('plagio', 'oliv', 'pyroxe', 'alk-')):
             ss = solidsolution_thermo(X = self.X, T = TC, P = P, Dielec_method = self.Dielec_method,
                                       dbaccessdic = self.dbaccessdic, solidsolution_type = self.Specie,
-                                      rhoEG = rhoEG)
+                                      ThermoInUnit = self.ThermoInUnit, rhoEG = rhoEG, Al_Si = self.Al_Si)
             return ss.logK, ss.Rxn
         elif self.Specie.lower() == 'cpx':
             ss = solidsolution_thermo(cpx_Ca = self.cpx_Ca, X = self.X, T = TC, P = P,
                                       dbaccessdic = self.dbaccessdic, Dielec_method = self.Dielec_method,
-                                      solidsolution_type = 'cpx', rhoEG = rhoEG)
+                                      solidsolution_type = 'cpx', ThermoInUnit = self.ThermoInUnit,
+                                      rhoEG = rhoEG, Al_Si = self.Al_Si)
             return ss.logK, ss.Rxn
         elif self.Specie.lower() == 'clay':
             logK, Rxn = calclogKclays(TC, P, *self.elem, dbaccessdic = self.dbaccessdic,
                                       group = self.group, Dielec_method = self.Dielec_method,
+                                      ThermoInUnit = self.ThermoInUnit, ClayMintype = self.ClayMintype,
                                       **rhoEG)
             return logK, Rxn
         else:
@@ -1106,7 +1116,7 @@ class calcRxnlogK():
             Dielec_method    : specify either 'FGL97' or 'JN91' or 'DEW' as the method
                             to calculate dielectric constant, default is 'JN91' \n
             sourceformat: source database format, either 'GWB' or 'EQ36', default is 'GWB'
-            mineral_eos : specify either 'SUPCRT' or 'Berman88' the method to calculate thermodynamic properties
+            heatcap_method : specify either 'SUPCRT' or 'Berman88' or 'HP11' or 'HF76' as the method to calculate thermodynamic properties
                             of any mineral, default is 'SUPCRT' \n
             rhoEG       : dictionary of water properties like  density (rho),
                             dielectric factor (E) and Gibbs Energy  (optional) \n
@@ -1142,20 +1152,31 @@ class calcRxnlogK():
         elif self.sourceformat.upper() == 'GWB':
             rxnspecies = self.sourcedic[Prod]
 
+        method = 'SUPCRT' if (self.heatcap_method != 'HP11' and (Prod.endswith(('(g)', ',g')) or
+                              self.Specie_class == 'gases')) else self.heatcap_method
+        # print(self.heatcap_method, Prod, method)
         if Prod == 'e-' or Prod == 'eh':
             dGP = 0
         elif Prod == 'H2O':
             dGP = dGH2O
         elif Prod in ['Hydroxyapatite', 'Fluorapatite', 'Ankerite', 'Acmite', 'Molybdenite', 'Molybdite'] or Prod.startswith('ss_'):
-            dGP, _ = heatcapusgscal(TC, P, self.dbaccessdic[Prod])
+            if self.heatcap_method != 'HP11': #and self.dbaccessdic[Prod][1].split()[0] in ['H&P2011', 'R&H95']
+                dGP = heatcap( T = TC, P = P, Species_ppt = self.dbaccessdic[Prod], method = 'HF76').dG
+            else:
+                dGP = heatcap( T = TC, P = P, Species_ppt = self.dbaccessdic[Prod], Species = Prod, method = 'HP11').dG
+        elif self.specielist is None:
+            if (Prod.endswith(('(aq)','+','-')) or Prod[-1].isdigit()):
+                dGP  = supcrtaq(TC, P, self.dbaccessdic[Prod.replace('(CH3COO)', '(Ac)').replace('CH3COO', '(Ac)')],
+                                Dielec_method = self.Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+            else:
+                dGP = heatcap( T = TC, P = P, Species_ppt = self.dbaccessdic[Prod], Species = Prod,
+                              method = method).dG
         elif (Prod in self.specielist[4] + self.specielist[5] + self.specielist[6]) or (self.Specie_class in ['minerals', 'liquids', 'gases']): #
-            if self.mineral_eos.upper() == 'SUPCRT':
-                dGP, _ = heatcap(TC, P, self.dbaccessdic[Prod], spec_name = Prod)
-            elif self.mineral_eos.lower() == 'berman88':
-                dGP, _ = heatcap_Berman(TC, P, self.dbaccessdic[Prod])
+            dGP = heatcap( T = TC, P = P, Species_ppt = self.dbaccessdic[Prod], Species = Prod,
+                          method = method).dG
         else:
             dGP  = supcrtaq(TC, P, self.dbaccessdic[Prod.replace('(CH3COO)', '(Ac)').replace('CH3COO', '(Ac)')],
-                            Dielec_method = self.Dielec_method, **rhoEG)
+                            Dielec_method = self.Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
 
         total_reactants = int(len(rxnspecies[2:])/2)
         dGRs = 0
@@ -1163,18 +1184,30 @@ class calcRxnlogK():
             R_coeff = float(rxnspecies[2 + 2*i])
             R_specie = rxnspecies[4 + 2*i - 1]
 
+            method = 'SUPCRT' if (self.heatcap_method != 'HP11' and R_specie.endswith(('(g)', ',g')) ) else self.heatcap_method
+            # print(self.heatcap_method, R_specie, method)
             if R_specie == 'e-' or R_specie == 'eh':
                 dGR = 0
             elif R_specie == 'H2O':
                 dGR = dGH2O
-            elif (R_specie in self.specielist[4] + self.specielist[5] + self.specielist[6]):
-                if self.mineral_eos.upper() == 'SUPCRT':
-                    dGR, _ = heatcap(TC, P, self.dbaccessdic[R_specie], spec_name = R_specie)
-                elif self.mineral_eos.lower() == 'berman88':
-                    dGR, _ = heatcap_Berman(TC, P, self.dbaccessdic[R_specie])
+            elif R_specie in ['Hydroxyapatite', 'Fluorapatite', 'Ankerite', 'Acmite', 'Molybdenite', 'Molybdite'] or R_specie.startswith('ss_'):
+                if self.heatcap_method != 'HP11':
+                    dGR = heatcap( T = TC, P = P, Species_ppt = self.dbaccessdic[R_specie], method = 'HF76').delG
+                else:
+                    dGP = heatcap( T = TC, P = P, Species_ppt = self.dbaccessdic[R_specie], Species = R_specie, method = 'HP11').dG
+            elif self.specielist is None:
+                if (R_specie.endswith(('(aq)','+','-')) or R_specie[-1].isdigit()):
+                    dGR  = supcrtaq(TC, P, self.dbaccessdic[R_specie.replace('(CH3COO)', '(Ac)').replace('CH3COO', '(Ac)')],
+                                    Dielec_method = self.Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
+                else:
+                    dGR = heatcap( T = TC, P = P, Species_ppt = self.dbaccessdic[R_specie], Species = R_specie,
+                                  method = method).dG
+            elif (R_specie in self.specielist[4] + self.specielist[5] + self.specielist[6]) or R_specie.endswith(('(g)', ',g')):
+                dGR = heatcap( T = TC, P = P, Species_ppt = self.dbaccessdic[R_specie], Species = R_specie,
+                              method = method).dG
             else:
                 dGR  = supcrtaq(TC, P, self.dbaccessdic[R_specie.replace('(CH3COO)', '(Ac)').replace('CH3COO', '(Ac)')],
-                                Dielec_method = self.Dielec_method, **rhoEG)
+                                Dielec_method = self.Dielec_method, ThermoInUnit = self.ThermoInUnit, **rhoEG)
             dGRs = dGRs + R_coeff*dGR
 
         dGrxn = - dGP + dGRs
@@ -1230,7 +1263,7 @@ def outputfmt(fid, logK, Rxn, *T, dataset = None, logK_form = None):
         Rxn : dict
             dictionary of reaction thermodynamic properties
         T : float, vector
-            Temperature value(s), optional
+            Temperature value(s), optional, required when 'polycoeffs' is specified for logK_form
         dataset : string
             specify the dataset format, either 'GWB', 'EQ36', 'Pflotran' or 'ToughReact'
         logK_form : string
@@ -1283,15 +1316,15 @@ def outputfmt(fid, logK, Rxn, *T, dataset = None, logK_form = None):
                 x[4]*((1/TK**2) - (1/Tr**2)) + x[5]*np.log(TK/Tr)
             x0 = [-31.9605, 20.6576, 3.73497e-2, -9.01862, 6.0111, 2.5]
             logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
-            fid.writelines('     a= %15.6f   ' % logKcorr[0] + 'b= %15.6f   ' % logKcorr[1] + \
-                            'c= %15.5e\n' % logKcorr[2])
-            fid.writelines('     d= %15.5f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
-                            'f= %15.5f \n' % logKcorr[5])
+            fid.writelines('     a= %15.9f   ' % logKcorr[0] + 'b= %15.9f   ' % logKcorr[1] + \
+                            'c= %15.6e\n' % logKcorr[2])
+            fid.writelines('     d= %15.6f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
+                            'f= %15.8f \n' % logKcorr[5])
             fid.writelines('     TminK= %-15.2f ' % np.min(TK) + 'TmaxK= %-7.2f\n' % np.max(TK))
         else:
             for i in range(len(logK)):
                 i = i + 1
-                if (i == 1) | (i == 5) | (i == 9):
+                if (i == 1) | (i == 5) | (i == 9) | (i == 13) | (i == 17):
                     fid.writelines("       %9.4f" %  logK[i-1])
                 else:
                     fid.writelines("  %9.4f" %  logK[i-1])
@@ -1350,7 +1383,7 @@ def outputfmt(fid, logK, Rxn, *T, dataset = None, logK_form = None):
         fid.writelines('**** logK grid [T, P @ Miscellaneous parameters]\n')
         for i in range(len(logK)):
             i = i + 1
-            if (i == 1) | (i == 5):
+            if (i == 1) | (i == 5) | (i == 9) | (i == 13) | (i == 17):
                 fid.writelines( "      %9.4f" %  logK[i-1])
             else:
                 fid.writelines( "  %9.4f" %  logK[i-1])
@@ -1442,20 +1475,26 @@ class write_database():
             direct-access database filename and location  (optional)  \n
         dbBerman_dir : string
             filename and location of the Berman mineral database (optional)     \n
+        dbHP_dir : string
+            filename and location of the supcrtbl mineral and gas database, optional
+        dbaccessformat : string, optional
+            specify the direct-access/sequential-access database format, either 'speq' or 'supcrtbl', default is 'speq'
         sourcedb : string
             source database filename and location  (optional)  \n
+        sourceformat : string
+            source database format, either 'GWB' or 'EQ36', default is 'GWB'
         objdb : string
             new database filename and location    (optional) \n
         co2actmodel : string
             co2 activity model equation [Duan_Sun or Drummond]  (optional), if not specified, default is 'Drummond'   \n
         Dielec_method : string
             specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant, default is 'JN91'   (optional) \n
-        mineral_eos : string
-            specify either 'SUPCRT' or 'Berman88' the method to calculate thermodynamic properties of any mineral, default is 'SUPCRT' \n
+        heatcap_method : string
+            specify either 'SUPCRT' or 'Berman88'  or 'HP11' or 'HF76' the method to calculate thermodynamic properties of any mineral, default is 'SUPCRT' \n
+        ThermoInUnit : string
+            specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
         dataset : string
             specify the dataset format, either 'GWB', 'EQ36', 'Pflotran' or 'ToughReact', default is old GWB database ['GWB'] (optional) \n
-        sourceformat : string
-            source database format, either 'GWB' or 'EQ36', default is 'GWB'
 
     Returns
     -------
@@ -1493,10 +1532,11 @@ class write_database():
     """
 
     kwargs = {"T": None, "P": None, "cpx_Ca": None,  "solid_solution": None,
-              "clay_thermo": None, "logK_form": None, 'dbBerman_dir': None,
-              "dbaccess": None, "sourcedb": None,   "objdb": None,
-              "co2actmodel": None,   "Dielec_method": None,   "mineral_eos": None,
-              "dataset": None,   "sourceformat": None, 'densityextrap': None
+              "clay_thermo": None, "logK_form": None, 'dbBerman_dir': None, 'dbHP_dir': None,
+              "dbaccess": None, "sourcedb": None,   "objdb": None, "ThermoInUnit": 'cal',
+              "co2actmodel": None,   "Dielec_method": None,   "heatcap_method": None,
+              "dataset": None,   "sourceformat": None, 'densityextrap': None,
+              "dbaccessformat": 'speq'
               }
     def __init__(self, **kwargs):
         self.kwargs = write_database.kwargs.copy()
@@ -1512,7 +1552,9 @@ class write_database():
             self.dbaccess = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.dbaccess)
         else:
             self.dbaccess = self.kwargs["dbaccess"]
+        self.dbaccessformat = self.kwargs["dbaccessformat"]
         self.dbBerman_dir = self.kwargs['dbBerman_dir']
+        self.dbHP_dir = self.kwargs['dbHP_dir']
         self.dataset = self.kwargs["dataset"]
         if self.kwargs["sourceformat"] == None:
             if self.dataset.upper() == 'GWB':
@@ -1531,16 +1573,18 @@ class write_database():
             self.sourcedb = self.kwargs["sourcedb"]
         self.objdb = self.kwargs["objdb"]
         self.co2actmodel = self.kwargs["co2actmodel"]
+        self.ThermoInUnit = self.kwargs['ThermoInUnit']
         self.solid_solution = 'No' if (self.kwargs["solid_solution"] is None or self.kwargs['solid_solution'] is False) else 'Yes' if self.kwargs['solid_solution'] is True else self.kwargs["solid_solution"]
         self.clay_thermo = 'No' if (self.kwargs["clay_thermo"] is None or self.kwargs['clay_thermo'] is False) else 'Yes' if self.kwargs['clay_thermo'] is True else self.kwargs["clay_thermo"]
         self.densityextrap = 'Yes' if (self.kwargs["densityextrap"] is None or self.kwargs['densityextrap'] is True) else 'No' if self.kwargs['densityextrap'] is False else self.kwargs["densityextrap"]
 
         self.Dielec_method = 'JN91' if self.kwargs['Dielec_method'] is None else self.kwargs['Dielec_method']
-        self.mineral_eos = 'SUPCRT' if self.kwargs['mineral_eos'] is None else self.kwargs['mineral_eos']
+        self.heatcap_method = 'HP11' if self.dbHP_dir is not None else 'Berman88' if self.dbBerman_dir is not None else 'SUPCRT' if self.kwargs['heatcap_method'] is None else self.kwargs['heatcap_method']
         self.logK_form = 'values' if self.kwargs["logK_form"] is None else self.kwargs['logK_form']
         self.cpx_Ca = 0 if self.kwargs["cpx_Ca"] is None else self.kwargs["cpx_Ca"]
-        self.dbr = db_reader(dbaccess = self.dbaccess, dbBerman_dir = self.dbBerman_dir, sourcedb = self.sourcedb,
-                        sourceformat = self.sourceformat)
+        self.dbr = db_reader(dbaccess = self.dbaccess, dbBerman_dir = self.dbBerman_dir,
+                             dbHP_dir = self.dbHP_dir, dbaccessformat = self.dbaccessformat,
+                             sourcedb = self.sourcedb, sourceformat = self.sourceformat)
 
         if (type(self.P) == str)or (type(self.T) == str):
             if self.P == 'T':
@@ -1628,11 +1672,10 @@ class write_database():
 
         nCa_cpx = self.cpx_Ca;                     logK_form = self.logK_form
         solid_solution = self.solid_solution;      clay_thermo = self.clay_thermo
-        # dbaccess = self.dbaccess;
         sourcedb = self.sourcedb
         objdb = self.objdb;                        Dielec_method = self.Dielec_method
         co2actmodel = self.co2actmodel;            sourceformat = self.sourceformat
-        mineral_eos = self.mineral_eos;            # dbBerman_dir = self.dbBerman_dir
+        heatcap_method = self.heatcap_method;
         densityextrap = self.densityextrap
 
         dbaccessdic, dbname, sourcedic, specielist = self.dbr.dbaccessdic, self.dbr.dbaccess, self.dbr.sourcedic, self.dbr.specielist
@@ -1662,7 +1705,7 @@ class write_database():
 
         TK = convert_temperature( T, Out_Unit = 'K' )
 
-        if dataset_format ==  'apr20' and logK_form.lower() == 'polycoeffs':
+        if dataset_format in ['apr20', 'mar21'] and logK_form.lower() == 'polycoeffs':
             Tr = 298.15
             logKfunc = lambda TK, *x: x[0] + x[1]*(TK - Tr) + x[2]*(TK**2 - Tr**2) +  x[3]*((1/TK) - (1/Tr)) + \
                 x[4]*((1/TK**2) - (1/Tr**2)) + x[5]*np.log(TK/Tr)
@@ -1687,7 +1730,12 @@ class write_database():
                         if item.name[0][:5] == x[:5] ] if sourceformat.upper() == 'GWB' else specielist[0]
 
         form_del = [1] if sourceformat.upper() == 'GWB' else [1, 3, 4]
-        all_species_source = [[i]+k for i, k in sourcedic.items() if i not in (['eh', 'e-', 'H2O']) ]
+        all_species_source = [[i]+k for i, k in sourcedic.items()
+                              if i not in (['eh', 'e-', 'H2O']) or (dataset_format == 'mar21' and i not in specielist[6])]
+
+        # all_species_source = [x.split()[0] if (dataset_format == 'mar21' and k in specielist[6])
+        #                       else [i]+k
+        #                       for i, k in sourcedic.items() for x in k if i not in (['eh', 'e-', 'H2O']) or (dataset_format == 'mar21' and k in specielist[6] and x.strip('\n') and x.split()[0] not in ['a0', '*'] ) ]
         all_species_source = [[k for j, k in enumerate(all_species_source[i])
                                if (j not in form_del and k not in elemspeclist and str(k).strip('0123456789.- ') != '') ]
                               if  (i <= len(specielist[0]))
@@ -1696,7 +1744,10 @@ class write_database():
                               for i in range(len(all_species_source)) ]
         for num in range(len(all_species_source)): #
             if num < len(all_species_source):
-                lst = [v for v in all_species_source[num] if v not in (['eh', 'e-', 'H2O']) ]
+                if dataset_format == 'mar21':
+                    lst = [v for v in all_species_source[num] if v not in (specielist[6] + ['eh', 'e-', 'H2O']) ]
+                else:
+                    lst = [v for v in all_species_source[num] if v not in (['eh', 'e-', 'H2O']) ]
 
                 bool_miss = [x.replace('(CH3COO)', '(Ac)').replace('CH3COO', '(Ac)')
                              not in dbaccessdic.keys() for x in lst  ]
@@ -1732,6 +1783,7 @@ class write_database():
         # timestr = '.' + time.strftime("%d%b%y_%H%M")
 
         fout = open(os.path.join(os.path.abspath("."),'output',  objdb + '.' + dataset), 'w+') # + timestr
+        dbname2 = 'and supcrtbl.dat' if self.dbHP_dir is not None else 'and berman.dat' if self.dbBerman_dir is not None else  ''
 
         if sourceformat.upper() != 'EQ36':
             s = fid.readline()
@@ -1739,7 +1791,7 @@ class write_database():
             s = fid.readline()
             fout.writelines(s[:16] + dataset_format + '\n')
 
-            if dataset_format ==  'apr20':
+            if dataset_format in ['apr20', 'mar21']:
                 s = fid.readline()
                 fout.writelines(s)
 
@@ -1759,7 +1811,7 @@ class write_database():
                             'dataset format: ' + dataset_format + '\n' + \
                                 'activity model: %s \n' % activity_model + \
                                     'fugacity model: tsonopoulos \n' + \
-                                    '*  THERMODYNAMIC DATABASE: ' + dbname + '\n' +\
+                                    '*  THERMODYNAMIC DATABASE: ' + dbname + ' ' + dbname2 + '\n' +\
                                         '*  generated by: pyGeochemCalc, ' + time.ctime() + '\n' +\
                                             '*  Output package:  gwb \n' + \
                                                 '*  Data set:        com \n')
@@ -1769,7 +1821,7 @@ class write_database():
                             '*    for CO2 are based on Ref:\n' + \
                                 '*    S.E.Drummond,1981. Boiling and Mixing of Hydrothermal\n' + \
                                     '*    Fluids: Chemical Effects on Mineral Precipitation.\n')
-        elif dataset_format ==  'apr20' and logK_form.lower() == 'polycoeffs':
+        elif dataset_format in ['apr20', 'mar21'] and logK_form.lower() == 'polycoeffs':
             fout.writelines('*   \n' + \
                             '* This thermo data file uses the polynomial expression of the logK values: \n' + \
                                 '*  \n' + \
@@ -1858,14 +1910,21 @@ class write_database():
             fout.writelines(s)
         else:
             fout.writelines('* debye huckel a (adh)\n')
-        for i in range(len(Adh)):
-            i = i + 1
-            if (i == 1) | (i == 5):
-                fout.writelines( "       %9.4f" %  Adh[i-1])
-            else:
-                fout.writelines( "   %9.4f" %  Adh[i-1])
-            if (i % 4 == 0) | (i == len(Adh)):
-                fout.writelines( "\n")
+        if (dataset_format in ['apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
+            Adhcorr = curve_fit(logKfunc, TK[Adh!=500].ravel(), Adh[Adh!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
+            fout.writelines('     a= %15.9f   ' % Adhcorr[0] + 'b= %15.9f   ' % Adhcorr[1] + \
+                            'c= %15.6e\n' % Adhcorr[2])
+            fout.writelines('     d= %15.6f   ' % Adhcorr[3] + 'e= %15.5f   ' % Adhcorr[4] + \
+                            'f= %15.8f \n' % Adhcorr[5])
+        else:
+            for i in range(len(Adh)):
+                i = i + 1
+                if (i == 1) | (i == 5):
+                    fout.writelines( "       %9.4f" %  Adh[i-1])
+                else:
+                    fout.writelines( "   %9.4f" %  Adh[i-1])
+                if (i % 4 == 0) | (i == len(Adh)):
+                    fout.writelines( "\n")
         #skip lines till bdh rows
         for i in range(100):
             s = fid.readline()
@@ -1875,16 +1934,23 @@ class write_database():
             fout.writelines(s)
         else:
             fout.writelines('* debye huckel b (bdh)\n')
-        for i in range(len(Bdh)):
-            i = i + 1
-            if (i == 1) | (i == 5):
-                fout.writelines( "       %9.4f" %  Bdh[i-1])
-            else:
-                fout.writelines( "   %9.4f" %  Bdh[i-1])
-            if (i % 4 == 0) | (i == len(Bdh)):
-                fout.writelines( "\n")
+        if (dataset_format in ['apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
+            Bdhcorr = curve_fit(logKfunc, TK[Bdh!=500].ravel(), Bdh[Bdh!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
+            fout.writelines('     a= %15.9f   ' % Bdhcorr[0] + 'b= %15.9f   ' % Bdhcorr[1] + \
+                            'c= %15.6e\n' % Bdhcorr[2])
+            fout.writelines('     d= %15.6f   ' % Bdhcorr[3] + 'e= %15.5f   ' % Bdhcorr[4] + \
+                            'f= %15.8f \n' % Bdhcorr[5])
+        else:
+            for i in range(len(Bdh)):
+                i = i + 1
+                if (i == 1) | (i == 5):
+                    fout.writelines( "       %9.4f" %  Bdh[i-1])
+                else:
+                    fout.writelines( "   %9.4f" %  Bdh[i-1])
+                if (i % 4 == 0) | (i == len(Bdh)):
+                    fout.writelines( "\n")
         #skip lines till bdot rows
-        if activity_model == 'debye-huckel':
+        if activity_model in ['debye-huckel', 'b-dot']:
             for i in range(100) :
                 s = fid.readline()
                 if any(re.findall(r'|'.join(('bdot', 'B-dot')), s.strip('\n'), re.IGNORECASE)):
@@ -1892,10 +1958,10 @@ class write_database():
         if sourceformat.upper() != 'EQ36':
             fout.writelines(s)
         else:
-            if activity_model == 'debye-huckel':
+            if activity_model in ['debye-huckel', 'b-dot']:
                 fout.writelines('* bdot\n')
 
-        if activity_model == 'debye-huckel':
+        if activity_model in ['debye-huckel', 'b-dot']:
             for i in range(len(bdot)):
                 i = i + 1
                 if (i == 1) | (i == 5):
@@ -1975,7 +2041,7 @@ class write_database():
             logK = calcRxnlogK( T = T, P = P, Specie = 'O2(g)', dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'gases',
-                               rhoEGextrap = rhoEGextrap).logK
+                               heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
             logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
             for i in range(len(logK)):
                 i = i + 1
@@ -1995,9 +2061,9 @@ class write_database():
                     break
             fout.writelines(s)
             logK = calcRxnlogK( T = T, P = P, Specie = 'H2(g)', dbaccessdic = dbaccessdic, sourcedic = sourcedic,
-                               Specie_class = 'gases', specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
-                               sourceformat = sourceformat, densityextrap = densityextrap,
-                               rhoEGextrap = rhoEGextrap).logK
+                               Specie_class = 'gases', specielist = specielist, Dielec_method = Dielec_method,
+                               sourceformat = sourceformat, densityextrap = densityextrap, rhoEG = rhoEG,
+                               heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
             logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
             for i in range(len(logK)):
                 i = i + 1
@@ -2019,7 +2085,7 @@ class write_database():
             logK = calcRxnlogK( T = T, P = P, Specie = 'N2(g)', dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'gases',
-                               rhoEGextrap = rhoEGextrap).logK
+                               heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
             logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
             for i in range(len(logK)):
                 i = i + 1
@@ -2046,7 +2112,7 @@ class write_database():
             logK_rebal = calcRxnlogK( T = T, P = P, Specie = 'O2(g)', dbaccessdic = dbaccessdic, sourcedic = dic,
                                      specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                      sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'gases',
-                                     rhoEGextrap = rhoEGextrap).logK
+                                     heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
             logK_rebal = np.where(np.isnan(logK_rebal), 500, logK_rebal) # set abitrary 500 to nan values
 
         #%% Elements
@@ -2141,7 +2207,7 @@ class write_database():
                     ref = ref.split(':')[1] if ('ref' in ref) or ('REF' in ref) else ref
                     dG, dH, S = dbaccessdic[k][2], dbaccessdic[k][3], dbaccessdic[k][4]
                 else:
-                    dG, dH, S, ref = dGH2O[0], dHH2O[0], SH2O[0], 'iapws95/' + Dielec_method
+                    dG, dH, S, ref = dGH2O[0], dHH2O[0], SH2O[0], 'iapws95/' + Dielec_method if Dielec_method in ['FGL97', 'JN91'] else 'DEW'
                 fout.writelines( "*    reference-state data source = %s\n" % ref)
                 fout.writelines( "*         delG0f =   %8.3f  kcal/mol\n" % (dG/1000) )
                 fout.writelines( "*         delH0f =   %8.3f  kcal/mol\n" % (dH/1000))
@@ -2183,7 +2249,7 @@ class write_database():
                         fout.writelines('*    formula= %s\n' % sourcedic[j][0])
                     else:
                         fout.writelines('*    formula= %s\n' % dbaccessdic[k][0])
-                elif dataset_format == 'apr20':
+                elif dataset_format in ['apr20', 'mar21']:
                     if sourcedic[j][0] != '':
                         fout.writelines('%-30s %s %s\n' % (j, 'formula=', sourcedic[j][0]))
                     else:
@@ -2221,7 +2287,7 @@ class write_database():
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'aqueous',
-                                   rhoEGextrap = rhoEGextrap).logK
+                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit).logK
 
                 if densityextrap.lower() == 'yes': #any(np.isnan(logK)):
                     logKnan_alert = True
@@ -2229,13 +2295,12 @@ class write_database():
                     logKnan_alert = False
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
 
-                if (dataset_format ==  'apr20') & (logK_form.lower() == 'polycoeffs'):
-                    TK = convert_temperature( T, Out_Unit = 'K' )
+                if (dataset_format in ['apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
                     logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
-                    fout.writelines('     a= %15.6f   ' % logKcorr[0] + 'b= %15.6f   ' % logKcorr[1] + \
-                                    'c= %15.5e\n' % logKcorr[2])
-                    fout.writelines('     d= %15.5f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
-                                    'f= %15.5f \n' % logKcorr[5])
+                    fout.writelines('     a= %15.9f   ' % logKcorr[0] + 'b= %15.9f   ' % logKcorr[1] + \
+                                    'c= %15.6e\n' % logKcorr[2])
+                    fout.writelines('     d= %15.6f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
+                                    'f= %15.8f \n' % logKcorr[5])
                     fout.writelines('     TminK= %-15.2f ' % np.min(TK) + 'TmaxK= %-7.2f\n' % np.max(TK))
                 else:
                     for i in range(len(logK)):
@@ -2253,7 +2318,7 @@ class write_database():
                     ref = ref.split(':')[1] if ('ref' in ref) or ('REF' in ref) else ref
                     dG, dH, S = dbaccessdic[k][2], dbaccessdic[k][3], dbaccessdic[k][4]
                 else:
-                    dG, dH, S, ref = dGH2O[0], dHH2O[0], SH2O[0], 'iapws95/' + Dielec_method
+                    dG, dH, S, ref = dGH2O[0], dHH2O[0], SH2O[0], 'iapws95/' + Dielec_method if Dielec_method in ['FGL97', 'JN91'] else 'DEW'
                 fout.writelines( "*    reference-state data source = %s\n" % ref)
                 fout.writelines( "*         delG0f =   %8.3f  kcal/mol\n" % (dG/1000) )
                 fout.writelines( "*         delH0f =   %8.3f  kcal/mol\n" % (dH/1000))
@@ -2286,13 +2351,14 @@ class write_database():
             rxnlst = [v for x, v in enumerate(rxnlst) if x % 2 != 0 ] # remove all coefficients
             if (j not in missing_species) and (len([i for i in rxnlst if i not in missing_species]) == len(rxnlst)):
                 k = j.replace('(CH3COO)', '(Ac)').replace('CH3COO', '(Ac)')
+                # print(k)
                 if dataset_format == 'oct94':
                     fout.writelines('%s\n' % j)
                     if sourcedic[j][0] != '':
                         fout.writelines('*    formula= %s\n' % sourcedic[j][0])
                     else:
                         fout.writelines('*    formula= %s\n' % dbaccessdic[k][0])
-                elif dataset_format == 'apr20':
+                elif dataset_format in ['apr20', 'mar21']:
                     if sourcedic[j][0] != '':
                         fout.writelines('%-30s %s %s\n' % (j, 'formula=', sourcedic[j][0]))
                     else:
@@ -2334,19 +2400,18 @@ class write_database():
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'aqueous',
-                                   rhoEGextrap = rhoEGextrap).logK
+                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit).logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                 if sourceformat.upper() == 'EQ36' and 'O2(g)' in Rxn:
                     coeff_O2 = float(Rxn[Rxn.index('O2(g)') - 1])
                     logK = np.where(logK != 500, logK + coeff_O2*logK_rebal, logK)
 
-                if (dataset_format ==  'apr20') & (logK_form.lower() == 'polycoeffs'):
-                    TK = convert_temperature( T, Out_Unit = 'K' )
+                if (dataset_format in ['apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
                     logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
-                    fout.writelines('     a= %15.6f   ' % logKcorr[0] + 'b= %15.6f   ' % logKcorr[1] + \
-                                    'c= %15.5e\n' % logKcorr[2])
-                    fout.writelines('     d= %15.5f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
-                                    'f= %15.5f \n' % logKcorr[5])
+                    fout.writelines('     a= %15.9f   ' % logKcorr[0] + 'b= %15.9f   ' % logKcorr[1] + \
+                                    'c= %15.6e\n' % logKcorr[2])
+                    fout.writelines('     d= %15.6f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
+                                    'f= %15.8f \n' % logKcorr[5])
                     fout.writelines('     TminK= %-15.2f ' % np.min(TK) + 'TmaxK= %-7.2f\n' % np.max(TK))
                 else:
                     for i in range(len(logK)):
@@ -2364,7 +2429,7 @@ class write_database():
                     ref = ref.split(':')[1] if ('ref' in ref) or ('REF' in ref) else ref
                     dG, dH, S = dbaccessdic[k][2], dbaccessdic[k][3], dbaccessdic[k][4]
                 else:
-                    dG, dH, S, ref = dGH2O[0], dHH2O[0], SH2O[0], 'iapws95/' + Dielec_method
+                    dG, dH, S, ref = dGH2O[0], dHH2O[0], SH2O[0], 'iapws95/' + Dielec_method if Dielec_method in ['FGL97', 'JN91'] else 'DEW'
                 fout.writelines( "*    reference-state data source = %s\n" % ref)
                 fout.writelines( "*         delG0f =   %8.3f  kcal/mol\n" % (dG/1000) )
                 fout.writelines( "*         delH0f =   %8.3f  kcal/mol\n" % (dH/1000))
@@ -2376,7 +2441,7 @@ class write_database():
         fout.writelines( "-end-\n\n")
 
         #%% free electron for tdat dataset format
-        if dataset_format == 'apr20':
+        if dataset_format in ['apr20', 'mar21']:
             if sourceformat.upper() != 'EQ36':
                 speclst = specielist[4]
             else:
@@ -2403,19 +2468,19 @@ class write_database():
                         fout.writelines( "%-9s     " %  (Rxn[i - 1]))
                     if (i % 6 == 0) | (i % 12 == 0) | (i == len(Rxn)):
                         fout.writelines( "\n")
+                speclist = specielist #None if dataset_format == 'mar21' else specielist
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
-                                   specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
+                                   specielist = speclist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = sourceformat, densityextrap = densityextrap,
-                                   rhoEGextrap = rhoEGextrap).logK
+                                   heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
 
-                if (dataset_format ==  'apr20') & (logK_form.lower() == 'polycoeffs'):
-                    TK = convert_temperature( T, Out_Unit = 'K' )
+                if (dataset_format in ['apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
                     logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
-                    fout.writelines('     a= %15.6f   ' % logKcorr[0] + 'b= %15.6f   ' % logKcorr[1] + \
-                                    'c= %15.5e\n' % logKcorr[2])
-                    fout.writelines('     d= %15.5f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
-                                    'f= %15.5f \n' % logKcorr[5])
+                    fout.writelines('     a= %15.9f   ' % logKcorr[0] + 'b= %15.9f   ' % logKcorr[1] + \
+                                    'c= %15.6e\n' % logKcorr[2])
+                    fout.writelines('     d= %15.6f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
+                                    'f= %15.8f \n' % logKcorr[5])
                     fout.writelines('     TminK= %-15.2f ' % np.min(TK) + 'TmaxK= %-7.2f\n' % np.max(TK))
                 else:
                     for i in range(len(logK)):
@@ -2496,7 +2561,9 @@ class write_database():
         #skip lines till "gases" rows
         for i in range(20000):
             s = fid.readline()
-            if s.rstrip('\n').lstrip('0123456789.- ') == 'gases':
+            if (dataset_format == 'mar21') and (s.rstrip('\n').lstrip('0123456789.- ') == 'solid solutions'):
+                break
+            elif dataset_format != 'mar21' and s.rstrip('\n').lstrip('0123456789.- ') == 'gases':
                 break
         if solid_solution.lower() == 'yes':
             mineralcount = 0
@@ -2506,11 +2573,12 @@ class write_database():
                     if fn != 'cpx':
                         ss = calcRxnlogK(X = nX, T = T, P = P, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                          dbaccessdic = dbaccessdic, Specie = fn, densityextrap = densityextrap,
-                                         rhoEGextrap = rhoEGextrap)
+                                         ThermoInUnit = self.ThermoInUnit, rhoEGextrap = rhoEGextrap)
                     else:
                         ss = calcRxnlogK(cpx_Ca = nCa, X = nX, T = T, P = P, Dielec_method = Dielec_method,
                                          rhoEG = rhoEG, dbaccessdic = dbaccessdic, Specie = fn,
-                                         densityextrap = densityextrap, rhoEGextrap = rhoEGextrap)
+                                         densityextrap = densityextrap, ThermoInUnit = self.ThermoInUnit,
+                                         rhoEGextrap = rhoEGextrap)
                     logK, Rxn = ss.logK, ss.Rxn
 
                     logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
@@ -2520,15 +2588,8 @@ class write_database():
         # clay minerals
         if clay_thermo.lower() == 'yes':
             for i in range(len(Rd)):
-                # if Rd[i].split(',')[0] in ['Berthierine_FeII', 'Berthierine_FeIII', 'Lizardite',
-                #                            'Cronstedtite', 'Mg-Cronstedtite', 'Greenalite', 'Hisingerite']:
-                #     layering = '7A'
-                # elif Rd[i].split(',')[0] in ['Clinochlore', 'Chamosite', 'Amesite']:
-                #     layering = '14A'
-                # else:
-                #     layering = '10A'
                 ss = calcRxnlogK(T = T, P = P, Specie = 'Clay', elem = Rd[i].split(','),
-                                 dbaccessdic = dbaccessdic, rhoEG = rhoEG, #group = layering,
+                                 dbaccessdic = dbaccessdic, ThermoInUnit = self.ThermoInUnit, rhoEG = rhoEG,
                                  rhoEGextrap = rhoEGextrap, densityextrap = densityextrap)
                 logK, Rxn = ss.logK, ss.Rxn
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
@@ -2584,19 +2645,18 @@ class write_database():
                     logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                        specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                        sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'minerals',
-                                       mineral_eos = mineral_eos, rhoEGextrap = rhoEGextrap).logK
+                                       heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
                     logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                     if sourceformat.upper() == 'EQ36' and 'O2(g)' in Rxn:
                         coeff_O2 = float(Rxn[Rxn.index('O2(g)') - 1])
                         logK = np.where(logK != 500, logK + coeff_O2*logK_rebal, logK)
 
-                    if (dataset_format ==  'apr20') & (logK_form.lower() == 'polycoeffs'):
-                        TK = convert_temperature( T, Out_Unit = 'K' )
+                    if (dataset_format in ['apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
                         logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
-                        fout.writelines('     a= %15.6f   ' % logKcorr[0] + 'b= %15.6f   ' % logKcorr[1] + \
-                                        'c= %15.5e\n' % logKcorr[2])
-                        fout.writelines('     d= %15.5f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
-                                        'f= %15.5f \n' % logKcorr[5])
+                        fout.writelines('     a= %15.9f   ' % logKcorr[0] + 'b= %15.9f   ' % logKcorr[1] + \
+                                        'c= %15.6e\n' % logKcorr[2])
+                        fout.writelines('     d= %15.6f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
+                                        'f= %15.8f \n' % logKcorr[5])
                         fout.writelines('     TminK= %-15.2f ' % np.min(TK) + 'TmaxK= %-7.2f\n' % np.max(TK))
                     else:
                         for i in range(len(logK)):
@@ -2616,18 +2676,45 @@ class write_database():
                     ref = dbaccessdic[k][1].split('  ')[0]
                     ref = ref.split(':')[1] if ('ref' in ref) or ('REF' in ref) else ref
                     fout.writelines( "*    reference-state data source = %s\n" % ref )
-                    fout.writelines( "*         delG0f =   %8.3f  kcal/mol\n" % (dbaccessdic[k][2]/1000/J_to_cal if mineral_eos.lower() == 'berman88' else dbaccessdic[k][2]/1000) )
-                    fout.writelines( "*         delH0f =   %8.3f  kcal/mol\n" % (dbaccessdic[k][3]/1000/J_to_cal if mineral_eos.lower() == 'berman88' else dbaccessdic[k][3]/1000))
-                    fout.writelines( "*         S0PrTr =   %8.3f  cal/(mol*K)\n" % (dbaccessdic[k][4]/J_to_cal if mineral_eos.lower() == 'berman88' else dbaccessdic[k][4]))
+                    fout.writelines( "*         delG0f =   %8.3f  kcal/mol\n" % (dbaccessdic[k][2]/1000/J_to_cal if heatcap_method.lower() == 'berman88' else dbaccessdic[k][2]/1000) )
+                    fout.writelines( "*         delH0f =   %8.3f  kcal/mol\n" % (dbaccessdic[k][3]/1000/J_to_cal if heatcap_method.lower() == 'berman88' else dbaccessdic[k][3]/1000))
+                    fout.writelines( "*         S0PrTr =   %8.3f  cal/(mol*K)\n" % (dbaccessdic[k][4]/J_to_cal if heatcap_method.lower() == 'berman88' else dbaccessdic[k][4]))
                     fout.writelines( "\n")
             else:
                 continue
 
         fout.writelines( "-end-\n\n")
 
+        #%% Solid solutions for GWB internal calculation
+        #only used for counter
+        counter = 0; ss_list = []
+        if dataset_format == 'mar21':
+            for j in specielist[6]:
+                # print(j)
+                lst = [x for x in sourcedic[j] if x.strip('\n')]
+                minlst = [x.split()[0] for x in lst if x.split()[0] not in ['a0', '*']]
+                # print(minlst)
+                if all(x not in missing_species for x in minlst):
+                    counter +=1
+                    ss_list.append(j)
+            fout.writelines( "   %s solid solutions\n\n" % counter )
+
+            for i in range(20000):
+                s = fid.readline()
+                if s.rstrip('\n').lstrip('0123456789.- ') == 'gases':
+                    break
+
+            for j in ss_list:
+                for k in range(len(sourcedic[j])):
+                    fout.writelines( sourcedic[j][k] )
+                if sourcedic[j][-1] != '\n':
+                    fout.writelines( "\n")
+            fout.writelines( "-end-\n\n")
+
         #only used for counter
         counter = 0
-        for j in specielist[6]:
+        spec = specielist[6]  if dataset_format != 'mar21' else specielist[7]
+        for j in spec:
             rxnlst = [b for a, b in enumerate(sourcedic[j]) if a not in [0, 1]] # remove formula and specie number
             rxnlst = [v for x, v in enumerate(rxnlst) if x % 2 != 0 ] # remove all coefficients
             if (j not in missing_species) and (len([k for k in rxnlst if k not in missing_species])==len(rxnlst)):
@@ -2642,7 +2729,7 @@ class write_database():
             if s.rstrip('\n').lstrip('0123456789.- ') in ['oxides', 'solid solutions']:
                 break
 
-        for j in specielist[6]:
+        for j in spec:
             rxnlst = [b for a, b in enumerate(sourcedic[j]) if a not in [0, 1]] # remove formula and specie number
             rxnlst = [v for x, v in enumerate(rxnlst) if x % 2 != 0 ] # remove all coefficients
             if (j not in missing_species) and (len([k for k in rxnlst if k not in missing_species])==len(rxnlst)):
@@ -2697,7 +2784,7 @@ class write_database():
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'gases',
-                                   rhoEGextrap = rhoEGextrap).logK
+                                   heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                 if sourceformat.upper() == 'EQ36' and 'O2(g)' in Rxn:
                     coeff_O2 = float(Rxn[Rxn.index('O2(g)') - 1])
@@ -2705,10 +2792,10 @@ class write_database():
                 if (dataset_format ==  'apr20') & (logK_form.lower() == 'polycoeffs'):
                     TK = convert_temperature( T, Out_Unit = 'K' )
                     logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
-                    fout.writelines('     a= %15.6f   ' % logKcorr[0] + 'b= %15.6f   ' % logKcorr[1] + \
-                                    'c= %15.5e\n' % logKcorr[2])
-                    fout.writelines('     d= %15.5f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
-                                    'f= %15.5f \n' % logKcorr[5])
+                    fout.writelines('     a= %15.9f   ' % logKcorr[0] + 'b= %15.9f   ' % logKcorr[1] + \
+                                    'c= %15.6e\n' % logKcorr[2])
+                    fout.writelines('     d= %15.6f   ' % logKcorr[3] + 'e= %15.5f   ' % logKcorr[4] + \
+                                    'f= %15.8f \n' % logKcorr[5])
                     fout.writelines('     TminK= %-15.2f ' % np.min(TK) + 'TmaxK= %-7.2f\n' % np.max(TK))
                 else:
                     for i in range(len(logK)):
@@ -2734,7 +2821,8 @@ class write_database():
         if sourceformat.upper() != 'EQ36':
             #only used for counter
             counter = 0
-            for j in specielist[7]:
+            spec = specielist[7]  if dataset_format != 'mar21' else specielist[8]
+            for j in spec:
                 rxnlst = [b for a, b in enumerate(sourcedic[j]) if a not in [0, 1]] # remove formula and specie number
                 rxnlst = [v for x, v in enumerate(rxnlst) if x % 2 != 0 ] # remove all coefficients
                 if (len([k for k in rxnlst if k not in missing_species])==len(rxnlst)):
@@ -2749,7 +2837,7 @@ class write_database():
                 if s.strip(' \n*').lstrip('0123456789.- ').startswith(("references", 'virial coefficients', 'Virial coefficients', 'SIT epsilon coefficients', 'Pitzer parameters')):
                     break
 
-            for j in specielist[7]:
+            for j in spec:
                 rxnlst = [b for a, b in enumerate(sourcedic[j]) if a not in [0, 1]] # remove formula and specie number
                 rxnlst = [v for x, v in enumerate(rxnlst) if x % 2 != 0 ] # remove all coefficients
                 if (len([k for k in rxnlst if k not in missing_species]) == len(rxnlst)):
@@ -2775,7 +2863,7 @@ class write_database():
             fout.writelines( "   0 oxides\n\n" )
 
         #%% Pitzer parameters
-        if activity_model == 'debye-huckel':
+        if activity_model != 'h-m-w':
             fout.writelines( "-end-\n\n")
         elif activity_model == 'h-m-w':
             fout.writelines( "-end-\n*\n")
@@ -2894,14 +2982,11 @@ class write_database():
 
         nCa_cpx = self.cpx_Ca;
         solid_solution = self.solid_solution;      clay_thermo = self.clay_thermo
-        # dbaccess = self.dbaccess;
         sourcedb = self.sourcedb
         objdb = self.objdb;                        Dielec_method = self.Dielec_method
-        mineral_eos = self.mineral_eos;            # dbBerman_dir = self.dbBerman_dir
+        heatcap_method = self.heatcap_method;
         densityextrap = self.densityextrap
 
-        # dbr = db_reader(dbaccess = dbaccess, dbBerman_dir = dbBerman_dir, sourcedb = sourcedb,
-        #                 sourceformat = 'EQ36')
         dbaccessdic, dbname, sourcedic, specielist = self.dbr.dbaccessdic, self.dbr.dbaccess, self.dbr.sourcedic, self.dbr.specielist
         act_param, block_info, Elemlist = self.dbr.act_param, self.dbr.block_info, self.dbr.Elemlist
 
@@ -2942,20 +3027,16 @@ class write_database():
                     missingfile.writelines('\n')
         missingfile.close()
         missing_species = [item for sublist in missing_species for item in sublist]
-        # missing_species = list(set(missing_species)) #[i for n, i in enumerate(missing_species) if i not in missing_species[:n]]
         elem_avail = list(set([k for i, j in enumerate([[i] + k for i, k in sourcedic.items()
                                                         if i not in missing_species])
                                for l, k in enumerate(j) if i < len(specielist[1]) and str(k).strip('0123456789.- ') != '' and
                                not str(k).endswith(("+", "-", '(aq)', '(g)')) and k not in ['O2', 'H2O'] and len(k) < 3]))
         all_species_source = [k for j in all_species_source for i, k in enumerate(j) ]
-        # all_species_source = [k for j in all_species_source for i, k in enumerate(j)
-        #                       if i!=1 and str(k).strip('0123456789.- ') != '']
         all_species_source = list(set(all_species_source))
         all_species_avail = [j for j in all_species_source if j not in missing_species]
 
         if objdb == None:
             objdb = 'data0.%s' % (int(P[0]))
-        # timestr = '.' + time.strftime("%d%b%Y_%H%M")
 
         fout = open(os.path.join(os.path.abspath("."),'output', objdb + '.%s' % sourcedb.split('.')[-1]), 'w+')  # + timestr
 
@@ -2969,7 +3050,8 @@ class write_database():
                 break
         fout.writelines('CII: ' + ' pyGeochemCalc.2021' + '\n')
         fout.writelines('Generated by: ' + ' pyGeochemCalc, ' + time.ctime() + '\n')
-        fout.writelines('Output package:  eq3\n' + 'Data set:        ' + dbname + '\n')
+        dbname2 = 'and supcrtbl.dat' if self.dbHP_dir is not None else 'and berman.dat' if self.dbBerman_dir is not None else ''
+        fout.writelines('Output package:  eq3\n' + 'Data set:        ' + dbname + ' ' + dbname2 + '\n')
 
         if Dielec_method.upper() == 'DEW':
             water = ZhangDuan(T = T, P = P)
@@ -3292,7 +3374,7 @@ class write_database():
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = 'EQ36', densityextrap = densityextrap, Specie_class = 'aqueous',
-                                   rhoEGextrap = rhoEGextrap).logK
+                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit).logK
                 if densityextrap.lower() == 'yes':
                     logKnan_alert = True
                 else:
@@ -3368,7 +3450,7 @@ class write_database():
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = 'EQ36', densityextrap = densityextrap, Specie_class = 'aqueous',
-                                   rhoEGextrap = rhoEGextrap).logK
+                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit).logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                 for i in range(len(logK)):
                     i = i + 1
@@ -3411,11 +3493,11 @@ class write_database():
                     if fn != 'cpx':
                         ss = calcRxnlogK(X = nX, T = T, P = P, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                          dbaccessdic = dbaccessdic, Specie = fn, densityextrap = densityextrap,
-                                         rhoEGextrap = rhoEGextrap)
+                                         ThermoInUnit = self.ThermoInUnit, rhoEGextrap = rhoEGextrap)
                     else:
                         ss = calcRxnlogK(cpx_Ca = nCa, X = nX, T = T, P = P, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                          dbaccessdic = dbaccessdic, Specie = fn, densityextrap = densityextrap,
-                                         rhoEGextrap = rhoEGextrap)
+                                         ThermoInUnit = self.ThermoInUnit, rhoEGextrap = rhoEGextrap)
                     logK, Rxn = ss.logK, ss.Rxn
 
                     logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
@@ -3427,15 +3509,8 @@ class write_database():
             Rd = fclay.readlines()
             Rd = [j.replace('-','_').strip('\n') for j in Rd]
             for i in range(len(Rd)):
-                # if Rd[i].split(',')[0] in ['Berthierine_FeII', 'Berthierine_FeIII', 'Lizardite',
-                #                             'Cronstedtite', 'Mg-Cronstedtite', 'Greenalite', 'Hisingerite']:
-                #     layering = '7A'
-                # elif Rd[i].split(',')[0] in ['Clinochlore', 'Chamosite', 'Amesite']:
-                #     layering = '14A'
-                # else:
-                #     layering = '10A'
                 ss = calcRxnlogK(T = T, P = P, Specie = 'Clay', elem = Rd[i].split(','),
-                                 dbaccessdic = dbaccessdic, rhoEG = rhoEG, #group = layering,
+                                 dbaccessdic = dbaccessdic, ThermoInUnit = self.ThermoInUnit, rhoEG = rhoEG,
                                  rhoEGextrap = rhoEGextrap, densityextrap = densityextrap)
                 logK, Rxn = ss.logK, ss.Rxn
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
@@ -3492,7 +3567,7 @@ class write_database():
                     logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                        specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                        sourceformat = 'EQ36', densityextrap = densityextrap, Specie_class = 'minerals',
-                                       mineral_eos = mineral_eos, rhoEGextrap = rhoEGextrap).logK
+                                       heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
                     logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                     for i in range(len(logK)):
                         i = i + 1
@@ -3571,7 +3646,7 @@ class write_database():
                 fout.writelines('**** logK grid [T, P @ Miscellaneous parameters]\n')
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
-                                   sourceformat = 'EQ36', densityextrap = densityextrap, Specie_class = 'minerals',
+                                   sourceformat = 'EQ36', densityextrap = densityextrap, Specie_class = 'liquids',
                                    rhoEGextrap = rhoEGextrap).logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                 for i in range(len(logK)):
@@ -3651,7 +3726,7 @@ class write_database():
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = 'EQ36', densityextrap = densityextrap, Specie_class = 'gases',
-                                   rhoEGextrap = rhoEGextrap).logK
+                                   heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                 for i in range(len(logK)):
                     i = i + 1
@@ -3750,15 +3825,12 @@ class write_database():
                   dielectric constant calculation \n
                   write_pflotrandb(T, P )   \n
         """
-        nCa_cpx = self.cpx_Ca;                     # dbBerman_dir = self.dbBerman_dir
+        nCa_cpx = self.cpx_Ca;
         solid_solution = self.solid_solution;      clay_thermo = self.clay_thermo
-        # dbaccess = self.dbaccess;                  sourcedb = self.sourcedb
         objdb = self.objdb;                        Dielec_method = self.Dielec_method
-        sourceformat = self.sourceformat;          mineral_eos = self.mineral_eos;
+        sourceformat = self.sourceformat;          heatcap_method = self.heatcap_method;
         densityextrap = self.densityextrap
 
-        # dbr = db_reader(dbaccess = dbaccess, dbBerman_dir = dbBerman_dir, sourcedb = sourcedb,
-        #                 sourceformat = sourceformat)
         dbaccessdic, sourcedic, specielist = self.dbr.dbaccessdic, self.dbr.sourcedic, self.dbr.specielist
         MWdic, chargedic = self.dbr.MWdic, self.dbr.chargedic
 
@@ -3920,7 +3992,7 @@ class write_database():
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'aqueous',
-                                   rhoEGextrap = rhoEGextrap).logK
+                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit).logK
                 if densityextrap.lower() == 'yes':
                     logKnan_alert = True
                 else:
@@ -3959,7 +4031,7 @@ class write_database():
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'gases',
-                                   rhoEGextrap = rhoEGextrap).logK
+                                   heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                 list_logk = ' '.join(str("%9.4f" % e) for e in list(logK))
                 info = "'%s'" % name + ' ' + '0.000' + ' ' + str(species) + ' ' + Rxn +\
@@ -3986,11 +4058,11 @@ class write_database():
                     if fn != 'cpx':
                         ss = calcRxnlogK(X = nX, T = T, P = P, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                          dbaccessdic = dbaccessdic, Specie = fn, densityextrap = densityextrap,
-                                         rhoEGextrap = rhoEGextrap)
+                                         ThermoInUnit = self.ThermoInUnit, rhoEGextrap = rhoEGextrap)
                     else:
                         ss = calcRxnlogK(cpx_Ca = nCa, X = nX, T = T, P = P, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                          dbaccessdic = dbaccessdic, Specie = fn, densityextrap = densityextrap,
-                                         rhoEGextrap = rhoEGextrap)
+                                         ThermoInUnit = self.ThermoInUnit, rhoEGextrap = rhoEGextrap)
                     logK, Rxn = ss.logK, ss.Rxn
 
                     logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
@@ -4002,16 +4074,8 @@ class write_database():
             Rd = fclay.readlines()
             Rd = [j.replace('-','_').strip('\n') for j in Rd]
             for i in range(len(Rd)):
-                # if Rd[i].split(',')[0] in ['Berthierine_FeII', 'Berthierine_FeIII', 'Lizardite',
-                #                             'Cronstedtite', 'Mg-Cronstedtite', 'Greenalite', 'Hisingerite']:
-                #     layering = '7A'
-                # elif Rd[i].split(',')[0] in ['Clinochlore', 'Chamosite', 'Amesite']:
-                #     layering = '14A'
-                # else:
-                #     layering = '10A'
-
                 ss = calcRxnlogK(T = T, P = P, Specie = 'Clay', elem = Rd[i].split(','),
-                                 dbaccessdic = dbaccessdic, rhoEG = rhoEG, #group = layering,
+                                 dbaccessdic = dbaccessdic, ThermoInUnit = self.ThermoInUnit, rhoEG = rhoEG,
                                  rhoEGextrap = rhoEGextrap, densityextrap = densityextrap)
                 logK, Rxn = ss.logK, ss.Rxn
 
@@ -4047,7 +4111,7 @@ class write_database():
                     logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                        specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                        sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'minerals',
-                                       mineral_eos = mineral_eos, rhoEGextrap = rhoEGextrap).logK
+                                       heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
                     logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                     list_logk = ' '.join(str("%9.4f" % e) for e in list(logK))
                     info = "'%s'" % j + ' ' + "%7.3f" % (MV) + ' ' + str(species) + ' ' + \
@@ -4114,15 +4178,12 @@ class write_database():
 
         """
 
-        nCa_cpx = self.cpx_Ca;                     # dbBerman_dir = self.dbBerman_dir
+        nCa_cpx = self.cpx_Ca;
         solid_solution = self.solid_solution;      clay_thermo = self.clay_thermo
-        # dbaccess = self.dbaccess;                  sourcedb = self.sourcedb
         objdb = self.objdb;                        Dielec_method = self.Dielec_method
-        sourceformat = self.sourceformat;          mineral_eos = self.mineral_eos;
+        sourceformat = self.sourceformat;          heatcap_method = self.heatcap_method;
         densityextrap = self.densityextrap
 
-        # dbr = db_reader(dbaccess = dbaccess, dbBerman_dir = dbBerman_dir, sourcedb = sourcedb,
-        #                 sourceformat = sourceformat)
         dbaccessdic, sourcedic, specielist = self.dbr.dbaccessdic, self.dbr.sourcedic, self.dbr.specielist
         MWdic, chargedic = self.dbr.MWdic, self.dbr.chargedic
 
@@ -4196,7 +4257,7 @@ class write_database():
         fout = open(os.path.join(os.path.abspath("."),'output', objdb + '.dat'), 'w+') # + timestr
 
         Dielec_method = 'JN91' if Dielec_method is None else Dielec_method
-        mineral_eos = 'SUPCRT' if mineral_eos is None else mineral_eos
+        heatcap_method = 'SUPCRT' if heatcap_method is None else heatcap_method
 
         if Dielec_method.upper() == 'DEW':
             water = ZhangDuan(T = T, P = P)
@@ -4335,7 +4396,7 @@ class write_database():
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'aqueous',
-                                   rhoEGextrap = rhoEGextrap).logK
+                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit).logK
                 if densityextrap.lower() == 'yes':
                     logKnan_alert = True
                 else:
@@ -4380,11 +4441,11 @@ class write_database():
                     if fn != 'cpx':
                         ss = calcRxnlogK(X = nX, T = T, P = P, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                          dbaccessdic = dbaccessdic, Specie = fn, densityextrap = densityextrap,
-                                         rhoEGextrap = rhoEGextrap)
+                                         ThermoInUnit = self.ThermoInUnit, rhoEGextrap = rhoEGextrap)
                     else:
                         ss = calcRxnlogK(cpx_Ca = nCa, X = nX, T = T, P = P, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                          dbaccessdic = dbaccessdic, Specie = fn, densityextrap = densityextrap,
-                                         rhoEGextrap = rhoEGextrap)
+                                         ThermoInUnit = self.ThermoInUnit, rhoEGextrap = rhoEGextrap)
                     logK, Rxn = ss.logK, ss.Rxn
 
                     logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
@@ -4396,15 +4457,8 @@ class write_database():
             Rd = fclay.readlines()
             Rd = [j.replace('-','_').strip('\n') for j in Rd]
             for i in range(len(Rd)):
-                # if Rd[i].split(',')[0] in ['Berthierine_FeII', 'Berthierine_FeIII', 'Lizardite',
-                #                             'Cronstedtite', 'Mg-Cronstedtite', 'Greenalite', 'Hisingerite']:
-                #     layering = '7A'
-                # elif Rd[i].split(',')[0] in ['Clinochlore', 'Chamosite', 'Amesite']:
-                #     layering = '14A'
-                # else:
-                #     layering = '10A'
                 ss = calcRxnlogK(T = T, P = P, Specie = 'Clay', elem = Rd[i].split(','),
-                                 dbaccessdic = dbaccessdic, rhoEG = rhoEG, #group = layering,
+                                 dbaccessdic = dbaccessdic, ThermoInUnit = self.ThermoInUnit, rhoEG = rhoEG, #group = layering,
                                  rhoEGextrap = rhoEGextrap, densityextrap = densityextrap)
                 logK, Rxn = ss.logK, ss.Rxn
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
@@ -4451,7 +4505,7 @@ class write_database():
                     logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                        specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                        sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'minerals',
-                                       mineral_eos = mineral_eos, rhoEGextrap = rhoEGextrap).logK
+                                       heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
                     logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                     logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
                     list_logk = '  '.join(str("%9.4f" % e) for e in list(logK))
@@ -4501,7 +4555,7 @@ class write_database():
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'gases',
-                                   rhoEGextrap = rhoEGextrap).logK
+                                   heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                 logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
                 list_logk = '  '.join(str("%9.4f" % e) for e in list(logK))

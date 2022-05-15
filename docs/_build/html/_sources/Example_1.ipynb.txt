@@ -23,7 +23,7 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "1.0.4\n"
+      "1.0.6\n"
      ]
     }
    ],
@@ -49,7 +49,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
+   "execution_count": 2,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -66,7 +66,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 4,
+   "execution_count": 3,
    "metadata": {},
    "outputs": [
     {
@@ -108,30 +108,30 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 26,
+   "execution_count": 4,
    "metadata": {},
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "[1009.7358093  1005.83998998  991.70588249  967.43838404  927.6905422\n",
-      "  877.9652085   816.08878794  734.71208434]\n",
-      "[-56194.26867325 -56592.33889827 -57211.87993473 -58000.04190135\n",
-      " -59093.00868807 -60294.40876238 -61596.26593904 -62995.11966425]\n",
-      "[-68680.33499737 -68236.29564263 -67613.18053974 -66897.34619207\n",
-      " -65991.92792715 -65062.66635139 -64087.83220993 -63021.29280088]\n",
-      "[15.14005087 16.69550855 18.67153539 20.7005717  22.97720284 25.05223509\n",
+      "Density: [1009.73580931 1005.83998999  991.7058825   967.43838406  927.69054221\n",
+      "  877.9652082   816.08878805  734.71208475]\n",
+      "Gibbs Energy: [-56194.26867312 -56592.33889817 -57211.87993461 -58000.04190115\n",
+      " -59093.00868798 -60294.40876454 -61596.26593847 -62995.11966287]\n",
+      "Enthalpy: [-68680.33499723 -68236.29564253 -67613.18053963 -66897.34619192\n",
+      " -65991.9279271  -65062.66635227 -64087.83220987 -63021.29280159]\n",
+      "Entropy: [15.14005087 16.69550855 18.67153539 20.7005717  22.97720284 25.05223509\n",
       " 27.00976077 28.9549847 ]\n"
      ]
     }
    ],
    "source": [
     "water = iapws95(T = np.array([  0.01, 25, 60,  100, 150,  200,  250,  300]), P = 200)\n",
-    "print(water.rho)\n",
-    "print(water.G)\n",
-    "print(water.H)\n",
-    "print(water.S)"
+    "print('Density:', water.rho)\n",
+    "print('Gibbs Energy:', water.G)\n",
+    "print('Enthalpy:', water.H)\n",
+    "print('Entropy:', water.S)"
    ]
   },
   {
@@ -143,7 +143,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 27,
+   "execution_count": 5,
    "metadata": {},
    "outputs": [
     {
@@ -168,7 +168,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 28,
+   "execution_count": 6,
    "metadata": {},
    "outputs": [
     {
@@ -180,7 +180,7 @@
        " array([0.5403405 , 0.48797969]))"
       ]
      },
-     "execution_count": 28,
+     "execution_count": 6,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -192,7 +192,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 29,
+   "execution_count": 7,
    "metadata": {},
    "outputs": [
     {
@@ -204,7 +204,7 @@
        " array([0.34191435, 0.35183609]))"
       ]
      },
-     "execution_count": 29,
+     "execution_count": 7,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -218,12 +218,167 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "### Example: Calculate quartz properties"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "*With Maier-Kelly powerlaw*"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(array([-205319.43164294, -206728.65136032, -210399.56629393,\n",
+       "        -215044.47020067, -220518.04896025, -223492.57970966]),\n",
+       " array([12.34074489, 13.89377788, 16.14397572, 16.103911  , 16.491911  ,\n",
+       "        16.685911  ]))"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Temp = np.array([100, 200, 400, 600, 800, 900])\n",
+    "ps = db_reader()\n",
+    "sup = heatcap( T = Temp, P = 1, Species = 'Quartz', Species_ppt = ps.dbaccessdic['Quartz'], \n",
+    "             method = 'SUPCRT')\n",
+    "sup.dG, sup.dCp"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "*With Holland and Power's formulation*"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Duplicate found for species \"Fluorphlogopite\" in supcrtbl.dat\n",
+      "Duplicate found for species \"Arsenic\" in supcrtbl.dat\n",
+      "Duplicate found for species \"Arsenolite\" in supcrtbl.dat\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "(array([-205491.44716714, -206900.38310661, -210575.79120014,\n",
+       "        -215228.32290096, -220682.44526921, -223649.25812766]),\n",
+       " array([12.4075447 , 13.99685509, 16.16426364, 16.05341748, 16.6660167 ,\n",
+       "        16.90252028]))"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Temp = np.array([100, 200, 400, 600, 800, 900])\n",
+    "pshp = db_reader(dbHP_dir = './database/supcrtbl.dat')\n",
+    "hp = heatcap( T = Temp, P = 10, Species = 'Quartz', Species_ppt = pshp.dbaccessdic['Quartz'], \n",
+    "             method = 'HP11')\n",
+    "hp.dG, hp.dCp"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "*With Berman's formulation*"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Duplicate found for species \"Cordierite\" in Berman.dat\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "(array([-205498.95550508, -206907.11144614, -210575.29239247,\n",
+       "        -215221.44900321, -220654.77893829, -223612.45803826]),\n",
+       " array([12.323813  , 13.87414095, 16.29997608, 16.24449507, 16.72930639,\n",
+       "        16.90352372]))"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Temp = np.array([100, 200, 400, 600, 800, 900])\n",
+    "ps = db_reader(dbBerman_dir = './database/Berman.dat')\n",
+    "bm = heatcap( T = Temp, P = 1, Species = 'Quartz', Species_ppt = ps.dbaccessdic['Quartz'], \n",
+    "             method = 'berman88')\n",
+    "bm.dG, bm.dCp"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 2 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "import matplotlib.pyplot as plt\n",
+    "fig, (ax1, ax2) = plt.subplots(1, 2)\n",
+    "ax1.plot(Temp, sup.dG*4.182/1e3, 'r', Temp, hp.dG*4.182/1e3, 'b', Temp, bm.dG*4.182/1e3, 'k')\n",
+    "ax1.set_xlabel('Temperature [°C]'); ax1.set_ylabel('Gibbs Energy [kJ/mol] ')\n",
+    "plt.legend(['SUPCRT', 'HP11', 'Berman88'])\n",
+    "ax2.plot(Temp, hp.dG*4.182/1e3 - sup.dG*4.182/1e3, 'r', Temp, bm.dG*4.182/1e3 - sup.dG*4.182/1e3, 'b')\n",
+    "ax2.set_xlabel('Temperature [°C]'); ax2.set_ylabel('Delta Gibbs Energy [kJ/mol] ')\n",
+    "plt.legend(['SUPCRT - HP11', 'SUPCRT - Berman88'])\n",
+    "fig.tight_layout()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
     "### Example: Calculate olivine solid solutions"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 30,
+   "execution_count": 12,
    "metadata": {},
    "outputs": [
     {
@@ -253,7 +408,7 @@
        "  'elements': ['1.7000', 'Mg', '0.3000', 'Fe', '1.0000', 'Si', '4.0000', 'O']})"
       ]
      },
-     "execution_count": 30,
+     "execution_count": 12,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -261,6 +416,94 @@
    "source": [
     "calc = calcRxnlogK( X = 0.85,T = np.array([300, 400, 450]), P = np.array([200, 200, 200]),\n",
     "                   Specie = 'olivine', dbaccessdic = ps.dbaccessdic, densityextrap = True)\n",
+    "calc.logK, calc.Rxn"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Example: Calculate glauconite mineral properties"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(array([12.25870693,  9.57522298,  8.38766478,  7.29038298,  5.33107899,\n",
+       "         3.63394016,  2.14713934, -0.90587825]),\n",
+       " {'type': 'Smectite',\n",
+       "  'name': 'Glauconite',\n",
+       "  'formula': 'K0.68Na0.21Fe0.08Ca0.04Mg0.34Al0.69FeIII1.18Si3.654O10(OH)2',\n",
+       "  'MW': 426.25271512,\n",
+       "  'min': ['K0.68Na0.21Fe0.08Ca0.04Mg0.34Al0.69FeIII1.18Si3.654O10(OH)2',\n",
+       "   'B2015, B2021',\n",
+       "   -1169917.235355269,\n",
+       "   -1253395.3186848022,\n",
+       "   90.78782849872155,\n",
+       "   141.34069593680297,\n",
+       "   77.70879420984171,\n",
+       "   83.36446524554509,\n",
+       "   -17.841879278113826],\n",
+       "  'spec': ['H+',\n",
+       "   'K+',\n",
+       "   'Na+',\n",
+       "   'Fe++',\n",
+       "   'Ca++',\n",
+       "   'Mg++',\n",
+       "   'Al+++',\n",
+       "   'Fe+++',\n",
+       "   'SiO2(aq)',\n",
+       "   'H2O'],\n",
+       "  'coeff': [-7.381,\n",
+       "   0.679,\n",
+       "   0.212,\n",
+       "   0.079,\n",
+       "   0.0359,\n",
+       "   0.337,\n",
+       "   0.687,\n",
+       "   1.175,\n",
+       "   3.654,\n",
+       "   4.692],\n",
+       "  'nSpec': 10,\n",
+       "  'V': 141.34069593680297,\n",
+       "  'dG': -4894.933712726446,\n",
+       "  'dHf': -5244.206013377212,\n",
+       "  'Cp': 345.17439398884756,\n",
+       "  'source': 'B2015, B2021',\n",
+       "  'elements': ['0.0359',\n",
+       "   'Ca',\n",
+       "   '0.6790',\n",
+       "   'K',\n",
+       "   '0.2120',\n",
+       "   'Na',\n",
+       "   '1.2540',\n",
+       "   'Fe',\n",
+       "   '0.3370',\n",
+       "   'Mg',\n",
+       "   '0.6870',\n",
+       "   'Al',\n",
+       "   '3.6540',\n",
+       "   'Si',\n",
+       "   '2.0000',\n",
+       "   'H',\n",
+       "   '12.0000',\n",
+       "   'O']})"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Temp = np.array([0.01, 20, 30, 40, 60, 80, 100, 150])\n",
+    "calc = calcRxnlogK(T = Temp, P = 'T', Specie = 'clay', dbaccessdic = ps.dbaccessdic, densityextrap = True,\n",
+    "                   elem = ['Glauconite', '3.654', '.687', '1.175', '0.079', '0.337', '0.679', '0.212', '0.0359', '0'])\n",
     "calc.logK, calc.Rxn"
    ]
   },
@@ -289,31 +532,23 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 31,
+   "execution_count": 14,
    "metadata": {},
    "outputs": [
     {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\scipy\\optimize\\minpack.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the \n",
-      "  improvement from the last ten iterations.\n",
-      "  warnings.warn(msg, RuntimeWarning)\n"
-     ]
-    },
-    {
      "data": {
       "text/plain": [
-       "array([-9.61842043, -8.38750599, -6.29123074, -4.94288369, -4.26348089,\n",
-       "       -3.81869681, -3.38030713, -2.73438817])"
+       "array([-9.61842122, -8.38742387, -7.21969753, -4.97772897, -4.29319566,\n",
+       "       -3.81890541, -3.32234015, -2.52289322])"
       ]
      },
-     "execution_count": 31,
+     "execution_count": 14,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
+    "ps = db_reader(sourcedb = './database/thermo.2021.dat', sourceformat = 'gwb')\n",
     "ps.sourcedic['Pyrite'] = ['', 4, '4', 'H2S(aq)', '1', 'Magnetite',  '-2', 'Pyrrhotite', '-4', 'H2O']\n",
     "Temp = np.array([300.0000, 325, 350.0000, 400.0000, 415, 425.0000, 435, 450.0000])\n",
     "Press = 500*np.ones(np.size(Temp))\n",
@@ -331,7 +566,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 9,
+   "execution_count": 15,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -350,14 +585,14 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 10,
+   "execution_count": 16,
    "metadata": {},
    "outputs": [
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\pygcc\\pygcc_utils.py:2266: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied\n",
+      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\pygcc\\pygcc_utils.py:2331: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied\n",
       "  warnings.warn('Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied')\n"
      ]
     },
@@ -366,16 +601,16 @@
      "output_type": "stream",
      "text": [
       "Success, your new GWB database is ready for download\n",
-      "Wall time: 9.04 s\n"
+      "Wall time: 6.01 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x1f87e69eb80>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e46b29d0>"
       ]
      },
-     "execution_count": 10,
+     "execution_count": 16,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -395,7 +630,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 11,
+   "execution_count": 17,
    "metadata": {},
    "outputs": [
     {
@@ -403,16 +638,16 @@
      "output_type": "stream",
      "text": [
       "Success, your new GWB database is ready for download\n",
-      "Wall time: 7.27 s\n"
+      "Wall time: 4.9 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x1f87e633e80>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e48cf970>"
       ]
      },
-     "execution_count": 11,
+     "execution_count": 17,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -427,12 +662,12 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "write GWB using Jan2020 formatted sourced database"
+    "write GWB using Jan2020/Apr20 formatted sourced database"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 12,
+   "execution_count": 18,
    "metadata": {},
    "outputs": [
     {
@@ -440,16 +675,16 @@
      "output_type": "stream",
      "text": [
       "Success, your new GWB database is ready for download\n",
-      "Wall time: 8.11 s\n"
+      "Wall time: 5.98 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x1f87e69eeb0>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e4963ee0>"
       ]
      },
-     "execution_count": 12,
+     "execution_count": 18,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -464,12 +699,12 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "write GWB using Jan2020 formatted sourced database with logK as polynomial coefficients, using Tmax and Tmin"
+    "write GWB using Jan2020/Apr20 formatted sourced database with logK as polynomial coefficients, using Tmax and Tmin"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 13,
+   "execution_count": 19,
    "metadata": {},
    "outputs": [
     {
@@ -477,24 +712,63 @@
      "output_type": "stream",
      "text": [
       "Success, your new GWB database is ready for download\n",
-      "Wall time: 3min 7s\n"
+      "Wall time: 4.97 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x1f800360fa0>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e4b072b0>"
       ]
      },
-     "execution_count": 13,
+     "execution_count": 19,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
     "%%time\n",
-    "#write_database(T = [0, 450], P = 200, cpx_Ca = nCa, solid_solution = 'Yes', clay_thermo = 'Yes',\n",
-    "#                logK_form = 'polycoeffs', sourcedb =  './database/thermo.com.tdat', dataset = 'GWB')"
+    "# Temp = np.array([  0.01, 25, 60,  100, 150,  200,  250,  300])\n",
+    "write_database(T = [0, 300], P = 150, clay_thermo = True, logK_form = 'polycoeffs', \n",
+    "               sourcedb =  './database/thermo.com.tdat', dataset = 'GWB')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "write GWB using Mar21 formatted sourced database with logK as polynomial coefficients"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Success, your new GWB database is ready for download\n",
+      "Wall time: 4.83 s\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "<pygcc.pygcc_utils.write_database at 0x1f7e4b7ceb0>"
+      ]
+     },
+     "execution_count": 20,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "%%time\n",
+    "# Temp = np.array([  0.01, 25, 60,  100, 150,  200,  250,  300])\n",
+    "write_database(T = [0, 300], P = 145, clay_thermo = True, logK_form = 'polycoeffs', \n",
+    "               sourcedb =  './database/thermo_latest.tdat', dataset = 'GWB')"
    ]
   },
   {
@@ -506,7 +780,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
+   "execution_count": 21,
    "metadata": {},
    "outputs": [
     {
@@ -523,32 +797,18 @@
       "Duplicate found for species \"Sc(Glut)+(aq)\" in slop07.dat\n",
       "Duplicate found for species \"AMP2-\" in slop07.dat\n",
       "Duplicate found for species \"HAMP-\" in slop07.dat\n",
-      "Duplicate found for species \"+H2AMP-\" in slop07.dat\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\pygcc\\pygcc_utils.py:2266: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied\n",
-      "  warnings.warn('Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied')\n"
-     ]
-    },
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
+      "Duplicate found for species \"+H2AMP-\" in slop07.dat\n",
       "Success, your new GWB database is ready for download\n",
-      "Wall time: 7.53 s\n"
+      "Wall time: 5.3 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x25b8a34a820>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e58d8fd0>"
       ]
      },
-     "execution_count": 3,
+     "execution_count": 21,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -569,7 +829,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 17,
+   "execution_count": 22,
    "metadata": {},
    "outputs": [
     {
@@ -589,16 +849,16 @@
       "Duplicate found for species \"+H2AMP-\" in slop07.dat\n",
       "Duplicate found for species \"Cordierite\" in berman.dat\n",
       "Success, your new GWB database is ready for download\n",
-      "Wall time: 4.5 s\n"
+      "Wall time: 3.39 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x25b917b1700>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e64e0fd0>"
       ]
      },
-     "execution_count": 17,
+     "execution_count": 22,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -606,8 +866,47 @@
    "source": [
     "%%time\n",
     "write_database(T = [0, 340], P = 150, Dielec_method = 'FGL97',  dbaccess = './database/slop07.dat',\n",
-    "                dbBerman_dir = './database/berman.dat', dataset = 'GWB',\n",
-    "                mineral_eos = 'Berman88')"
+    "                dbBerman_dir = './database/berman.dat', dataset = 'GWB')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "write GWB using Mar21 formatted sourced database and direct-access database (speq21 with HP mineral data) and DEW dielectric constant"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Duplicate found for species \"Fluorphlogopite\" in supcrtbl.dat\n",
+      "Duplicate found for species \"Arsenic\" in supcrtbl.dat\n",
+      "Duplicate found for species \"Arsenolite\" in supcrtbl.dat\n",
+      "Success, your new GWB database is ready for download\n",
+      "Wall time: 3.5 s\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "<pygcc.pygcc_utils.write_database at 0x1f7e5648250>"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "%%time\n",
+    "write_database(T = [0, 275], P = 1100, Dielec_method = 'DEW',  dbaccess = './database/speq21.dat',\n",
+    "                dbHP_dir = './database/supcrtbl.dat', sourcedb =  './database/thermo_latest.tdat', dataset = 'GWB')"
    ]
   },
   {
@@ -619,7 +918,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 16,
+   "execution_count": 24,
    "metadata": {},
    "outputs": [
     {
@@ -627,16 +926,16 @@
      "output_type": "stream",
      "text": [
       "Success, your new GWB database is ready for download\n",
-      "Wall time: 1.53 s\n"
+      "Wall time: 1.03 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x1f800e7d850>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e56486a0>"
       ]
      },
-     "execution_count": 16,
+     "execution_count": 24,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -655,7 +954,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 38,
+   "execution_count": 25,
    "metadata": {},
    "outputs": [
     {
@@ -663,16 +962,16 @@
      "output_type": "stream",
      "text": [
       "Success, your new GWB database is ready for download\n",
-      "Wall time: 2.77 s\n"
+      "Wall time: 1.13 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x25b927b7040>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e66748b0>"
       ]
      },
-     "execution_count": 38,
+     "execution_count": 25,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -699,14 +998,14 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 18,
+   "execution_count": 26,
    "metadata": {},
    "outputs": [
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\pygcc\\pygcc_utils.py:3327: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied\n",
+      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\pygcc\\pygcc_utils.py:3409: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied\n",
       "  warnings.warn('Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied')\n"
      ]
     },
@@ -715,16 +1014,16 @@
      "output_type": "stream",
      "text": [
       "Success, your new EQ3/6 database is ready for download\n",
-      "Wall time: 9.14 s\n"
+      "Wall time: 6.38 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x1f802a7f2e0>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e6772e80>"
       ]
      },
-     "execution_count": 18,
+     "execution_count": 26,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -744,7 +1043,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 37,
+   "execution_count": 27,
    "metadata": {},
    "outputs": [
     {
@@ -752,16 +1051,16 @@
      "output_type": "stream",
      "text": [
       "Success, your new EQ3/6 database is ready for download\n",
-      "Wall time: 8.9 s\n"
+      "Wall time: 5.98 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x25b921fd130>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e6f913a0>"
       ]
      },
-     "execution_count": 37,
+     "execution_count": 27,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -781,7 +1080,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 20,
+   "execution_count": 28,
    "metadata": {},
    "outputs": [
     {
@@ -789,16 +1088,16 @@
      "output_type": "stream",
      "text": [
       "Success, your new EQ3/6 database is ready for download\n",
-      "Wall time: 1.66 s\n"
+      "Wall time: 1.03 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x1f87e62daf0>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7def668b0>"
       ]
      },
-     "execution_count": 20,
+     "execution_count": 28,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -817,7 +1116,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 9,
+   "execution_count": 29,
    "metadata": {},
    "outputs": [
     {
@@ -825,16 +1124,16 @@
      "output_type": "stream",
      "text": [
       "Success, your new EQ3/6 database is ready for download\n",
-      "Wall time: 9.4 s\n"
+      "Wall time: 5.92 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x25b8e7a0c40>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e6674c10>"
       ]
      },
-     "execution_count": 9,
+     "execution_count": 29,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -854,7 +1153,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 29,
+   "execution_count": 30,
    "metadata": {},
    "outputs": [
     {
@@ -862,16 +1161,16 @@
      "output_type": "stream",
      "text": [
       "Success, your new EQ3/6 database is ready for download\n",
-      "Wall time: 4.88 s\n"
+      "Wall time: 3.51 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x1f80155da00>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e6674ac0>"
       ]
      },
-     "execution_count": 29,
+     "execution_count": 30,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -899,14 +1198,14 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 24,
+   "execution_count": 31,
    "metadata": {},
    "outputs": [
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\pygcc\\pygcc_utils.py:4365: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied\n",
+      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\pygcc\\pygcc_utils.py:4426: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied\n",
       "  warnings.warn('Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied')\n"
      ]
     },
@@ -915,16 +1214,16 @@
      "output_type": "stream",
      "text": [
       "Success, your new ToughReact database is ready for download\n",
-      "Wall time: 9.2 s\n"
+      "Wall time: 6.51 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x1f87e6934f0>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e8015820>"
       ]
      },
-     "execution_count": 24,
+     "execution_count": 31,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -944,7 +1243,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 15,
+   "execution_count": 32,
    "metadata": {},
    "outputs": [
     {
@@ -952,16 +1251,16 @@
      "output_type": "stream",
      "text": [
       "Success, your new ToughReact database is ready for download\n",
-      "Wall time: 4.33 s\n"
+      "Wall time: 3.33 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x25b90ce0d90>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e8257100>"
       ]
      },
-     "execution_count": 15,
+     "execution_count": 32,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -981,7 +1280,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 11,
+   "execution_count": 33,
    "metadata": {},
    "outputs": [
     {
@@ -989,16 +1288,16 @@
      "output_type": "stream",
      "text": [
       "Success, your new ToughReact database is ready for download\n",
-      "Wall time: 1.77 s\n"
+      "Wall time: 1.24 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x25b8da52190>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e88e4fd0>"
       ]
      },
-     "execution_count": 11,
+     "execution_count": 33,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -1025,14 +1324,14 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 30,
+   "execution_count": 34,
    "metadata": {},
    "outputs": [
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\pygcc\\pygcc_utils.py:3938: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied\n",
+      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\pygcc\\pygcc_utils.py:4010: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied\n",
       "  warnings.warn('Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied')\n"
      ]
     },
@@ -1041,16 +1340,16 @@
      "output_type": "stream",
      "text": [
       "Success, your new Pflotran database is ready for download\n",
-      "Wall time: 5.47 s\n"
+      "Wall time: 3.95 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x1f800558f70>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e8265eb0>"
       ]
      },
-     "execution_count": 30,
+     "execution_count": 34,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -1070,32 +1369,24 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 13,
+   "execution_count": 35,
    "metadata": {},
    "outputs": [
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\pygcc\\pygcc_utils.py:3938: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied\n",
-      "  warnings.warn('Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied')\n"
-     ]
-    },
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
       "Success, your new Pflotran database is ready for download\n",
-      "Wall time: 7.56 s\n"
+      "Wall time: 5.43 s\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<pygcc.pygcc_utils.write_database at 0x25b8d21c610>"
+       "<pygcc.pygcc_utils.write_database at 0x1f7e82ab3d0>"
       ]
      },
-     "execution_count": 13,
+     "execution_count": 35,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -1115,7 +1406,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 32,
+   "execution_count": 36,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -1129,7 +1420,7 @@
     "\n",
     "logKRxn = calcRxnlogK(T = T, P = P, Specie = 'Clay', dbaccessdic = db_dic,\n",
     "                        elem = ['Clinochlore', '3', '2', '0', '0', '5', '0', '0', '0', '0'],\n",
-    "                        densityextrap = True,  group = '14A')\n",
+    "                        densityextrap = True)\n",
     "logK, Rxn = logKRxn.logK, logKRxn.Rxn\n",
     "\n",
     "# output in EQ36 format\n",
@@ -1152,7 +1443,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 33,
+   "execution_count": 37,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -1183,14 +1474,77 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "### Example: Calculate new reaction equilibrium constants and export to specific formats"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#%% specify the direct access thermodynamic database\n",
+    "db_dic = db_reader(dbaccess = './database/speq21.dat', sourcedb =  './database/thermo_latest.tdat', sourceformat = 'GWB')\n",
+    "Temp = np.array([25, 80, 140, 190, 240, 300, 350, 400])\n",
+    "TK_range = Temp + 273.15\n",
+    "\n",
+    "folder_to_save = 'output'\n",
+    "if os.path.exists(os.path.join(os.getcwd(), folder_to_save)) == False:\n",
+    "    os.makedirs(os.path.join(os.getcwd(), folder_to_save)) \n",
+    "fid = open('./output/logK_05.txt', 'w')\n",
+    "\n",
+    "db_dic.sourcedic['HWO4-'] = ['HWO4-', 2, '1.000', 'H+', '1.000', 'WO4--']\n",
+    "\n",
+    "logK = calcRxnlogK(T = Temp, P = 250, Specie = 'HWO4-', dbaccessdic = db_dic.dbaccessdic, densityextrap = True,\n",
+    "                     sourcedic = db_dic.sourcedic, specielist = db_dic.specielist, Specie_class = 'aqueous').logK\n",
+    "\n",
+    "Rxn = {}\n",
+    "Rxn['type'] = 'tungsten'\n",
+    "Rxn['name'] = 'HWO4-'\n",
+    "Rxn['formula'] = ps.dbaccessdic['HWO4-'][0]\n",
+    "Rxn['MW'] = calc_elem_count_molewt(ps.dbaccessdic['HWO4-'][0])[1]\n",
+    "Rxn['min'] = ps.dbaccessdic['HWO4-']\n",
+    "Rxn['V'] = Rxn['min'][5]\n",
+    "Rxn['source'] = Rxn['min'][1]\n",
+    "Rxn['spec'] = ['H+', 'WO4--']\n",
+    "Rxn['coeff'] = [1.000, 1.000]\n",
+    "Rxn['nSpec'] = len(Rxn['coeff'])\n",
+    "d = calc_elem_count_molewt(ps.dbaccessdic['HWO4-'][0])[0]\n",
+    "Rxn['elements'] = [item for sublist in [['%s' % v,k] for k,v in d.items()] for item in sublist]\n",
+    "\n",
+    "# output in EQ36 format\n",
+    "outputfmt(fid, logK, Rxn, dataset = 'EQ36')\n",
+    "# output in GWB format\n",
+    "outputfmt(fid, logK, Rxn, *TK_range, logK_form = 'polycoeffs', dataset = 'GWB')\n",
+    "# output in Pflotran format\n",
+    "outputfmt(fid, logK, Rxn, dataset = 'Pflotran')\n",
+    "# output in ToughReact format\n",
+    "outputfmt(fid, logK, Rxn, dataset = 'ToughReact')\n",
+    "fid.close()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
     "### Example: Calculate CO$_2$ activity and molality"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 34,
+   "execution_count": 39,
    "metadata": {},
-   "outputs": [],
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "C:\\ProgramData\\Anaconda3\\lib\\site-packages\\scipy\\optimize\\minpack.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the \n",
+      "  improvement from the last ten iterations.\n",
+      "  warnings.warn(msg, RuntimeWarning)\n"
+     ]
+    }
+   ],
    "source": [
     "T = np.array([  0.010,   25 ,  60,  100, 150,  175,  200,  250])\n",
     "P = 250*np.ones(np.size(T))\n",
@@ -1209,7 +1563,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 35,
+   "execution_count": 40,
    "metadata": {},
    "outputs": [
     {
@@ -1294,72 +1648,9 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 36,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Fluid Temperature [C]:  0.01\n",
-      "Fluid Pressure [bar]:  250.0\n",
-      "Water activity:  0.983412433698784\n",
-      "Water osmotic coefficient:  0.9284718584433971\n",
-      "NaCl mean activity coefficient:  0.6926294758605518\n",
-      "\n",
-      "\n",
-      "Fluid Temperature [C]:  25.0\n",
-      "Fluid Pressure [bar]:  250.0\n",
-      "Water activity:  0.9834694019509086\n",
-      "Water osmotic coefficient:  0.9252563947920361\n",
-      "NaCl mean activity coefficient:  0.6830156908317317\n",
-      "\n",
-      "\n",
-      "Fluid Temperature [C]:  60.0\n",
-      "Fluid Pressure [bar]:  250.0\n",
-      "Water activity:  0.9834545247516545\n",
-      "Water osmotic coefficient:  0.9260960917803105\n",
-      "NaCl mean activity coefficient:  0.674127423413536\n",
-      "\n",
-      "\n",
-      "Fluid Temperature [C]:  100.0\n",
-      "Fluid Pressure [bar]:  250.0\n",
-      "Water activity:  0.9836228186833588\n",
-      "Water osmotic coefficient:  0.9165980079014355\n",
-      "NaCl mean activity coefficient:  0.6470880031602849\n",
-      "\n",
-      "\n",
-      "Fluid Temperature [C]:  150.0\n",
-      "Fluid Pressure [bar]:  250.0\n",
-      "Water activity:  0.9839613772269228\n",
-      "Water osmotic coefficient:  0.8974955418879642\n",
-      "NaCl mean activity coefficient:  0.6014993581954272\n",
-      "\n",
-      "\n",
-      "Fluid Temperature [C]:  175.0\n",
-      "Fluid Pressure [bar]:  250.0\n",
-      "Water activity:  0.9841773024634842\n",
-      "Water osmotic coefficient:  0.8853158391631066\n",
-      "NaCl mean activity coefficient:  0.5748511235270349\n",
-      "\n",
-      "\n",
-      "Fluid Temperature [C]:  200.0\n",
-      "Fluid Pressure [bar]:  250.0\n",
-      "Water activity:  0.9843727067517636\n",
-      "Water osmotic coefficient:  0.8742959654168483\n",
-      "NaCl mean activity coefficient:  0.5490393132857664\n",
-      "\n",
-      "\n",
-      "Fluid Temperature [C]:  250.0\n",
-      "Fluid Pressure [bar]:  250.0\n",
-      "Water activity:  0.9850872802771495\n",
-      "Water osmotic coefficient:  0.8340160306808939\n",
-      "NaCl mean activity coefficient:  0.47686249155879995\n",
-      "\n",
-      "\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "#%% Calculate Water activity, osmotic coefficient and NaCl mean activity coefficient at an ionic strength of 0.5M\n",
     "aw, phi, mean_act = Helgeson_activity(T, P, 0.5, Dielec_method = 'JN91')\n",
@@ -1375,7 +1666,7 @@
  ],
  "metadata": {
   "kernelspec": {
-   "display_name": "Python 3",
+   "display_name": "Python 3 (ipykernel)",
    "language": "python",
    "name": "python3"
   },
@@ -1389,7 +1680,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.8.5"
+   "version": "3.8.8"
   }
  },
  "nbformat": 4,

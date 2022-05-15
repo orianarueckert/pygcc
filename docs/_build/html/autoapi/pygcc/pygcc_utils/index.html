@@ -574,17 +574,20 @@ Dielec_method :  specify either ‘FGL97’ or ‘JN91’ or ‘DEW’ as the me
 <li><p><strong>T</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [°C]</p></li>
 <li><p><strong>P</strong> (<em>float</em><em>, </em><em>vector</em>) – Pressure [bar]</p></li>
 <li><p><strong>Specie</strong> (<em>string</em>) – specify the species for logK calculation, either the Product species of any reaction or solid solutions or clay like ‘AnAb’ or ‘AbOr’ or ‘FoFa’ or ‘EnFe’ or ‘DiHedEnFe’ or ‘clay’</p></li>
-<li><p><strong>Specie_class</strong> (<em>string</em>) – specify the class of species  like ‘aqueous’, ‘minerals’, ‘liquids’, or ‘gases’</p></li>
+<li><p><strong>Specie_class</strong> (<em>string</em><em>, </em><em>optional</em>) – specify the class of species  like ‘aqueous’, ‘minerals’, ‘liquids’, or ‘gases’</p></li>
 <li><p><strong>elem</strong> (<em>list</em>) – list containing nine parameters with clay names and elements compositions with the following format [‘Montmorillonite_Lc_MgK’, ‘Si’, ‘Al’, ‘FeIII’, ‘FeII’, ‘Mg’, ‘K’, ‘Na’, ‘Ca’, ‘Li’]</p></li>
 <li><p><strong>dbaccessdic</strong> (<em>dict</em>) – direct-acess database dictionary</p></li>
 <li><p><strong>rhoEGextrap</strong> (<em>dict</em>) – dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy for density region 350-550kg/m3</p></li>
 <li><p><strong>group</strong> (<em>string</em>) – specify the structural layering of the phyllosilicate, for layers composed of  <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">tetrahedral</span> <span class="pre">+</span> <span class="pre">1</span> <span class="pre">octahedral</span> <span class="pre">sheet</span> <span class="pre">(1:1</span> <span class="pre">layer)</span></code> - specify <code class="docutils literal notranslate"><span class="pre">'7A'</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">tetrahedral</span> <span class="pre">+</span> <span class="pre">1</span> <span class="pre">octahedral</span> <span class="pre">sheet</span> <span class="pre">(2:1</span> <span class="pre">layer)</span></code> - specify <code class="docutils literal notranslate"><span class="pre">'10A'</span></code>, or  the latter with <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">brucitic</span> <span class="pre">sheet</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">interlayer</span> <span class="pre">(2:1:1</span> <span class="pre">layer)</span></code>  - specify <code class="docutils literal notranslate"><span class="pre">'14A'</span></code>  (optional), if not specified, default is ‘10A’ for smectites, micas, et cetera</p></li>
+<li><p><strong>ClayMintype</strong> (<em>string</em>) – specify either ‘Smectite’ or ‘Chlorite’ or ‘Mica’ as the clay type, if not specified default - ‘Smectites’</p></li>
 <li><p><strong>X</strong> (<em>float</em>) – volume fractions of any (Anorthite, Albite, Forsterite, Enstatite) or mole fraction of Mg</p></li>
 <li><p><strong>cpx_Ca</strong> (<em>float</em>) – number of moles of Ca in formula unit (=1 for Di, Hed), must be greater than zero</p></li>
 <li><p><strong>sourcedic</strong> (<em>dict</em>) – source database reactions dictionary</p></li>
-<li><p><strong>specielist</strong> (<em>list of list</em>) – source database species grouped into categories [element, basis, redox, aqueous, minerals, gases, oxides]</p></li>
+<li><p><strong>specielist</strong> (<em>list of list</em><em>, </em><em>optional</em>) – source database species grouped into categories [element, basis, redox, aqueous, minerals, gases, oxides]</p></li>
 <li><p><strong>Dielec_method</strong> (<em>string</em>) – specify either ‘FGL97’ or ‘JN91’ or ‘DEW’ as the method to calculate dielectric constant, default is ‘JN91’</p></li>
-<li><p><strong>mineral_eos</strong> (<em>string</em>) – specify either ‘SUPCRT’ or ‘Berman88’ the method to calculate thermodynamic properties of any mineral, default is ‘SUPCRT’</p></li>
+<li><p><strong>heatcap_method</strong> (<em>string</em>) – specify either ‘SUPCRT’ or ‘Berman88’ or ‘HP11’ or ‘HF76’ as the method to calculate thermodynamic properties of any mineral or gas, default is ‘SUPCRT’</p></li>
+<li><p><strong>ThermoInUnit</strong> (<em>string</em>) – specify either ‘cal’ or ‘KJ’ as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - ‘cal’</p></li>
+<li><p><strong>Al_Si</strong> (<em>string</em>) – specify either ‘pygcc’ or ‘Arnórsson_Stefánsson’ as the input to express Al and Si species in solid solution (optional), ‘Arnórsson_Stefánsson’ expresses them as ‘Al(OH)4-’ and ‘H4SiO4(aq)’, respectively while pygcc uses ‘Al3+’ and ‘SiO2(aq)’, respectively if not specified default - ‘pygcc’</p></li>
 <li><p><strong>sourceformat</strong> (<em>string</em>) – specify the source database format, either ‘GWB’ or ‘EQ36’</p></li>
 <li><p><strong>densityextrap</strong> (<em>float</em><em>, </em><em>vector</em>) – specify the extrapolation option for density-logK, ‘Yes’/True or ‘No’/False</p></li>
 </ul>
@@ -711,7 +714,7 @@ condition not on steam saturation curve is as follows. Default method is ‘JN91
 <li><p><strong>specielist</strong> (<em>source database species grouped into</em>) – [element, basis, redox, aqueous, minerals, gases, oxides]</p></li>
 <li><p><strong>Dielec_method</strong> (<em>specify either 'FGL97'</em><em> or </em><em>'JN91'</em><em> or </em><em>'DEW' as the method</em>) – to calculate dielectric constant, default is ‘JN91’</p></li>
 <li><p><strong>sourceformat</strong> (<em>source database format</em><em>, </em><em>either 'GWB'</em><em> or </em><em>'EQ36'</em><em>, </em><em>default is 'GWB'</em>) – </p></li>
-<li><p><strong>mineral_eos</strong> (<em>specify either 'SUPCRT'</em><em> or </em><em>'Berman88' the method to calculate thermodynamic properties</em>) – of any mineral, default is ‘SUPCRT’</p></li>
+<li><p><strong>heatcap_method</strong> (<em>specify either 'SUPCRT'</em><em> or </em><em>'Berman88'</em><em> or </em><em>'HP11'</em><em> or </em><em>'HF76' as the method to calculate thermodynamic properties</em>) – of any mineral, default is ‘SUPCRT’</p></li>
 <li><p><strong>rhoEG</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>,</em>) – dielectric factor (E) and Gibbs Energy  (optional)</p></li>
 </ul>
 </dd>
@@ -782,7 +785,7 @@ condition not on steam saturation curve is as follows. Default method is ‘JN91
 <li><p><strong>fid</strong> (<em>string</em>) – file ID</p></li>
 <li><p><strong>logK</strong> (<em>float</em><em>, </em><em>vector</em>) – logarithmic K value(s)</p></li>
 <li><p><strong>Rxn</strong> (<em>dict</em>) – dictionary of reaction thermodynamic properties</p></li>
-<li><p><strong>T</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature value(s), optional</p></li>
+<li><p><strong>T</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature value(s), optional, required when ‘polycoeffs’ is specified for logK_form</p></li>
 <li><p><strong>dataset</strong> (<em>string</em>) – specify the dataset format, either ‘GWB’, ‘EQ36’, ‘Pflotran’ or ‘ToughReact’</p></li>
 <li><p><strong>logK_form</strong> (<em>string</em>) – specify the format of logK either as a set of eight values one for each of the dataset’s principal temperatures, or blocks of polynomial coefficients,  [values, polycoeffs], default is ‘a set of eight values’ (optional)</p></li>
 </ul>
@@ -819,13 +822,16 @@ a new folder called “output”</p>
 <li><p><strong>densityextrap</strong> (<em>float</em><em>, </em><em>vector</em>) – specify the utilization of density extrapolation [Yes/True or No/False], default is ‘Yes’</p></li>
 <li><p><strong>dbaccess</strong> (<em>string</em>) – direct-access database filename and location  (optional)</p></li>
 <li><p><strong>dbBerman_dir</strong> (<em>string</em>) – filename and location of the Berman mineral database (optional)</p></li>
+<li><p><strong>dbHP_dir</strong> (<em>string</em>) – filename and location of the supcrtbl mineral and gas database, optional</p></li>
+<li><p><strong>dbaccessformat</strong> (<em>string</em><em>, </em><em>optional</em>) – specify the direct-access/sequential-access database format, either ‘speq’ or ‘supcrtbl’, default is ‘speq’</p></li>
 <li><p><strong>sourcedb</strong> (<em>string</em>) – source database filename and location  (optional)</p></li>
+<li><p><strong>sourceformat</strong> (<em>string</em>) – source database format, either ‘GWB’ or ‘EQ36’, default is ‘GWB’</p></li>
 <li><p><strong>objdb</strong> (<em>string</em>) – new database filename and location    (optional)</p></li>
 <li><p><strong>co2actmodel</strong> (<em>string</em>) – co2 activity model equation [Duan_Sun or Drummond]  (optional), if not specified, default is ‘Drummond’</p></li>
 <li><p><strong>Dielec_method</strong> (<em>string</em>) – specify either ‘FGL97’ or ‘JN91’ or ‘DEW’ as the method to calculate dielectric constant, default is ‘JN91’   (optional)</p></li>
-<li><p><strong>mineral_eos</strong> (<em>string</em>) – specify either ‘SUPCRT’ or ‘Berman88’ the method to calculate thermodynamic properties of any mineral, default is ‘SUPCRT’</p></li>
+<li><p><strong>heatcap_method</strong> (<em>string</em>) – specify either ‘SUPCRT’ or ‘Berman88’  or ‘HP11’ or ‘HF76’ the method to calculate thermodynamic properties of any mineral, default is ‘SUPCRT’</p></li>
+<li><p><strong>ThermoInUnit</strong> (<em>string</em>) – specify either ‘cal’ or ‘KJ’ as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - ‘cal’</p></li>
 <li><p><strong>dataset</strong> (<em>string</em>) – specify the dataset format, either ‘GWB’, ‘EQ36’, ‘Pflotran’ or ‘ToughReact’, default is old GWB database [‘GWB’] (optional)</p></li>
-<li><p><strong>sourceformat</strong> (<em>string</em>) – source database format, either ‘GWB’ or ‘EQ36’, default is ‘GWB’</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>

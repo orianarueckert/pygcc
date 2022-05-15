@@ -123,7 +123,7 @@ J_to_cal = 4.184
 
 
 def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order = None,
-                  Dielec_method = None, Mintype = None, **rhoEG):
+                  Dielec_method = None, ClayMintype = None, ThermoInUnit = 'cal', **rhoEG):
     """
     This function calculates logK values and reaction parameters of clay reactions using below references:
 
@@ -143,6 +143,10 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
             specify ordering of Si and Al ions either 'Eastonite', 'Ordered', 'Random', or 'HDC'  (optional), if not specified, default is based on guidelines by Vinograd (1995) \n
         Dielec_method : string
             specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified, default - 'JN91'
+        ClayMintype : string
+            specify either 'Smectite' or 'Chlorite' or 'Mica' as the clay type, if not specified default - 'Smectites'
+        ThermoInUnit : string
+            specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
         rhoEG : dict
             dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy  (optional)
 
@@ -220,7 +224,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
     if group is None:
         group = '10A' if mass_bal == 22 else '7A' if mass_bal == 14 else '14A' if mass_bal == 28 else None
 
-    Mintype = 'Smectites' if Mintype is None else Mintype
+    ClayMintype = 'Smectites' if ClayMintype is None else ClayMintype
 
     if rhoEG.__len__() != 0:
         rho = rhoEG['rho'].ravel()
@@ -520,7 +524,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
                         Tetrahedral['T2'][k] = 2
                     Tetrahedral['T1'][k] = Tetrahedral['Tot'][k] - Tetrahedral['T2'][k]
 
-    if Mintype == 'Smectites':
+    if ClayMintype.title() == 'Smectite' or ClayMintype.title() not in ['Chlorite', 'Mica']:
         # Brucitic M4 site configuration
         for k in np.sort(list(Octahedral['Tot'].keys())):
             if group in ['7A', '10A']:
@@ -631,7 +635,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
                     Octahedral['M1'][k] = Octahedral['Tot'][k] - Octahedral['M2'][k] - \
                         Brucitic['M3'][k] - Brucitic['M4'][k]
 
-    elif Mintype == 'Chlorites':
+    elif ClayMintype.title() in ['Chlorite', 'Mica']:
         for k in list(Octahedral['Tot'].keys()):
             if group == '14A':
                 if k == 'Al3+':
@@ -1048,7 +1052,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
     dG = (dHf*1e3 - 298.15*(S - S_allelem))*1e-3
 
     Rxn = {}
-    Rxn['type'] = Mintype
+    Rxn['type'] = ClayMintype
     Rxn['name'] = name
     Rxn['formula'] = ''
     Rxn['MW'] = 0
@@ -1149,7 +1153,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
     Rxn['elements'] = [y for x, y in enumerate(elements) if x not in filters]
 
     clay = Rxn['min']
-    dGTP, _ = heatcap(TC, P, clay)
+    dGTP = heatcap( T = TC, P = P, method = 'SUPCRT', Species_ppt = clay, Species = name).dG
     R = 1.9872041 # cal/mol/K
     dGRs = 0
     for i in range(Rxn['nSpec']):
@@ -1159,7 +1163,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
         if R_specie == 'H2O':
             dGR = dGH2O
         else:
-            dGR  = supcrtaq(TC, P, dbaccessdic[R_specie], Dielec_method = Dielec_method, **rhoEG)
+            dGR  = supcrtaq(TC, P, dbaccessdic[R_specie], Dielec_method = Dielec_method, ThermoInUnit = ThermoInUnit, **rhoEG)
         dGRs = dGRs + R_coeff*dGR
 
     dGrxn = -dGTP + dGRs

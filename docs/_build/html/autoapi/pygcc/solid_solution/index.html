@@ -192,10 +192,9 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 <li><p><strong>cpx_Ca</strong> (<em>float</em>) – number of moles of Ca in clinopyroxene formula unit (=1 for Di, Hed)</p></li>
 <li><p><strong>T</strong> (<em>float</em><em>, </em><em>vector</em>) – Temperature [°C]</p></li>
 <li><p><strong>P</strong> (<em>float</em><em>, </em><em>vector</em>) – Pressure [bar]</p></li>
-<li><p><strong>dbacessdic</strong> (<em>dict</em>) – dictionary of species from direct-access database, optional, default is speq21</p></li>
+<li><p><strong>dbaccessdic</strong> (<em>dict</em>) – dictionary of species from direct-access database, optional, default is speq21</p></li>
 <li><p><strong>solidsolution_type</strong> (<em>string</em>) – specify either ‘All’ or ‘plagioclase’ or ‘olivine’ or ‘pyroxene’ or ‘cpx’ or ‘alk-feldspar’ or ‘biotite’ to carry-out all or any solid-solution calculations, default is ‘All’</p></li>
-<li><p><strong>Dielec_method</strong> (<em>string</em>) – specify either ‘FGL97’ or ‘JN91’ or ‘DEW’ as the method to calculate dielectric constant (optional), if not specified default - ‘JN91’</p></li>
-<li><p><strong>rhoEG</strong> (<em>dict</em>) – dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy  (optional)</p></li>
+<li><p><strong>Dielec_method</strong> – specify either ‘FGL97’ or ‘JN91’ or ‘DEW’ as the method to calculate dielectric constant (optional), if not specified default - ‘JN91’</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -309,7 +308,7 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 <li><p><strong>XAn</strong> (<em>volume fraction of Anorthite</em>) – </p></li>
 <li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
 <li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
-<li><p><strong>dbacessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
+<li><p><strong>dbaccessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
 <li><p><strong>Dielec_method</strong> (<em>specify either 'FGL97'</em><em> or </em><em>'JN91'</em><em> or </em><em>'DEW' as the method to calculate</em>) – dielectric constant (optional), if not specified default - ‘JN91’</p></li>
 <li><p><strong>rhoEG</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>,</em>) – dielectric factor (E) and Gibbs Energy  (optional)</p></li>
 </ul>
@@ -326,18 +325,18 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 <div><p>The general usage of calclogKAnAb without the optional argument is as follows:</p>
 <ol class="arabic">
 <li><p>Not on steam saturation curve:</p>
-<p>[logK, Rxn] = calclogKAnAb(XAn, TC, P, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKAnAb(XAn, TC, P, dbaccessdic),</p>
 <p>where T is temperature in celsius and P is pressure in bar;</p>
 </li>
 <li><p>On steam saturation curve:</p>
-<p>[logK, Rxn] = calclogKAnAb(XAn, TC, ‘T’, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKAnAb(XAn, TC, ‘T’, dbaccessdic),</p>
 <p>where T is temperature in celsius, followed with a quoted char ‘T’</p>
-<p>[logK, Rxn] = calclogKAnAb(XAn, P, ‘P’, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKAnAb(XAn, P, ‘P’, dbaccessdic),</p>
 <p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
 </li>
 <li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
 condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
-<p>[logK, Rxn] = calclogKAnAb(XAn, TC, P, dbacessdic, Dielec_method = ‘FGL97’)</p>
+<p>[logK, Rxn] = calclogKAnAb(XAn, TC, P, dbaccessdic, Dielec_method = ‘FGL97’)</p>
 </li>
 </ol>
 </div></blockquote>
@@ -345,7 +344,7 @@ condition not on steam saturation curve is as follows. Default method is ‘JN91
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcc.solid_solution.solidsolution_thermo.calclogKFoFa">
-<span class="sig-name descname"><span class="pre">calclogKFoFa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XFo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbacessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKFoFa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKFoFa" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">calclogKFoFa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XFo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbaccessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKFoFa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKFoFa" title="Permalink to this definition"></a></dt>
 <dd><p>This function calculates thermodynamic properties of solid solution of olivine minerals</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -353,7 +352,7 @@ condition not on steam saturation curve is as follows. Default method is ‘JN91
 <li><p><strong>XFo</strong> (<em>volume fraction of Forsterite</em>) – </p></li>
 <li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
 <li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
-<li><p><strong>dbacessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
+<li><p><strong>dbaccessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
 <li><p><strong>Dielec_method</strong> (<em>specify either 'FGL97'</em><em> or </em><em>'JN91'</em><em> or </em><em>'DEW' as the method to calculate</em>) – dielectric constant (optional), if not specified default - ‘JN91’</p></li>
 <li><p><strong>rhoEG</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>,</em>) – dielectric factor (E) and Gibbs Energy  (optional)</p></li>
 </ul>
@@ -370,18 +369,18 @@ condition not on steam saturation curve is as follows. Default method is ‘JN91
 <div><p>The general usage of calclogKFoFa without the optional argument is as follows:</p>
 <ol class="arabic">
 <li><p>Not on steam saturation curve:</p>
-<p>[logK, Rxn] = calclogKFoFa(XFo, TC, P, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKFoFa(XFo, TC, P, dbaccessdic),</p>
 <p>where T is temperature in celsius and P is pressure in bar;</p>
 </li>
 <li><p>On steam saturation curve:</p>
-<p>[logK, Rxn] = calclogKFoFa(XFo, TC, ‘T’, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKFoFa(XFo, TC, ‘T’, dbaccessdic),</p>
 <p>where T is temperature in celsius, followed with a quoted char ‘T’</p>
-<p>[logK, Rxn] = calclogKFoFa(XFo, P, ‘P’, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKFoFa(XFo, P, ‘P’, dbaccessdic),</p>
 <p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
 </li>
 <li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
 condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
-<p>[logK, Rxn] = calclogKFoFa(XFo, TC, P, dbacessdic, Dielec_method = ‘FGL97’)</p>
+<p>[logK, Rxn] = calclogKFoFa(XFo, TC, P, dbaccessdic, Dielec_method = ‘FGL97’)</p>
 </li>
 </ol>
 </div></blockquote>
@@ -389,7 +388,7 @@ condition not on steam saturation curve is as follows. Default method is ‘JN91
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcc.solid_solution.solidsolution_thermo.calclogKEnFe">
-<span class="sig-name descname"><span class="pre">calclogKEnFe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XEn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbacessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKEnFe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKEnFe" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">calclogKEnFe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XEn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbaccessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKEnFe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKEnFe" title="Permalink to this definition"></a></dt>
 <dd><p>This function calculates thermodynamic properties of solid solution of pyroxene minerals</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -397,7 +396,7 @@ condition not on steam saturation curve is as follows. Default method is ‘JN91
 <li><p><strong>XEn</strong> (<em>volume fraction of Enstatite</em>) – </p></li>
 <li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
 <li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
-<li><p><strong>dbacessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
+<li><p><strong>dbaccessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
 <li><p><strong>Dielec_method</strong> (<em>specify either 'FGL97'</em><em> or </em><em>'JN91'</em><em> or </em><em>'DEW' as the method to calculate</em>) – dielectric constant (optional), if not specified default - ‘JN91’</p></li>
 <li><p><strong>rhoEG</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>,</em>) – dielectric factor (E) and Gibbs Energy  (optional)</p></li>
 </ul>
@@ -414,18 +413,18 @@ condition not on steam saturation curve is as follows. Default method is ‘JN91
 <div><p>The general usage of calclogKEnFe without the optional argument is as follows:</p>
 <ol class="arabic">
 <li><p>Not on steam saturation curve:</p>
-<p>[logK, Rxn] = calclogKEnFe(XEn, TC, P, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKEnFe(XEn, TC, P, dbaccessdic),</p>
 <p>where T is temperature in celsius and P is pressure in bar;</p>
 </li>
 <li><p>On steam saturation curve:</p>
-<p>[logK, Rxn] = calclogKEnFe(XEn, TC, ‘T’, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKEnFe(XEn, TC, ‘T’, dbaccessdic),</p>
 <p>where T is temperature in celsius, followed with a quoted char ‘T’</p>
-<p>[logK, Rxn] = calclogKEnFe(XEn, P, ‘P’, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKEnFe(XEn, P, ‘P’, dbaccessdic),</p>
 <p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
 </li>
 <li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
 condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
-<p>[logK, Rxn] = calclogKEnFe(XEn, TC, P, dbacessdic, Dielec_method = ‘FGL97’)</p>
+<p>[logK, Rxn] = calclogKEnFe(XEn, TC, P, dbaccessdic, Dielec_method = ‘FGL97’)</p>
 </li>
 </ol>
 </div></blockquote>
@@ -433,7 +432,7 @@ condition not on steam saturation curve is as follows. Default method is ‘JN91
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcc.solid_solution.solidsolution_thermo.calclogKDiHedEnFe">
-<span class="sig-name descname"><span class="pre">calclogKDiHedEnFe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nCa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XMg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbacessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKDiHedEnFe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKDiHedEnFe" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">calclogKDiHedEnFe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nCa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XMg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbaccessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKDiHedEnFe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKDiHedEnFe" title="Permalink to this definition"></a></dt>
 <dd><p>This function calculates thermodynamic properties of solid solution of clinopyroxene
 minerals (Di, Hed, En and Fe)</p>
 <dl class="field-list simple">
@@ -443,7 +442,7 @@ minerals (Di, Hed, En and Fe)</p>
 <li><p><strong>XMg</strong> (<em>mole fraction of Mg</em>) – XMg = (nMg/(nFe + nMg))</p></li>
 <li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
 <li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
-<li><p><strong>dbacessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
+<li><p><strong>dbaccessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
 <li><p><strong>Dielec_method</strong> (<em>specify either 'FGL97'</em><em> or </em><em>'JN91'</em><em> or </em><em>'DEW' as the method to calculate</em>) – dielectric constant (optional), if not specified default - ‘JN91’</p></li>
 <li><p><strong>rhoEG</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>,</em>) – dielectric factor (E) and Gibbs Energy  (optional)</p></li>
 </ul>
@@ -460,18 +459,18 @@ minerals (Di, Hed, En and Fe)</p>
 <div><p>The general usage of calclogKDiHedEnFe without the optional argument is as follows:</p>
 <ol class="arabic">
 <li><p>Not on steam saturation curve:</p>
-<p>[logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbaccessdic),</p>
 <p>where T is temperature in celsius and P is pressure in bar;</p>
 </li>
 <li><p>On steam saturation curve:</p>
-<p>[logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, ‘T’, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, ‘T’, dbaccessdic),</p>
 <p>where T is temperature in celsius, followed with a quoted char ‘T’</p>
-<p>[logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, P, ‘P’, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, P, ‘P’, dbaccessdic),</p>
 <p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
 </li>
 <li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
 condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
-<p>[logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbacessdic, Dielec_method = ‘FGL97’)</p>
+<p>[logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbaccessdic, Dielec_method = ‘FGL97’)</p>
 </li>
 </ol>
 </div></blockquote>
@@ -479,7 +478,7 @@ condition not on steam saturation curve is as follows. Default method is ‘JN91
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcc.solid_solution.solidsolution_thermo.calclogKAbOr">
-<span class="sig-name descname"><span class="pre">calclogKAbOr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XAb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbacessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKAbOr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKAbOr" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">calclogKAbOr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XAb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbaccessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKAbOr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKAbOr" title="Permalink to this definition"></a></dt>
 <dd><p>This function calculates thermodynamic properties of solid solution of Alkaline-Feldspar minerals</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -487,7 +486,7 @@ condition not on steam saturation curve is as follows. Default method is ‘JN91
 <li><p><strong>XAb</strong> (<em>volume fraction of Albite</em>) – </p></li>
 <li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
 <li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
-<li><p><strong>dbacessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
+<li><p><strong>dbaccessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
 <li><p><strong>Dielec_method</strong> (<em>specify either 'FGL97'</em><em> or </em><em>'JN91'</em><em> or </em><em>'DEW' as the method to calculate</em>) – dielectric constant (optional), if not specified default - ‘JN91’</p></li>
 <li><p><strong>rhoEG</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>,</em>) – dielectric factor (E) and Gibbs Energy  (optional)</p></li>
 </ul>
@@ -504,18 +503,18 @@ condition not on steam saturation curve is as follows. Default method is ‘JN91
 <div><p>The general usage of calclogKAnAb without the optional argument is as follows:</p>
 <ol class="arabic">
 <li><p>Not on steam saturation curve:</p>
-<p>[logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic),</p>
 <p>where T is temperature in celsius and P is pressure in bar;</p>
 </li>
 <li><p>On steam saturation curve:</p>
-<p>[logK, Rxn] = calclogKAbOr(XAb, TC, ‘T’, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, TC, ‘T’, dbaccessdic),</p>
 <p>where T is temperature in celsius, followed with a quoted char ‘T’</p>
-<p>[logK, Rxn] = calclogKAbOr(XAb, P, ‘P’, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, P, ‘P’, dbaccessdic),</p>
 <p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
 </li>
 <li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
 condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
-<p>[logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic, Dielec_method = ‘FGL97’)</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic, Dielec_method = ‘FGL97’)</p>
 </li>
 </ol>
 </div></blockquote>
@@ -523,7 +522,7 @@ condition not on steam saturation curve is as follows. Default method is ‘JN91
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcc.solid_solution.solidsolution_thermo.calclogKBiotite">
-<span class="sig-name descname"><span class="pre">calclogKBiotite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XPh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbacessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKBiotite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKBiotite" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">calclogKBiotite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XPh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbaccessdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhoEG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dielec_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/solid_solution.html#solidsolution_thermo.calclogKBiotite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.solid_solution.solidsolution_thermo.calclogKBiotite" title="Permalink to this definition"></a></dt>
 <dd><p>This function calculates thermodynamic properties of solid solution of Biotite minerals</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -531,7 +530,7 @@ condition not on steam saturation curve is as follows. Default method is ‘JN91
 <li><p><strong>XAb</strong> (<em>volume fraction of Albite</em>) – </p></li>
 <li><p><strong>TC</strong> (<em>temperature</em><em> [</em><em>°C</em><em>]</em>) – </p></li>
 <li><p><strong>P</strong> (<em>pressure</em><em> [</em><em>bar</em><em>]</em>) – </p></li>
-<li><p><strong>dbacessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
+<li><p><strong>dbaccessdic</strong> (<em>dictionary of species from direct-access database</em>) – </p></li>
 <li><p><strong>Dielec_method</strong> (<em>specify either 'FGL97'</em><em> or </em><em>'JN91'</em><em> or </em><em>'DEW' as the method to calculate</em>) – dielectric constant (optional), if not specified default - ‘JN91’</p></li>
 <li><p><strong>rhoEG</strong> (<em>dictionary of water properties like  density</em><em> (</em><em>rho</em><em>)</em><em>,</em>) – dielectric factor (E) and Gibbs Energy  (optional)</p></li>
 </ul>
@@ -548,18 +547,18 @@ condition not on steam saturation curve is as follows. Default method is ‘JN91
 <div><p>The general usage of calclogKAnAb without the optional argument is as follows:</p>
 <ol class="arabic">
 <li><p>Not on steam saturation curve:</p>
-<p>[logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic),</p>
 <p>where T is temperature in celsius and P is pressure in bar;</p>
 </li>
 <li><p>On steam saturation curve:</p>
-<p>[logK, Rxn] = calclogKAbOr(XAb, TC, ‘T’, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, TC, ‘T’, dbaccessdic),</p>
 <p>where T is temperature in celsius, followed with a quoted char ‘T’</p>
-<p>[logK, Rxn] = calclogKAbOr(XAb, P, ‘P’, dbacessdic),</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, P, ‘P’, dbaccessdic),</p>
 <p>where P is pressure in bar, followed with a quoted char ‘P’.</p>
 </li>
 <li><p>Meanwhile, usage with any specific dielectric constant method (‘FGL97’) for
 condition not on steam saturation curve is as follows. Default method is ‘JN91’</p>
-<p>[logK, Rxn] = calclogKAbOr(XAb, TC, P, dbacessdic, Dielec_method = ‘FGL97’)</p>
+<p>[logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic, Dielec_method = ‘FGL97’)</p>
 </li>
 </ol>
 </div></blockquote>

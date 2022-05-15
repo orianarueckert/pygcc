@@ -172,11 +172,13 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dbaccess</strong> (<em>string</em>) – filename and location of the direct-access database, optional, default is speq21</p></li>
+<li><p><strong>dbaccess</strong> (<em>string</em>) – filename and location of the direct-access/sequential-access database, optional, default is speq21</p></li>
 <li><p><strong>dbBerman_dir</strong> (<em>string</em>) – filename and location of the Berman mineral database, optional</p></li>
+<li><p><strong>dbHP_dir</strong> (<em>string</em>) – filename and location of the supcrtbl mineral and gas database, optional</p></li>
 <li><p><strong>sourcedb</strong> (<em>string</em>) – filename of the source database, optional</p></li>
 <li><p><strong>sourcedb</strong> – filename of the source database, optional</p></li>
 <li><p><strong>sourceformat</strong> (<em>string</em>) – specify the source database format, either ‘GWB’ or ‘EQ36’, optional</p></li>
+<li><p><strong>dbaccessformat</strong> (<em>string</em><em>, </em><em>optional</em>) – specify the direct-access/sequential-access database format, either ‘speq’ or ‘supcrtbl’, default is ‘speq’</p></li>
 <li><p><strong>sourcedb_codecs</strong> (<em>string</em>) – specify the name of the encoding used to decode or encode the sourcedb file, optional</p></li>
 <li><p><strong>dbaccess_codecs</strong> (<em>string</em>) – specify the name of the encoding used to decode or encode the dbaccess file, optional</p></li>
 </ul>
@@ -230,11 +232,16 @@ a2 [*10*</em>-2 cal/mol], a3 [cal-K/mol/bar], a4 [<em>10*</em>-4 cal-K/mol], c1 
 mineral properties such as (dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, k3,
 v1 [<a href="#id5"><span class="problematic" id="id6">*</span></a>10^5 K^-1], v2 [<a href="#id7"><span class="problematic" id="id8">*</span></a>10^5 K^-2], v3 [<a href="#id9"><span class="problematic" id="id10">*</span></a>10^5 bar^-1], v4 [<a href="#id11"><span class="problematic" id="id12">*</span></a>10^8 bar^-2], dTdP [K/bar], Tlambda [K],
 Tref [K], l1 [(J/mol)^0.5/K], l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], d2 [J/mol],
-d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K])</p>
+d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K]). In addition, the function can read supcrtbl’s
+mineral and gas properties such as (dG [kJ/mol], dH [kJ/mol], S [J/mol-K], V [J/bar], a [kJ/mol-K],
+b [<a href="#id13"><span class="problematic" id="id14">*</span></a>10^5 kJ/mol/K^2], c [kJ-mol-K], d [kJ/mol/K^0.5], alpha [<a href="#id15"><span class="problematic" id="id16">*</span></a>10^5 K^-1], kappa0 [kbar],
+kappa0_d [kbar], kappa0_dd [kbar], n_atom [-], Tc0 [K], Smax [J/mol-K], Vmax [J/bar], dH [KJ/mol],
+dV [J/bar], W [kJ/mol], Wv [J/bar], n [-], SF [-])</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>database</strong> (<em>dbBerman_dir    filename and location of the Berman mineral</em>) – </p></li>
+<li><p><strong>database</strong> (<em>dbHP_dir        filename and location of the supcrtbl</em><em> (</em><em>Holland and Powell</em><em>) </em><em>mineral and gas</em>) – </p></li>
+<li><p><strong>database</strong> – </p></li>
 <li><p><strong>database</strong> – </p></li>
 </ul>
 </dd>
