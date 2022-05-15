@@ -1,10 +1,9 @@
 # Changelog
 All notable changes to this project are documented here.
-<!--next-version-placeholder-->
 
 ## [Unreleased]
 
-## v1.0.6 (29/04/2022)
+## v1.0.6 (15/05/2022)
 
 ### Added
  
