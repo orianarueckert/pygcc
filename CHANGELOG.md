@@ -1,7 +1,6 @@
 # Changelog
-All notable changes to this project are documented here.
 
-## [Unreleased]
+All notable changes to this project are documented here.
 
 ## v1.0.6 (15/05/2022)
 
