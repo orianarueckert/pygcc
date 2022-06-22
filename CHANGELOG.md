@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented here.
 
+## v1.1.0 (21/06/2022)
+
+#### Added
+ 
+#### Changed
+   
+- modified `db_reader` function to support jul17 and jan19 gwb legacy formats 
+  
+#### Fixed
+
+#### Removed
+
 ## v1.0.6 (15/05/2022)
 
 #### Added

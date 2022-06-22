@@ -448,18 +448,23 @@ def co2fugacity(TK, P, poy = True):
     >>> pCO2
         array([54.78127571, 71.0710152])
     """
-    if np.ndim(TK) == 0:
-        length = 1
+    if np.ndim(TK) == 0 :
+        TK = np.array(TK).ravel()
     else:
-        length = len(TK)
-    R = 0.08314467  #bar*L/mol/K
-    PcCO2 = 73.8    ## bar
-    TcCO2 = 304.15  ## K
-    VcCO2 = R * TcCO2 / PcCO2  # L/mol
+        TK = np.ravel(TK)
+    if np.ndim(P) == 0 :
+        P = np.array(P).ravel()
+    else:
+        P = np.ravel(P)
 
-    Pr = P / PcCO2 # bar
-    Tr = TK / TcCO2
-    xmwc = 4.40098e2  # g/mol
+    Rgas = 0.0831446261815324  #bar*L/mol/K
+    PcCO2 = 73.825    ## bar
+    TcCO2 = 31.05 + 273.15  ## K
+    VcCO2 = Rgas * TcCO2 / PcCO2  # L/mol
+
+    Pr = P / PcCO2 # unitless
+    Tr = TK / TcCO2 # unitless
+    xmwc = 44.0098  # g/mol
 
     a1  =  0.0899288497
     a2  = -0.494783127
@@ -478,15 +483,21 @@ def co2fugacity(TK, P, poy = True):
     a15 =  0.0296
 
     # Equation A1
-    zfun = lambda Z : -Z + (1 + (a1 + a2 / Tr ** 2 + a3 / Tr ** 3) / Z / Tr * Pr +
-                            (a4 + a5 / Tr ** 2 + a6 / Tr ** 3) / Z ** 2 / Tr ** 2 * Pr ** 2 +
-                            (a7 + a8 / Tr ** 2 + a9 / Tr ** 3) / Z ** 4 / Tr ** 4 * Pr ** 4 +
-                            (a10 + a11 / Tr ** 2 + a12 / Tr ** 3) / Z ** 5 / Tr ** 5 * Pr**5 +
-                            a13 / Tr ** 3 / Z ** 2 / Tr ** 2 * Pr ** 2 * (a14 + a15 /
-                                                                            Z ** 2 / Tr ** 2 * Pr ** 2)
-                            * np.exp(-a15 / Z ** 2 / Tr ** 2 * Pr ** 2))
+    Z = np.zeros([len(TK), 1]).ravel()
 
-    Z = fsolve(zfun, [1]*length, xtol=1.0e-10)
+    for k in range(len(TK)):
+        zfun = lambda Z : -Z + (1 + (a1 + a2 / Tr[k]**2 + a3 / Tr[k]**3) / (Z * Tr[k]) * Pr[k] +
+                                (a4 + a5 / Tr[k]**2 + a6 / Tr[k]**3) / (Z * Tr[k])**2 * Pr[k]**2 +
+                                (a7 + a8 / Tr[k]**2 + a9 / Tr[k]**3) / (Z * Tr[k])**4 * Pr[k]**4 +
+                                (a10 + a11 / Tr[k]**2 + a12 / Tr[k] ** 3) / (Z * Tr[k])**5 * Pr[k]**5 +
+                                a13 / Tr[k]**3 / (Z * Tr[k])**2 * Pr[k]**2 * (a14 + a15 / (Z * Tr[k])**2 * Pr[k]**2)*
+                                np.exp(-a15 / (Z * Tr[k])**2 * Pr[k]**2))
+        # set initial guess from ideal gas law
+        Videal = Rgas*TK[k]/P[k]
+        Zguess = Videal/VcCO2*Pr[k]/Tr[k]
+
+        Z[k] = fsolve(zfun, Zguess, xtol=1.0e-10)
+
     Vr = Z * Tr / Pr
     V = Vr * VcCO2  ## L / mol
 
@@ -496,6 +507,7 @@ def co2fugacity(TK, P, poy = True):
                       (a10 + a11 / (Tr ** 2) + a12 / (Tr ** 3)) / (5 * Vr ** 5) + \
                           a13 / (2 * Tr ** 3 * a15) * (a14 + 1 - (a14 + 1 + a15 / Vr ** 2) * \
                                                            np.exp(-a15 / Vr ** 2))))
+    # print(phi)
     #-----fugacity
     fCO2 = phi * P  #bar
 
@@ -505,7 +517,7 @@ def co2fugacity(TK, P, poy = True):
     Patm = P / 1.01325
 
     if (poy):
-        R =   8.205746E-2 ## L atm /K/mol
+        R =   0.082057366080960 ## L atm /K/mol
         Vm = np.where(V < 0, 32.0e-3, V)   ## L / mol
         Poy = np.exp(-(Patm - 1)*Vm/R/TK)
     pCO2 = phi*Patm*Poy  # atm
@@ -1483,6 +1495,8 @@ class write_database():
             source database filename and location  (optional)  \n
         sourceformat : string
             source database format, either 'GWB' or 'EQ36', default is 'GWB'
+        sourcedb_codecs : string
+            specify the name of the encoding used to decode or encode the sourcedb file, optional
         objdb : string
             new database filename and location    (optional) \n
         co2actmodel : string
@@ -1536,7 +1550,7 @@ class write_database():
               "dbaccess": None, "sourcedb": None,   "objdb": None, "ThermoInUnit": 'cal',
               "co2actmodel": None,   "Dielec_method": None,   "heatcap_method": None,
               "dataset": None,   "sourceformat": None, 'densityextrap': None,
-              "dbaccessformat": 'speq'
+              "sourcedb_codecs": None, "dbaccessformat": 'speq'
               }
     def __init__(self, **kwargs):
         self.kwargs = write_database.kwargs.copy()
@@ -1582,9 +1596,11 @@ class write_database():
         self.heatcap_method = 'HP11' if self.dbHP_dir is not None else 'Berman88' if self.dbBerman_dir is not None else 'SUPCRT' if self.kwargs['heatcap_method'] is None else self.kwargs['heatcap_method']
         self.logK_form = 'values' if self.kwargs["logK_form"] is None else self.kwargs['logK_form']
         self.cpx_Ca = 0 if self.kwargs["cpx_Ca"] is None else self.kwargs["cpx_Ca"]
+        self.sourcedb_codecs = self.kwargs["sourcedb_codecs"]
         self.dbr = db_reader(dbaccess = self.dbaccess, dbBerman_dir = self.dbBerman_dir,
                              dbHP_dir = self.dbHP_dir, dbaccessformat = self.dbaccessformat,
-                             sourcedb = self.sourcedb, sourceformat = self.sourceformat)
+                             sourcedb = self.sourcedb, sourceformat = self.sourceformat,
+                             sourcedb_codecs = self.sourcedb_codecs)
 
         if (type(self.P) == str)or (type(self.T) == str):
             if self.P == 'T':
@@ -1680,10 +1696,12 @@ class write_database():
 
         dbaccessdic, dbname, sourcedic, specielist = self.dbr.dbaccessdic, self.dbr.dbaccess, self.dbr.sourcedic, self.dbr.specielist
         MWdic, act_param, chargedic = self.dbr.MWdic, self.dbr.act_param, self.dbr.chargedic
+        sourcedb_codecs = self.dbr.sourcedb_codecs if self.sourcedb_codecs is None else self.sourcedb_codecs
         activity_model = act_param['activity_model']
 
         if sourceformat.upper() == 'GWB':
             Mineraltype, fugacity_info = self.dbr.Mineraltype, self.dbr.fugacity_info
+            # fugacity_model = fugacity_info['fugacity_model']
         elif sourceformat.upper() == 'EQ36':
             block_info, Elemlist = self.dbr.block_info, self.dbr.Elemlist
 
@@ -1694,7 +1712,7 @@ class write_database():
             dataset = sourcedb.split('.')[-1]
             dataset_format =  act_param['dataset_format']
 
-        logK_form = 'values' if (logK_form is None) | (dataset_format == 'oct94') else logK_form.lower()
+        logK_form = 'values' if (logK_form is None) | (dataset_format in ['oct94', 'jul17']) else logK_form.lower()
 
         if Dielec_method.upper() == 'DEW':
             water = ZhangDuan(T = T, P = P)
@@ -1705,7 +1723,7 @@ class write_database():
 
         TK = convert_temperature( T, Out_Unit = 'K' )
 
-        if dataset_format in ['apr20', 'mar21'] and logK_form.lower() == 'polycoeffs':
+        if dataset_format in ['jan19', 'apr20', 'mar21'] and logK_form.lower() == 'polycoeffs':
             Tr = 298.15
             logKfunc = lambda TK, *x: x[0] + x[1]*(TK - Tr) + x[2]*(TK**2 - Tr**2) +  x[3]*((1/TK) - (1/Tr)) + \
                 x[4]*((1/TK**2) - (1/Tr**2)) + x[5]*np.log(TK/Tr)
@@ -1723,7 +1741,7 @@ class write_database():
                    for x in range(len(data['elements']))}
         periodic_table.close()
 
-        fid = open(sourcedb, 'r')
+        fid = open(sourcedb, 'r', encoding = sourcedb_codecs)
 
         missing_species = []
         elemspeclist = [ symbol for x in specielist[0] for symbol, item in Element.items()
@@ -1791,7 +1809,7 @@ class write_database():
             s = fid.readline()
             fout.writelines(s[:16] + dataset_format + '\n')
 
-            if dataset_format in ['apr20', 'mar21']:
+            if dataset_format in ['jul17', 'jan19', 'apr20', 'mar21']:
                 s = fid.readline()
                 fout.writelines(s)
 
@@ -1799,9 +1817,17 @@ class write_database():
             fout.writelines(s)
             s = fid.readline()
             if s.strip(' \n*') != '':
-                fout.writelines(s[:27] + dbname + '\n')
+                if s[:27].strip(' \n*:') == 'THERMODYNAMIC DATABASE':
+                    fout.writelines(s[:27] + dbname + '\n')
+                else:
+                    fout.writelines('*  THERMODYNAMIC DATABASE: ' + dbname + '\n')
+            else:
+                fout.writelines('*  THERMODYNAMIC DATABASE: ' + dbname + '\n')
             s = fid.readline()
-            fout.writelines(s[:15] + ': pyGeochemCalc, ' + time.ctime() + '\n')
+            if s[:15].strip(' \n*:') == 'generated by':
+                fout.writelines(s[:15] + ': pyGeochemCalc, ' + time.ctime() + '\n')
+            else:
+                fout.writelines('*  generated by' + ': pyGeochemCalc, ' + time.ctime() + '\n')
             s = fid.readline()
             fout.writelines(s)
             s = fid.readline()
@@ -1810,18 +1836,18 @@ class write_database():
             fout.writelines('dataset of thermodynamic data for gwb programs \n' + \
                             'dataset format: ' + dataset_format + '\n' + \
                                 'activity model: %s \n' % activity_model + \
-                                    'fugacity model: tsonopoulos \n' + \
-                                    '*  THERMODYNAMIC DATABASE: ' + dbname + ' ' + dbname2 + '\n' +\
-                                        '*  generated by: pyGeochemCalc, ' + time.ctime() + '\n' +\
-                                            '*  Output package:  gwb \n' + \
-                                                '*  Data set:        com \n')
+                                    'fugacity model: tsonopoulos \n'  + \
+                                        '*  THERMODYNAMIC DATABASE: ' + dbname + ' ' + dbname2 + '\n' +\
+                                            '*  generated by: pyGeochemCalc, ' + time.ctime() + '\n' +\
+                                                '*  Output package:  gwb \n' + \
+                                                    '*  Data set:        com \n')
 
-        if dataset_format == 'oct94':
+        if dataset_format in ['oct94', 'jul17']:
             fout.writelines('*  Note: coefficients for calculating the activity coefficients \n' + \
                             '*    for CO2 are based on Ref:\n' + \
                                 '*    S.E.Drummond,1981. Boiling and Mixing of Hydrothermal\n' + \
                                     '*    Fluids: Chemical Effects on Mineral Precipitation.\n')
-        elif dataset_format in ['apr20', 'mar21'] and logK_form.lower() == 'polycoeffs':
+        elif dataset_format in ['jan19', 'apr20', 'mar21'] and logK_form.lower() == 'polycoeffs':
             fout.writelines('*   \n' + \
                             '* This thermo data file uses the polynomial expression of the logK values: \n' + \
                                 '*  \n' + \
@@ -1910,7 +1936,7 @@ class write_database():
             fout.writelines(s)
         else:
             fout.writelines('* debye huckel a (adh)\n')
-        if (dataset_format in ['apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
+        if (dataset_format in ['jan19', 'apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
             Adhcorr = curve_fit(logKfunc, TK[Adh!=500].ravel(), Adh[Adh!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
             fout.writelines('     a= %15.9f   ' % Adhcorr[0] + 'b= %15.9f   ' % Adhcorr[1] + \
                             'c= %15.6e\n' % Adhcorr[2])
@@ -1934,7 +1960,7 @@ class write_database():
             fout.writelines(s)
         else:
             fout.writelines('* debye huckel b (bdh)\n')
-        if (dataset_format in ['apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
+        if (dataset_format in ['jan19', 'apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
             Bdhcorr = curve_fit(logKfunc, TK[Bdh!=500].ravel(), Bdh[Bdh!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
             fout.writelines('     a= %15.9f   ' % Bdhcorr[0] + 'b= %15.9f   ' % Bdhcorr[1] + \
                             'c= %15.6e\n' % Bdhcorr[2])
@@ -2249,7 +2275,7 @@ class write_database():
                         fout.writelines('*    formula= %s\n' % sourcedic[j][0])
                     else:
                         fout.writelines('*    formula= %s\n' % dbaccessdic[k][0])
-                elif dataset_format in ['apr20', 'mar21']:
+                elif dataset_format in ['jul17', 'jan19', 'apr20', 'mar21']:
                     if sourcedic[j][0] != '':
                         fout.writelines('%-30s %s %s\n' % (j, 'formula=', sourcedic[j][0]))
                     else:
@@ -2295,7 +2321,7 @@ class write_database():
                     logKnan_alert = False
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
 
-                if (dataset_format in ['apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
+                if (dataset_format in ['jan19', 'apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
                     logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
                     fout.writelines('     a= %15.9f   ' % logKcorr[0] + 'b= %15.9f   ' % logKcorr[1] + \
                                     'c= %15.6e\n' % logKcorr[2])
@@ -2340,7 +2366,7 @@ class write_database():
         fout.writelines( "   %s aqueous species\n\n" % counter)
 
         #%% Aqueous reactions
-        #skip lines till "minerals" rows
+        # skip lines till "minerals" rows
         for i in range(20000):
             s = fid.readline()
             if s.rstrip('\n').lstrip('0123456789.- ') in ['minerals', 'solids']:
@@ -2358,7 +2384,7 @@ class write_database():
                         fout.writelines('*    formula= %s\n' % sourcedic[j][0])
                     else:
                         fout.writelines('*    formula= %s\n' % dbaccessdic[k][0])
-                elif dataset_format in ['apr20', 'mar21']:
+                elif dataset_format in ['jul17', 'jan19', 'apr20', 'mar21']:
                     if sourcedic[j][0] != '':
                         fout.writelines('%-30s %s %s\n' % (j, 'formula=', sourcedic[j][0]))
                     else:
@@ -2406,7 +2432,7 @@ class write_database():
                     coeff_O2 = float(Rxn[Rxn.index('O2(g)') - 1])
                     logK = np.where(logK != 500, logK + coeff_O2*logK_rebal, logK)
 
-                if (dataset_format in ['apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
+                if (dataset_format in ['jan19', 'apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
                     logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
                     fout.writelines('     a= %15.9f   ' % logKcorr[0] + 'b= %15.9f   ' % logKcorr[1] + \
                                     'c= %15.6e\n' % logKcorr[2])
@@ -2441,7 +2467,7 @@ class write_database():
         fout.writelines( "-end-\n\n")
 
         #%% free electron for tdat dataset format
-        if dataset_format in ['apr20', 'mar21']:
+        if dataset_format in ['jul17', 'jan19', 'apr20', 'mar21']:
             if sourceformat.upper() != 'EQ36':
                 speclst = specielist[4]
             else:
@@ -2475,7 +2501,7 @@ class write_database():
                                    heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
 
-                if (dataset_format in ['apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
+                if (dataset_format in ['jan19', 'apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
                     logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
                     fout.writelines('     a= %15.9f   ' % logKcorr[0] + 'b= %15.9f   ' % logKcorr[1] + \
                                     'c= %15.6e\n' % logKcorr[2])
@@ -2651,7 +2677,7 @@ class write_database():
                         coeff_O2 = float(Rxn[Rxn.index('O2(g)') - 1])
                         logK = np.where(logK != 500, logK + coeff_O2*logK_rebal, logK)
 
-                    if (dataset_format in ['apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
+                    if (dataset_format in ['jan19', 'apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
                         logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
                         fout.writelines('     a= %15.9f   ' % logKcorr[0] + 'b= %15.9f   ' % logKcorr[1] + \
                                         'c= %15.6e\n' % logKcorr[2])
@@ -2757,7 +2783,7 @@ class write_database():
                                                         'NH3(g)': '     Pcrit=    113.5 bar      Tcrit=     405.5 K      omega=        .250\n',
                                                         'O2(g)': '     Pcrit=     50.4 bar      Tcrit=     154.6 K      omega=        .025\n',
                                                         'SO2(g)': '     Pcrit=     78.8 bar      Tcrit=     430.8 K      omega=        .256\n'}}
-                if dataset_format == 'apr20':
+                if dataset_format in ['jul17', 'jan19', 'apr20', 'mar21']:
                     if j in fugacity_info['fugacity_chi'].keys():
                         fout.writelines("%s" % fugacity_info['fugacity_chi'][j])
                     if j in fugacity_info['fugacity_Pcrit'].keys():
@@ -2789,7 +2815,7 @@ class write_database():
                 if sourceformat.upper() == 'EQ36' and 'O2(g)' in Rxn:
                     coeff_O2 = float(Rxn[Rxn.index('O2(g)') - 1])
                     logK = np.where(logK != 500, logK + coeff_O2*logK_rebal, logK)
-                if (dataset_format ==  'apr20') & (logK_form.lower() == 'polycoeffs'):
+                if (dataset_format in ['jan19', 'apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
                     TK = convert_temperature( T, Out_Unit = 'K' )
                     logKcorr = curve_fit(logKfunc, TK[logK!=500].ravel(), logK[logK!=500].ravel(), p0 = x0,  maxfev = 1000000)[0]
                     fout.writelines('     a= %15.9f   ' % logKcorr[0] + 'b= %15.9f   ' % logKcorr[1] + \
@@ -2869,17 +2895,17 @@ class write_database():
             fout.writelines( "-end-\n*\n")
             if sourceformat.upper() == 'GWB':
                 fout.writelines(s)
-                for i in range(5000):
+                for i in range(15000):
                     s = fid.readline()
                     fout.writelines(s)
                     if not s.strip(' \n').startswith("*"):
                         break
 
-                for i in range(5000):
+                for i in range(15000):
                     s = fid.readline()
                     if any(s.lstrip().rstrip('\n').startswith(x) for x in act_param['act_list']):
                         rowlst = []; rowlst.append(s)
-                        for i in range(50):
+                        for i in range(150):
                             s = fid.readline()
                             if s.lstrip().rstrip('\n').startswith(""):
                                 break

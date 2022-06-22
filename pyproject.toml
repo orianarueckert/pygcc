@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pygcc"
-version = "1.0.6"
+version = "1.1.0"
 description = "A tool for thermodynamic calculations and geochemical database generation"
 authors = ["Adedapo Awolayo and Benjamin Tutolo"]
 maintainers = ["Adedapo Awolayo and Benjamin Tutolo <benjamin.tutolo@ucalgary.ca>"]

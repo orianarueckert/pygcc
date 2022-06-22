@@ -521,6 +521,7 @@ class db_reader:
             Rd = g.readlines()
         activity_model = line.strip('\n').split()[-1]
         data_fmt = [x for x in Rd if 'dataset format' in x][0].strip('\n').split(':')[-1].strip()
+        fugacity_model = [x for x in Rd if 'fugacity model' in x][0].strip('\n').split(': ')[-1] if data_fmt != 'oct94' else ''
 
         unwanted = ['elements', 'basis species', 'redox couples', 'aqueous species',
                     'free electron', 'minerals', 'solid solutions', 'gases', 'oxides', 'stop.' ]
@@ -539,7 +540,10 @@ class db_reader:
                 previousline = line
 
         if activity_model == 'h-m-w':
-            d_act = [i for i, x in enumerate(Rd[d[-1]:]) if x.strip('\n') ==''][0]
+            if all([i.startswith('*') for i in Rd[d[-1]:d[-1]+30]]) == False:
+                d_act = [i for i, x in enumerate(Rd[d[-1]:]) if x.strip('\n') ==''][0]
+            else:
+                d_act = [i for i, x in enumerate(Rd[d[-2]:]) if x.strip('\n') ==''][0]
         f = open(self.sourcedb_dir, 'r', encoding = codecs)
         #skip first 11 lines of database  .lstrip('0123456789.- ')
         for i in range(d[1]+2):
@@ -686,23 +690,23 @@ class db_reader:
                             elif d[4] < i < d[5]:
                                 if data_fmt == 'oct94':
                                     minerals.append(line.split()[0])
-                                elif data_fmt in ['apr20', 'mar21'] :
+                                elif data_fmt in ['jul17', 'jan19', 'apr20', 'mar21'] :
                                     electron.append(line.split()[0])
                             elif d[5] < i < d[6]:
                                 if data_fmt == 'oct94':
                                     gases.append(line.split()[0])
-                                elif data_fmt in ['apr20', 'mar21'] :
+                                elif data_fmt in ['jul17', 'jan19', 'apr20', 'mar21'] :
                                     minerals.append(line.split()[0])
                             elif i > d[6]:
                                 if data_fmt == 'oct94':
                                     oxides.append(line.split()[0])
                                 elif d[6] < i < d[7]:
-                                    if data_fmt == 'apr20' :
+                                    if data_fmt in ['jul17', 'jan19', 'apr20'] :
                                         gases.append(line.split()[0])
                                     elif data_fmt == 'mar21':
                                         solidsolutions.append(line.split()[0])
                                 elif i > d[7]:
-                                    if data_fmt == 'apr20' :
+                                    if data_fmt in ['jul17', 'jan19', 'apr20'] :
                                         oxides.append(line.split()[0])
                                     elif data_fmt == 'mar21':
                                         if d[7] < i < d[8]:
@@ -728,12 +732,13 @@ class db_reader:
         if activity_model == 'h-m-w':
             with open(self.sourcedb_dir, encoding = codecs) as fid:
                 for i, line in enumerate(fid, 1):
-                    if i > d[-1] + d_act:
+                    num = d[-1] + d_act if all([i.startswith('*') for i in Rd[d[-1]:d[-1]+30]]) == False else d[-2] + d_act
+                    if i > num: #d[-1] + d_act:
                         if not line.startswith(('  ', '\n', '-end-', '*')):
                             act_list.append(line)
 
         self.act_param = {'activity_model': activity_model, 'act_list': act_list, 'dataset_format' : data_fmt}
-        self.fugacity_info = {'fugacity_chi': fugacity_chi,'fugacity_Pcrit': fugacity_Pcrit}
+        self.fugacity_info = {'fugacity_model': fugacity_model, 'fugacity_chi': fugacity_chi,'fugacity_Pcrit': fugacity_Pcrit}
         res = basis + redox + aqueous + electron
         self.chargedic = {res[i]: charge[i].rstrip('\n') for i in range(len(charge))}
         res = element + basis + redox + aqueous + electron + minerals + gases + oxides
