@@ -2432,7 +2432,7 @@ class water_dielec():
     ----------
         The calculated instance has the following potential properties:
         E  : float, vector
-            dielectric constant of water [cal/mol]  \n
+            dielectric constant of water  \n
         rhohat : float, vector
             density [g/cm³] \n
         Ah : float, vector
@@ -2591,7 +2591,7 @@ class water_dielec():
 
         Returns
         ----------
-           E       : dielectric constant of water [cal/mol]  \n
+           E       : dielectric constant of water  \n
            rhohat  : density [g/cm³] \n
            Ah      : Debye-Huckel "A" parameters [kg^1/2 mol^-1/2] \n
            Bh      : Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1] \n
@@ -2773,7 +2773,7 @@ class water_dielec():
 
          Returns
         ----------
-           E       : dielectric constant of water [cal/mol] \n
+           E       : dielectric constant of water \n
            rhohat  : density [g/cm³] \n
            Ah      : Debye-Huckel "A" parameters [kg^1/2 mol^-1/2] \n
            Bh      : Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1] \n
@@ -2917,7 +2917,7 @@ class water_dielec():
 
          Returns
         ----------
-           E       : dielectric constant of water [cal/mol] \n
+           E       : dielectric constant of water \n
            rhohat  : density [g/cm³] \n
            Ah      : Debye-Huckel "A" parameters [kg^1/2 mol^-1/2] \n
            Bh      : Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1] \n
@@ -2970,7 +2970,7 @@ class water_dielec():
             # P ≤ 1000 bar to calculate the Dielectric Constant.
             E = np.zeros(len(TC)); dEdP_T = np.zeros(len(TC)); dEdT_P = np.zeros(len(TC));
             for i, j in enumerate(TC):
-                if (P[i] < 1000) | (j < 100):
+                if (P[i] < 1000) & (j < 100):
                     # deepearth_P = DEW(T = j, rho = deepearth.rho[i]).P.ravel()
                     if Dielec_method.upper() == 'FGL97':
                         [E[i], _, _, _, _, _, _, _, _, dEdP_T[i], dEdT_P[i]] = self.dielec_FGL97(j, deepearth.rho[i])
@@ -3004,7 +3004,7 @@ class water_dielec():
 
         # Debye-Huckel AH constant. Units are kJ kg^1/2 mol^-3/2.
         # AH/RT are kg^1/2 mol^-1/2
-        Ahrt = -6*Aphi*TK*((dEdT_P/E) + (1/TK) + (drdT_P/rhohat/3))
+        Ahrt = -6*Aphi*TK*((dEdT_P/E) + (1/TK) - (drdT_P/rhohat/3))
         Adhh = R*TK*Ahrt
         # convert Adhh from kJ kg^1/2 mol^-3/2 to kcal kg^1/2 mol^-3/2
         Adhh = Adhh/J_to_cal

@@ -285,7 +285,7 @@ def drummondgamma(TK, I):
      Returns
     ----------
        log10_gamma : float, vector
-           co2 aqueous activities in log10
+           co2 aqueous activity coefficients in log10
 
     Examples
     --------
@@ -324,7 +324,7 @@ def Henry_duan_sun(TK, P, I):
     Returns
     ----------
        log10_co2_gamma : float, vector
-           co2 aqueous activities in log10
+           co2 aqueous activity coefficients in log10
        mco2 : float, vector
            co2 aqueous molalities
 
@@ -759,7 +759,7 @@ def Helgeson_activity(TC, P, I, Dielec_method = None, **rhoEDB):
                           21.38,  22.56,  23.74,  24.94])
             fun = splrep(x, y)
             bil = splev(TC[k], fun)
-        elif P[k] == 5000: #%% P = 5000 Region
+        elif P[k] >= 5000: #%% P = 5000 Region and beyond
             x = np.arange(25,525,25)
             y = np.array([  2.82,  2.56,  2.28,  1.99,  1.67,  1.33,  0.98,  0.6 ,  0.21,
                           -0.2 , -0.63, -1.09, -1.58, -2.1 , -2.65, -3.25, -3.89, -4.57,

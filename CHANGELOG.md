@@ -2,6 +2,22 @@
 
 All notable changes to this project are documented here.
 
+## v1.1.1 (19/09/2022)
+
+#### Added
+ 
+#### Changed
+   
+- modified log10_co2_gamma naming in `Henry_duan_sun` and `drummondgamma` functions to activity coefficient 
+
+- corrected dielectric constants units in `water_dielec` class implementation of Water dielectric constantsHelgeson_activity
+
+- modified pressure region for `Helgeson_activity` function to include pressures above 5 kbar
+  
+#### Fixed
+
+#### Removed
+
 ## v1.1.0 (21/06/2022)
 
 #### Added
