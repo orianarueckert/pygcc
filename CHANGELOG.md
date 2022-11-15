@@ -1,6 +1,10 @@
 # Changelog
 
-All notable changes to this project are documented here.
+All notable changes to this project are documented here. To ensure that they are using the most up-to-date version of the PyGCC software, users should update PyGCC on their local computers using the following command:
+
+```console
+pip install --upgrade pygcc
+```
 
 ## v1.1.1 (19/09/2022)
 
