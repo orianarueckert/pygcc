@@ -1,0 +1,382 @@
+Am+++
+   Am+++
+B(OH)4-
+   B(OH)4-
+NpO2+
+   NpO2+
+NegIon
+   NegIon
+PosIon
+   PosIon
+Acetate-
+   Acetate-
+Citrate---
+   Citrate---
+EDTA----
+   EDTA----
+Oxalate--
+   Oxalate--
+Lactate-
+   Lactate-
+B(OH)3(aq)
+   B(OH)3(aq)
+   B(OH)4-
+B3O3(OH)4-
+   B3O3(OH)4-
+   B(OH)4-
+B4O5(OH)4--
+   B4O5(OH)4--
+   B(OH)4-
+CaB(OH)4+
+   CaB(OH)4+
+   B(OH)4-
+MgB(OH)4+
+   MgB(OH)4+
+   B(OH)4-
+AmCO3+
+   AmCO3+
+   Am+++
+Am(CO3)2-
+   Am(CO3)2-
+   Am+++
+Am(CO3)3---
+   Am(CO3)3---
+   Am+++
+AmOH++
+   AmOH++
+   Am+++
+Am(OH)2+
+   Am(OH)2+
+   Am+++
+Am(OH)3(aq)
+   Am(OH)3(aq)
+   Am+++
+AmCl++
+   AmCl++
+   Am+++
+AmCl2+
+   AmCl2+
+   Am+++
+Am(CO3)4(5-)
+   Am(CO3)4(5-)
+   Am+++
+Am(SO4)2-
+   Am(SO4)2-
+   Am+++
+AmSO4+
+   AmSO4+
+   Am+++
+Th(CO3)5(6-)
+   Th(CO3)5(6-)
+Th(OH)3(CO3)-
+   Th(OH)3(CO3)-
+Th(OH)4(aq)
+   Th(OH)4(aq)
+Th(SO4)2(aq)
+   Th(SO4)2(aq)
+Th(SO4)3--
+   Th(SO4)3--
+NpO2CO3-
+   NpO2CO3-
+   NpO2+
+NpO2(CO3)2---
+   NpO2(CO3)2---
+   NpO2+
+NpO2(CO3)3(5-)
+   NpO2(CO3)3(5-)
+   NpO2+
+NpO2OH(aq)
+   NpO2OH(aq)
+   NpO2+
+NpO2(OH)2-
+   NpO2(OH)2-
+   NpO2+
+HAcetate(aq)
+   HAcetate(aq)
+   Acetate-
+H3Citrate(aq)
+   H3Citrate(aq)
+   Citrate---
+H2Citrate-
+   H2Citrate-
+   Citrate---
+HCitrate--
+   HCitrate--
+   Citrate---
+H4EDTA(aq)
+   H4EDTA(aq)
+   EDTA----
+H3EDTA-
+   H3EDTA-
+   EDTA----
+H2EDTA--
+   H2EDTA--
+   EDTA----
+HEDTA---
+   HEDTA---
+   EDTA----
+H2Oxalate(aq)
+   H2Oxalate(aq)
+   Oxalate--
+HOxalate-
+   HOxalate-
+   Oxalate--
+HLactate(aq)
+   HLactate(aq)
+   Lactate-
+AmAcetate++
+   AmAcetate++
+   Am+++
+   Acetate-
+AmCitrate(aq)
+   AmCitrate(aq)
+   Am+++
+   Citrate---
+AmEDTA-
+   AmEDTA-
+   Am+++
+   EDTA----
+AmOxalate+
+   AmOxalate+
+   Am+++
+   Oxalate--
+AmLactate++
+   AmLactate++
+   Am+++
+   Lactate-
+Th(Acetate)2++
+   Th(Acetate)2++
+   Acetate-
+NpO2H2EDTA-
+   NpO2H2EDTA-
+   NpO2+
+   EDTA----
+Th(Lactate)2++
+   Th(Lactate)2++
+   Lactate-
+ThAcetate+++
+   ThAcetate+++
+   Acetate-
+ThCitrate+
+   ThCitrate+
+   Citrate---
+ThEDTA(aq)
+   ThEDTA(aq)
+   EDTA----
+ThOxalate++
+   ThOxalate++
+   Oxalate--
+ThLactate+++
+   ThLactate+++
+   Lactate-
+NpO2Acetate(aq)
+   NpO2Acetate(aq)
+   NpO2+
+   Acetate-
+NpO2Citrate--
+   NpO2Citrate--
+   NpO2+
+   Citrate---
+NpO2EDTA---
+   NpO2EDTA---
+   NpO2+
+   EDTA----
+NpO2Oxalate-
+   NpO2Oxalate-
+   NpO2+
+   Oxalate--
+NpO2Lactate(aq)
+   NpO2Lactate(aq)
+   NpO2+
+   Lactate-
+MgAcetate+
+   MgAcetate+
+   Acetate-
+MgCitrate-
+   MgCitrate-
+   Citrate---
+MgEDTA--
+   MgEDTA--
+   EDTA----
+MgOxalate(aq)
+   MgOxalate(aq)
+   Oxalate--
+CaAcetate+
+   CaAcetate+
+   Acetate-
+CaCitrate-
+   CaCitrate-
+   Citrate---
+CaEDTA--
+   CaEDTA--
+   EDTA----
+CaOxalate(aq)
+   CaOxalate(aq)
+   Oxalate--
+NpO2HEDTA--
+   NpO2HEDTA--
+   NpO2+
+   EDTA----
+AmOHCO3(c)
+   AmOHCO3(c)
+   Am+++
+Am(OH)3(s)
+   Am(OH)3(s)
+   Am+++
+NaAm(CO3)2.6H2O(c)
+   NaAm(CO3)2.6H2O(c)
+   Am+++
+AmPO4(c)
+   AmPO4(c)
+   Am+++
+ThO2(am)
+   ThO2(am)
+Th(SO4)2.9H2O(s)
+   Th(SO4)2.9H2O(s)
+Th(SO4)2.8H2O(s)
+   Th(SO4)2.8H2O(s)
+Th(SO4)2.Na2SO4.6H2O
+   Th(SO4)2.Na2SO4.6H2O
+Th(SO4)2.K2SO4.4H2O
+   Th(SO4)2.K2SO4.4H2O
+Th(SO4)2.2K2SO4.2H2O
+   Th(SO4)2.2K2SO4.2H2O
+2[Th(SO4)2.7/2K2SO4]
+   2[Th(SO4)2.7/2K2SO4]
+NpO2OH(aged)
+   NpO2OH(aged)
+   NpO2+
+NpO2OH(am)
+   NpO2OH(am)
+   NpO2+
+2[NaNpO2CO3.7/2H2O]
+   2[NaNpO2CO3.7/2H2O]
+   NpO2+
+Na3NpO2(CO3)2
+   Na3NpO2(CO3)2
+   NpO2+
+KNpO2CO3
+   KNpO2CO3
+   NpO2+
+K3NpO2(CO3)2
+   K3NpO2(CO3)2
+   NpO2+
+H2Oxalate.2H2O
+   H2Oxalate.2H2O
+   Oxalate--
+NaHOxalate.H2O
+   NaHOxalate.H2O
+   Oxalate--
+Na2Oxalate
+   Na2Oxalate
+   Oxalate--
+Aphthitalite/Glaserite
+   Aphthitalite/Glaserite
+Whewellite
+   Whewellite
+   Oxalate--
+Arcanite
+   Arcanite
+Bischofite
+   Bischofite
+Bloedite
+   Bloedite
+Burkeite
+   Burkeite
+CaCl2.4H2O
+   CaCl2.4H2O
+CaOxychloride_A
+   CaOxychloride_A
+CaOxychloride_B
+   CaOxychloride_B
+Carnallite
+   Carnallite
+Epsomite
+   Epsomite
+Gaylussite
+   Gaylussite
+Glauberite
+   Glauberite
+Gypsum
+   Gypsum
+Hexahydrite
+   Hexahydrite
+Kainite
+   Kainite
+Kalicinite
+   Kalicinite
+Kieserite
+   Kieserite
+Leonite
+   Leonite
+Labile_Salt
+   Labile_Salt
+Mg2Cl(OH)3.4H2O
+   Mg2Cl(OH)3.4H2O
+Mercallite
+   Mercallite
+Mirabilite
+   Mirabilite
+Misenite
+   Misenite
+Nahcolite
+   Nahcolite
+Natron
+   Natron
+Picromerite/Schoenite
+   Picromerite/Schoenite
+Pirssonite
+   Pirssonite
+Polyhalite
+   Polyhalite
+Portlandite
+   Portlandite
+K2CO3.3/2H2O
+   K2CO3.3/2H2O
+K8H4(CO3)6.3H2O
+   K8H4(CO3)6.3H2O
+KNaCO3.6H2O
+   KNaCO3.6H2O
+K_Trona
+   K_Trona
+K3H(SO4)2
+   K3H(SO4)2
+Na3H(SO4)2
+   Na3H(SO4)2
+Na2CO3.7H2O
+   Na2CO3.7H2O
+Syngenite
+   Syngenite
+Tachyhydrite
+   Tachyhydrite
+Thenardite
+   Thenardite
+Thermonatrite
+   Thermonatrite
+Trona
+   Trona
+Borax
+   Borax
+   B(OH)4-
+B(OH)3
+   B(OH)3
+   B(OH)4-
+K-Pentaborate(30C)
+   K-Pentaborate(30C)
+   B(OH)4-
+K-Tetraborate(30C)
+   K-Tetraborate(30C)
+   B(OH)4-
+Na_Metaborate
+   Na_Metaborate
+   B(OH)4-
+Na_Pentaborate
+   Na_Pentaborate
+   B(OH)4-
+Teepleite(20C)
+   Teepleite(20C)
+   B(OH)4-
+Hydromagnesite5424
+   Hydromagnesite5424
+Hydromagnesite4323
+   Hydromagnesite4323

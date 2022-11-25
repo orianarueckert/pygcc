@@ -33,3 +33,8 @@ write_database(T = [0, 600], P = 300, cpx_Ca = 0.1, sourcedb = '../database/data
 T = np.array([50, 100, 150, 300, 450, 500, 600, 700])
 write_database(T = T, P = 1500, sourcedb = '../database/data0.geo', sourcedb_codecs = 'latin-1',
                dataset = 'EQ36', Dielec_method = 'DEW')
+
+# 6. write EQ3/6 using user-specified sourced GWB database and default direct-access database
+write_database(T = np.array([0.010, 25, 60, 100, 150, 200, 250, 300]), P = 250, dataset = 'EQ36', 
+               sourcedb = 'thermo.2021', sourceformat = 'gwb', solid_solution = True, clay_thermo = True, 
+               print_msg = True)

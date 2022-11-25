@@ -6,7 +6,7 @@ All notable changes to this project are documented here. To ensure that they are
 pip install --upgrade pygcc
 ```
 
-## v1.1.3 (25/11/2022)
+## v1.1.4 (25/11/2022)
 
 #### Added
  
@@ -34,6 +34,8 @@ pip install --upgrade pygcc
   density is less than 350 g/cm3
 
 #### Fixed
+
+- v1.1.2 and v1.1.3 have errors that are now fixed 
 
 #### Removed
 

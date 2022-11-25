@@ -135,31 +135,33 @@ class db_reader:
         self.dbaccessformat = self.kwargs["dbaccessformat"]
         self.dbBerman_dir = self.kwargs["dbBerman_dir"]
         self.dbHP_dir = self.kwargs["dbHP_dir"]
+        self.sourcedb_dir = None if self.kwargs["sourcedb"] is None else self.kwargs["sourcedb"]
 
-        if self.kwargs["sourceformat"].lower() == 'gwb': # options for all default database included with PyGCC
-            if self.kwargs["sourcedb"] == 'thermo.com':
-                self.sourcedb = './default_db/thermo.com.dat'
-                self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
-            elif self.kwargs["sourcedb"] == 'thermo.2021':
-                self.sourcedb = './default_db/thermo.2021.dat'
-                self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
-            elif self.kwargs["sourcedb"] == 'thermo_latest':
-                self.sourcedb = './default_db/thermo_latest.tdat'
-                self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
-            elif self.kwargs["sourcedb"] == 'thermo_cemdata_mar':
-                self.sourcedb = './default_db/thermo_cemdata_mar.tdat'
-                self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
-            elif self.kwargs["sourcedb"] is None:
-                self.sourcedb = './default_db/thermo.com.tdat'
-                self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
-            else:
-                self.sourcedb_dir = self.kwargs["sourcedb"]
-        elif self.kwargs["sourceformat"].lower() == 'eq36':
-            if self.kwargs["sourcedb"] == 'data0' or self.kwargs["sourcedb"] is None:
-                self.sourcedb = './default_db/data0.dat'
-                self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
-            else:
-                self.sourcedb_dir = self.kwargs["sourcedb"]
+        if self.kwargs["sourceformat"] is not None:
+            if self.kwargs["sourceformat"].lower() == 'gwb': # options for all default database included with PyGCC
+                if self.kwargs["sourcedb"] == 'thermo.com':
+                    self.sourcedb = './default_db/thermo.com.dat'
+                    self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+                elif self.kwargs["sourcedb"] == 'thermo.2021':
+                    self.sourcedb = './default_db/thermo.2021.dat'
+                    self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+                elif self.kwargs["sourcedb"] == 'thermo_latest':
+                    self.sourcedb = './default_db/thermo_latest.tdat'
+                    self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+                elif self.kwargs["sourcedb"] == 'thermo_cemdata_mar':
+                    self.sourcedb = './default_db/thermo_cemdata_mar.tdat'
+                    self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+                elif self.kwargs["sourcedb"] is None:
+                    self.sourcedb = './default_db/thermo.com.tdat'
+                    self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+                else:
+                    self.sourcedb_dir = self.kwargs["sourcedb"]
+            elif self.kwargs["sourceformat"].lower() == 'eq36':
+                if self.kwargs["sourcedb"] == 'data0' or self.kwargs["sourcedb"] is None:
+                    self.sourcedb = './default_db/data0.dat'
+                    self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+                else:
+                    self.sourcedb_dir = self.kwargs["sourcedb"]
 
         if self.kwargs['dbaccess_codecs'] is None:
             self.dbaccess_codecs = findcodecs(self.dbaccess_dir)
