@@ -38,6 +38,7 @@ from scipy.linalg import lu_factor, lu_solve
 from scipy.interpolate import splev, splrep, Rbf
 import inspect
 import math
+from collections import OrderedDict
 np.random.seed(4321)
 warnings.filterwarnings("ignore", message="divide by zero encountered")
 warnings.filterwarnings("ignore", message="invalid value encountered")
@@ -1012,9 +1013,9 @@ class calcRxnlogK():
 
         if self.densityextrap.lower() == 'yes':
             subBornptrs = self.rhoEG['rho'] < 350
-            nonsubBornptrs = self.rhoEG['rho'] >= 350
-            rhoEG_nonsubBornptrs = {'rho': self.rhoEG['rho'][nonsubBornptrs], 'E': self.rhoEG['E'][nonsubBornptrs],
-                                   'dGH2O': self.rhoEG['dGH2O'][nonsubBornptrs]}
+            self.nonsubBornptrs = self.rhoEG['rho'] >= 350
+            rhoEG_nonsubBornptrs = {'rho': self.rhoEG['rho'][self.nonsubBornptrs], 'E': self.rhoEG['E'][self.nonsubBornptrs],
+                                   'dGH2O': self.rhoEG['dGH2O'][self.nonsubBornptrs]}
 
             if self.rhoEGextrap is None:
                 # Calculate the rho E G for density extrapolation method here so we have it below
@@ -1036,17 +1037,18 @@ class calcRxnlogK():
                 self.logK, self.Rxn = self.AllRxnslogK( self.TC, self.P, self.rhoEG)
             else:
                 self.logK, self.dGrxn, dGP, dGRs = self.AllRxnslogK( self.TC, self.P, self.rhoEG)
+            self.nonsubBornptrs = [False]*len(self.TC) # Required to shut off density extrapolation prompt
         elif self.densityextrap.lower() == 'yes':
             self.logK = np.nan*np.zeros(len(self.TC))
             self.dGrxn = np.nan*np.zeros(len(self.TC))
             if any(subBornptrs):
                 self.logK[subBornptrs] =  self.densitylogKextrap( self.TC[subBornptrs], self.P[subBornptrs],
                                                                  self.rhoEGextrap)
-            if any(nonsubBornptrs):
+            if any(self.nonsubBornptrs):
                 if self.Specie.lower().startswith(('plagio', 'oliv', 'pyroxe', 'alk-')) or self.Specie.lower() in ['cpx', 'clay']:
-                    self.logK[nonsubBornptrs], self.Rxn = self.AllRxnslogK( self.TC[nonsubBornptrs], self.P[nonsubBornptrs], rhoEG_nonsubBornptrs)
+                    self.logK[self.nonsubBornptrs], self.Rxn = self.AllRxnslogK( self.TC[self.nonsubBornptrs], self.P[self.nonsubBornptrs], rhoEG_nonsubBornptrs)
                 else:
-                    self.logK[nonsubBornptrs], self.dGrxn[nonsubBornptrs], dGP, dGRs = self.AllRxnslogK( self.TC[nonsubBornptrs], self.P[nonsubBornptrs], rhoEG_nonsubBornptrs)
+                    self.logK[self.nonsubBornptrs], self.dGrxn[self.nonsubBornptrs], dGP, dGRs = self.AllRxnslogK( self.TC[self.nonsubBornptrs], self.P[self.nonsubBornptrs], rhoEG_nonsubBornptrs)
 
     def AllRxnslogK( self, TC, P, rhoEG):
         """
@@ -1509,6 +1511,8 @@ class write_database():
             specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
         dataset : string
             specify the dataset format, either 'GWB', 'EQ36', 'Pflotran' or 'ToughReact', default is old GWB database ['GWB'] (optional) \n
+        print_msg : string, bool
+            print debug message [True or False], default is False   \n
 
     Returns
     -------
@@ -1550,7 +1554,7 @@ class write_database():
               "dbaccess": None, "sourcedb": None,   "objdb": None, "ThermoInUnit": 'cal',
               "co2actmodel": None,   "Dielec_method": None,   "heatcap_method": None,
               "dataset": None,   "sourceformat": None, 'densityextrap': None,
-              "sourcedb_codecs": None, "dbaccessformat": 'speq'
+              "sourcedb_codecs": None, "dbaccessformat": 'speq', "print_msg": False
               }
     def __init__(self, **kwargs):
         self.kwargs = write_database.kwargs.copy()
@@ -1558,7 +1562,6 @@ class write_database():
 
     def __calc__(self, **kwargs):
         self.kwargs.update(kwargs)
-        self.msg = 'Database generated successfully'
         self.T = self.kwargs["T"]
         self.P = self.kwargs["P"]
         if self.kwargs["dbaccess"] is None:
@@ -1577,14 +1580,32 @@ class write_database():
                 self.sourceformat = 'EQ36'
         else:
             self.sourceformat = self.kwargs["sourceformat"]
-        if self.kwargs["sourcedb"] == None:
-            if self.sourceformat.upper() == 'GWB':
+
+        if self.sourceformat.lower() == 'gwb': # options for all default database included with PyGCC
+            if self.kwargs["sourcedb"] == 'thermo.com':
                 self.sourcedb = './default_db/thermo.com.dat'
-            elif self.sourceformat.upper() == 'EQ36':
+                self.sourcedb = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+            elif self.kwargs["sourcedb"] == 'thermo.2021':
+                self.sourcedb = './default_db/thermo.2021.dat'
+                self.sourcedb = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+            elif self.kwargs["sourcedb"] == 'thermo_latest':
+                self.sourcedb = './default_db/thermo_latest.tdat'
+                self.sourcedb = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+            elif self.kwargs["sourcedb"] == 'thermo_cemdata_mar':
+                self.sourcedb = './default_db/thermo_cemdata_mar.tdat'
+                self.sourcedb = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+            elif self.kwargs["sourcedb"] is None:
+                self.sourcedb = './default_db/thermo.com.tdat'
+                self.sourcedb = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+            else:
+                self.sourcedb = self.kwargs["sourcedb"]
+        elif self.sourceformat.lower() == 'eq36':
+            if self.kwargs["sourcedb"] == 'data0' or self.kwargs["sourcedb"] is None:
                 self.sourcedb = './default_db/data0.dat'
-            self.sourcedb = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
-        else:
-            self.sourcedb = self.kwargs["sourcedb"]
+                self.sourcedb = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+            else:
+                self.sourcedb = self.kwargs["sourcedb"]
+
         self.objdb = self.kwargs["objdb"]
         self.co2actmodel = self.kwargs["co2actmodel"]
         self.ThermoInUnit = self.kwargs['ThermoInUnit']
@@ -1661,6 +1682,19 @@ class write_database():
             self.write_pflotrandb(self.T, self.P )
         elif self.dataset.lower() == 'toughreact':
             self.write_ToughReactdb(self.T, self.P )
+        delimiters = "/", "\\"
+        patterns = '|'.join('(?<={})'.format(re.escape(delim)) for delim in delimiters)
+        self.msg = 'Database for %s generated successfully using %s dielectric constant, \
+            %s %s source database' % (self.dataset.upper(), self.Dielec_method, re.split(patterns, 
+            self.sourcedb)[-1], self.sourceformat)
+        if self.cpx_Ca != 0:
+            self.msg += ', full solid solution included'
+        elif self.solid_solution == 'Yes':
+            self.msg += ', solid solution included with cpx excluded'
+        if self.clay_thermo == 'Yes':
+            self.msg += ', clay thermodynamics included'
+        if self.kwargs["print_msg"] == True:
+            print(self.msg)
 
     def write_GWBdb(self, T, P ):
         """
@@ -1729,8 +1763,8 @@ class write_database():
                 x[4]*((1/TK**2) - (1/Tr**2)) + x[5]*np.log(TK/Tr)
             x0 = [-31.9605, 20.6576, 3.73497e-2, -9.01862, 6.0111, 2.5]
 
-        if os.path.exists(os.path.join(os.getcwd(), 'output')) == False:
-            os.makedirs(os.path.join(os.getcwd(), 'output'))
+        if os.path.exists(os.path.join(os.getcwd(), 'output/GWB')) == False:
+            os.makedirs(os.path.join(os.getcwd(), 'output/GWB'))
 
         periodic_table = open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                            'PeriodicTableJSON.json'), encoding='utf8')
@@ -1776,7 +1810,7 @@ class write_database():
                     else:
                         missing_species.append(sublist)
 
-        missingfile = open(os.path.join(os.path.abspath("."), 'output', 'spxNotFound.txt'), 'w+')
+        missingfile = open(os.path.join(os.path.abspath("."), 'output', 'GWB', 'spxNotFound.txt'), 'w+')
         #missing_species = [i for i in missing_species if len(i)<1]
         for line in missing_species:
             if len(line) > 0:
@@ -1800,7 +1834,7 @@ class write_database():
         logKnan_alert = False
         # timestr = '.' + time.strftime("%d%b%y_%H%M")
 
-        fout = open(os.path.join(os.path.abspath("."),'output',  objdb + '.' + dataset), 'w+') # + timestr
+        fout = open(os.path.join(os.path.abspath("."),'output', 'GWB',  objdb + '.' + dataset), 'w+') # + timestr
         dbname2 = 'and supcrtbl.dat' if self.dbHP_dir is not None else 'and berman.dat' if self.dbBerman_dir is not None else  ''
 
         if sourceformat.upper() != 'EQ36':
@@ -2313,12 +2347,16 @@ class write_database():
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'aqueous',
-                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit).logK
+                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit)
 
                 if densityextrap.lower() == 'yes': #any(np.isnan(logK)):
-                    logKnan_alert = True
+                    if all(logK.nonsubBornptrs) == True: # if all densities are >= 350
+                        logKnan_alert = False            # turn off the prompts for using Density extrapolation
+                    else:
+                        logKnan_alert = True
                 else:
-                    logKnan_alert = False
+                    logKnan_alert = False                # turn off the prompts for using Density extrapolation
+                logK = logK.logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
 
                 if (dataset_format in ['jan19', 'apr20', 'mar21']) & (logK_form.lower() == 'polycoeffs'):
@@ -3010,14 +3048,32 @@ class write_database():
         solid_solution = self.solid_solution;      clay_thermo = self.clay_thermo
         sourcedb = self.sourcedb
         objdb = self.objdb;                        Dielec_method = self.Dielec_method
-        heatcap_method = self.heatcap_method;
+        heatcap_method = self.heatcap_method;      sourceformat = self.sourceformat
         densityextrap = self.densityextrap
 
         dbaccessdic, dbname, sourcedic, specielist = self.dbr.dbaccessdic, self.dbr.dbaccess, self.dbr.sourcedic, self.dbr.specielist
-        act_param, block_info, Elemlist = self.dbr.act_param, self.dbr.block_info, self.dbr.Elemlist
 
-        if os.path.exists(os.path.join(os.getcwd(), 'output')) == False:
-                os.makedirs(os.path.join(os.getcwd(), 'output'))
+        if sourceformat.upper() == 'GWB':
+            MWdic, act_param, chargedic = self.dbr.MWdic, self.dbr.act_param, self.dbr.chargedic
+            dataset = '1kbu'
+
+            periodic_table = open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                               'PeriodicTableJSON.json'), encoding='utf8')
+            data = json.load(periodic_table)
+            Element = {data['elements'][x]['symbol'] : pd.DataFrame([data['elements'][x]['name'],
+                                                                     data['elements'][x]['atomic_mass']],
+                                                                    index = ['name', 'mass']).T
+                       for x in range(len(data['elements']))}
+            periodic_table.close()
+            specielist[0] = [ symbol for x in specielist[0] for symbol, item in Element.items() 
+                             if item.name[0][:4] == x[:4] ]
+            
+        elif sourceformat.upper() == 'EQ36':
+            block_info, Elemlist, act_param = self.dbr.block_info, self.dbr.Elemlist, self.dbr.act_param
+            dataset = sourcedb.split('.')[-1]
+
+        if os.path.exists(os.path.join(os.getcwd(), 'output/EQ36')) == False:
+                os.makedirs(os.path.join(os.getcwd(), 'output/EQ36'))
 
         logKnan_alert = False
         missing_species = []
@@ -3042,7 +3098,7 @@ class write_database():
                     else:
                         missing_species.append(sublist)
 
-        missingfile = open(os.path.join(os.path.abspath("."),'output', 'spxNotFound.txt'), 'w')
+        missingfile = open(os.path.join(os.path.abspath("."),'output', 'EQ36', 'spxNotFound.txt'), 'w')
         #missing_species = [i for i in missing_species if len(i)<1]
         for line in missing_species:
             if len(line) > 0:
@@ -3064,20 +3120,26 @@ class write_database():
         if objdb == None:
             objdb = 'data0.%s' % (int(P[0]))
 
-        fout = open(os.path.join(os.path.abspath("."),'output', objdb + '.%s' % sourcedb.split('.')[-1]), 'w+')  # + timestr
+        fout = open(os.path.join(os.path.abspath("."),'output', 'EQ36', objdb + '.%s' % dataset), 'w+')  # + timestr
 
         fid = open(sourcedb, 'r')
 
-        s = fid.readline()
-        fout.writelines(s)
-        for i in range(500) :
-            s = fid.readline()
-            if s.startswith('Generated', 0) | s.startswith('Data', 0) | (s.rstrip('\n') == ""):
-                break
-        fout.writelines('CII: ' + ' pyGeochemCalc.2021' + '\n')
-        fout.writelines('Generated by: ' + ' pyGeochemCalc, ' + time.ctime() + '\n')
         dbname2 = 'and supcrtbl.dat' if self.dbHP_dir is not None else 'and berman.dat' if self.dbBerman_dir is not None else ''
-        fout.writelines('Output package:  eq3\n' + 'Data set:        ' + dbname + ' ' + dbname2 + '\n')
+        if sourceformat.upper() != 'GWB':
+            s = fid.readline()
+            fout.writelines(s)
+            for i in range(500) :
+                s = fid.readline()
+                if s.startswith('Generated', 0) | s.startswith('Data', 0) | (s.rstrip('\n') == ""):
+                    break
+            fout.writelines('CII: ' + ' pyGeochemCalc.2021' + '\n')
+            fout.writelines('Generated by: ' + ' pyGeochemCalc, ' + time.ctime() + '\n')
+            fout.writelines('Output package:  eq3\n' + 'Data set:        ' + dbname + ' ' + dbname2 + '\n')
+        else:
+            fout.writelines('data0.com.RX ! dataset converted from gwb database \n' + \
+                            'CII: ' + ' pyGeochemCalc.2021' + '\n' + \
+                                'Generated by: ' + ' pyGeochemCalc, ' + time.ctime() + '\n' + \
+                                    'Output package:  eq3\n' + 'Data set:        ' + dbname + ' ' + dbname2 + '\n')
 
         if Dielec_method.upper() == 'DEW':
             water = ZhangDuan(T = T, P = P)
@@ -3086,24 +3148,36 @@ class write_database():
             water = iapws95(T = T, P = P)
             rho, dGH2O, dHH2O, SH2O = water.rho, water.G, water.H, water.S
         #copy and paste lines till temperature rows
-        for i in range(500) :
+        for i in range(2500):
+            s = fid.readline()
+            if sourceformat.upper() != 'GWB':
+                fout.writelines(s) 
+                if s.startswith('+', 0):
+                    break
+            else:
+                if s.strip('\n').strip('* ') in ['temperatures', 'temperatures (degC)', 'Temperature grid (degC)']:
+                    break
+        if sourceformat.upper() != 'GWB':
             s = fid.readline()
             fout.writelines(s)
-            if s.startswith('+', 0):
-                break
-        s = fid.readline()
-        fout.writelines(s)
-        s = fid.readline()
-        fout.writelines(s)
-        s = fid.readline()
-        fout.writelines(s)
+            s = fid.readline()
+            fout.writelines(s)
+            s = fid.readline()
+            fout.writelines(s)
+        else:
+            fout.write( "+" + "-"*68 + "\n")
+            fout.write("Miscellaneous parameters\n")
+            fout.write( "+" + "-"*68 + "\n")
+            fout.write("Temperature limits (degC)\n")
         fout.writelines('      %9.4f %9.4f\n' % (T[0], T[-1]))
 
-        for i in range(50) :
-            s = fid.readline()
-            if s.strip('\n') in ['temperatures', 'Temperature grid (degC)']:
-                break
-        fout.writelines(s)
+
+        if sourceformat.upper() != 'GWB':
+            for i in range(50) :
+                s = fid.readline()
+                if s.strip('\n').strip('* ') in ['temperatures', 'temperatures (degC)', 'Temperature grid (degC)']:
+                    break
+        fout.writelines(s) if sourceformat.upper() != 'GWB' else fout.writelines(s.strip('* ').split('(')[0] + '\n')
         for i in range(len(T)):
             i = i + 1
             if (i == 1) | (i == 5):
@@ -3115,9 +3189,9 @@ class write_database():
 
         for i in range(50) :
             s = fid.readline()
-            if s.strip('\n') in ['pressures', 'Pressure grid (bars)']:
+            if s.strip('\n').strip('* ') in ['pressures', 'Pressure grid (bars)', 'pressures (bar)']:
                 break
-        fout.writelines(s)
+        fout.writelines(s) if sourceformat.upper() != 'GWB' else fout.writelines(s.strip('* ').split('(')[0] + '\n')
         for i in range(len(P)):
             i = i + 1
             if (i == 1) | (i == 5):
@@ -3154,7 +3228,7 @@ class write_database():
                 s = fid.readline()
                 if '(adh)' in s.strip('\n') or 'Debye-Huckel A_gamma' in s.strip('\n'):
                     break
-            fout.writelines(s)
+            fout.writelines(s) if sourceformat.upper() != 'GWB' else fout.writelines(s.strip('* '))
             for i in range(len(Adh)):
                 i = i + 1
                 if (i == 1) | (i == 5):
@@ -3168,7 +3242,7 @@ class write_database():
                 s = fid.readline()
                 if '(bdh)' in s.strip('\n') or 'Debye-Huckel B_gamma' in s.strip('\n'):
                     break
-            fout.writelines(s)
+            fout.writelines(s) if sourceformat.upper() != 'GWB' else fout.writelines(s.strip('* '))
             for i in range(len(Bdh)):
                 i = i + 1
                 if (i == 1) | (i == 5):
@@ -3182,7 +3256,7 @@ class write_database():
                 s = fid.readline()
                 if 'bdot' in s.strip('\n') or 'B-dot' in s.strip('\n'):
                     break
-            fout.writelines(s)
+            fout.writelines(s) if sourceformat.upper() != 'GWB' else fout.writelines(s.strip('* '))
             for i in range(len(bdot)):
                 i = i + 1
                 if (i == 1) | (i == 5):
@@ -3195,15 +3269,22 @@ class write_database():
             #skip lines till cco2 rows
             for i in range(50) :
                 s = fid.readline()
-                if 'cco2' in s.strip('\n'):
+                if 'cco2' in s.strip('\n') or 'c co2' in s.strip('\n'):
                     break
-            fout.writelines(s)
-            s = fid.readline()
-            fout.writelines(s)
-            s = fid.readline()
-            fout.writelines(s)
-            s = fid.readline()
-            fout.writelines(s)
+            if sourceformat.upper() != 'GWB':
+                fout.writelines(s)
+                s = fid.readline()
+                fout.writelines(s)
+                s = fid.readline()
+                fout.writelines(s)
+                s = fid.readline()
+                fout.writelines(s)
+            else:
+                fout.writelines('cco2   (coefficients for the Drummond (1981) polynomial) \n' + \
+                                '         -1.0312              0.0012806 \n' + \
+                                    '          255.9                 0.4445 \n' + \
+                                        '      -0.001606 \n')
+                
         elif act_param['activity_model'] == 'h-m-w':
             for i in range(50) :
                 s = fid.readline()
@@ -3222,13 +3303,14 @@ class write_database():
 
         for i in range(50) :
             s = fid.readline()
-            if any(re.findall(r'|'.join(('log k for eh reaction', 'Eh reaction: logKr')), s.strip('\n'), re.IGNORECASE)):
+            if any(re.findall(r'|'.join(('log k for eh reaction', 'Eh reaction: logKr')), s.strip('\n').strip('*'), re.IGNORECASE)):
                 break
-        fout.writelines(s)
+        fout.writelines(s) if sourceformat.upper() != 'GWB' else fout.writelines(s.strip('* '))
+        
         #%% Calculations for "log k for eh" rows
         logK = calcRxnlogK( T = T, P = P, Specie = 'eh', dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                            specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
-                           sourceformat = 'EQ36', densityextrap = densityextrap,
+                           sourceformat = sourceformat, densityextrap = densityextrap,
                            rhoEGextrap = rhoEGextrap).logK
         logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
         for i in range(len(logK)):
@@ -3240,34 +3322,54 @@ class write_database():
             if (i % 4 == 0) | (i == len(logK)):
                 fout.writelines( "\n")
 
-        for i in range(50) :
-            s = fid.readline()
-            if s.startswith('+', 0):
-                break
-        if act_param['activity_model'] == 'debye-huckel':
-            fout.writelines(s)
-            s = fid.readline()
-            fout.writelines(s)
-            s = fid.readline()
-            fout.writelines(s)
-            s = fid.readline()
-            fout.writelines(s)
-            # copy and paste bdot parameters
-            for i in range(3000) :
+        if sourceformat.upper() != 'GWB':
+            for i in range(50) :
                 s = fid.readline()
-                s = s.replace(' acid','_acid').replace(' high','_high').replace(' low','_low') if 'acid' in s else s
-                s_mod = s.split()[0]
-                if s.startswith('+--', 0):
+                if s.startswith('+', 0):
                     break
-                if s_mod in all_species_avail:
-                    fout.writelines(s)
-                else:
-                    missing_species.append(s_mod)
-            fout.writelines(s)
-            s = fid.readline()
-            fout.writelines(s)
-            s = fid.readline()
-            fout.writelines(s)
+        if act_param['activity_model'] == 'debye-huckel':
+            if sourceformat.upper() != 'GWB':
+                fout.writelines(s)
+                s = fid.readline()
+                fout.writelines(s)
+                s = fid.readline()
+                fout.writelines(s)
+                s = fid.readline()
+                fout.writelines(s)
+
+                # copy and paste bdot parameters
+                for i in range(3000) :
+                    s = fid.readline()
+                    s = s.replace(' acid','_acid').replace(' high','_high').replace(' low','_low') if 'acid' in s else s
+                    s_mod = s.split()[0]
+                    if s.startswith('+--', 0):
+                        break
+                    if s_mod in all_species_avail:
+                        fout.writelines(s)
+                    else:
+                        missing_species.append(s_mod)
+                fout.writelines(s)
+                s = fid.readline()
+                fout.writelines(s)
+                s = fid.readline()
+                fout.writelines(s)
+            else:
+                fout.write( "+" + "-"*68 + "\n")
+                fout.write("bdot parameters \n")
+                fout.write( "+" + "-"*68 + "\n")
+                fout.write("*  species name                 azer0  neutral ion type \n")
+
+                f_ionsize = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ion_size.txt'), 'r')
+                Rd = f_ionsize.readlines()
+                Rd = Rd[1:]
+                Rd = list(OrderedDict.fromkeys(Rd))
+                Rd_dup = [x for n, x in enumerate(Rd) if x.split()[0] in [l.split()[0] for l in Rd[:n]]]
+                Rd = [x for x in Rd if x not in Rd_dup]
+                Rd = [x if x.split()[0] != 'O2(aq)' else x.replace('O2(aq)', 'O2(g) ') for x in Rd if x.split()[0] in chargedic.keys() ]
+                f_ionsize.close() #
+                for i in range(len(Rd)):
+                    fout.writelines(Rd[i])
+                fout.write( "+" + "-"*68 + "\n")
         elif act_param['activity_model'] == 'h-m-w':
             fout.writelines(s)
             s = fid.readline()
@@ -3297,36 +3399,73 @@ class write_database():
 
 
         # copy and paste elements
-        counter = 0
-        for i in range(2000) :
+        if sourceformat.upper() != 'GWB':
+            counter = 0
+            for i in range(2000) :
+                s = fid.readline()
+                s_mod = s.split()[0]
+                if s_mod in elem_avail:
+                    fout.writelines(s)
+                    counter = counter + 1
+                if s.startswith('+', 0):
+                    break
+            fout.writelines(s)
             s = fid.readline()
-            s_mod = s.split()[0]
-            if s_mod in elem_avail:
-                fout.writelines(s)
-                counter = counter + 1
-            if s.startswith('+', 0):
-                break
-        fout.writelines(s)
-        s = fid.readline()
-        fout.writelines(s)
-        s = fid.readline()
-        fout.writelines(s)
+            fout.writelines(s)
+            s = fid.readline()
+            fout.writelines(s)
+        else:
+            #skip lines till "elements" rows
+            for i in range(5000) :
+                s = fid.readline()
+                if s.rstrip('\n').lstrip('0123456789.- ') == 'elements':
+                    break
+            fout.writelines( "%s \n" % s.rstrip('\n').lstrip('0123456789.- '))
+            fout.writelines( "+" + "-"*68 + "\n")
+    
+            #copy and paste lines till "basis" rows
+            for i in range(1000) :
+                s = fid.readline()
+                s_mod = s.split() if s.strip('\n') != '' else s.strip('\n')
+                if s.rstrip('\n').lstrip('0123456789.- ') == 'basis species':
+                    break
+                if len(s_mod) > 1:
+                    if s_mod[1].strip('()') in elem_avail:
+                        fout.writelines('%-2s %14s \n' % (s_mod[1].strip('()'), s_mod[-1]))
+            fout.writelines( "+" + "-"*68 + "\n")
+            fout.writelines( "%s \n" % s.rstrip('\n').lstrip('0123456789.- '))
+            fout.writelines( "+" + "-"*68 + "\n")
 
         #%% Basis reactions
         counter = 0
         for j in specielist[1]:
             k = j.replace('(CH3COO)', '(Ac)').replace('CH3COO', '(Ac)')
             if j not in missing_species:
-                fout.writelines('%s\n' % j)
+                fout.writelines('%s\n' % j.replace('O2(aq)', 'O2(g)')) if j == 'O2(aq)' else fout.writelines('%s\n' % j) 
 
-                if j == 'O2(g)':
-                    fout.writelines(block_info['O2(g)_b'])
+                if sourceformat.upper() != 'GWB':
+                    if j == 'O2(g)':
+                        fout.writelines(block_info['O2(g)_b'])
+                    else:
+                        fout.writelines(block_info[j])
                 else:
-                    fout.writelines(block_info[j])
+                    filler = re.sub('[^-0123456789\.]', ' ', chargedic[j]).split()
+                    fout.writelines('     sp.type =  basis \n') if j != 'O2(aq)' else fout.writelines('     sp.type =  gas     refstate \n')
+                    fout.writelines('*    EQ3/6   =  com, alt, sup, pit\n' +\
+                                    '     revised =  - \n' +\
+                                    '*    mol.wt. =  %s g/mol\n' % filler[-1] +\
+                                    '*    DHazero =   %s \n' % filler[1] +\
+                                    '     charge  =   %s \n' % filler[0])
 
                 fout.writelines('****\n')
-                fout.writelines( "     %s element(s):\n" % int(len(Elemlist[j])/2))
-                Rxn = Elemlist[j]
+                if sourceformat.upper() != 'GWB':
+                    fout.writelines( "     %s element(s):\n" % int(len(Elemlist[j])/2))
+                    Rxn = Elemlist[j]
+                else:                    
+                    Rxn = [[v,k] for k,v in dict( sorted(calc_elem_count_molewt(j.rstrip('(aq)(g)') )[0].items(), 
+                                                         key=lambda x: x[0].lower()) ).items()]
+                    Rxn = [item for sublist in Rxn for item in sublist]
+                    fout.writelines( "     %s element(s):\n" % int(len(Rxn)/2))
                 for i in range(len(Rxn)):
                     i = i + 1
                     if (i == 1) | (i == 7):
@@ -3358,6 +3497,7 @@ class write_database():
         fout.writelines( "+" + "-"*68 + "\n")
 
         #%% Auxiliary Basis reactions
+        specielist[2] = specielist[2] + ['O2(aq)'] if sourceformat.upper() == 'GWB' else specielist[2]
         for j in specielist[2]:
             k = j.replace('(CH3COO)', '(Ac)').replace('CH3COO', '(Ac)')
             rxnlst = [b for a, b in enumerate(sourcedic[j]) if a not in [0, 1, 2, 3]]
@@ -3367,24 +3507,48 @@ class write_database():
                     fout.writelines('%-25s %s \n' % (j, sourcedic[j][0]))
                 else:
                     fout.writelines('%-25s %s \n' % (j, dbaccessdic[k][0]))
-                fout.writelines(block_info[j])
+                
+                if sourceformat.upper() != 'GWB':
+                    fout.writelines(block_info[j])
+                else:
+                    filler = re.sub('[^-0123456789\.]', ' ', chargedic[j]).split()
+                    fout.writelines('     sp.type =  aux\n' +\
+                                    '*    EQ3/6   =  com, alt, sup \n' +\
+                                    '     revised = - \n' +\
+                                    '*    mol.wt. =  %s g/mol\n' % filler[-1] +\
+                                    '*    DHazero =   %s \n' % filler[1] +\
+                                    '     charge  =   %s \n' % filler[0])
 
                 fout.writelines('****\n')
-                fout.writelines( "     %s element(s):\n" % int(len(Elemlist[j])/2))
-                Rxn = Elemlist[j]
-                for i in range(len(Rxn)):
+                if sourceformat.upper() != 'GWB':
+                    fout.writelines( "     %s element(s):\n" % int(len(Elemlist[j])/2))
+                    Elem = Elemlist[j]
+                else:                    
+                    # print(j)
+                    formula = j.rstrip('(aq)(g)') if sourcedic[j][0] == '' else j if not j.endswith('(aq)') else dbaccessdic[k][0].rstrip('(aq)(g)') #.rstrip('(+0123456789)')
+                    Elem = [[v,k] for k,v in dict( sorted(calc_elem_count_molewt(formula)[0].items(), 
+                                                         key=lambda x: x[0].lower()) ).items()]
+                    Elem = [item for sublist in Elem for item in sublist]
+                    fout.writelines( "     %s element(s):\n" % int(len(Elem)/2))
+
+                for i in range(len(Elem)):
                     i = i + 1
                     if (i == 1) | (i == 7):
-                        fout.writelines( "    %9.4f " %  float(Rxn[i - 1]))
+                        fout.writelines( "    %9.4f " %  float(Elem[i - 1]))
                     elif i % 2 != 0:
-                        fout.writelines( "%9.4f " %  float(Rxn[i - 1]))
+                        fout.writelines( "%9.4f " %  float(Elem[i - 1]))
                     else:
-                        fout.writelines( "%-9s     " %  (Rxn[i - 1]))
-                    if (i % 6 == 0) | (i == len(Rxn)):
+                        fout.writelines( "%-9s     " %  (Elem[i - 1]))
+                    if (i % 6 == 0) | (i == len(Elem)):
                         fout.writelines( "\n")
                 fout.writelines('****\n')
-                fout.writelines( "     %s species in aqueous dissociation reaction:\n" % sourcedic[j][1])
-                Rxn = sourcedic[j][2:]
+                if sourceformat.upper() != 'GWB':
+                    fout.writelines( "     %s species in aqueous dissociation reaction:\n" % sourcedic[j][1])
+                    Rxn = sourcedic[j][2:]
+                else:
+                    fout.writelines( "     %s species in aqueous dissociation reaction:\n" % (sourcedic[j][1] + 1))
+                    sourcedic[j] = [k if k != 'O2(aq)' else k.replace('O2(aq)', 'O2(g)') for k in sourcedic[j]]
+                    Rxn = ['-1.0000', 'O2(aq)', '1.0000', 'O2(g)'] if sourceformat.upper() == 'GWB' and j == 'O2(aq)' else ['-1.0000', '%s' % j] + sourcedic[j][2:]
                 for i in range(len(Rxn)):
                     i = i + 1
                     if (i == 1) | (i == 5) | (i == 9):
@@ -3397,15 +3561,21 @@ class write_database():
                         fout.writelines( "\n")
                 fout.writelines('*\n')
                 fout.writelines('**** logK grid [T, P @ Miscellaneous parameters]\n')
+                sourcedic[j] = ['', 1, '1.0000', 'O2(g)'] if sourceformat.upper() == 'GWB' and j == 'O2(aq)' else sourcedic[j]
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
-                                   sourceformat = 'EQ36', densityextrap = densityextrap, Specie_class = 'aqueous',
-                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit).logK
-                if densityextrap.lower() == 'yes':
-                    logKnan_alert = True
+                                   sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'aqueous',
+                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit)
+                if densityextrap.lower() == 'yes': 
+                    if all(logK.nonsubBornptrs) == True: # if all densities are >= 350
+                        logKnan_alert = False            # turn off the prompts for using Density extrapolation
+                    else:
+                        logKnan_alert = True
                 else:
-                    logKnan_alert = False
+                    logKnan_alert = False                # turn off the prompts for using Density extrapolation
+                logK = logK.logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
+
                 for i in range(len(logK)):
                     i = i + 1
                     if (i == 1) | (i == 5):
@@ -3444,10 +3614,31 @@ class write_database():
                     fout.writelines('%-25s %s \n' % (j, sourcedic[j][0]))
                 else:
                     fout.writelines('%-25s %s \n' % (j, dbaccessdic[k][0]))
-                fout.writelines(block_info[j])
+
+                if sourceformat.upper() != 'GWB':
+                    fout.writelines(block_info[j])
+                else:
+                    filler = re.sub('[^-0123456789\.]', ' ', chargedic[j]).split()
+                    fout.writelines('     sp.type =  aqueous\n' +\
+                                    '*    EQ3/6   =  com, alt, sup \n' +\
+                                    '     revised =  - \n' +\
+                                    '*    mol.wt. =  %s g/mol\n' % filler[-1] +\
+                                    '*    DHazero =   %s \n' % filler[1] +\
+                                    '     charge  =   %s \n' % filler[0])
+
                 fout.writelines('****\n')
-                fout.writelines( "     %s element(s):\n" % int(len(Elemlist[j])/2))
-                Elem = Elemlist[j]
+                if sourceformat.upper() != 'GWB':
+                    fout.writelines( "     %s element(s):\n" % int(len(Elemlist[j])/2))
+                    Elem = Elemlist[j]
+                else: 
+                    # print(j)
+                    filler = ('(aq)', '(But)', '(Prop)', '(Pent)', '(For)', '(Gly)', '(Glyc)', '(Lac)', 'Acetate')
+                    formula = j.rstrip('(aq)(g)') if sourcedic[j][0] == '' else j if not any([l in j for l in filler]) else re.sub('(aq)', '', dbaccessdic[k][0]) #.rstrip('(+0123456789)')
+                    Elem = [[v,k] for k,v in dict( sorted(calc_elem_count_molewt(formula)[0].items(), 
+                                                         key=lambda x: x[0].lower()) ).items()]
+                    Elem = [item for sublist in Elem for item in sublist]
+                    fout.writelines( "     %s element(s):\n" % int(len(Elem)/2))
+
                 for i in range(len(Elem)):
                     i = i + 1
                     if (i == 1) | (i == 7):
@@ -3459,8 +3650,15 @@ class write_database():
                     if (i % 6 == 0) | (i == len(Elem)):
                         fout.writelines( "\n")
                 fout.writelines('****\n')
-                fout.writelines( "     %s species in aqueous dissociation reaction:\n" % sourcedic[j][1])
-                Rxn = sourcedic[j][2:]
+
+                if sourceformat.upper() != 'GWB':
+                    fout.writelines( "     %s species in aqueous dissociation reaction:\n" % sourcedic[j][1])
+                    Rxn = sourcedic[j][2:]
+                else:
+                    fout.writelines( "     %s species in aqueous dissociation reaction:\n" % (sourcedic[j][1] + 1))
+                    sourcedic[j] = [k if k != 'O2(aq)' else k.replace('O2(aq)', 'O2(g)') for k in sourcedic[j]]
+                    Rxn = ['-1.0000', '%s' % j] + sourcedic[j][2:]
+                
                 for i in range(len(Rxn)):
                     i = i + 1
                     if (i == 1) | (i == 5) | (i == 9):
@@ -3475,7 +3673,7 @@ class write_database():
                 fout.writelines('**** logK grid [T, P @ Miscellaneous parameters]\n')
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
-                                   sourceformat = 'EQ36', densityextrap = densityextrap, Specie_class = 'aqueous',
+                                   sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'aqueous',
                                    rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit).logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                 for i in range(len(logK)):
@@ -3543,7 +3741,8 @@ class write_database():
                 outputfmt(fout, logK, Rxn, dataset = 'EQ36')
 
         # other minerals in the source database
-        for j in specielist[4]:
+        minlst = specielist[4] if sourceformat.upper() != 'GWB' else specielist[5]
+        for j in minlst:
             k = j.replace('(CH3COO)', '(Ac)').replace('CH3COO', '(Ac)')
             rxnlst = [b for a, b in enumerate(sourcedic[j]) if a not in [0, 1, 2, 3]]
             rxnlst = [v for x, v in enumerate(rxnlst) if x % 2 != 0 ]
@@ -3560,11 +3759,28 @@ class write_database():
                         fout.writelines('%-25s %s \n' % (j, sourcedic[j][0]))
                     else:
                         fout.writelines('%-25s %s \n' % (j, dbaccessdic[k][0]))
-                    fout.writelines(block_info[j])
+                    
+                    if sourceformat.upper() != 'GWB':
+                        fout.writelines(block_info[j])
+                    else:
+                        fout.writelines('     sp.type =  solid \n' +\
+                                        '*    EQ3/6   =  com, alt, sup \n' +\
+                                        '     revised =   - \n' +\
+                                        '*    mol.wt. =  %s g/mol\n' % MWdic[j] +\
+                                        '     V0PrTr  =   %s cm**3/mol \n' % dbaccessdic[j][5] )
 
                     fout.writelines('****\n')
-                    fout.writelines( "     %s element(s):\n" % int(len(Elemlist[j])/2))
-                    Elem = Elemlist[j]
+
+                    if sourceformat.upper() != 'GWB':
+                        fout.writelines( "     %s element(s):\n" % int(len(Elemlist[j])/2))
+                        Elem = Elemlist[j]
+                    else:                    
+                        formula = re.sub('(s)', '', j) if sourcedic[j][0] == '' else re.sub('(s)', '', dbaccessdic[k][0])
+                        Elem = [[v,k] for k,v in dict( sorted(calc_elem_count_molewt(formula)[0].items(), 
+                                                             key=lambda x: x[0].lower()) ).items()]
+                        Elem = [item for sublist in Elem for item in sublist]
+                        fout.writelines( "     %s element(s):\n" % int(len(Elem)/2))
+
                     for i in range(len(Elem)):
                         i = i + 1
                         if (i == 1) | (i == 7) | (i == 13):
@@ -3576,8 +3792,15 @@ class write_database():
                         if (i % 6 == 0) | (i == len(Elem)):
                             fout.writelines( "\n")
                     fout.writelines('****\n')
-                    fout.writelines( "     %s species in reaction:\n" % sourcedic[j][1])
-                    Rxn = sourcedic[j][2:]
+
+                    if sourceformat.upper() != 'GWB':
+                        fout.writelines( "     %s species in reaction:\n" % sourcedic[j][1])
+                        Rxn = sourcedic[j][2:]
+                    else:
+                        fout.writelines( "     %s species in reaction:\n" % (sourcedic[j][1] + 1))
+                        sourcedic[j] = [k if k != 'O2(aq)' else k.replace('O2(aq)', 'O2(g)') for k in sourcedic[j]]
+                        Rxn = ['-1.0000', '%s' % j] + sourcedic[j][2:]
+
                     for i in range(len(Rxn)):
                         i = i + 1
                         if (i == 1) | (i == 5) | (i == 9) | (i == 13) | (i == 17) | (i == 21):
@@ -3592,7 +3815,7 @@ class write_database():
                     fout.writelines('**** logK grid [T, P @ Miscellaneous parameters]\n')
                     logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                        specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
-                                       sourceformat = 'EQ36', densityextrap = densityextrap, Specie_class = 'minerals',
+                                       sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'minerals',
                                        heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
                     logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                     for i in range(len(logK)):
@@ -3631,81 +3854,82 @@ class write_database():
 
 
         #%% Liquids reactions
-        for j in specielist[5]:
-            k = j.replace('(CH3COO)', '(Ac)').replace('CH3COO', '(Ac)')
-            rxnlst = [b for a, b in enumerate(sourcedic[j]) if a not in [0, 1, 2, 3]]
-            rxnlst = [v for x, v in enumerate(rxnlst) if x % 2 != 0 ]
-            if (j not in missing_species) and (len([k for k in rxnlst if k not in missing_species])==len(rxnlst)):
-                if sourcedic[j][0] != '':
-                    fout.writelines('%-25s %s \n' % (j, sourcedic[j][0]))
-                else:
-                    fout.writelines('%-25s %s \n' % (j, dbaccessdic[k][0]))
-                fout.writelines(block_info[j])
-
-                fout.writelines('****\n')
-                fout.writelines( "     %s element(s):\n" % int(len(Elemlist[j])/2))
-                Elem = Elemlist[j]
-                for i in range(len(Elem)):
-                    i = i + 1
-                    if (i == 1) | (i == 7) | (i == 13):
-                        fout.writelines( "    %9.4f " %  float(Elem[i - 1]))
-                    elif i % 2 != 0:
-                        fout.writelines( "%9.4f " %  float(Elem[i - 1]))
+        if sourceformat.upper() != 'GWB':
+            for j in specielist[5]:
+                k = j.replace('(CH3COO)', '(Ac)').replace('CH3COO', '(Ac)')
+                rxnlst = [b for a, b in enumerate(sourcedic[j]) if a not in [0, 1, 2, 3]]
+                rxnlst = [v for x, v in enumerate(rxnlst) if x % 2 != 0 ]
+                if (j not in missing_species) and (len([k for k in rxnlst if k not in missing_species])==len(rxnlst)):
+                    if sourcedic[j][0] != '':
+                        fout.writelines('%-25s %s \n' % (j, sourcedic[j][0]))
                     else:
-                        fout.writelines( "%-9s     " %  (Elem[i - 1]))
-                    if (i % 6 == 0) | (i == len(Elem)):
-                        fout.writelines( "\n")
-                fout.writelines('****\n')
-                fout.writelines( "     %s species in reaction:\n" % sourcedic[j][1])
-                Rxn = sourcedic[j][2:]
-                for i in range(len(Rxn)):
-                    i = i + 1
-                    if (i == 1) | (i == 5) | (i == 9) | (i == 13):
-                        fout.writelines( "  %9.4f " %  float(Rxn[i - 1]))
-                    elif i % 2 != 0:
-                        fout.writelines( "%9.4f " %  float(Rxn[i - 1]))
+                        fout.writelines('%-25s %s \n' % (j, dbaccessdic[k][0]))
+                    fout.writelines(block_info[j])
+    
+                    fout.writelines('****\n')
+                    fout.writelines( "     %s element(s):\n" % int(len(Elemlist[j])/2))
+                    Elem = Elemlist[j]
+                    for i in range(len(Elem)):
+                        i = i + 1
+                        if (i == 1) | (i == 7) | (i == 13):
+                            fout.writelines( "    %9.4f " %  float(Elem[i - 1]))
+                        elif i % 2 != 0:
+                            fout.writelines( "%9.4f " %  float(Elem[i - 1]))
+                        else:
+                            fout.writelines( "%-9s     " %  (Elem[i - 1]))
+                        if (i % 6 == 0) | (i == len(Elem)):
+                            fout.writelines( "\n")
+                    fout.writelines('****\n')
+                    fout.writelines( "     %s species in reaction:\n" % sourcedic[j][1])
+                    Rxn = sourcedic[j][2:]
+                    for i in range(len(Rxn)):
+                        i = i + 1
+                        if (i == 1) | (i == 5) | (i == 9) | (i == 13):
+                            fout.writelines( "  %9.4f " %  float(Rxn[i - 1]))
+                        elif i % 2 != 0:
+                            fout.writelines( "%9.4f " %  float(Rxn[i - 1]))
+                        else:
+                            fout.writelines( " %-21s     " %  (Rxn[i - 1]))
+                        if (i % 4 == 0) | (i == len(Rxn)):
+                            fout.writelines( "\n")
+                    fout.writelines('*\n')
+                    fout.writelines('**** logK grid [T, P @ Miscellaneous parameters]\n')
+                    logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
+                                       specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
+                                       sourceformat = 'EQ36', densityextrap = densityextrap, Specie_class = 'liquids',
+                                       rhoEGextrap = rhoEGextrap).logK
+                    logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
+                    for i in range(len(logK)):
+                        i = i + 1
+                        if (i == 1) | (i == 5):
+                            fout.writelines( "      %9.4f" %  logK[i-1])
+                        else:
+                            fout.writelines( "  %9.4f" %  logK[i-1])
+                        if (i % 4 == 0) | (i == len(logK)):
+                            fout.writelines( "\n")
+                    fout.writelines( "*    gflag = 1 [reported delG0f used]\n" )
+                    fout.writelines( "*    extrapolation algorithm: supcrt92 [92joh/oel]\n" )
+                    if j == 'Quicksilver':
+                        fout.writelines( "*    alternate name = Quicksilver\n" )
+                    if j != 'H2O':
+                        dG, dH, S = dbaccessdic[k][2], dbaccessdic[k][3], dbaccessdic[k][4]
                     else:
-                        fout.writelines( " %-21s     " %  (Rxn[i - 1]))
-                    if (i % 4 == 0) | (i == len(Rxn)):
-                        fout.writelines( "\n")
-                fout.writelines('*\n')
-                fout.writelines('**** logK grid [T, P @ Miscellaneous parameters]\n')
-                logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
-                                   specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
-                                   sourceformat = 'EQ36', densityextrap = densityextrap, Specie_class = 'liquids',
-                                   rhoEGextrap = rhoEGextrap).logK
-                logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
-                for i in range(len(logK)):
-                    i = i + 1
-                    if (i == 1) | (i == 5):
-                        fout.writelines( "      %9.4f" %  logK[i-1])
+                        dG, dH, S, ref = dGH2O[0], dHH2O[0], SH2O[0], 'iapws95/' + Dielec_method
+                    fout.writelines( "*    ref-state data  [source:   %s  ]\n" % ref)
+                    fout.writelines( "*         delG0f =   %8.3f  kcal/mol\n" % (dG/1000) )
+                    fout.writelines( "*         delH0f =   %8.3f  kcal/mol\n" % (dH/1000))
+                    fout.writelines( "*         S0PrTr =   %8.3f  cal/(mol*K)\n" % S)
+                    fout.writelines( "*    Cp coefficients [source:   %s  ]\n" % ref)
+                    fout.writelines( "*         T**0   =   %11.8e  \n" % (dbaccessdic[k][6]) )
+                    fout.writelines( "*         T**1   =   %11.8e  \n" % (dbaccessdic[k][7]*10**-3))
+                    if dbaccessdic[k][8] < 1:
+                        fout.writelines( "*         T**-2  =  %12.8e  \n" % (dbaccessdic[k][8]*10**5))
                     else:
-                        fout.writelines( "  %9.4f" %  logK[i-1])
-                    if (i % 4 == 0) | (i == len(logK)):
-                        fout.writelines( "\n")
-                fout.writelines( "*    gflag = 1 [reported delG0f used]\n" )
-                fout.writelines( "*    extrapolation algorithm: supcrt92 [92joh/oel]\n" )
-                if j == 'Quicksilver':
-                    fout.writelines( "*    alternate name = Quicksilver\n" )
-                if j != 'H2O':
-                    dG, dH, S = dbaccessdic[k][2], dbaccessdic[k][3], dbaccessdic[k][4]
+                        fout.writelines( "*         T**-2  =   %11.8e  \n" % (dbaccessdic[k][8]*10**5))
+                    fout.writelines( "*         Tlimit =   %7.2fC  \n" % (dbaccessdic[k][9]))
+                    fout.writelines( "+" + "-"*68 + "\n")
                 else:
-                    dG, dH, S, ref = dGH2O[0], dHH2O[0], SH2O[0], 'iapws95/' + Dielec_method
-                fout.writelines( "*    ref-state data  [source:   %s  ]\n" % ref)
-                fout.writelines( "*         delG0f =   %8.3f  kcal/mol\n" % (dG/1000) )
-                fout.writelines( "*         delH0f =   %8.3f  kcal/mol\n" % (dH/1000))
-                fout.writelines( "*         S0PrTr =   %8.3f  cal/(mol*K)\n" % S)
-                fout.writelines( "*    Cp coefficients [source:   %s  ]\n" % ref)
-                fout.writelines( "*         T**0   =   %11.8e  \n" % (dbaccessdic[k][6]) )
-                fout.writelines( "*         T**1   =   %11.8e  \n" % (dbaccessdic[k][7]*10**-3))
-                if dbaccessdic[k][8] < 1:
-                    fout.writelines( "*         T**-2  =  %12.8e  \n" % (dbaccessdic[k][8]*10**5))
-                else:
-                    fout.writelines( "*         T**-2  =   %11.8e  \n" % (dbaccessdic[k][8]*10**5))
-                fout.writelines( "*         Tlimit =   %7.2fC  \n" % (dbaccessdic[k][9]))
-                fout.writelines( "+" + "-"*68 + "\n")
-            else:
-                continue
+                    continue
         fout.writelines( "gases\n")
         fout.writelines( "+" + "-"*68 + "\n")
 
@@ -3719,11 +3943,29 @@ class write_database():
                     fout.writelines('%-25s %s \n' % (j, sourcedic[j][0]))
                 else:
                     fout.writelines('%-25s %s \n' % (j, dbaccessdic[k][0]))
-                fout.writelines(block_info[j])
+
+                if sourceformat.upper() != 'GWB':
+                    fout.writelines(block_info[j])
+                else:
+                    fout.writelines('     sp.type =  gas \n' +\
+                                    '*    EQ3/6   =  com, alt, sup \n' +\
+                                    '     revised =   - \n' +\
+                                    '*    mol.wt. =  %s g/mol\n' % MWdic[j] +\
+                                    '     V0PrTr  =   %s cm**3/mol \n' % dbaccessdic[j][5] )
+
 
                 fout.writelines('****\n')
-                fout.writelines( "     %s element(s):\n" % int(len(Elemlist[j])/2))
-                Elem = Elemlist[j]
+
+                if sourceformat.upper() != 'GWB':
+                    fout.writelines( "     %s element(s):\n" % int(len(Elemlist[j])/2))
+                    Elem = Elemlist[j]
+                else:                    
+                    formula = j.rstrip('(g)') if sourcedic[j][0] == '' else sourcedic[j][0].rstrip('(g)')
+                    Elem = [[v,k] for k,v in dict( sorted(calc_elem_count_molewt(formula)[0].items(), 
+                                                         key=lambda x: x[0].lower()) ).items()]
+                    Elem = [item for sublist in Elem for item in sublist]
+                    fout.writelines( "     %s element(s):\n" % int(len(Elem)/2))
+
                 for i in range(len(Elem)):
                     i = i + 1
                     if (i == 1) | (i == 7) | (i == 13):
@@ -3735,8 +3977,14 @@ class write_database():
                     if (i % 6 == 0) | (i == len(Elem)):
                         fout.writelines( "\n")
                 fout.writelines('****\n')
-                fout.writelines( "     %s species in reaction:\n" % sourcedic[j][1])
-                Rxn = sourcedic[j][2:]
+                if sourceformat.upper() != 'GWB':
+                    fout.writelines( "     %s species in reaction:\n" % sourcedic[j][1])
+                    Rxn = sourcedic[j][2:]
+                else:
+                    fout.writelines( "     %s species in reaction:\n" % (sourcedic[j][1] + 1))
+                    sourcedic[j] = [k if k != 'O2(aq)' else k.replace('O2(aq)', 'O2(g)') for k in sourcedic[j]]
+                    Rxn = ['-1.0000', '%s' % j] + sourcedic[j][2:]
+
                 for i in range(len(Rxn)):
                     i = i + 1
                     if (i == 1) | (i == 5) | (i == 9) | (i == 13):
@@ -3751,7 +3999,7 @@ class write_database():
                 fout.writelines('**** logK grid [T, P @ Miscellaneous parameters]\n')
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
-                                   sourceformat = 'EQ36', densityextrap = densityextrap, Specie_class = 'gases',
+                                   sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'gases',
                                    heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                 for i in range(len(logK)):
@@ -3787,32 +4035,33 @@ class write_database():
         fout.writelines( "+" + "-"*68 + "\n")
 
         #%% Solid solution reactions
-        for j in specielist[7]:
-            rxnlst = [b for a, b in enumerate(sourcedic[j]) if a not in [0, 1]]
-            rxnlst = [v for x, v in enumerate(rxnlst) if x % 2 != 0 ]
-            if (len([k for k in rxnlst if k not in missing_species]) == len(rxnlst)):
-                if sourcedic[j][0] != '':
-                    fout.writelines('%-25s %s \n' % (j, sourcedic[j][0]))
-                else:
-                    fout.writelines('%-25s %s \n' % (j, dbaccessdic[j][0]))
-                fout.writelines(block_info[j][0])
-
-                fout.writelines( "  %s components\n" % sourcedic[j][1])
-                Rxn = sourcedic[j][2:]
-                for i in range(len(Rxn)):
-                    i = i + 1
-                    if (i == 1) | (i == 5) | (i == 9) | (i == 13):
-                        fout.writelines( "  %9.4f " %  float(Rxn[i - 1]))
-                    elif i % 2 != 0:
-                        fout.writelines( "%9.4f " %  float(Rxn[i - 1]))
+        if sourceformat.upper() != 'GWB':
+            for j in specielist[7]:
+                rxnlst = [b for a, b in enumerate(sourcedic[j]) if a not in [0, 1]]
+                rxnlst = [v for x, v in enumerate(rxnlst) if x % 2 != 0 ]
+                if (len([k for k in rxnlst if k not in missing_species]) == len(rxnlst)):
+                    if sourcedic[j][0] != '':
+                        fout.writelines('%-25s %s \n' % (j, sourcedic[j][0]))
                     else:
-                        fout.writelines( " %-21s     " %  (Rxn[i - 1]))
-                    if (i % 4 == 0) | (i == len(Rxn)):
-                        fout.writelines( "\n")
-                fout.writelines(block_info[j][1])
-                fout.writelines( "+" + "-"*68 + "\n")
-            else:
-                continue
+                        fout.writelines('%-25s %s \n' % (j, dbaccessdic[j][0]))
+                    fout.writelines(block_info[j][0])
+    
+                    fout.writelines( "  %s components\n" % sourcedic[j][1])
+                    Rxn = sourcedic[j][2:]
+                    for i in range(len(Rxn)):
+                        i = i + 1
+                        if (i == 1) | (i == 5) | (i == 9) | (i == 13):
+                            fout.writelines( "  %9.4f " %  float(Rxn[i - 1]))
+                        elif i % 2 != 0:
+                            fout.writelines( "%9.4f " %  float(Rxn[i - 1]))
+                        else:
+                            fout.writelines( " %-21s     " %  (Rxn[i - 1]))
+                        if (i % 4 == 0) | (i == len(Rxn)):
+                            fout.writelines( "\n")
+                    fout.writelines(block_info[j][1])
+                    fout.writelines( "+" + "-"*68 + "\n")
+                else:
+                    continue
 
         fout.writelines( "references\n")
         fout.writelines( "+" + "-"*68 + "\n")
@@ -3863,8 +4112,8 @@ class write_database():
         if sourceformat.upper() == 'EQ36':
             block_info = self.dbr.block_info
 
-        if os.path.exists(os.path.join(os.getcwd(), 'output')) == False:
-                os.makedirs(os.path.join(os.getcwd(), 'output'))
+        if os.path.exists(os.path.join(os.getcwd(), 'output/Pflotran')) == False:
+                os.makedirs(os.path.join(os.getcwd(), 'output/Pflotran'))
 
         periodic_table = open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                            'PeriodicTableJSON.json'), encoding='utf8')
@@ -3900,7 +4149,7 @@ class write_database():
                     else:
                         missing_species.append(sublist)
 
-        missingfile = open(os.path.join(os.path.abspath("."),'output',  'spxNotFound.txt'), 'w')
+        missingfile = open(os.path.join(os.path.abspath("."),'output', 'Pflotran', 'spxNotFound.txt'), 'w')
         for line in missing_species:
             if len(line) > 0:
                 missingfile.writelines(line[0])
@@ -3913,10 +4162,10 @@ class write_database():
         missing_species = [i for n, i in enumerate(missing_species) if i not in missing_species[:n]]
         logKnan_alert = False
         if objdb == None:
-            objdb = 'thermo_pflotran%sbars' % int(P[0])
+            objdb = 'thermo_%sbars' % int(P[0])
         # timestr = '.' + time.strftime("%d%b%y_%H%M")
 
-        fout = open(os.path.join(os.path.abspath("."),'output',  objdb + '.dat'), 'w+') # + timestr
+        fout = open(os.path.join(os.path.abspath("."),'output', 'Pflotran', objdb + '.dat'), 'w+') # + timestr
 
         if np.ndim(T) == 0 | np.ndim(P) == 0:
             T = np.ravel(T)
@@ -4018,11 +4267,15 @@ class write_database():
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'aqueous',
-                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit).logK
-                if densityextrap.lower() == 'yes':
-                    logKnan_alert = True
+                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit)
+                if densityextrap.lower() == 'yes': 
+                    if all(logK.nonsubBornptrs) == True: # if all densities are >= 350
+                        logKnan_alert = False            # turn off the prompts for using Density extrapolation
+                    else:
+                        logKnan_alert = True
                 else:
-                    logKnan_alert = False
+                    logKnan_alert = False                # turn off the prompts for using Density extrapolation
+                logK = logK.logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                 list_logk = ' '.join(str("%9.4f" % e) for e in list(logK))
                 info = "'%s'" % name + ' ' + str(species) + ' ' + Rxn + ' ' + list_logk + ' ' + str(ionsize) +\
@@ -4211,7 +4464,7 @@ class write_database():
         densityextrap = self.densityextrap
 
         dbaccessdic, sourcedic, specielist = self.dbr.dbaccessdic, self.dbr.sourcedic, self.dbr.specielist
-        MWdic, chargedic = self.dbr.MWdic, self.dbr.chargedic
+        act_param, MWdic, chargedic = self.dbr.act_param, self.dbr.MWdic, self.dbr.chargedic
 
         # from Table 3 of Helgeson, H.C., Kirkham, D.H., Flowers, G.C., 1981. Theoretical prediction of the
         # thermodynamic behavior of aqueous electrolytes at high pressures and temperatures: IV.
@@ -4225,8 +4478,8 @@ class write_database():
                 'HCO3-' : 2.10, 'HSO4-' : 2.37, 'ClO4-' : 3.59, 'ReO4--' : 4.230, 'SO4--' : 3.15,
                 'CO3--' : 2.810}
 
-        if os.path.exists(os.path.join(os.getcwd(), 'output')) == False:
-                os.makedirs(os.path.join(os.getcwd(), 'output'))
+        if os.path.exists(os.path.join(os.getcwd(), 'output/ToughReact')) == False:
+                os.makedirs(os.path.join(os.getcwd(), 'output/ToughReact'))
 
         periodic_table = open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                            'PeriodicTableJSON.json'), encoding='utf8')
@@ -4262,7 +4515,7 @@ class write_database():
                     else:
                         missing_species.append(sublist)
 
-        missingfile = open(os.path.join(os.path.abspath("."),'output', 'spxNotFound.txt'), 'w')
+        missingfile = open(os.path.join(os.path.abspath("."),'output', 'ToughReact', 'spxNotFound.txt'), 'w')
         for line in missing_species:
             if len(line) > 0:
                 missingfile.writelines(line[0])
@@ -4275,12 +4528,12 @@ class write_database():
         missing_species = [i for n, i in enumerate(missing_species) if i not in missing_species[:n]]
 
         if objdb == None:
-            objdb = './thermo_ToughReact%sbars' % int(P[0])
+            objdb = './thermo%sbars' % int(P[0])
         else:
             objdb = objdb
         # timestr = '.' + time.strftime("%d%b%Y_%H%M")
 
-        fout = open(os.path.join(os.path.abspath("."),'output', objdb + '.dat'), 'w+') # + timestr
+        fout = open(os.path.join(os.path.abspath("."),'output', 'ToughReact', objdb + '.dat'), 'w+') # + timestr
 
         Dielec_method = 'JN91' if Dielec_method is None else Dielec_method
         heatcap_method = 'SUPCRT' if heatcap_method is None else heatcap_method
@@ -4292,7 +4545,8 @@ class write_database():
         rho, dGH2O = water.rho, water.G
 
         #%% Calculation for debye huckel and bdot and water properties
-        E = water_dielec(T = T, P = P, Dielec_method = Dielec_method).E
+        waterdielc = water_dielec(T = T, P = P, Dielec_method = Dielec_method)
+        E, Adh = waterdielc.E, waterdielc.Ah
 
         rhoEG = {'rho': rho, 'E': E,  'dGH2O': dGH2O}
 
@@ -4316,7 +4570,7 @@ class write_database():
         fout.writelines('Generated by pyGeochemCalc.2021, '  + time.ctime() + '\n')
         fout.writelines('\n!end-of-header     Do not remove this record!\n')
 
-        fout.writelines("'temperature points'  %10s" % len(T))
+        fout.writelines("'temperature points'  %6s" % len(T))
         for i in range(len(T)):
             fout.writelines( " %6.1f" %  T[i])
         fout.writelines( "\n")
@@ -4362,12 +4616,15 @@ class write_database():
                 else:
                     ionrad = 0
 
-                info = "%-31s" % name + '%5.2f' % ionrad + ' %5.2f' % charge + '   %8.3f' % MW
+                info = "%-34s" % name + '%5.2f' % ionrad + ' %5.2f' % charge + '   %8.3f' % MW
                 info = "'%s'" % info[:len(info.split()[0])] + info[len(info.split()[0]) + 2:]
                 fout.writelines('%s\n' % info)
             else:
                 continue
-        fout.write("'null'   0.  0.\n")
+        fout.write("'null'   0.  0.  0.\n\n")
+        fout.write("#****************************** \n")
+        fout.write("#* Aqueous Species \n")
+        fout.write("#****************************** \n\n")
 
         #%% Redox and Aqueous reactions
         for j in specielist[2] + specielist[3]:
@@ -4422,11 +4679,15 @@ class write_database():
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'aqueous',
-                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit).logK
-                if densityextrap.lower() == 'yes':
-                    logKnan_alert = True
+                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit)
+                if densityextrap.lower() == 'yes': 
+                    if all(logK.nonsubBornptrs) == True: # if all densities are >= 350
+                        logKnan_alert = False            # turn off the prompts for using Density extrapolation
+                    else:
+                        logKnan_alert = True
                 else:
-                    logKnan_alert = False
+                    logKnan_alert = False                # turn off the prompts for using Density extrapolation
+                logK = logK.logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                 logKcorr = curve_fit(logKfunc, TK[logK != 500].ravel(), logK[logK != 500].ravel(), p0 = x0,  maxfev = 1000000)[0]
                 list_logk = '  '.join(str("%9.4f" % e) for e in list(logK))
@@ -4447,7 +4708,10 @@ class write_database():
 
             else:
                 continue
-        fout.writelines("'null'   0. 0. 0. 0\n")
+        fout.writelines("'null'   0. 0. 0. 0 \n\n")
+        fout.write("#****************************** \n")
+        fout.write("#* Minerals \n")
+        fout.write("#****************************** \n\n")
         if logKnan_alert == True:
             warnings.warn('Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied')
 
@@ -4551,7 +4815,10 @@ class write_database():
                     fout.writelines('%s\n' % info)
             else:
                 continue
-        fout.write("'null'   0.  0. 0\n")
+        fout.write("'null'   0.  0. 0            ! end of mineral\n\n")
+        fout.write("#****************************** \n")
+        fout.write("#* Gases \n")
+        fout.write("#****************************** \n\n")
 
         #%% Gas reactions
         for j in specielist[6]:
@@ -4602,9 +4869,207 @@ class write_database():
             else:
                 continue
 
-        fout.write("'null'   0.  0. 0\n")
-        fout.write("'null'  0.  0             ! surface complex\n")
-        fout.write("'null'  0.  0\n")
+        fout.write("'null'   0.  0. 0            ! end of gas\n\n")
+        fout.write("#****************************** \n")
+        fout.write("#* Surface complexes \n")
+        fout.write("#****************************** \n\n")
+        fout.write("'null'  0.  0             ! surface complex\n\n")
+        
+        #%% Pitzer database
+        if act_param['activity_model'] == 'h-m-w' and sourceformat.lower() == 'eq36':
+            fout.write("StartPitzerParams     !this is a needed keyword!!!\n\n")
+            fout.write("#************************************************************\n")
+            delimiters = "/", "\\"
+            patterns = '|'.join('(?<={})'.format(re.escape(delim)) for delim in delimiters)
+            fout.write("#* Pitzer ion interaction parameters from EQ3/6 %s\n" % re.split(patterns, self.sourcedb)[-1])
+            fout.write("#************************************************************\n")
+            fout.write("#!!! Note: 'Miscellaneous' below is a needed flag !!!!\n\n")
+
+            fout.write("+--------------------------------------------------------------------\n")
+            fout.write("Miscellaneous parameters\n")
+            fout.write("+--------------------------------------------------------------------\n")
+            fout.write("Temperature limits (degC)\n")
+            fout.writelines('      %9.4f %9.4f\n' % (T[0], T[-1]))
+            fout.write("temperatures\n")
+            for i in range(len(T)):
+                i = i + 1
+                if (i == 1) | (i == 5):
+                    fout.writelines( "      %9.4f" %  T[i-1])
+                else:
+                    fout.writelines( " %9.4f" %  T[i-1])
+                if (i % 4 == 0) | (i == len(T)):
+                    fout.writelines( "\n")
+            fout.write("debye huckel aphi \n")
+            Aphi = Adh*np.log(10)/3
+            for i in range(len(Aphi)):
+                i = i + 1
+                if (i == 1) | (i == 5):
+                    fout.writelines( "      %9.4f" %  Aphi[i-1])
+                else:
+                    fout.writelines( " %9.4f" %  Aphi[i-1])
+                if (i % 4 == 0) | (i == len(Aphi)):
+                    fout.writelines( "\n")
+
+            fout.write("\n+--------------------------------------------------------------------\n")
+            fout.write("ca combinations: beta(n)(ca) and Cphi(ca) [optional: alpha(n)(ca)]\n")
+            fout.write("+--------------------------------------------------------------------\n")
+            for k in act_param['alpha_beta'].keys():
+                if all([x not in missing_species for x in k.rstrip('\n').split()]):
+                    ks = k.rstrip('\n').split()
+                    fout.writelines('%-8s\n' % ks[0]) if len(ks) == 1 else fout.writelines('%-24s  %-24s\n' % (ks[0], ks[1]))  if len(ks) == 2 else fout.writelines('%-8s  %-8s  %-8s\n' % (ks[0], ks[1], ks[2]))
+                    lst = ['alpha1', 'alpha2', 'beta0', 'beta1', 'beta2', 'cphi']
+                    app_lst = ['alpha(1)', 'alpha(2)', 'beta(0)', 'beta(1)', 'beta(2)', 'Cphi']
+                    for l, order in enumerate(lst):
+                        if l < 2:
+                            fout.writelines('  %-6s = %s \n' % (app_lst[l], act_param[order][k]))
+                        else:
+                            fout.writelines('  %-6s: \n' % app_lst[l])
+                            if type(act_param[order][k]) == float:
+                                fout.writelines('    a1 = %s \n' % act_param[order][k])
+                                fout.writelines('    a2 = 0. \n    a3 = 0. \n    a4 = 0. \n    a5 = 0. \n    a6 = 0. \n' )
+                            else:
+                                fout.writelines('    a1 = %s \n' % act_param[order][k][0])
+                                fout.writelines('    a2 = %s \n'  % act_param[order][k][1])
+                                fout.writelines('    a3 = %s \n'  % act_param[order][k][2])
+                                fout.writelines('    a4 = %s \n'  % act_param[order][k][3])
+                                fout.writelines('    a5 = 0. \n    a6 = 0. \n' )
+                    fout.writelines('+---------------------------------------------------------------\n')
+            fout.write("cc' and aa' combinations: theta(cc') and theta(aa')\n")
+            fout.write("+--------------------------------------------------------------------\n")
+            for k in act_param['theta'].keys():
+                if all([x not in missing_species for x in k.rstrip('\n').split()]):
+                    ks = k.rstrip('\n').split()
+                    fout.writelines('%-8s\n' % ks[0]) if len(ks) == 1 else fout.writelines('%-24s  %-24s\n' % (ks[0], ks[1]))  if len(ks) == 2 else fout.writelines('%-8s  %-8s  %-8s\n' % (ks[0], ks[1], ks[2]))
+                    fout.writelines('  %-6s: \n' % 'theta')
+                    if type(act_param['theta'][k]) == float:
+                        fout.writelines('    a1 = %s \n' % act_param['theta'][k])
+                        fout.writelines('    a2 = 0. \n    a3 = 0. \n    a4 = 0. \n    a5 = 0. \n    a6 = 0. \n' )
+                    else:
+                        fout.writelines('    a1 = %s \n' % act_param['theta'][k][0])
+                        fout.writelines('    a2 = %s \n'  % act_param['theta'][k][1])
+                        fout.writelines('    a3 = %s \n'  % act_param['theta'][k][2])
+                        fout.writelines('    a4 = %s \n'  % act_param['theta'][k][3])
+                        fout.writelines('    a5 = 0. \n    a6 = 0. \n' )
+                    fout.writelines('+---------------------------------------------------------------\n')
+            fout.write("nc and na combinations: lambda(nc) and lambda(na)\n")
+            fout.write("+--------------------------------------------------------------------\n")
+            ions_exmpt = [j for j, k in enumerate(act_param['lambda'].keys()) if len(k.rstrip('\n').split()) <= 1][0]
+            ions_exmpt = list(act_param['lambda'].keys())[ions_exmpt:]
+            for k in act_param['lambda'].keys():
+                if all([x not in missing_species for x in k.rstrip('\n').split()]) and k not in ions_exmpt:
+                    ks = k.rstrip('\n').split()
+                    fout.writelines('%-8s\n' % ks[0]) if len(ks) == 1 else fout.writelines('%-24s  %-24s\n' % (ks[0], ks[1]))  if len(ks) == 2 else fout.writelines('%-8s  %-8s  %-8s\n' % (ks[0], ks[1], ks[2]))
+                    fout.writelines('  %-6s: \n' % 'lambda')
+                    if type(act_param['lambda'][k]) == float:
+                        fout.writelines('    a1 = %s \n' % act_param['lambda'][k])
+                        fout.writelines('    a2 = 0. \n    a3 = 0. \n    a4 = 0. \n    a5 = 0. \n    a6 = 0. \n' )
+                    else:
+                        fout.writelines('    a1 = %s \n' % act_param['lambda'][k][0])
+                        fout.writelines('    a2 = %s \n'  % act_param['lambda'][k][1])
+                        fout.writelines('    a3 = %s \n'  % act_param['lambda'][k][2])
+                        fout.writelines('    a4 = %s \n'  % act_param['lambda'][k][3])
+                        fout.writelines('    a5 = 0. \n    a6 = 0. \n' )
+                    fout.writelines('+---------------------------------------------------------------\n')
+            fout.write("nn combinations: lambda(nn) and mu(nnn) \n")
+            fout.write("+--------------------------------------------------------------------\n")
+            for k in act_param['mu'].keys():
+                if all([x not in missing_species for x in k.rstrip('\n').split()]):
+                    ks = k.rstrip('\n').split()
+                    if len(ks) <= 1:
+                        fout.writelines('%-8s\n' % ks[0]) if len(ks) == 1 else fout.writelines('%-24s  %-24s\n' % (ks[0], ks[1]))  if len(ks) == 2 else fout.writelines('%-8s  %-8s  %-8s\n' % (ks[0], ks[1], ks[2]))
+                        fout.writelines('  %-6s: \n' % 'lambda')
+                        if type(act_param['lambda'][k]) == float:
+                            fout.writelines('    a1 = %s \n' % act_param['lambda'][k])
+                            fout.writelines('    a2 = 0. \n    a3 = 0. \n    a4 = 0. \n    a5 = 0. \n    a6 = 0. \n' )
+                        else:
+                            fout.writelines('    a1 = %s \n' % act_param['lambda'][k][0])
+                            fout.writelines('    a2 = %s \n'  % act_param['lambda'][k][1])
+                            fout.writelines('    a3 = %s \n'  % act_param['lambda'][k][2])
+                            fout.writelines('    a4 = %s \n'  % act_param['lambda'][k][3])
+                            fout.writelines('    a5 = 0. \n    a6 = 0. \n' )
+                        fout.writelines('  %-6s: \n' % 'mu')
+                        if type(act_param['mu'][k]) == float:
+                            fout.writelines('    a1 = %s \n' % act_param['mu'][k])
+                            fout.writelines('    a2 = 0. \n    a3 = 0. \n    a4 = 0. \n    a5 = 0. \n    a6 = 0. \n' )
+                        else:
+                            fout.writelines('    a1 = %s \n' % act_param['mu'][k][0])
+                            fout.writelines('    a2 = %s \n'  % act_param['mu'][k][1])
+                            fout.writelines('    a3 = %s \n'  % act_param['mu'][k][2])
+                            fout.writelines('    a4 = %s \n'  % act_param['mu'][k][3])
+                            fout.writelines('    a5 = 0. \n    a6 = 0. \n' )
+                        fout.writelines('+---------------------------------------------------------------\n')
+            fout.write("nn' combinations: lambda(nn') \n")
+            fout.write("+--------------------------------------------------------------------\n")
+            for k in [j for j in ions_exmpt if j not in act_param['mu'].keys()]:
+                if all([x not in missing_species for x in k.rstrip('\n').split()]):
+                    ks = k.rstrip('\n').split()
+                    fout.writelines('%-8s\n' % ks[0]) if len(ks) == 1 else fout.writelines('%-24s  %-24s\n' % (ks[0], ks[1]))  if len(ks) == 2 else fout.writelines('%-8s  %-8s  %-8s\n' % (ks[0], ks[1], ks[2]))
+                    fout.writelines('  %-6s: \n' % 'lambda')
+                    if type(act_param['lambda'][k]) == float:
+                        fout.writelines('    a1 = %s \n' % act_param['lambda'][k])
+                        fout.writelines('    a2 = 0. \n    a3 = 0. \n    a4 = 0. \n    a5 = 0. \n    a6 = 0. \n' )
+                    else:
+                        fout.writelines('    a1 = %s \n' % act_param['lambda'][k][0])
+                        fout.writelines('    a2 = %s \n'  % act_param['lambda'][k][1])
+                        fout.writelines('    a3 = %s \n'  % act_param['lambda'][k][2])
+                        fout.writelines('    a4 = %s \n'  % act_param['lambda'][k][3])
+                        fout.writelines('    a5 = 0. \n    a6 = 0. \n' )
+                    fout.writelines('+---------------------------------------------------------------\n')
+            fout.write("cc'a and aa'c combinations: psi(cc'a) and psi(aa'c) \n")
+            fout.write("+--------------------------------------------------------------------\n")
+            for k in act_param['psi'].keys():
+                if all([x not in missing_species for x in k.rstrip('\n').split()]):
+                    ks = k.rstrip('\n').split()
+                    fout.writelines('%-8s\n' % ks[0]) if len(ks) == 1 else fout.writelines('%-24s  %-24s\n' % (ks[0], ks[1]))  if len(ks) == 2 else fout.writelines('%-8s  %-8s  %-8s\n' % (ks[0], ks[1], ks[2]))
+                    fout.writelines('  %-6s: \n' % 'psi')
+                    if type(act_param['psi'][k]) == float:
+                        fout.writelines('    a1 = %s \n' % act_param['psi'][k])
+                        fout.writelines('    a2 = 0. \n    a3 = 0. \n    a4 = 0. \n    a5 = 0. \n    a6 = 0. \n' )
+                    else:
+                        fout.writelines('    a1 = %s \n' % act_param['psi'][k][0])
+                        fout.writelines('    a2 = %s \n'  % act_param['psi'][k][1])
+                        fout.writelines('    a3 = %s \n'  % act_param['psi'][k][2])
+                        fout.writelines('    a4 = %s \n'  % act_param['psi'][k][3])
+                        fout.writelines('    a5 = 0. \n    a6 = 0. \n' )
+                    fout.writelines('+---------------------------------------------------------------\n')
+            fout.write("nca combinations: zeta(nca) \n")
+            fout.write("+--------------------------------------------------------------------\n")
+            for k in act_param['zeta'].keys():
+                if all([x not in missing_species for x in k.rstrip('\n').split()]):
+                    ks = k.rstrip('\n').split()
+                    fout.writelines('%-8s\n' % ks[0]) if len(ks) == 1 else fout.writelines('%-24s  %-24s\n' % (ks[0], ks[1]))  if len(ks) == 2 else fout.writelines('%-8s  %-8s  %-8s\n' % (ks[0], ks[1], ks[2]))
+                    fout.writelines('  %-6s: \n' % 'zeta')
+                    if type(act_param['zeta'][k]) == float:
+                        fout.writelines('    a1 = %s \n' % act_param['zeta'][k])
+                        fout.writelines('    a2 = 0. \n    a3 = 0. \n    a4 = 0. \n    a5 = 0. \n    a6 = 0. \n' )
+                    else:
+                        fout.writelines('    a1 = %s \n' % act_param['zeta'][k][0])
+                        fout.writelines('    a2 = %s \n'  % act_param['zeta'][k][1])
+                        fout.writelines('    a3 = %s \n'  % act_param['zeta'][k][2])
+                        fout.writelines('    a4 = %s \n'  % act_param['zeta'][k][3])
+                        fout.writelines('    a5 = 0. \n    a6 = 0. \n' )
+                    fout.writelines('+---------------------------------------------------------------\n')
+            fout.write("nnn' combinations: mu(nnn') \n")
+            fout.write("+--------------------------------------------------------------------\n")
+            for k in act_param['mu'].keys():
+                if all([x not in missing_species for x in k.rstrip('\n').split()]):
+                    ks = k.rstrip('\n').split()
+                    if len(ks) > 1:
+                        fout.writelines('%-8s\n' % ks[0]) if len(ks) == 1 else fout.writelines('%-24s  %-24s\n' % (ks[0], ks[1]))  if len(ks) == 2 else fout.writelines('%-8s  %-8s  %-8s\n' % (ks[0], ks[1], ks[2]))
+                        fout.writelines('  %-6s: \n' % 'mu')
+                        if type(act_param['mu'][k]) == float:
+                            fout.writelines('    a1 = %s \n' % act_param['mu'][k])
+                            fout.writelines('    a2 = 0. \n    a3 = 0. \n    a4 = 0. \n    a5 = 0. \n    a6 = 0. \n' )
+                        else:
+                            fout.writelines('    a1 = %s \n' % act_param['mu'][k][0])
+                            fout.writelines('    a2 = %s \n'  % act_param['mu'][k][1])
+                            fout.writelines('    a3 = %s \n'  % act_param['mu'][k][2])
+                            fout.writelines('    a4 = %s \n'  % act_param['mu'][k][3])
+                            fout.writelines('    a5 = 0. \n    a6 = 0. \n' )
+                        fout.writelines('+---------------------------------------------------------------\n')
+
+            fout.write("'null'  0.  0 !this is needed here to end the DB\n")
+
 
         #%% close all files
         fout.close()

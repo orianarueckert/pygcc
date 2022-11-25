@@ -135,7 +135,32 @@ class db_reader:
         self.dbaccessformat = self.kwargs["dbaccessformat"]
         self.dbBerman_dir = self.kwargs["dbBerman_dir"]
         self.dbHP_dir = self.kwargs["dbHP_dir"]
-        self.sourcedb_dir = self.kwargs["sourcedb"]
+
+        if self.kwargs["sourceformat"].lower() == 'gwb': # options for all default database included with PyGCC
+            if self.kwargs["sourcedb"] == 'thermo.com':
+                self.sourcedb = './default_db/thermo.com.dat'
+                self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+            elif self.kwargs["sourcedb"] == 'thermo.2021':
+                self.sourcedb = './default_db/thermo.2021.dat'
+                self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+            elif self.kwargs["sourcedb"] == 'thermo_latest':
+                self.sourcedb = './default_db/thermo_latest.tdat'
+                self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+            elif self.kwargs["sourcedb"] == 'thermo_cemdata_mar':
+                self.sourcedb = './default_db/thermo_cemdata_mar.tdat'
+                self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+            elif self.kwargs["sourcedb"] is None:
+                self.sourcedb = './default_db/thermo.com.tdat'
+                self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+            else:
+                self.sourcedb_dir = self.kwargs["sourcedb"]
+        elif self.kwargs["sourceformat"].lower() == 'eq36':
+            if self.kwargs["sourcedb"] == 'data0' or self.kwargs["sourcedb"] is None:
+                self.sourcedb = './default_db/data0.dat'
+                self.sourcedb_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.sourcedb)
+            else:
+                self.sourcedb_dir = self.kwargs["sourcedb"]
+
         if self.kwargs['dbaccess_codecs'] is None:
             self.dbaccess_codecs = findcodecs(self.dbaccess_dir)
         else:
@@ -978,7 +1003,7 @@ class db_reader:
                                 spec_rows = [20]
                             if specie_name in solid_solutions:
                                 indx, species_num =[(i,int(re.sub('[^0123456789\.]', '', x))) for i,x in enumerate(lst)
-                                                    if x.strip('0123456789.,-: ').startswith('components')][0]
+                                                    if x.strip('0123456789.,-: ').startswith(('components', 'end members'))][0]
                                 spec_rows = list(range(indx + 1, indx + 2)) if species_num < 3 else list(range(indx + 1, indx + 3)) if species_num < 5 else list(range(indx + 1, indx + 4)) if species_num < 7 else list(range(indx + 1, indx + 5)) if species_num < 9 else  list(range(indx + 1, indx + 6))
                                 reactants = [lst[x].rstrip('\n').split('  ') for x in spec_rows]
                                 reactants = [item for sublist in reactants for item in sublist] # convert list of list to list

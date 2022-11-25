@@ -1249,10 +1249,6 @@ PdSO4(aq)                       3.0000     0
 PtCl2(aq)                       3.0000     0
 PtO(aq)                         3.0000     0
 PtSO4(aq)                       3.0000     0
-RbBr(aq)                        3.0000     0
-RbCl(aq)                        3.0000     0
-RbF(aq)                         3.0000     0
-RbI(aq)                         3.0000     0
 RbOH(aq)                        3.0000     0
 RhCl2(aq)                       3.0000     0
 RhCl3(aq)                       3.0000     0
@@ -1266,7 +1262,6 @@ RuSO4(aq)                       3.0000     0
 SO2(aq)                         3.0000     0
 SiO2(aq)                        3.0000     0
 SnO(aq)                         3.0000     0
-SrCO3(aq)                       3.0000     0
 TlCl(aq)                        3.0000     0
 TlF(aq)                         3.0000     0
 TlOH(aq)                        3.0000     0
@@ -1274,11 +1269,9 @@ UO2(aq)                         3.0000     0
 UO2OH(aq)                       3.0000     0
 UO3(aq)                         3.0000     0
 Xe(aq)                          3.0000     0
-ZnCl2(aq)                       3.0000     0
 ZnO(aq)                         3.0000     0
 ZrO2(aq)                        3.0000     0
 Acetic_acid(aq)                 3.0000     0
-Ag+                             4.0000     0
 AlF2+                           4.0000     0
 AlO+                            4.0000     0
 AlSO4+                          4.0000     0
