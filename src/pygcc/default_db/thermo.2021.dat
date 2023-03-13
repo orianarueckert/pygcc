@@ -1578,10 +1578,10 @@ Ethanol(aq)
 
 Ethylbenzene(aq)
 *    formula= C6H5C2H5
-     charge=  0.0      ion size=  3.0 A      mole wt.=  318.5022 g
+     charge=  0.0      ion size=  3.0 A      mole wt.=  106.1680 g
      4 species in reaction
-     -10.5000 O2(aq)          -3.0000 H2O              8.0000 H+            
-       8.0000 HCO3-         
+     -10.500 O2(aq)         -3.000 H2O            8.000 H+
+      8.000 HCO3-
      2418.0764  2209.0269  1963.7951  1734.8557
      1636.1718  1503.7476  1157.6789  1019.2019
 *    gflag = 1 [reported delG0f used]
@@ -2886,10 +2886,10 @@ n-Butane(aq)
 
 n-Butylbenzene(aq)
 *    formula= C6H5C4H9
-     charge=  0.0      ion size=  3.0 A      mole wt.=  402.6635 g
+     charge=  0.0      ion size=  3.0 A      mole wt.=  134.2219 g
      4 species in reaction
-     -13.5000 O2(aq)          -3.0000 H2O             10.0000 H+            
-      10.0000 HCO3-         
+     -13.500 O2(aq)         -3.000 H2O            10.000 H+
+      10.000 HCO3-
      3124.4463  2854.7664  2538.5470  2243.4850
      2116.3512  1945.8092  1500.5748  1322.7319
 *    gflag = 1 [reported delG0f used]
@@ -2961,7 +2961,7 @@ n-Octane(aq)
 
 n-Octylbenzene(aq)
 *    formula= C6H5C8H17
-     charge=  0.0      ion size=  3.0 A      mole wt.=  570.9860 g
+     charge=  0.0      ion size=  3.0 A      mole wt.=  190.3299 g
      4 species in reaction
      -19.5000 O2(aq)          -3.0000 H2O             14.0000 H+            
       14.0000 HCO3-         
