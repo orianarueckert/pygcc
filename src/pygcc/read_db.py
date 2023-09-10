@@ -126,8 +126,17 @@ class db_reader:
         self.__calc__(**kwargs)
 
     def __calc__(self, **kwargs):
-        self.kwargs.update(kwargs)
-        if self.kwargs['dbaccess'] is None:
+        self.kwargs.update(kwargs) 
+        if self.kwargs["dbaccess"] == 'speq23':
+    	    self.dbaccess_dir = './default_db/speq23.dat'
+    	    self.dbaccess_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.dbaccess_dir)
+        elif self.kwargs["dbaccess"] == 'speq23_dimer':
+    	    self.dbaccess_dir = './default_db/speq23_dimer.dat'
+    	    self.dbaccess_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.dbaccess_dir)
+        elif self.kwargs["dbaccess"] == 'speq21_dimer':
+    	    self.dbaccess_dir = './default_db/speq21_dimer.dat'
+    	    self.dbaccess_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.dbaccess_dir)
+        elif self.kwargs['dbaccess'] is None:
             self.dbaccess_dir = './default_db/speq21.dat'
             self.dbaccess_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.dbaccess_dir)
         else:
@@ -173,13 +182,13 @@ class db_reader:
             self.sourcedb_codecs = self.kwargs['sourcedb_codecs']
         if self.dbaccess_dir is not None:
             self.dbaccess = self.dbaccess_dir.split('/')[-1]
+        if self.dbaccess_dir is not None:
+            self.readAqspecdb() #
         if self.sourcedb_dir is not None:
             if self.kwargs["sourceformat"].lower() == 'gwb':
                 self.readSourceGWBdb()
             elif self.kwargs["sourceformat"].lower() == 'eq36':
                 self.readSourceEQ36db()
-        if self.dbaccess_dir is not None:
-            self.readAqspecdb() #
 
     def readAqspecdb(self):
         """
@@ -215,6 +224,7 @@ class db_reader:
         codecs = self.dbaccess_codecs
         with open(self.dbaccess_dir, encoding = codecs) as g:
             Rd = g.readlines()
+        header_counter = [p for p, k in enumerate(Rd) if k.startswith('*************')]
 
         def multiline_reader(Rd, counter, dbaccess_dir):
             db_dic = {}; last_gas = ''
@@ -434,6 +444,18 @@ class db_reader:
                 Rd = g.readlines()
             self.dbaccessdic.update(multiline_reader(Rd, 0, self.dbHP_dir)[0])
 
+        # read in the header reference list
+        if len(header_counter) != 0:
+            header_lines = Rd[header_counter[0]+1:header_counter[1]]
+            if len(header_lines) > 1:
+                checker = [i for i, x in enumerate(header_lines) if ' ... ' in x.lstrip()]; ref_list = []
+                for i in range(len(checker)-1):
+                    p = ''
+                    for k in range(checker[i],checker[i+1]):
+                        p = p + header_lines[k].lstrip('*').lstrip().strip('\n')
+                    ref_list.append(p)
+                self.header_ref = dict(zip(*[iter([item.strip() for sublist in [k.split(' ... ') for k in ref_list] for item in sublist])]*2))
+
         #%% other sources aside speq20 for solid solution calculation
         #dG dH S V a1 a2 a3 a4 a5
         # dG, dH, S from Arnorsson 1999, V and Cp from Robie and Hemingway #1995
@@ -488,7 +510,7 @@ class db_reader:
         if 'Hydroxyapatite' not in self.dbaccessdic.keys():
             self.dbaccessdic['Hydroxyapatite'] = [x/J_to_cal if type(x)!=str else x for x in _Hydroxyapatite_]
 
-        if 'Hydroxyapatite' not in self.dbaccessdic.keys():
+        if 'Ankerite' not in self.dbaccessdic.keys():
             self.dbaccessdic['Ankerite'] = ['CaFe(CO3)2', 'H&P2011               31.DEC.11\n', -434945.7,
                                             -471178.3, 45.043, 66.060,  81.500956, -0.277486, 0, -730.114720, 0]
 

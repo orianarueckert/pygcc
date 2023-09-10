@@ -33,10 +33,10 @@ $ pip install pygcc
 
 ## Examples
 
-Check out the documentation for galleries of examples: [General Usage](https://pygcc.readthedocs.io/en/latest/Example_1.html), 
+Check out the documentation for galleries of examples [General Usage](https://pygcc.readthedocs.io/en/latest/Example_1.html), 
 [Integration with GWB](https://pygcc.readthedocs.io/en/latest/Example_2.html) and [Integration with EQ3/6](https://pygcc.readthedocs.io/en/latest/Example_3.html). 
 If you would prefer to flip through notebooks on Bitbucket, these same examples can be found in the folder [`docs/`](https://bitbucket.org/Tutolo-RTG/pygcc/src/master/docs/).
-Video tutorials can also be found here [Integration with GWB](https://pygcc.readthedocs.io/en/latest/Tutorial_video.html)
+
 ## Contributing
 
 Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. 

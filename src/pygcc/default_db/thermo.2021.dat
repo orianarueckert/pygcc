@@ -1578,10 +1578,10 @@ Ethanol(aq)
 
 Ethylbenzene(aq)
 *    formula= C6H5C2H5
-     charge=  0.0      ion size=  3.0 A      mole wt.=  106.1680 g
+     charge=  0.0      ion size=  3.0 A      mole wt.=  106.1667 g
      4 species in reaction
-     -10.500 O2(aq)         -3.000 H2O            8.000 H+
-      8.000 HCO3-
+     -10.5000 O2(aq)          -3.0000 H2O              8.0000 H+            
+       8.0000 HCO3-         
      2418.0764  2209.0269  1963.7951  1734.8557
      1636.1718  1503.7476  1157.6789  1019.2019
 *    gflag = 1 [reported delG0f used]
@@ -2888,8 +2888,8 @@ n-Butylbenzene(aq)
 *    formula= C6H5C4H9
      charge=  0.0      ion size=  3.0 A      mole wt.=  134.2219 g
      4 species in reaction
-     -13.500 O2(aq)         -3.000 H2O            10.000 H+
-      10.000 HCO3-
+     -13.5000 O2(aq)          -3.0000 H2O             10.0000 H+            
+      10.0000 HCO3-         
      3124.4463  2854.7664  2538.5470  2243.4850
      2116.3512  1945.8092  1500.5748  1322.7319
 *    gflag = 1 [reported delG0f used]
@@ -7553,6 +7553,20 @@ HSiO3-
      charge= -1.0      ion size=  4.0 A      mole wt.=   77.0916 g
      3 species in reaction
       -1.0000 H+               1.0000 H2O              1.0000 SiO2(aq)      
+       10.4732     9.8493     9.2861     8.9241
+        8.8224     8.7454     8.9698     9.3263
+*    gflag = 1 [reported delG0f used]
+*    extrapolation algorithm: supcrt92 [92joh/oel]
+*    reference-state data source = 5
+*         delG0f =   -242.801  kcal/mol
+*         delH0f =   -273.872  kcal/mol
+*         S0PrTr =      5.000  cal/(mol*K)
+
+Si2O4(aq)
+*    formula= Si2O4(0)
+     charge= 0.0      ion size=  4.0 A      mole wt.=   120.1690 g
+     1 species in reaction
+      2.0000 SiO2(aq)
        10.4732     9.8493     9.2861     8.9241
         8.8224     8.7454     8.9698     9.3263
 *    gflag = 1 [reported delG0f used]

@@ -6,6 +6,28 @@ All notable changes to this project are documented here. To ensure that they are
 pip install --upgrade pygcc
 ```
 
+## v1.2.0 (10/09/2023)
+
+#### Added
+ 
+- we have included the thermodynamic databases speq23 and speq23_dimer. To utilize these databases in pygcc, users are now 
+  required to specify their selection. For example, users can set "dbaccessdb = speq21_dimer", "dbaccessdb = speq23", "dbaccessdb = speq23_dimer".
+  
+
+#### Changed
+   
+- modified the default speq21 database to reinstate the thermodynamics data for SiO2(aq) to the values presented in Shock et al. (1989)
+
+- modified the database creation to include dimer - Si2O4(aq) - for scenarios where SiO2(aq) from Sverjensky et al. (2014) - speq21_dimer.dat
+  is used. Users who intend to utilize speq21_dimer or speq23_dimer databases should verify that the dimer reaction is present in their source database. 
+  Note that source databases, including the default 'thermo.com.tdat' and 'thermo_latest.tdat' have been updated to include dimer reactions."
+
+#### Fixed
+
+- In previous versions, errors related to deprecated functionality were encountered when using Python versions greater than 3.9.6.
+
+#### Removed
+
 ## v1.1.4 (25/11/2022)
 
 #### Added

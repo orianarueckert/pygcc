@@ -1,7 +1,6 @@
 ***** SPEQ21.DAT: August 23 2021 BMT (UC)
 ***     -Changed all B9 references back to slop07.dat and added Miron sufix
 ***       to existing B9 references
-***     -Changed SiO2(aq) back to 3 (Shock)
 ***** SPEQ18.DAT: may 4 2018 BMT (UC)
 ***     -Changed SiO2(aq) to B7 (Sver), SiO2(am) to RH, and HCl, KCl, NaOH 
 ***      from Miron
@@ -4850,10 +4849,16 @@
        58.0306    -20.7899      0.0869            0.
  SiO2(aq)            SiO2(0)
  SiO2(aq)            Si(1)O(2)+(0)
- ref:3               13.Jan.89 
-        -199190.    -209775.      18.000
-        1.9000      1.7000     20.0000     -2.7000
-       29.1000    -51.2000      0.1291            0.
+ ref:B7              23.Feb.16
+        -199560.    -213940.       5.300
+        4.9000      1.4100      4.4100     -2.8400
+       25.7000      2.6000      0.3600            0.
+ Si2O4(aq)            Si2O4(0)
+ Si2O4(aq)            Si(2)O(4)+(0)
+ ref:B7              23.Feb.16
+        -400751.    -427304.       18.000
+        10.0724      2.6931      0.6715     -2.8903
+       35.8049      6.9467      0.1000            0.
  Sm++                Sm(+2)
  Sm+2                Sm(1)+(2)
  ref:G9              13.Nov.97

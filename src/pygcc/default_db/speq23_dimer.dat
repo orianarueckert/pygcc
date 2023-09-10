@@ -1,7 +1,6 @@
 ***** SPEQ21.DAT: August 23 2021 BMT (UC)
 ***     -Changed all B9 references back to slop07.dat and added Miron sufix
 ***       to existing B9 references
-***     -Changed SiO2(aq) back to 3 (Shock)
 ***** SPEQ18.DAT: may 4 2018 BMT (UC)
 ***     -Changed SiO2(aq) to B7 (Sver), SiO2(am) to RH, and HCl, KCl, NaOH 
 ***      from Miron
@@ -354,6 +353,24 @@
          -194353.0     -219870.0    35.510    47.950
          10.960000     31.000000      4.200000
         1100.00
+ Epsomite            MgSO4:7H2O
+ Eps                 Mg(1)S(1)O(11)H(14)
+ grevelandmajzlan    4.Mar.23
+         -686185.5     -809918.7    89.220     0.000
+         52.288400    178.417780     11.671759
+         400.00
+ Hexahydrite          MgSO4:6H2O
+ Eps                 Mg(1)S(1)O(10)H(12)
+ grevelandmajzlan    4.Mar.23
+         -629134.8     -737882.4    83.290     0.000
+         48.558200    159.823100     10.675300
+         400.00
+ Kieserite            MgSO4:H2O
+ Eps                 Mg(1)S(1)O(10)H(12)
+ grevelandmajzlan    4.Mar.23
+         -343666.3     -385157.7    30.110     0.000
+         24.647200     40.535300      4.287900
+         400.00
  Anhydrite           CaSO4
  Anh                 Ca(1)S(1)O(4)
  ref:1               5.May.78
@@ -4850,10 +4867,16 @@
        58.0306    -20.7899      0.0869            0.
  SiO2(aq)            SiO2(0)
  SiO2(aq)            Si(1)O(2)+(0)
- ref:3               13.Jan.89 
-        -199190.    -209775.      18.000
-        1.9000      1.7000     20.0000     -2.7000
-       29.1000    -51.2000      0.1291            0.
+ ref:B7              23.Feb.16
+        -199560.    -213940.       5.300
+        4.9000      1.4100      4.4100     -2.8400
+       25.7000      2.6000      0.3600            0.
+ Si2O4(aq)            Si2O4(0)
+ Si2O4(aq)            Si(2)O(4)+(0)
+ ref:B7              23.Feb.16
+        -400751.    -427304.       18.000
+        10.0724      2.6931      0.6715     -2.8903
+       35.8049      6.9467      0.1000            0.
  Sm++                Sm(+2)
  Sm+2                Sm(1)+(2)
  ref:G9              13.Nov.97

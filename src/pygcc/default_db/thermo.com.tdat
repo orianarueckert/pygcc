@@ -1901,10 +1901,10 @@ Ethanol(aq)                     formula= C2H5OH
 *         S0PrTr =     35.900 cal/(mol*K)
 
 Ethylbenzene(aq)                formula= C6H5C2H5
-     charge=  0      ion size=  3.0 A      mole wt.=  106.1680 g
+     charge=  0      ion size=  3.0 A      mole wt.=  318.5010 g
      4 species in reaction
-     -10.500 O2(aq)         -3.000 H2O            8.000 H+
-      8.000 HCO3-
+      -31.500 O2(aq)         -9.000 H2O            24.000 H+      
+       24.000 HCO3-   
       2471.6924   2256.5242   2003.7067   1767.2144
       1527.9373   1332.8347   1168.4788   1024.2850
 *    gflag = 1 [reported delG0f used]
@@ -2419,8 +2419,8 @@ n-Butane(aq)                    formula= C4H10
 n-Butylbenzene(aq)              formula= C6H5C4H9
      charge=  0      ion size=  3.0 A      mole wt.=  134.2219 g
      4 species in reaction
-     -13.500 O2(aq)         -3.000 H2O            10.000 H+
-      10.000 HCO3-
+      -13.500 O2(aq)         -3.000 H2O            10.000 H+      
+       10.000 HCO3-   
       3184.3623   2907.6453   2582.5576   2278.5251
       1970.9968   1720.3335   1509.2693   1324.2220
 *    gflag = 1 [reported delG0f used]
@@ -2445,10 +2445,10 @@ n-Heptane(aq)                   formula= C7H16
 *         S0PrTr =     60.000 cal/(mol*K)
 
 n-Heptylbenzene(aq)             formula= C6H5C7H15
-     charge=  0      ion size=  3.0 A      mole wt.=  528.9030 g
+     charge=  0      ion size=  3.0 A      mole wt.=  162.2749 g
      4 species in reaction
-      -54.000 O2(aq)         -9.000 H2O            39.000 H+      
-       39.000 HCO3-   
+     -16.5000 O2(aq)          -3.0000 H2O             12.0000 H+            
+      12.0000 HCO3-         
       4255.8765   3886.5811   3452.8276   3047.2803
       2637.2124   2303.1123   2021.9335   1775.5808
 *    gflag = 1 [reported delG0f used]
@@ -2503,8 +2503,8 @@ n-Octane(aq)                    formula= C8H18
 n-Octylbenzene(aq)              formula= C6H5C8H17
      charge=  0      ion size=  3.0 A      mole wt.=  190.3299 g
      4 species in reaction
-     -19.500 O2(aq)         -3.000 H2O            14.000 H+
-      14.000 HCO3-
+     -19.5000 O2(aq)          -3.0000 H2O             14.0000 H+            
+      14.0000 HCO3-         
       4612.7437   4212.6143   3742.6685   3303.3096
       2859.0879   2497.1963   2192.6628   1925.8888
 *    gflag = 1 [reported delG0f used]
@@ -2529,10 +2529,10 @@ n-Pentane(aq)                   formula= C5H12
 *         S0PrTr =     47.500 cal/(mol*K)
 
 n-Pentylbenzene(aq)             formula= C6H5C5H11
-     charge=  0      ion size=  3.0 A      mole wt.=  444.7422 g
+     charge=  0      ion size=  3.0 A      mole wt.=  148.2489 g
      4 species in reaction
-      -45.000 O2(aq)         -9.000 H2O            33.000 H+      
-       33.000 HCO3-   
+      -15.000 O2(aq)         -3.000 H2O            11.000 H+      
+       11.000 HCO3-   
       3541.3499   3233.7886   2872.4968   2534.6421
       2192.9500   1914.4867   1680.0612   1474.5870
 *    gflag = 1 [reported delG0f used]
@@ -12573,6 +12573,19 @@ HSiO3-
 *         delG0f =   -242.300 kcal/mol
 *         delH0f =   -271.880 kcal/mol
 *         S0PrTr =     10.000 cal/(mol*K)
+
+Si2O4(aq)
+     charge= 0.0      ion size=  4.0 A      mole wt.=   120.1690 g
+     1 species in reaction
+      2.0000 SiO2(aq)
+       10.4732     9.8493     9.2861     8.9241
+        8.8224     8.7454     8.9698     9.3263
+*    gflag = 1 [reported delG0f used]
+*    extrapolation algorithm: supcrt92 [92joh/oel]
+*    reference-state data source = 5
+*         delG0f =   -242.801  kcal/mol
+*         delH0f =   -273.872  kcal/mol
+*         S0PrTr =      5.000  cal/(mol*K)
 
 HSO3-
      charge= -1      ion size=  4.0 A      mole wt.=   81.0721 g
@@ -25196,6 +25209,21 @@ Anorthite                          type= Feldspar
 *         delG0f =   -954.078 kcal/mol
 *         delH0f =  -1007.552 kcal/mol
 *         S0PrTr =     49.100 cal/(mol*K)
+
+Ankerite                        type=                                      
+     formula= CaFe(CO3)2                                                   
+     mole vol.=    66.06 cc      mole wt.=  215.9434 g                     
+     4 species in reaction                                                 
+ -2.0000 H+                  1.0000 Ca++                1.0000 Fe++        
+  2.0000 HCO3-                                                             
+         0.6112   -0.0427   -1.0256   -2.1788
+        -3.6479   -5.1723   -6.8100   -8.6933
+*    gflag = 1 [reported delG0f used]
+*    extrapolation algorithm: supcrt92/water95
+*    reference-state data source = H&P 2011
+*         delG0f =   -434.946  kcal/mol
+*         delH0f =   -471.178  kcal/mol
+*             S0 =     45.043  cal/mol
 
 Antarcticite                       type= 
      formula= CaCl2:6H2O

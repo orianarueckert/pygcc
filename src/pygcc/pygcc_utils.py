@@ -595,7 +595,7 @@ def gamma_correlation(TC, P, method = None):
                 A[ii, jj] = np.sum(I**((ii+1) + (jj+1)))
                 B[ii] = np.sum(ccoef[:, i]*I.ravel()**(ii+1))
         Coef = lu_solve(lu_factor(A), B)
-        cco2[:3, i] = Coef[0], Coef[1], Coef[2]
+        cco2[:, i] = np.concatenate([Coef.ravel(),np.array([0])])
 
     return cco2
 
@@ -1622,6 +1622,10 @@ class write_database():
                              dbHP_dir = self.dbHP_dir, dbaccessformat = self.dbaccessformat,
                              sourcedb = self.sourcedb, sourceformat = self.sourceformat,
                              sourcedb_codecs = self.sourcedb_codecs)
+        # condition to add Dimer from Sverjensky et al. 2014
+        if self.dbr.header_ref[self.dbr.dbaccessdic['SiO2(aq)'][1].strip(' ref:').split('   ')[0]].startswith('Sverjensky, D. A., Harrison, B., & Azzolini, D., 2014'):
+            if 'Si2O4(aq)' not in self.dbr.dbaccessdic.keys() or 'Si2O4(aq)' not in self.dbr.sourcedic.keys():
+                warnings.warn('Warning: you are using SiO2(aq) data from Sverjensky et al. (2014) GCA. This thermodynamic model requires that you also add data for Si2O4(aq) to achieve accurate solubility calculations. Please ensure thermodynamic data for Si2O4(aq) are added to both your source GWB or EQ3/6 database AND your source direct-access database.')
 
         if (type(self.P) == str)or (type(self.T) == str):
             if self.P == 'T':
