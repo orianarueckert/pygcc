@@ -27,6 +27,7 @@ Functions implemented here include water equation of state and dielectric proper
 import numpy as np, math
 from scipy.optimize import root_scalar, fsolve, brentq
 from scipy.linalg import lu_factor, lu_solve
+from numpy import exp, log10, log
 
 eps = 2.220446049250313e-16
 J_to_cal = 4.184
@@ -3025,4 +3026,446 @@ class water_dielec():
 
         return E, rhohat, Ah, Bh, bdot, Adhh, Adhv, Bdhh, Bdhv, dEdP_T, dEdT_P
 
+
+def concentration_converter(val = 1.0, In_Unit='x_wt', Out_Unit='x_wt'):
+    """This function converts concentration between several units like wt%, mole fraction, molality and volume
+    Values must be in fraction except it is molality
+
+    Parameters
+    ----------
+    val : float
+        Values to convert
+    In_Unit : String
+        unit of input concentration
+    Out_Unit : String
+        expected output concentration
+
+    Returns
+    -------
+    Out : float
+        Converted values
+    """
+    #Accepted units for input and output are:
+    phase_markers = ['x_wt', 'x_mol', 'x_vol', 'x_molal', 'x_mol_kgsol']
+
+    MwH2O = 18.01528
+    MwNaCl = 58.44280
+    rhoH2O = 1
+    rhoNaCl = 2.16
+    if not (In_Unit in phase_markers and Out_Unit in phase_markers):
+        return None
+
+    if In_Unit == Out_Unit or val == 0.:
+        return val
+
+    if In_Unit != 'x_molal' and In_Unit != 'x_mol_kgsol' and val > 1.:
+        print('x_convert func values above 1 (>100% NaCl)')
+        return None
+    if In_Unit == "x_wt":
+        if Out_Unit == 'x_mol':
+            return val/MwNaCl/(val/MwNaCl+(1.-val)/MwH2O)
+        elif Out_Unit == 'x_vol':
+            return val/rhoNaCl/(val/rhoNaCl+(1.-val)/rhoH2O)
+        else:
+            return val*1000./MwNaCl/(1.-val)
+    elif In_Unit == 'x_mol':
+        if Out_Unit == 'x_wt':
+            return val*MwNaCl/(val*MwNaCl+(1.-val)*MwH2O)
+        elif Out_Unit == 'x_vol':
+            return MwNaCl*val/rhoNaCl/(MwNaCl*val/rhoNaCl+(1.-val)*MwH2O/rhoH2O)
+        else:
+            x_tmp = val*MwNaCl/(val*MwNaCl+(1.-val)*MwH2O)
+            return 1000.*x_tmp/MwNaCl/(1.-x_tmp)
+    elif In_Unit == 'x_vol':
+        if Out_Unit == 'x_wt':
+            return val*rhoNaCl/(val*rhoNaCl+(1.-val)*rhoH2O)
+        elif Out_Unit == 'x_mol':
+            return val*rhoNaCl/MwNaCl/(val*rhoNaCl/MwNaCl+(1.-val)*(rhoH2O/MwH2O))
+        else:
+            x_tmp = val*rhoNaCl/(val*rhoNaCl+(1.-val)*rhoH2O)
+            return 1000*x_tmp/MwNaCl/(1.-x_tmp)
+    elif In_Unit == 'x_mol_kgsol':
+        if Out_Unit == 'x_mol':
+            x_tmp = val*MwNaCl/(1000)
+            return x_tmp/MwNaCl/(x_tmp/MwNaCl+(1.-x_tmp)/MwH2O)
+    else:
+        if Out_Unit == 'x_wt':
+            return val*MwNaCl/(1000.+val*MwNaCl)
+        elif Out_Unit == 'x_mol':
+            x_tmp = val*MwNaCl/(1000.+val*MwNaCl)
+            return x_tmp/MwNaCl/(x_tmp/MwNaCl+(1.-x_tmp)/MwH2O)
+        else:
+            x_tmp = val*MwNaCl/(1000.+val*MwNaCl)
+            return x_tmp/rhoNaCl/(x_tmp/rhoNaCl+(1.-x_tmp)*rhoH2O)
+
+
+
+class Driesner_NaCl:
+    """
+    Implementation of Driesner and Heinrich PTx Formulation for H2O-NaCl system
+
+    Parameters
+    ----------
+        T : float
+            Temperature [°C]  \n
+        P : float
+            Pressure [bar]  \n
+        xNaCl : float
+            mole fraction of NaCl in H2O [-]  \n
+
+    Returns
+    ----------
+        The calculated instance has the following potential properties:  \n
+        PVLH : float
+            Pressure of vapor + liquid + halite coexistence [bar]  \n
+        Pcrit : float
+            Critical pressure (of a H2O–NaCl mixture) [bar]  \n
+        Xcrit : float
+            Critical Composition  [-]  \n
+        xL_NaCl  : float
+            Composition of halite-saturated liquid (halite liquidus) Hypothetical [-]  \n
+        xV_NaCl  : float
+            Composition of halite-saturated vapor [-] \n
+        xVL_Liq  : float
+            Composition of liquid at vapor + liquid coexistence [-] \n
+        xVL_Vap  : float
+            Composition of vapor at vapor+liquid coexistence [-]  \n
+        rho  : float
+            Liquid NaCl density [kg/m3]  \n
+        vm  : float
+            molar volume [mol/m3]  \n
+        TstarH  : float
+            Scaled temperature for enthalpy correlation [°C]  \n
+        H  : float
+            Specific enthalpy of an H2O–NaCl solution [J/kg]  \n
+        Cp  : float
+            Isobaric heat capacity [J/kg/K]  \n
+        mu  : float
+            viscosity [Pa-s]  \n
+            
+    Usage:
+    ----------
+        The general usage of Driesner_NaCl is as follows:  \n
+        (1) For water-NaCl properties at any Temperature and Pressure:  \n
+            water_salt = Driesner_NaCl(T = T, P = P),   \n
+            where T is temperature in celsius and P is pressure in bar
+    Examples
+    --------
+    >>> water_salt = Driesner_NaCl(T = 400., P = 150)
+    >>> water_salt.PVLH, water_salt.xL_NaCl, water_salt.xV_NaCl, water_salt.xVL_Liq, water_salt.xVL_Vap, water_salt.Xcrit
+        176.12604181993797,
+         0.21548565081529097,
+         1.1606891909548725e-05,
+         0.27785803505887324,
+         1.1606891909548725e-05,
+         0.006832050956381021
+
+    >>> water_salt = Driesner_NaCl(T = 400., P = 150, xNaCl = 0.00919)
+    >>> water_salt.PVLH, water_salt.xL_NaCl, water_salt.xV_NaCl, water_salt.xVL_Liq, water_salt.xVL_Vap, water_salt.rho, water_salt.vm, water_salt.H, water_salt.mu, water_salt.Cp
+        (176.12604181993797,
+         0.21548565081529097,
+         1.1606891909548725e-05,
+         0.27785803505887324,
+         1.1606891909548725e-05,
+         0.06932873574838519,
+         265.2138005082347,
+         2934.6231778877977,
+         2.4596312351131325e-05,
+         4394.068874696437)
+        
+    References
+    ----------
+        (1) Driesner, T, and Heinrich, C. A. (2007). The system H2O–NaCl. Part I: Correlation formulae for phase relations in 
+            temperature–pressure–composition space from 0 to 1000 C, 0 to 5000 bar, and 0 to 1 XNaCl. Geochimica et Cosmochimica Acta. 71(20), 4880-4901.
+            https://doi.org/10.1016/j.gca.2006.01.033
+        (2) Driesner, T. (2007). "The system H2O-NaCl. II. Correlations for molar volume, enthalpy, and isobaric heat capacity from 0 to 1000 °C, 1 to 5000 bar,
+        #     and 0 to 1 X-NaCl." Geochimica et Cosmochimica Acta 71(20): 4902-4919.
+
+    """
+
+    kwargs = {"T": None,
+              "P": None,
+              "xNaCl": None
+              }
+    def __init__(self, **kwargs):
+        self.kwargs = Driesner_NaCl.kwargs.copy()
+        self.__calc__(**kwargs)
+
+    def __calc__(self, **kwargs):
+        self.kwargs.update(kwargs)
+        """initialization """
+        self.TC = self.kwargs["T"]
+        self.P = self.kwargs["P"]
+        self.xNaCl = self.kwargs["xNaCl"]
+        self.Pc = 220.54915  #  220.54915  # bars
+        self.Tc = 373.976  # 373.946 # C
+
+        """Check if inputs are enough to define state"""
+        if self.TC and self.P is None and self.xNaCl is None:
+            self.mode = "T"
+        elif self.TC and self.P and self.xNaCl is None:
+            self.mode = "T_P"
+        else:
+            self.mode = "T_P_x"
+            
+        if self.mode == "T":
+            Driesner_calc = self.Driesner_NaCl(self.TC, self.Pc)
+            self.PVLH, self.Pcrit, self.Xcrit = Driesner_calc['PVLH'], Driesner_calc['Pcrt'], Driesner_calc['Xcrt']
+        elif self.mode == "T_P" or self.mode == "T_P_x":
+            if self.mode == "T_P_x":
+                Driesner_calc = self.Driesner_NaClII(self.TC, self.P, self.xNaCl)
+                self.vm, self.rho, self.TstarH = Driesner_calc['vm'], Driesner_calc['rho'], Driesner_calc['Tref']#, Driesner_calc['q2']
+                Driesner_calc = self.enthalpy_mu_heatcap(self.TC, self.P, self.xNaCl)
+                self.H, self.mu, self.Cp = Driesner_calc[0], Driesner_calc[1], Driesner_calc[-1]
+            Driesner_calc = self.Driesner_NaCl(self.TC, self.P)
+            self.PVLH, self.xL_NaCl, self.xV_NaCl = Driesner_calc['PVLH'], Driesner_calc['xL_NaCl'], Driesner_calc['xV_NaCl']
+            self.xVL_Liq, self.xVL_Vap = Driesner_calc['xVL_Liq'], Driesner_calc['xVL_Vap']
+            self.Pcrit, self.Xcrit = Driesner_calc['Pcrt'], Driesner_calc['Xcrt']
+    
+    def Driesner_NaCl(self, T, P):
+        # (Driesner and Heinrich, 2007).
+        Ttriple_NaCl = 800.7 # C
+        Ptriple_NaCl = 5e-4  # bar
+        alpha = 2.4726e-2
+        bsubl = 1.18061e4
+        bboil = 0.941812e4
+    
+        # Eq. (1): NaCl melting curve - melting pressure
+        Thm_func = lambda P: (P - Ptriple_NaCl)*alpha + Ttriple_NaCl
+    
+        # Eq. (2): NaCl sublimation and boiling curve - vapor pressure
+        bfunc = lambda T:  np.where(T < Ttriple_NaCl, bsubl,  bboil)
+        PNaCl_func = lambda T, b: 10**(log10(Ptriple_NaCl) + b*((Ttriple_NaCl + 273.15)**-1 - (T + 273.15)**-1))
+    
+    
+        # Electronic Annex EA-2: The critical curve, Eqs. (5b,c, 7a,b).
+        # NBS/NRC-84 or IAPWS-84
+        Pc = 220.54915  #  220.54915  # bars
+        Tc = 373.976  # 373.946 # C
+        # IAPWS-95
+        # Pc = 220.54915  # bars
+        # Tc = 373.946 # C
+        cn = np.array([-2.36, 1.28534e-1, -2.3707e-2, 3.20089e-3, -1.38917e-4, 1.02789e-7,
+                       -4.8376e-11, 2.36, -1.31417e-2, 2.98491e-3, -1.30114e-4, 0, 0, -4.88336e-4])
+        di = np.array([8.00000e-05, 1.00000e-05, -1.37125e-07, 9.46822e-10, -3.50549e-12,
+                       6.57369e-15, -4.89423e-18, 7.77761e-2, 2.7042e-4, -4.244821e-7, 2.580872e-10])
+        cnA = np.array([1, 1.5, 2, 2.5, 3, 4, 5, 1, 2, 2.5, 3, 12, 13, 14])
+        Pfunc_below_Tcrt = lambda x: Pc + np.sum(cn[:7]*(Tc - x)**cnA[:7])
+        Pfunc_above_Tcrt = lambda x: Pc + np.sum(cn[7:11]*(x - Tc)**cnA[7:11])
+        Pfunc_above_500 = lambda x: np.sum(cn[11:]*(x - 500)**(cnA[11:] - 12))
+        cn[11] = Pfunc_above_Tcrt(500)
+        cn[12] = derivative(Pfunc_above_Tcrt, 500, h = 0.0001)
+        #cn[12] = Pfunc_above_Tcrt(500)
+        Xfunc_below_600 = lambda x: np.sum(di[:7]*(x - Tc)**np.arange(8)[1:])
+        Xfunc_above_600 = lambda x: np.sum(di[7:]*(x - 600)**(np.arange(7, len(di)) - 7))
+        Pcrt_func = lambda x: Pfunc_below_Tcrt(x) if (x < Tc) else Pfunc_above_500(x) if (x > 500) else Pfunc_above_Tcrt(x)
+        Xcrt_func = lambda x: 0 if x < Tc else Xfunc_below_600(x) if x < 600 else Xfunc_above_600(x)
+    
+    
+        # Electronic Annex EA-3: The halite liquidus - L + H , Eq. (8),
+        # for isobars from 500 to 5000 bar in 500 bar intervals, and from 10 C to the melting temperature of NaCl.
+        eifunc = lambda P: [0.0989944 + 3.30796e-6*P - 4.71759e-10*P**2,
+                             0.00947257 - 8.66460e-6*P + 1.69417e-9*P**2,
+                             0.610863 - 1.51716e-5*P + 1.19290e-8*P**2,
+                             -1.64994 + 2.03441e-4*P - 6.46015e-8*P**2,
+                             3.36474 - 1.54023e-4*P + 8.17048e-8*P**2]
+        ei_func = lambda P: np.array(eifunc(P) + [1.0 - eifunc(P)[0] - eifunc(P)[1] - \
+                                                  eifunc(P)[2] - eifunc(P)[3] - eifunc(P)[4]])
+        
+        xL_NaClSat_func = lambda T, P: np.sum(ei_func(P)*(T/Thm_func(P))**np.arange(len(ei_func(P)))) \
+            if np.sum(ei_func(P)*(T/Thm_func(P))**np.arange(len(ei_func(P)))) <= 1 else 1
+    
+    
+        # Electronic Annex EA-4: Halite saturated vapor composition - V + H coexistence, Eq. (9),
+        # for isobars from 50 to 350 bar in 50 bar intervals.
+        k = [-0.235694, -0.188838, 0.004, 0.0552466, 0.66918, 396.848, 45.0, -3.2719e-7, 141.699,
+             -0.292631, -0.00139991, 1.95965e-6, -7.3653e-10, 0.904411, 0.000769766, -1.18658e-6]
+        j_func = lambda T: np.array([k[0] + k[1]*exp(-k[2]*T),
+                                     k[4] + (k[3] - k[4])/(1 + exp((T - k[5])/k[6])) + k[7]*(T + k[8])**2,
+                                     k[9] + k[10]*T + k[11]*T**2 + k[12]*T**3,
+                                     k[13] + k[14]*T + k[15]*T**2])
+        P_bar_func = lambda T, P: (P - PNaCl_func(T, bfunc(T)))/(Pcrt_func(T) - PNaCl_func(T, bfunc(T)))
+        logKbar_func = lambda T, P: (1 + j_func(T)[0]*(1 - P_bar_func(T, P))**j_func(T)[1] +  \
+                                     j_func(T)[2]*(1 - P_bar_func(T, P)) + j_func(T)[3]*(1 - P_bar_func(T, P))**2 - \
+                                         (1 + j_func(T)[0] + j_func(T)[2] + j_func(T)[3])*(1 - P_bar_func(T, P))**3)
+        
+        logKprime_func = lambda T, P: (log10(xL_NaClSat_func(T, PNaCl_func(T, bfunc(T)))) + \
+                                       logKbar_func(T, P)*(log10(PNaCl_func(T, bfunc(T))/Pcrt_func(T)) - \
+                                                           log10(xL_NaClSat_func(T, PNaCl_func(T, bfunc(T)))) ) )
+        
+        logKprime_func = lambda T, P: (log10(xL_NaClSat_func(T, PNaCl_func(T, bfunc(T)) )) + \
+                                       logKbar_func(T, P)*(log10(PNaCl_func(T, bfunc(T))/Pcrt_func(T)) - \
+                                                           log10(xL_NaClSat_func(T, PNaCl_func(T, bfunc(T)) )) ) )
+        
+        xV_NaClSat_func = lambda T, P: xL_NaClSat_func(T, P)/10**(logKprime_func(T, P) - log10(PNaCl_func(T, bfunc(T))/P ))
+        
+        
+        # Electronic Annex EA-5: The V+L+H coexistence surface, Eq. (10) combined with Eqs. (8, 9).
+        f = [4.64e-3, 5.0e-7, 1.69078e1, -2.69148e2, 7.63204e3, -4.95636e4, 2.33119e5, -5.13556e5, 5.49708e5, -2.84628e5, 0]
+        f[10] = Ptriple_NaCl - (f[0] + f[1] + f[2] + f[3] + f[4] + f[5] + f[6] + f[7] + f[8] + f[9])
+        PVLH_func = lambda T: np.sum(f*(T / Ttriple_NaCl)**np.arange(len(f)))
+    
+    
+        # Electronic Annex EA-5: Isotherms of the V+L coexistence surface, Eqs. (11, 12-17).
+        # the pressure limit ranges from pressure at V+L+H coexistence (Eq. (10)), and at the boiling pressure of
+        # water (if the temperature is smaller than the critical temperature of water) or at the critical pressure
+        # (if the temperature is higher that the critical temperature of water).
+        
+        h = [0, 1.68486e-3, 2.19379e-4, 4.3858e2, 1.84508e1, -5.6765e-10,
+             6.73704e-6, 1.44951e-7, 3.84904e2, 7.07477e0, 6.06896e-5, 7.62859e-3]
+        g0var_func = lambda T, P: [PVLH_func(T) if T < Ttriple_NaCl else PNaCl_func(T, bfunc(T)),
+                                   xL_NaClSat_func(T, P) if T < Ttriple_NaCl else 1,
+                                   iapws95(T = T).P if T < Tc else Pc]
+        g_func = lambda T, P: np.array([0,
+                                        h[2] + ((h[1] - h[2])/(1 + np.exp((T - h[3])/h[4]))) + h[5]*T**2,
+                                        h[7] + ((h[6] - h[7])/(1 + np.exp((T - h[8])/h[9]))) + h[10]*np.exp(-h[11]*T)])
+        
+        g0_func = lambda T, P, *x: ((x[1] + g_func(T, P)[1] * (x[0] - x[2]) + \
+                                     g_func(T, P)[2] * ((Pcrt_func(T) - x[2])**2 - \
+                                                        (Pcrt_func(T) - x[0])**2)) / \
+                                    ((Pcrt_func(T) - x[0])**0.5 - (Pcrt_func(T) - x[2])**0.5)) \
+            if T <= Tc else ((x[1] - Xcrt_func(T) - g_func(T, P)[1] * (Pcrt_func(T) - x[0]) - \
+                              g_func(T, P)[2] * (Pcrt_func(T) - x[0])**2) / (Pcrt_func(T) - x[0])**0.5)
+        
+        P_Pcrt_func =  lambda T, P:  Pcrt_func(T) if Pcrt_func(T) < P else P
+        
+        
+        xVL_LiqNaCl_func = lambda T, P:  (g0_func(T, P, *g0var_func(T, P))*((Pcrt_func(T) - P_Pcrt_func(T, P))**0.5 - \
+                                                                            (Pcrt_func(T) - g0var_func(T, P)[2])**0.5) - \
+            g_func(T, P)[1]*((Pcrt_func(T) - g0var_func(T, P)[2]) - (Pcrt_func(T) - P_Pcrt_func(T, P))) - \
+                g_func(T, P)[2]*((Pcrt_func(T) - g0var_func(T, P)[2])**2 - (Pcrt_func(T) - P_Pcrt_func(T, P)) ** 2) ) \
+            if T <= Tc else (Xcrt_func(T) + g0_func(T, P, *g0var_func(T, P))*(Pcrt_func(T) - P_Pcrt_func(T, P))**0.5 + \
+                                                             g_func(T, P)[1]*(Pcrt_func(T) - P_Pcrt_func(T, P)) + \
+                                                                 g_func(T, P)[2]*(Pcrt_func(T) - P_Pcrt_func(T, P))**2 )
+        
+        
+        xVL_VapNaCl_func = lambda T, P: (xVL_LiqNaCl_func(T, P)/10**(logKprime_func(T, P) - \
+                                                                     log10(PNaCl_func(T, bfunc(T))/P ))) \
+            if P > PVLH_func(T) else (xL_NaClSat_func(T, P)/10**(logKprime_func(T, P) - \
+                                                                 log10(PNaCl_func(T, bfunc(T))/P )))
+        
+        res = {'PVLH': PVLH_func(T),
+               'Pcrt': Pcrt_func(T),
+               'Xcrt': Xcrt_func(T),
+               'xL_NaCl': xL_NaClSat_func(T, P), 
+               'xV_NaCl': xV_NaClSat_func(T, P), 
+               'xVL_Liq': xVL_LiqNaCl_func(T, P), 
+               'xVL_Vap': xVL_VapNaCl_func(T, P)}
+        
+        return res
+
+
+    def Driesner_NaClII(self, T, P, xNaCl):
+
+        calc = self.Driesner_NaCl(T, P)
+        # self.PVLH, self.xL_NaCl, self.xV_NaCl = driesnier_calc['PVLH'], driesnier_calc['xL_NaCl'], driesnier_calc['xV_NaCl']
+        # self.xVL_Liq, self.xVL_Vap = driesnier_calc['xVL_Liq'], driesnier_calc['xVL_Vap']
+        mwH2O = 18.015268
+        mwNaCl = 58.4428
+        n11 = lambda P : -54.2958 - 45.7623 * exp(-9.44785e-4 * P)
+        n21 = lambda P : -2.6142 - 0.000239092 * P
+        n22 = lambda P : 0.0356828 + 4.37235 * 10**-6 * P + 2.0566e-9 * P**2
+        n300 = lambda P : 7.60664e6 / ((P + 472.051)**2)
+        n301 = lambda P : -50 - 86.1446 * exp(-6.21128e-4 * P)
+        n302 = lambda P : 294.318 * exp(-5.66735e-3 * P)
+        n310 = lambda P : -0.0732761 * exp(-2.3772 * 10**-3 * P) - 5.2948e-5 * P
+        n311 = lambda P : -47.2747 + 24.3653 * exp(-1.25533e-3 * P)
+        n312 = lambda P : -0.278529 - 0.00081381 * P
+        n30 = lambda P, xNaCl : n300(P) * (exp(n301(P) * xNaCl) - 1) + n302(P) * xNaCl
+        n31 = lambda P, xNaCl : n310(P) * exp(n311(P) * xNaCl) + n312(P) * xNaCl
+        
+        n10 = lambda P : 330.47 + 0.942876 * P**0.5 + 0.0817193 * P - 2.47556e-8 * P**2 + 3.45052e-10 * P**3
+        n12 = lambda P : -n11(P) - n10(P)
+        n20 = lambda P : 1 - n21(P) * n22(P)**0.5
+        n23 = lambda P : -0.0370751 + 0.00237723 * P**0.5 + 5.42049e-5 * P + 5.84709e-9 * P**2 - \
+            5.99373e-13 * P**3 - n20(P) - n21(P) * (1 + n22(P))**0.5
+        n1 = lambda P, xNaCl : n10(P) + n11(P) * (1 - xNaCl) + n12(P) * (1 - xNaCl)**2
+        n2 = lambda P, xNaCl : n20(P) + n21(P) * (xNaCl + n22(P))**0.5 + n23(P) * xNaCl
+        d = lambda T, P, xNaCl : n30(P, xNaCl) * exp(n31(P, xNaCl) * T)
+        Tref_vmH2ONaCl = lambda T, P, xNaCl : n1(P, xNaCl) + n2(P, xNaCl) * T + d(T, P, xNaCl)
+    
+        #function for low P region, eq. 17 from Driesner 2007
+        #used for extrapolation of the molar volume
+        def vm_extrapolation(T, P, xNaCl):
+            v = calc['xL_NaCl'] 
+            if T <= 373.946:
+                pTmp = iapws95(T = T).P
+        
+            if xNaCl == 0:
+                return 0
+            elif T <= 200 and P < pTmp:
+                t_Ref = Tref_vmH2ONaCl(T, P, xNaCl)
+                vm_Sat = mwH2O / iapws95(T = T).rhosl * 1000
+                vm_Wat = mwH2O / iapws95(T = T, P = P).rho * 1000
+        
+                if vm_Sat < vm_Wat:
+                    o2 = 2.0125e-7 + 3.29977e-9 * exp(-4.31279 * log10(P)) - 1.17748e-7 * log10(P) + 7.58009e-8 * (log10(P))**2
+                    vm1 = mwH2O / iapws95(T = T).rhosl * 1000
+                    vm2 = mwH2O / iapws95(T = T - 0.01).rhosl * 1000
+                    o1 = (vm1 - vm2) / 0.01 - 3 * o2 * t_Ref**2
+                    o0 = vm1 - o1 * t_Ref - o2 * t_Ref**3
+                    return o0 + o2 * t_Ref**3 + o1 * t_Ref
+        
+            elif T >= 600 and P <= 350:
+                v = calc['xVL_Liq']
+                if math.floor(xNaCl*1e6)/1e6 >= math.floor(v*1e6)/1e6:
+        
+                    #local function to estimate density of vapor phase neccesery for V_extrapol funtion
+                    vmextreme_water = lambda T, P, x : mwH2O / iapws95(T = Tref_vmH2ONaCl(x, T, P), P = P).rho
+                    rhoNaCl_Vextreme = lambda T, P, x : (mwH2O * (1 - x) + mwNaCl * x) / vmextreme_water(T, P, x)* 1000.0
+        
+                    vm1000 = (mwH2O * (1 - xNaCl) + mwNaCl * xNaCl) / rhoNaCl_Vextreme(T, 1000, xNaCl) * 1000
+                    vm1 = (mwH2O * (1 - xNaCl) + mwNaCl * xNaCl) / rhoNaCl_Vextreme(T, 390.147, xNaCl) * 1000
+                    vm2 = (mwH2O * (1 - xNaCl) + mwNaCl * xNaCl) / rhoNaCl_Vextreme(T, 390.137, xNaCl) * 1000
+        
+                    dVdP390 = (vm1 - vm2) * 1e-2
+                    o4 = (vm1 - vm1000 + dVdP390 * 1609.853) / (log(1390.147 / 2000) - 2390.147 / 1390.147)
+                    o3 = vm1 - o4 * log(1390.147) - 390.147 * dVdP390 + 390.147 / 1390.147 * o4
+                    o5 = dVdP390 - o4 / (1390.147)
+        
+                    return o3 + o4 * log(P + 1000) + o5 * P
+                else:
+                    return 0
+            else:
+                return 0
+    
+        vm_H2ONaCl = lambda T, P, xNaCl : (mwH2O / (
+            iapws95(T = Tref_vmH2ONaCl(T, P, xNaCl), P = P).rho*0.001)) \
+            if vm_extrapolation(T, P, xNaCl) == 0 else vm_extrapolation(T, P, xNaCl)  #cm3/mol
+    
+        rho_H2ONaCl = lambda T, P, xNaCl : (mwH2O * (1 - xNaCl) + mwNaCl * xNaCl) / vm_H2ONaCl(T, P, xNaCl)
+        
+        def Tref_Enthalpy(xNaCl, T, P): #Th* for enthalpy
+        
+            xH2O = 1 - xNaCl
+            q11 = -32.1724 + 0.0621255 * P
+            q21 = -1.69513 - 4.52781e-4 * P - 6.04279e-8 * P**2
+            q22 = 0.0612567 + 1.88082e-5 * P
+            q10 = 47.9048 - 9.36994e-3 * P + 6.51059e-6 * P**2
+            q_twoNaCl = 0.241022 + 3.45087e-5 * P - 4.28356e-9 * P**2
+            q12 = -q11 - q10
+            q20 = 1 - q21 * q22**0.5
+            q23 = q_twoNaCl - q20 - q21 * (1 + q22)**0.5
+        
+            q1 = q10 + q11 * xH2O + q12 * xH2O**2
+            q2 = q20 + q21 * (xNaCl + q22)**0.5 + q23 * xNaCl
+        
+            tStar = q1 + q2 * T + 273.15
+        
+            return tStar, q2
+        
+        res = {'vm': vm_H2ONaCl(T, P, xNaCl)[0],
+               'rho': rho_H2ONaCl(T, P, xNaCl)[0],
+               'Tref': Tref_Enthalpy(xNaCl, T, P)[0],
+               'q2': Tref_Enthalpy(xNaCl, T, P)[-1]
+               }
+        return res
+        
+    def enthalpy_mu_heatcap(self, T, P, xNaCl):
+        """ Enthalpy in J/g, viscosity in Pas and Cp in Joules per kilogram Kelvin   """
+        calc = self.Driesner_NaClII(T, P, xNaCl)
+        tStar, q2 = calc['Tref'], calc['q2']
+        tStar = tStar - 273.15
+        prop_H2O = iapws95(T = tStar, P = P, Out_Unit = 'kilogram', FullEOSppt = True)
+        return prop_H2O.H[0], prop_H2O.mu[0], prop_H2O.Cp[0]*q2*1000  #/(1 + xNaCl)
 

@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 from .read_db import db_reader
 from .water_eos import iapws95, ZhangDuan, water_dielec, readIAPWS95data, convert_temperature
+from .water_eos import  Driesner_NaCl, concentration_converter
 from .species_eos import heatcap, supcrtaq
 from .solid_solution import solidsolution_thermo
 from .clay_thermocalc import calclogKclays

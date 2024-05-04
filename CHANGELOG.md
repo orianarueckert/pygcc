@@ -6,6 +6,20 @@ All notable changes to this project are documented here. To ensure that they are
 pip install --upgrade pygcc
 ```
 
+## v1.3.0 (03/05/2024)
+
+#### Added
+ 
+- we have incorporated the NaCl-H2O phase relationship equations of Driesner and Heinrich (2007) which was utilized in the 
+  Syverson, et al. (2023) Geology paper for geothermobarometer calculation.
+  
+
+#### Changed
+   
+#### Fixed
+
+#### Removed
+
 ## v1.2.0 (10/09/2023)
 
 #### Added

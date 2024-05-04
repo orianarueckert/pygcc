@@ -1,5 +1,5 @@
-from pygcc import iapws95, ZhangDuan, water_dielec
 import numpy as np
+from pygcc import iapws95, ZhangDuan, water_dielec, Driesner_NaCl, concentration_converter
 
 print('Testing water equation of state and dielectric properties')
 def test_iapws95():
@@ -77,5 +77,29 @@ def test_DEW():
     actual = water_dielec(T = 200, P = 1000, Dielec_method = 'DEW')
     actual = np.vstack((actual.E, actual.rhohat, actual.Ah, actual.Bh, actual.bdot, actual.Adhh, 
     			actual.Adhv, actual.Bdhh, actual.Bdhv, actual.dEdP_T, actual.dEdT_P)).ravel()
+    
+    np.testing.assert_allclose(expected, actual, rtol=1e-6, atol=0)
+
+def test_concentration_converter():
+    """Test concentration_converter."""
+
+    expected = np.array([9.7956061873,  0.364062937095, 0.364062937095])
+    frac_to_molal = concentration_converter(val = 0.15, In_Unit ='x_mol', Out_Unit='x_molal')
+    frac_to_wt = concentration_converter(val = 0.15, In_Unit ='x_mol', Out_Unit='x_wt')
+    molal_to_wt = concentration_converter(val = frac_to_molal, In_Unit ='x_molal', Out_Unit='x_wt')
+    actual = np.vstack((frac_to_molal, frac_to_wt, molal_to_wt)).ravel()
+    
+    np.testing.assert_allclose(expected, actual, rtol=1e-6, atol=0)
+
+def test_Driesner_NaCl():
+    """Test Driesner_NaCl."""
+
+    expected = np.array([176.12604181993797,  0.21548565081529097, 1.1606891909548725e-05,
+    			0.27785803505887324, 1.1606891909548725e-05, 0.06932873574838519,
+    			265.2138005082347,  2934.6231778877977,  2.4596312351131325e-05, 4394.068874696437])
+    actual = Driesner_NaCl(T = 400., P = 150, xNaCl = 0.00919)
+    actual = np.vstack((water_salt.PVLH, water_salt.xL_NaCl, water_salt.xV_NaCl, water_salt.xVL_Liq, 
+    			water_salt.xVL_Vap, water_salt.rho, water_salt.vm, water_salt.H, water_salt.mu, 
+    			water_salt.Cp)).ravel()
     
     np.testing.assert_allclose(expected, actual, rtol=1e-6, atol=0)
