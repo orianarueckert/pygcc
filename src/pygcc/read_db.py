@@ -128,7 +128,7 @@ class db_reader:
     def __calc__(self, **kwargs):
         self.kwargs.update(kwargs) 
         if self.kwargs["dbaccess"] == 'speq23':
-    	    self.dbaccess_dir = './default_db/speq23.dat'
+            self.dbaccess_dir = './default_db/speq23.dat'
             self.dbaccess_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.dbaccess_dir)
         elif self.kwargs["dbaccess"] == 'speq23_dimer':
             self.dbaccess_dir = './default_db/speq23_dimer.dat'
