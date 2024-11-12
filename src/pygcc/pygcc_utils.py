@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from .read_db import db_reader
+from .read_db import db_reader, dbaccess_modify
 from .water_eos import iapws95, ZhangDuan, water_dielec, readIAPWS95data, convert_temperature
 from .water_eos import  Driesner_NaCl, concentration_converter
 from .species_eos import heatcap, supcrtaq
@@ -600,6 +600,7 @@ def gamma_correlation(TC, P, method = None):
 
     return cco2
 
+
 def Helgeson_activity(TC, P, I, Dielec_method = None, **rhoEDB):
     """
     This function calculates the solute activity coefficient, solvent osmotic coefficient,
@@ -805,6 +806,8 @@ def Helgeson_activity(TC, P, I, Dielec_method = None, **rhoEDB):
     aw = np.exp(-phi*mstar*mwH2O)
     return aw, phi, mean_act
 
+
+
 def aw_correlation(TC, P, Dielec_method = None, **rhoEDB):
     """
     Calculates the water activity correlation coefficients at given temperature and pressure
@@ -815,7 +818,7 @@ def aw_correlation(TC, P, Dielec_method = None, **rhoEDB):
        Dielec_method :  specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric
                            constant (optional), if not specified default - 'JN91'
        rhoEDB   :       dictionary of water properties like density (rho), dielectric factor (E) and
-                           Debye–Hückel coefficients (optional)
+                           Debye-Hückel coefficients (optional)
     Returns:
     ----------
        ch20     :       water activity correlation coefficients
@@ -4105,7 +4108,7 @@ class write_database():
                   dielectric constant calculation \n
                   write_pflotrandb(T, P )   \n
         """
-        nCa_cpx = self.cpx_Ca;
+        nCa_cpx = self.cpx_Ca;                     sourcedb = self.sourcedb;
         solid_solution = self.solid_solution;      clay_thermo = self.clay_thermo
         objdb = self.objdb;                        Dielec_method = self.Dielec_method
         sourceformat = self.sourceformat;          heatcap_method = self.heatcap_method;
@@ -4116,6 +4119,13 @@ class write_database():
 
         if sourceformat.upper() == 'EQ36':
             block_info = self.dbr.block_info
+
+        if sourceformat.upper() == 'EQ36':
+            dataset = 'tdat'
+            dataset_format =  'apr20'
+        else:
+            dataset = sourcedb.split('.')[-1]
+            dataset_format =  self.dbr.act_param['dataset_format']
 
         if os.path.exists(os.path.join(os.getcwd(), 'output/Pflotran')) == False:
                 os.makedirs(os.path.join(os.getcwd(), 'output/Pflotran'))
@@ -4295,13 +4305,19 @@ class write_database():
 
         fout.write("!:gas_name molar_vol  num (n_i A_i, i=1,num) log K (1:8)  formula weight [g]\n")
         #%% Gas reactions
-        for j in specielist[6]:
+        if dataset_format != 'mar21':
+            speclst = specielist[6]
+        else:
+            speclst = specielist[7]
+        #print(speclst)
+        for j in speclst:
             if sourceformat.upper() == 'GWB':
                 rxnlst = [b for a, b in enumerate(sourcedic[j]) if a not in [0, 1]]
                 source_rxns = sourcedic[j][2:]
             elif sourceformat.upper() == 'EQ36':
                 rxnlst = [b for a, b in enumerate(sourcedic[j]) if a not in [0, 1, 2, 3]]
                 source_rxns = sourcedic[j][4:]
+            #print(j)
             rxnlst = [v for x, v in enumerate(rxnlst) if x % 2 != 0 ] # remove all coefficients
             if (j not in missing_species) and (len([k for k in rxnlst if k not in missing_species]) == len(rxnlst)):
                 name, species = j, sourcedic[j][1]
@@ -4410,7 +4426,11 @@ class write_database():
         fout.write("!:oxide_name molar_vol  num (n_i A_i, i=1,num) log K (1:8)  formula weight [g]\n")
         #%% Oxides reactions
         if sourceformat.upper() == 'GWB':
-            for j in specielist[7]:
+            if dataset_format != 'mar21':
+                speclst = specielist[7]
+            else:
+                speclst = specielist[8]
+            for j in speclst:
                 rxnlst = [b for a, b in enumerate(sourcedic[j]) if a not in [0, 1]] # remove formula and specie number
                 rxnlst = [v for x, v in enumerate(rxnlst) if x % 2 != 0 ] # remove all coefficients
                 if (len([k for k in rxnlst if k not in missing_species])==len(rxnlst)):

@@ -6,6 +6,20 @@ All notable changes to this project are documented here. To ensure that they are
 pip install --upgrade pygcc
 ```
 
+## v1.3.1 (11/11/2024)
+
+#### Added
+
+- we added flexible direct-access modifying option that reads a csv file and makes a new direct-access database. Test = dbaccess_modify(in_filename = 'geotpd_data_block_cr.csv', dbaccess = './speq23.dat')
+
+#### Changed
+   
+#### Fixed
+
+- we have fixed the calculation error when generating pflotran databased with GWB source database (starting from mar21 format).
+  
+#### Removed
+
 ## v1.3.0 (03/05/2024)
 
 #### Added

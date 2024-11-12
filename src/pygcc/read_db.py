@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 
-import re, os
+import re, os, pandas as pd
 import textwrap
 J_to_cal = 4.184
 
@@ -129,13 +129,13 @@ class db_reader:
         self.kwargs.update(kwargs) 
         if self.kwargs["dbaccess"] == 'speq23':
     	    self.dbaccess_dir = './default_db/speq23.dat'
-    	    self.dbaccess_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.dbaccess_dir)
+            self.dbaccess_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.dbaccess_dir)
         elif self.kwargs["dbaccess"] == 'speq23_dimer':
-    	    self.dbaccess_dir = './default_db/speq23_dimer.dat'
-    	    self.dbaccess_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.dbaccess_dir)
+            self.dbaccess_dir = './default_db/speq23_dimer.dat'
+            self.dbaccess_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.dbaccess_dir)
         elif self.kwargs["dbaccess"] == 'speq21_dimer':
-    	    self.dbaccess_dir = './default_db/speq21_dimer.dat'
-    	    self.dbaccess_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.dbaccess_dir)
+            self.dbaccess_dir = './default_db/speq21_dimer.dat'
+            self.dbaccess_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.dbaccess_dir)
         elif self.kwargs['dbaccess'] is None:
             self.dbaccess_dir = './default_db/speq21.dat'
             self.dbaccess_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.dbaccess_dir)
@@ -1067,3 +1067,218 @@ class db_reader:
         return
 
 
+def dbaccess_modify(in_filename = None, dbaccess = None, out_filename = None):
+    """
+    This function loads thermodynamic data from a csv files and appends/replace the corresponding species thermo data and writes out a modified direct-access database
+    Parameters
+    ----------
+        in_filename : string
+            CSV filename and location   \n
+        dbaccess : string
+            direct-access database filename and location  (optional)  \n
+        out_filename : string
+            newly modified direct-access database filename and location    (optional) \n
+
+    Returns
+    -------
+        Output the newly modified direct-access with filename described in 'out_filename' if specified.
+
+    Examples
+    --------
+    >>> dbaccess_modify(in_filename = 'geotpd_data_block_cr.csv')
+
+    """
+    
+    if dbaccess is None:
+        dbaccess = './default_db/speq21.dat'
+        dbaccess = os.path.join(os.path.dirname(os.path.abspath(__file__)), dbaccess)
+
+    with open(dbaccess, "r") as file:
+        lines = file.readlines()
+        
+    df = pd.read_csv(in_filename)
+    
+    for i in df.index:
+        name = df.loc[i, "name"]
+        abbrv = df.loc[i, "abbrv"]
+        name = name.replace("*", ":")
+        if pd.isnull(abbrv) is True:
+            abbrv = name
+        formula = df.loc[i, "formula"]
+        formula = formula.replace("*", ":")
+        ref1 = df.loc[i, "ref1"]
+        ref2 = df.loc[i, "ref2"]
+        if pd.isnull(ref2) is False:
+            ref = "ref:" + ref1 + "," + ref2
+        else:
+            ref = "ref:" + ref1
+    
+        units = df.loc[i, "E_units"]
+        state = df.loc[i, "state"]
+    
+        pattern = r"([A-Z][a-z]*)(\d*)|(\()|(\))(\d*)|(\:)(\d*)"
+        elements = re.findall(pattern, formula)
+    
+        stack = []
+        current_element = ""
+        count_after_colon = None
+        for element, count1, open_paren, close_paren, count2, colon, count3 in elements:
+            if element and pd.isnull(count_after_colon):
+                current_element = element
+                stack.append((element, int(count1) if count1 else 1))
+            elif open_paren and pd.isnull(count_after_colon):
+                stack.append("(")
+            elif close_paren and pd.isnull(count_after_colon):
+                count_outside_paren = int(count2) if count2 else 1
+                elements_inside_paren = []
+                while stack[-1] != "(":
+                    popped_element, popped_count = stack.pop()
+                    if popped_element == "(":
+                        continue
+                    elements_inside_paren.insert(0, (popped_element, popped_count))
+                stack.pop()
+                for e, c in elements_inside_paren:
+                    stack.append((e, c * count_outside_paren))
+            elif colon:
+                count_after_colon = int(count3) if count3 else 1
+            elif element and count_after_colon >= 1:
+                current_element = element
+                c = int(count1) if count1 else 1
+                stack.append((element, c * count_after_colon))
+            else:
+                stack.append((current_element, int(count1) if count1 else 1))
+    
+        formula_parsed = ""
+    
+        element_counts = {}
+        for element, count in stack:
+            if element in element_counts:
+                element_counts[element] += count
+            else:
+                element_counts[element] = count
+    
+        for element, count in element_counts.items():
+            formula_parsed += element + ("(%d)" % count if count > 1 else "(1)")
+    
+        if state == "aq":
+            charge = df.loc[i, "z.T"]
+            if charge >= 0:
+                formula_parsed += "+" + f"({charge})"
+            elif charge <= 0:
+                formula_parsed += "-" + f"({abs(charge)})"
+        else:
+            formula_parsed += "+" + "(0)"
+    
+        if units == "J":
+            coeff = 1 / 4.184
+        else:
+            coeff = 1
+    
+        col = ["H"]
+        df[col] = df[col].fillna(999999)
+        col = ["V"]
+        df[col] = df[col].fillna(0)
+        dG = df.loc[i, "G"] * coeff
+        dH = df.loc[i, "H"] * coeff
+        S = df.loc[i, "S"] * coeff
+        V = df.loc[i, "V"]
+    
+        if df.loc[i, "model"] == "CGL":
+            a = df.loc[i, "a1.a"] * coeff
+            b = df.loc[i, "a2.b"] * coeff
+            c = df.loc[i, "a3.c"] * coeff
+        elif df.loc[i, "model"] == "HKF":
+            a1 = df.loc[i, "a1.a"] * coeff
+            a2 = df.loc[i, "a2.b"] * coeff
+            a3 = df.loc[i, "a3.c"] * coeff
+            a4 = df.loc[i, "a4.d"] * coeff
+            c1 = df.loc[i, "c1.e"] * coeff
+            c2 = df.loc[i, "c2.f"] * coeff
+            w = df.loc[i, "omega.lambda"] * coeff
+    
+        if state == "cr":
+    
+            location = [
+                j
+                for j, x in enumerate(lines)
+                if "minerals that do not undergo phase transitions" in x
+            ]
+            location2 = [j for j, x in enumerate(lines) if name in x]
+    
+            name_pad = "{: <20}".format(name)
+            abbrv_pad = "{: <20}".format(abbrv)
+            ref_pad = "{: <20}".format(ref)
+            dG_pad = "{: >18.1f}".format(dG)
+            dH_pad = "{: >14.1f}".format(dH)
+            S_pad = "{: >10.3f}".format(S)
+            V_pad = "{: >10.3f}".format(V)
+            a_pad = "{: >18.6f}".format(a)
+            b_pad = "{: >14.6f}".format(b)
+            c_pad = "{: >14.6f}".format(c)
+            Ttrans = df.loc[i, "z.T"]
+            Trans_pad = "{: >18.4f}".format(Ttrans)
+    
+            if not location2:
+    
+                lines.insert(location[0] + 2, (" " + name_pad + formula + "\n"))
+                lines.insert(location[0] + 3, (" " + abbrv_pad + formula_parsed + "\n"))
+                lines.insert(location[0] + 4, (" " + ref_pad + "\n"))
+                lines.insert(location[0] + 5, (dG_pad + dH_pad + S_pad + V_pad + "\n"))
+                lines.insert(location[0] + 6, (a_pad + b_pad + c_pad + "\n"))
+                lines.insert(location[0] + 7, (Trans_pad + "\n"))
+            else:
+                lines[location2[0]] = " " + name_pad + formula + "\n"
+                lines[location2[0] + 1] = " " + abbrv_pad + formula_parsed + "\n"
+                lines[location2[0] + 2] = " " + ref_pad + "\n"
+                lines[location2[0] + 3] = dG_pad + dH_pad + S_pad + V_pad + "\n"
+                lines[location2[0] + 4] = a_pad + b_pad + c_pad + "\n"
+                lines[location2[0] + 5] = Trans_pad + "\n"
+    
+        elif state == "aq":
+    
+            name_pad = "{: <20}".format(name)
+            abbrv_pad = "{: <20}".format(abbrv)
+            ref_pad = "{: <20}".format(ref)
+            dG_pad = "{: >18.1f}".format(dG)
+            dH_pad = "{: >14.1f}".format(dH)
+            S_pad = "{: >10.3f}".format(S)
+            V_pad = "{: >14.4f}".format(V)
+            a1_pad = "{: >14.4f}".format(a1)
+            a2_pad = "{: >12.4f}".format(a2)
+            a3_pad = "{: >12.4f}".format(a3)
+            c1_pad = "{: >14.4f}".format(c1)
+            c2_pad = "{: >12.4f}".format(c2)
+            w_pad = "{: >12.4f}".format(w)
+            charge_pad = "{: >15.0f}".format(charge)
+    
+            location = [j for j, x in enumerate(lines) if "    aqueous species" in x]
+            location2 = [j for j, x in enumerate(lines) if name in x]
+    
+            if not location2:
+    
+                lines.insert(location[0] + 2, (" " + name_pad + formula + "\n"))
+                lines.insert(location[0] + 3, (" " + abbrv_pad + formula_parsed + "\n"))
+                lines.insert(location[0] + 4, (" " + ref_pad + "\n"))
+                lines.insert(location[0] + 5, (dG_pad + dH_pad + S_pad + "\n"))
+                lines.insert(location[0] + 6, (V_pad + a1_pad + a2_pad + a3_pad + "\n"))
+                lines.insert(
+                    location[0] + 7, (c1_pad + c2_pad + w_pad + charge_pad + "\n")
+                )
+            else:
+                lines[location2[0]] = " " + name_pad + formula + "\n"
+                lines[location2[0] + 1] = " " + abbrv_pad + formula_parsed + "\n"
+                lines[location2[0] + 2] = " " + ref_pad + "\n"
+                lines[location2[0] + 3] = dG_pad + dH_pad + S_pad + "\n"
+                lines[location2[0] + 4] = V_pad + a1_pad + a2_pad + a3_pad + "\n"
+                lines[location2[0] + 5] = c1_pad + c2_pad + w_pad + charge_pad + "\n"
+    
+    if out_filename is None:
+        out_filename = os.path.basename(dbaccess).split('.')[0]
+        fout = open(os.path.join(os.path.dirname(in_filename), out_filename + '_mod.dat'), 'w+') 
+    else:
+        fout = open(os.path.join(os.path.dirname(in_filename), out_filename + '.dat'), 'w+') 
+    
+    fout.writelines(lines)
+    fout.close()
+    
+    return
