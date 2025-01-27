@@ -681,12 +681,13 @@ def Helgeson_activity(TC, P, I, Dielec_method = None, **rhoEDB):
             fun = splrep(x, y)
             xpred = np.linspace(0, 500, 100)
             ypred1 = splev(xpred, fun)
-            ypred1 = np.where(ypred1 < -17.12, -17.12, ypred1)
+            #ypred1 = np.where(ypred1 < -17.12, -17.12, ypred1)
             x = np.arange(25,525,25)
             y = np.array([  2.58,   2.28,   1.95,   1.58,   1.18,   0.73,   0.25,   0.28,
                           -0.86,  -1.5 ,  -2.2 ,  -2.99,  -3.88,  -4.91,  -6.11,  -7.56,
                           -9.31, -11.43, -14.01, -17.12])
-            fun = splrep(x, y)
+            mask = np.arange(len(x)) !=np.where(x == 200)[0][0]
+            fun = splrep(x[mask], y[mask])
             ypred2 = splev(xpred, fun)
             newy = (1000-isoline)/1000*ypred1 + (isoline/1000)*ypred2
             fun = splrep(xpred, newy)
@@ -713,7 +714,8 @@ def Helgeson_activity(TC, P, I, Dielec_method = None, **rhoEDB):
             y = np.array([  2.58,   2.28,   1.95,   1.58,   1.18,   0.73,   0.25,   0.28,
                           -0.86,  -1.5 ,  -2.2 ,  -2.99,  -3.88,  -4.91,  -6.11,  -7.56,
                           -9.31, -11.43, -14.01, -17.12])
-            fun = splrep(x, y)
+            mask = np.arange(len(x)) !=np.where(x == 200)[0][0]
+            fun = splrep(x[mask], y[mask])
             xpred = np.linspace(0, 500, 100)
             ypred1 = splev(xpred, fun)
             y = np.array([  2.66,  2.37,  2.06,  1.72,  1.35,  0.95,  0.51,  0.04, -0.46,
@@ -738,29 +740,100 @@ def Helgeson_activity(TC, P, I, Dielec_method = None, **rhoEDB):
             newy = (1000-isoline)/1000*ypred1 + (isoline/1000)*ypred2
             fun = splrep(xpred, newy)
             bil = splev(TC[k], fun)
-        elif P[k] == 3000: #%% P = 3000 Region
+        elif P[k] > 2000 and P[k] <= 3000: #%% P = 3000 Region
+            isoline = P[k] - 2000
+            x = np.arange(25,525,25)
+            y = np.array([  2.66,  2.37,  2.06,  1.72,  1.35,  0.95,  0.51,  0.04, -0.46,
+                          -1.  , -1.57, -2.19, -2.85, -3.58, -4.38, -5.26, -6.24, -7.34,
+                          -8.56, -9.88])
+            fun = splrep(x, y)
+            xpred = np.linspace(0, 500, 100)
+            ypred1 = splev(xpred, fun)
+            y = np.array([  2.72,  2.45,  2.15,  1.83,  1.48,  1.11,  0.72,  0.29, -0.15,
+                          -0.63, -1.13, -1.67, -2.24, -2.86, -3.52, -4.24, -5.03, -5.87,
+                          -6.78, -7.73])
+            fun = splrep(x, y)
+            ypred2 = splev(xpred, fun)
+            newy = (1000-isoline)/1000*ypred1 + (isoline/1000)*ypred2
+            fun = splrep(xpred, newy)
+            bhat = splev(TC[k], fun)
+            y = np.array([ -9.19, -5.07, -2.63, -0.07,  1.71,  4.13,  5.91,  7.48,  9.27,
+                          10.80, 12.24, 13.68, 15.16, 16.48, 17.8 , 19.12, 20.33, 21.55,
+                          22.86, 24.03])
+            fun = splrep(x, y)
+            xpred = np.linspace(0, 500, 100)
+            ypred1 = splev(xpred, fun)
+            y = np.array([ -9.51, -5.6 , -2.46,  0.13,  2.14,  4.28,  6.16,  8.18,  9.59,
+                          11.15, 12.62, 13.99, 15.41, 16.76, 18.1 , 19.4 , 20.66, 21.85,
+                          23.09, 24.32])
+            fun = splrep(x, y)
+            ypred2 = splev(xpred, fun)
+            newy = (1000-isoline)/1000*ypred1 + (isoline/1000)*ypred2
+            fun = splrep(xpred, newy)
+            bil = splev(TC[k], fun)
+        elif P[k] > 3000 and P[k] <= 4000: #%% P = 4000 Region
+            isoline = P[k] - 3000
             x = np.arange(25,525,25)
             y = np.array([  2.72,  2.45,  2.15,  1.83,  1.48,  1.11,  0.72,  0.29, -0.15,
                           -0.63, -1.13, -1.67, -2.24, -2.86, -3.52, -4.24, -5.03, -5.87,
                           -6.78, -7.73])
             fun = splrep(x, y)
+            xpred = np.linspace(0, 500, 100)
+            ypred1 = splev(xpred, fun)
+            y = np.array([  2.77,  2.51,  2.22,  1.91,  1.58,  1.23,  0.86,  0.47,  0.05,
+                          -0.38, -0.84, -1.33, -1.85, -2.4 , -2.99, -3.63, -4.32, -5.06,
+                          -5.84, -6.63])
+            fun = splrep(x, y)
+            ypred2 = splev(xpred, fun)
+            newy = (1000-isoline)/1000*ypred1 + (isoline/1000)*ypred2
+            fun = splrep(xpred, newy)
             bhat = splev(TC[k], fun)
+
             y = np.array([ -9.51, -5.6 , -2.46,  0.13,  2.14,  4.28,  6.16,  8.18,  9.59,
                           11.15, 12.62, 13.99, 15.41, 16.76, 18.1 , 19.4 , 20.66, 21.85,
                           23.09, 24.32])
             fun = splrep(x, y)
+            xpred = np.linspace(0, 500, 100)
+            ypred1 = splev(xpred, fun)
+            y = np.array([-10.44,  -5.68,  -2.15,   0.71,   3.05,   5.13,   7.05,   9.05,
+                          10.4 ,  11.92,  13.39,  14.83,  16.23,  17.52,  18.81,  20.13,
+                          21.38,  22.56,  23.74,  24.94])
+            fun = splrep(x, y)
+            ypred2 = splev(xpred, fun)
+            newy = (1000-isoline)/1000*ypred1 + (isoline/1000)*ypred2
+            fun = splrep(xpred, newy)
             bil = splev(TC[k], fun)
-        elif P[k] == 4000: #%% P = 4000 Region
+        elif P[k] > 4000 and P[k] <= 5000: #%% P = 4000 Region
+            isoline = P[k] - 4000
             x = np.arange(25,525,25)
             y = np.array([  2.77,  2.51,  2.22,  1.91,  1.58,  1.23,  0.86,  0.47,  0.05,
                           -0.38, -0.84, -1.33, -1.85, -2.4 , -2.99, -3.63, -4.32, -5.06,
                           -5.84, -6.63])
             fun = splrep(x, y)
-            bhat = splev(TC, fun)
+            xpred = np.linspace(0, 500, 100)
+            ypred1 = splev(xpred, fun)
+            y = np.array([  2.82,  2.56,  2.28,  1.99,  1.67,  1.33,  0.98,  0.6 ,  0.21,
+                          -0.2 , -0.63, -1.09, -1.58, -2.1 , -2.65, -3.25, -3.89, -4.57,
+                          -5.28, -6. ])
+            fun = splrep(x, y)
+            ypred2 = splev(xpred, fun)
+            newy = (1000-isoline)/1000*ypred1 + (isoline/1000)*ypred2
+            fun = splrep(xpred, newy)
+            bhat = splev(TC[k], fun)
+
             y = np.array([-10.44,  -5.68,  -2.15,   0.71,   3.05,   5.13,   7.05,   9.05,
                           10.4 ,  11.92,  13.39,  14.83,  16.23,  17.52,  18.81,  20.13,
                           21.38,  22.56,  23.74,  24.94])
             fun = splrep(x, y)
+            xpred = np.linspace(0, 500, 100)
+            ypred1 = splev(xpred, fun)
+            y = np.array([-11.76,  -5.87,  -1.68,   1.39,   4.21,   6.26,   8.13,  10.3,
+                          11.58,  13.15,  14.54,  16.01,  17.36,  18.65,  19.83,  21.23,
+                          22.38,  23.64,  24.78,  25.95])
+            fun = splrep(x, y)
+            ypred2 = splev(xpred, fun)
+            newy = (1000-isoline)/1000*ypred1 + (isoline/1000)*ypred2
+            fun = splrep(xpred, newy)
             bil = splev(TC[k], fun)
         elif P[k] >= 5000: #%% P = 5000 Region and beyond
             x = np.arange(25,525,25)
