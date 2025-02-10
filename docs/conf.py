@@ -17,7 +17,6 @@ author = u"Adedapo Awolayo and Benjamin Tutolo"
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx_rtd_theme",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
 ]
