@@ -99,7 +99,7 @@ write_database(T = [20, Temp], P = P, solid_solution = True, objdb = './data0',
 # In[6]:
 
 
-copyfile(current_dir + '/output/data0.geo', eq_dir + '/data0.pym')
+copyfile(current_dir + '/output/EQ36/data0.geo', eq_dir + '/data0.pym')
 
 
 # In[7]:

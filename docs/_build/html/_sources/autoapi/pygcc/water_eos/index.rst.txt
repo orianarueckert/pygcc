@@ -41,6 +41,7 @@ Classes
    pygcc.water_eos.iapws95
    pygcc.water_eos.ZhangDuan
    pygcc.water_eos.water_dielec
+   pygcc.water_eos.Driesner_NaCl
 
 
 
@@ -52,6 +53,7 @@ Functions
    pygcc.water_eos.convert_temperature
    pygcc.water_eos.derivative
    pygcc.water_eos.readIAPWS95data
+   pygcc.water_eos.concentration_converter
 
 
 
@@ -742,7 +744,7 @@ Attributes
    :type Dielec_DEWoutrange: string
 
    :returns: * *The calculated instance has the following potential properties*
-             * **E** (*float, vector*) -- dielectric constant of water [cal/mol]
+             * **E** (*float, vector*) -- dielectric constant of water
              * **rhohat** (*float, vector*) -- density [g/cm³]
              * **Ah** (*float, vector*) -- Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]
              * **Bh** (*float, vector*) -- Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]
@@ -857,7 +859,7 @@ Attributes
       :param rho:
       :type rho: density [kg/m3]
 
-      :returns: * **E** (*dielectric constant of water [cal/mol]*)
+      :returns: * **E** (*dielectric constant of water*)
                 * **rhohat** (*density [g/cm³]*)
                 * **Ah** (*Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]*)
                 * **Bh** (*Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]*)
@@ -905,7 +907,7 @@ Attributes
 
        Returns
       ----------
-         E       : dielectric constant of water [cal/mol]
+         E       : dielectric constant of water
 
          rhohat  : density [g/cm³]
 
@@ -961,7 +963,7 @@ Attributes
 
        Returns
       ----------
-         E       : dielectric constant of water [cal/mol]
+         E       : dielectric constant of water
 
          rhohat  : density [g/cm³]
 
@@ -996,6 +998,109 @@ Attributes
           Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
           Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
           Am. J. Sci. 274, 1199-1251.
+
+
+
+.. py:function:: concentration_converter(val=1.0, In_Unit='x_wt', Out_Unit='x_wt')
+
+   This function converts concentration between several units like wt%, mole fraction, molality and volume
+   Values must be in fraction except it is molality
+
+   :param val: Values to convert
+   :type val: float
+   :param In_Unit: unit of input concentration
+   :type In_Unit: String
+   :param Out_Unit: expected output concentration
+   :type Out_Unit: String
+
+   :returns: **Out** -- Converted values
+   :rtype: float
+
+
+.. py:class:: Driesner_NaCl(**kwargs)
+
+   Implementation of Driesner and Heinrich PTx Formulation for H2O-NaCl system
+
+   :param T: Temperature [°C]
+   :type T: float
+   :param P: Pressure [bar]
+   :type P: float
+   :param xNaCl: mole fraction of NaCl in H2O [-]
+   :type xNaCl: float
+
+   :returns: * *The calculated instance has the following potential properties*
+             * **PVLH** (*float*) -- Pressure of vapor + liquid + halite coexistence [bar]
+             * **Pcrit** (*float*) -- Critical pressure (of a H2O–NaCl mixture) [bar]
+             * **Xcrit** (*float*) -- Critical Composition  [-]
+             * **xL_NaCl** (*float*) -- Composition of halite-saturated liquid (halite liquidus) Hypothetical [-]
+             * **xV_NaCl** (*float*) -- Composition of halite-saturated vapor [-]
+             * **xVL_Liq** (*float*) -- Composition of liquid at vapor + liquid coexistence [-]
+             * **xVL_Vap** (*float*) -- Composition of vapor at vapor+liquid coexistence [-]
+             * **rho** (*float*) -- Liquid NaCl density [kg/m3]
+             * **vm** (*float*) -- molar volume [mol/m3]
+             * **TstarH** (*float*) -- Scaled temperature for enthalpy correlation [°C]
+             * **H** (*float*) -- Specific enthalpy of an H2O–NaCl solution [J/kg]
+             * **Cp** (*float*) -- Isobaric heat capacity [J/kg/K]
+             * **mu** (*float*) -- viscosity [Pa-s]
+
+   Usage:
+   ----------
+       The general usage of Driesner_NaCl is as follows:
+
+       (1) For water-NaCl properties at any Temperature and Pressure:
+
+           water_salt = Driesner_NaCl(T = T, P = P),
+
+           where T is temperature in celsius and P is pressure in bar
+   .. rubric:: Examples
+
+   >>> water_salt = Driesner_NaCl(T = 400., P = 150)
+   >>> water_salt.PVLH, water_salt.xL_NaCl, water_salt.xV_NaCl, water_salt.xVL_Liq, water_salt.xVL_Vap, water_salt.Xcrit
+       176.12604181993797,
+        0.21548565081529097,
+        1.1606891909548725e-05,
+        0.27785803505887324,
+        1.1606891909548725e-05,
+        0.006832050956381021
+
+   >>> water_salt = Driesner_NaCl(T = 400., P = 150, xNaCl = 0.00919)
+   >>> water_salt.PVLH, water_salt.xL_NaCl, water_salt.xV_NaCl, water_salt.xVL_Liq, water_salt.xVL_Vap, water_salt.rho, water_salt.vm, water_salt.H, water_salt.mu, water_salt.Cp
+       (176.12604181993797,
+        0.21548565081529097,
+        1.1606891909548725e-05,
+        0.27785803505887324,
+        1.1606891909548725e-05,
+        0.06932873574838519,
+        265.2138005082347,
+        2934.6231778877977,
+        2.4596312351131325e-05,
+        4394.068874696437)
+
+   .. rubric:: References
+
+   (1) Driesner, T, and Heinrich, C. A. (2007). The system H2O–NaCl. Part I: Correlation formulae for phase relations in
+       temperature–pressure–composition space from 0 to 1000 C, 0 to 5000 bar, and 0 to 1 XNaCl. Geochimica et Cosmochimica Acta. 71(20), 4880-4901.
+       https://doi.org/10.1016/j.gca.2006.01.033
+   (2) Driesner, T. (2007). "The system H2O-NaCl. II. Correlations for molar volume, enthalpy, and isobaric heat capacity from 0 to 1000 °C, 1 to 5000 bar,
+   #     and 0 to 1 X-NaCl." Geochimica et Cosmochimica Acta 71(20): 4902-4919.
+
+   .. py:attribute:: kwargs
+      
+
+      
+
+   .. py:method:: __calc__(self, **kwargs)
+
+
+   .. py:method:: Driesner_NaCl(self, T, P)
+
+
+   .. py:method:: Driesner_NaClII(self, T, P, xNaCl)
+
+
+   .. py:method:: enthalpy_mu_heatcap(self, T, P, xNaCl)
+
+      Enthalpy in J/g, viscosity in Pas and Cp in Joules per kilogram Kelvin
 
 
 

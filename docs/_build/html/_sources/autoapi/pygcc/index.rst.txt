@@ -35,16 +35,18 @@ Classes
    pygcc.iapws95
    pygcc.ZhangDuan
    pygcc.water_dielec
-   pygcc.heatcap
-   pygcc.solidsolution_thermo
-   pygcc.db_reader
-   pygcc.iapws95
-   pygcc.ZhangDuan
-   pygcc.water_dielec
+   pygcc.Driesner_NaCl
    pygcc.heatcap
    pygcc.solidsolution_thermo
    pygcc.calcRxnlogK
    pygcc.write_database
+   pygcc.db_reader
+   pygcc.iapws95
+   pygcc.ZhangDuan
+   pygcc.water_dielec
+   pygcc.Driesner_NaCl
+   pygcc.heatcap
+   pygcc.solidsolution_thermo
 
 
 
@@ -53,13 +55,10 @@ Functions
 
 .. autoapisummary::
 
+   pygcc.dbaccess_modify
    pygcc.readIAPWS95data
    pygcc.convert_temperature
-   pygcc.supcrtaq
-   pygcc.Element_counts
-   pygcc.calclogKclays
-   pygcc.readIAPWS95data
-   pygcc.convert_temperature
+   pygcc.concentration_converter
    pygcc.supcrtaq
    pygcc.calclogKclays
    pygcc.calc_elem_count_molewt
@@ -79,6 +78,13 @@ Functions
    pygcc.aw_correlation
    pygcc.outputfmt
    pygcc.main_function_name
+   pygcc.dbaccess_modify
+   pygcc.readIAPWS95data
+   pygcc.convert_temperature
+   pygcc.concentration_converter
+   pygcc.supcrtaq
+   pygcc.Element_counts
+   pygcc.calclogKclays
 
 
 
@@ -87,11 +93,10 @@ Attributes
 
 .. autoapisummary::
 
-   pygcc.MW
    pygcc.eps
    pygcc.J_to_cal
    pygcc.IAPWS95_COEFFS
-   pygcc.__version__
+   pygcc.MW
 
 
 .. py:class:: db_reader(**kwargs)
@@ -215,6 +220,23 @@ Attributes
       ----------
       [sourcedic, specielist, chargedic, MWdic, block_info, Elemlist, act_param] = readSourceEQ36db(sourcedb)
 
+
+
+.. py:function:: dbaccess_modify(in_filename=None, dbaccess=None, out_filename=None)
+
+   This function loads thermodynamic data from a csv files and appends/replace the corresponding species thermo data and writes out a modified direct-access database
+   :param in_filename: CSV filename and location
+   :type in_filename: string
+   :param dbaccess: direct-access database filename and location  (optional)
+   :type dbaccess: string
+   :param out_filename: newly modified direct-access database filename and location    (optional)
+   :type out_filename: string
+
+   :rtype: Output the newly modified direct-access with filename described in 'out_filename' if specified.
+
+   .. rubric:: Examples
+
+   >>> dbaccess_modify(in_filename = 'geotpd_data_block_cr.csv')
 
 
 .. py:class:: iapws95(**kwargs)
@@ -457,7 +479,7 @@ Attributes
    :type Dielec_DEWoutrange: string
 
    :returns: * *The calculated instance has the following potential properties*
-             * **E** (*float, vector*) -- dielectric constant of water [cal/mol]
+             * **E** (*float, vector*) -- dielectric constant of water
              * **rhohat** (*float, vector*) -- density [g/cm³]
              * **Ah** (*float, vector*) -- Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]
              * **Bh** (*float, vector*) -- Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]
@@ -572,7 +594,7 @@ Attributes
       :param rho:
       :type rho: density [kg/m3]
 
-      :returns: * **E** (*dielectric constant of water [cal/mol]*)
+      :returns: * **E** (*dielectric constant of water*)
                 * **rhohat** (*density [g/cm³]*)
                 * **Ah** (*Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]*)
                 * **Bh** (*Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]*)
@@ -620,7 +642,7 @@ Attributes
 
        Returns
       ----------
-         E       : dielectric constant of water [cal/mol]
+         E       : dielectric constant of water
 
          rhohat  : density [g/cm³]
 
@@ -676,7 +698,7 @@ Attributes
 
        Returns
       ----------
-         E       : dielectric constant of water [cal/mol]
+         E       : dielectric constant of water
 
          rhohat  : density [g/cm³]
 
@@ -739,802 +761,72 @@ Attributes
        246.85
 
 
-.. py:class:: heatcap(**kwargs)
+.. py:class:: Driesner_NaCl(**kwargs)
 
-   Class to heat capacity for mineral and gases using Maier-Kelley powerlaw, Haas-Fisher powerlaw, Holland and Powell and Berman's function
+   Implementation of Driesner and Heinrich PTx Formulation for H2O-NaCl system
 
    :param T: Temperature [°C]
-   :type T: float, vector
+   :type T: float
    :param P: Pressure [bar]
-   :type P: float, vector
-   :param Species_ppt:
-                       Properties such as Supcrt92 (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm3/mol] a [cal/mol-K], b [*10**3 cal/mol/K^2],
-                        c [*10^-5 cal/mol/K], Ttrans [K], Htr [cal/mol], Vtr [cm³/mol], dPdTtr [bar/K] ): Berman's database
-                       properties such as (dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, k3,
-                       v1 [*10^5 K^-1], v2 [*10^5 K^-2], v3 [*10^5 bar^-1], v4 [*10^8 bar^-2], dTdP [K/bar], Tlambda [K],
-                       Tref [K], l1 [(J/mol)^0.5/K], l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], d2 [J/mol],
-                       d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K]): Supcrtbl's database properties such as (dG [kJ/mol], dH [kJ/mol], S [J/mol-K], V [J/bar], a [kJ/mol-K],
-                       b [*10^5 kJ/mol/K^2], c [kJ-mol-K], d [kJ/mol/K^0.5], alpha [*10^5 K^-1], kappa0 [kbar],
-                       kappa0_d [kbar], kappa0_dd [kbar], n_atom [-], Tc0 [K], Smax [J/mol-K], Vmax [J/bar], dH [KJ/mol],
-                       dV [J/bar], W [kJ/mol], Wv [J/bar], n [-], SF [-]), etc
-   :type Species_ppt: array
-   :param Species: species name, optional for all cases except gases, Coesite and Quartz
-   :type Species: string
-   :param method: specify either 'SUPCRT' or 'berman88' or 'HP11' or 'HF76' to carry-out any mineral or gas
-                  heat capacity calculations, default is 'SUPCRT'
-   :type method: string
+   :type P: float
+   :param xNaCl: mole fraction of NaCl in H2O [-]
+   :type xNaCl: float
 
-   :returns: * **dG** (*float, vector*) -- Gibbs Energy [cal/mol]
-             * **dCp** (*float, vector*) -- Heat capacity [cal/mol/K]
-
-   .. rubric:: Examples
-
-   >>> # Example with Maier-Kelley powerlaw function as implemented in SUPCRT92
-   >>> from pygcc.pygcc_utils import db_reader
-   >>> ps = db_reader() # utilizes the default direct-access database, speq21
-   >>> sp = heatcap( T = 100, P = 50, Species = 'H2S(g)', Species_ppt = ps.dbaccessdic['H2S(g)'], method = 'SUPCRT')
-   >>> sp.dG, sp.dCp
-       -11782.47165818, 8.58416135
-   >>> sp = heatcap( T = 100, P = 50, Species_ppt = ps.dbaccessdic['Quartz'], method = 'SUPCRT',
-                         Species = 'Quartz')
-   >>> sp.dG, sp.dCp
-       -205292.75498942, 12.34074489
-
-   >>> # Example with Haas-Fisher powerlaw function
-   >>> from pygcc.pygcc_utils import db_reader
-   >>> ps = db_reader() # utilizes the default direct-access database, speq21
-   >>> sp = heatcap( T = 100, P = 50, Species_ppt = ps.dbaccessdic['ss_Anorthite'], method = 'HF76',
-                    Species = 'ss_Anorthite')
-   >>> sp.dG, sp.dCp
-       -960440.79915641, 57.46776903
-
-   >>> # Example with Berman's function
-   >>> from pygcc.pygcc_utils import db_reader
-   >>> # utilizes the default speq21 and specified Berman dataset database
-   >>> ps = db_reader(dbBerman_dir = './default_db/Berman.dat')
-   >>> sp = heatcap( T = 100, P = 50, Species_ppt = ps.dbaccessdic['Quartz'], method = 'berman88',
-                    Species = 'Quartz')
-   >>> sp.dG, sp.dCp
-       -205472.3365716, 12.32381279
-
-   >>> # Example with Holland and Powell's function
-   >>> from pygcc.pygcc_utils import db_reader
-   >>> # utilizes the default speq21 and specified SUPCRTBL (HP2011) dataset database
-   >>> ps = db_reader(dbHP_dir = './default_db/supcrtbl.dat')
-   >>> sp = heatcap( T = 100, P = 50, Species_ppt = ps.dbaccessdic['Hematite'], method = 'HP11',
-                    Species = 'Hematite')
-   >>> sp.dG, sp.dCp
-       -179494.62259123, 28.09545987
-
-   .. rubric:: References
-
-   (1) Helgeson, H. C., Delany, J. M., Nesbitt, H. W. and Bird, D. K.(1978). Summary and critique of the
-       thermodynamic properties of rock-forming minerals.
-   (2) Kelley K. K (1960) Contributions to the data on theoretical metallurgy. XIII. High
-       temperature heat content, heat capacity and entropy data for elements and inorganic compounds US Bur Mines Bull 548: 232 p
-   (3) Haas JL Jr, Fisher JR (1976) Simultaneous evaluation and correlation of thermodynamic data.
-       American Journal of Science 276:525-545
-   (4) Berman, R. G. (1988). Internally-consistent thermodynamic data for minerals in the system
-       Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2. Journal of petrology, 29(2), 445-522.
-   (5) Berman RG, Brown TH (1985) Heat Capacities of minerals in the system Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2:
-       Representation, estimation, and high temperature extrapolation. Contrib Mineral Petrol 89:168-183
-   (6) Holland, T. and Powell, R., 2011. An improved and extended internally consistent thermodynamic
-       dataset for phases of petrological interest, involving a new equation of state for solids.
-       Journal of Metamorphic Geology. 29, 333–383.
-   (7) Holland, T.J.B. and Powell, R., 1998. An internally-consistent thermodynamic dataset for phases
-       of petrological interest. Journal of Metamorphic Geology, 16, 309–344.
-   (8) Zimmer, K., Zhang, Y.L., Lu, P., Chen, Y.Y., Zhang, G.R., Dalkilic, M. and Zhu, C. (2016)
-       SUPCRTBL: A revised and extended thermodynamic dataset and software package of SUPCRT92.
-       Computer and Geosciences 90:97-111
-
-   .. py:attribute:: kwargs
-      
-
-      
-
-   .. py:method:: __calc__(self, **kwargs)
-
-
-   .. py:method:: heatcapusgscal(self, TC, P, species)
-
-      This function evaluates Gibbs energy and heat capacity as a function of temperature and pressure
-      for any mineral or gas specie using Haas and Fisher (1976)'s heat capacity parameter fit (utilized for solid-solutions)
-
-      :param TC: Temperature [°C]
-      :type TC: float, vector
-      :param P: Pressure [bar]
-      :type P: float, vector
-      :param species: Properties such as [dG [cal/ml], dH [cal/mol], S [cal/mol-K], V [cm³/mol], a [cal/mol-K], b [cal/mol/K^2], c [cal/mol/K], g [cal/mol/K^0.5], f [cal/mol/K^3] )
-      :type species: array
-
-      :returns: * **delGfPT** (*float, vector*) -- Gibbs Energy [cal/mol]
-                * **delCp** (*float, vector*) -- Heat capacity [cal/mol/K]
-
-      .. rubric:: References
-
-      (1) Haas JL Jr, Fisher JR (1976) Simultaneous evaluation and correlation of thermodynamic data.
-          American Journal of Science 276:525-545
-
-
-   .. py:method:: heatcap_Berman(self, TC, P, species)
-
-      This function evaluates Gibbs energy and heat capacity as a function of temperature
-      and pressure for any mineral or gas specie using Berman (1988) equations and datasets with
-      Berman and Brown (1985)'s heat capacity parameter fit
-
-      :param TC: Temperature [°C]
-      :type TC: float, vector
-      :param P: Pressure [bar]
-      :type P: float, vector
-      :param species:
-                      Properties such as [dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, k3,
-                                          v1 [*10^5 K^-1], v2 [*10^5 K^-2], v3 [*10^5 bar^-1], v4 [*10^8 bar^-2],
-                                          dTdP [K/bar], Tlambda [K], Tref [K], l1 [(J/mol)^0.5/K],
-                                          l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], d2 [J/mol],
-                                          d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K]]
-      :type species: array
-
-      :returns: * **delGfPT** (*float, vector*) -- Gibbs Energy [cal/mol]
-                * **delCp** (*float, vector*) -- Heat capacity [cal/mol/K]
-
-      .. rubric:: References
-
-      (1) Berman, R. G. (1988). Internally-consistent thermodynamic data for minerals in the system
-          Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2. Journal of petrology, 29(2), 445-522.
-      (2) Berman RG, Brown TH (1985) Heat Capacities of minerals in the system Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2:
-          Representation, estimation, and high temperature extrapolation. Contrib Mineral Petrol 89:168-183
-
-
-   .. py:method:: heatcapsup(self, TC, P, species, **kwargs)
-
-      This function evaluates Gibbs energy and heat capacity as a function of temperature
-      and pressure for any mineral or gas specie using Helgeson et al (1978) equations and Maier-Kelley
-      power function for heat capacity as implemented in SUPCRT92
-
-      :param TC: Temperature [°C]
-      :type TC: float, vector
-      :param P: Pressure [bar]
-      :type P: float, vector
-      :param species:
-                      Properties such as ( dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm³/mol], a [cal/mol-K],
-                                          b [*10^3 cal/mol/K^2], c [*10^-5 cal/mol/K], Ttrans [K], Htr [cal/mol],
-                                          Vtr [cm³/mol], dPdTtr [bar/K] ), etc
-      :type species: array
-      :param spec_name: species name, optional for all cases except gases, Coesite and Quartz
-      :type spec_name: string
-
-      :returns: * **delGfPT** (*float, vector*) -- Gibbs Energy [cal/mol]
-                * **delCp** (*float, vector*) -- Heat capacity [cal/mol/K]
-
-      .. rubric:: References
-
-      (1) Helgeson, H. C., Delany, J. M., Nesbitt, H. W. and Bird, D. K.(1978). Summary and critique of the
-          thermodynamic properties of rock-forming minerals.
-      (2) Kelley K. K (1960) Contributions to the data on theoretical metallurgy. XIII. High
-          temperature heat content, heat capacity and entropy data for elements and inorganic compounds US Bur Mines Bull 548: 232 p
-
-
-   .. py:method:: heatcaphp(self, TC, P, species)
-
-      This function evaluates Gibbs energy and heat capacity as a function of temperature and pressure
-      for any mineral or gas specie using Holland and Powell (2011)'s heat capacity parameter fit and
-      database based on SUPCRTBL
-
-      :param TC: Temperature [°C]
-      :type TC: float, vector
-      :param P: Pressure [bar]
-      :type P: float, vector
-      :param species:
-                      Properties such as [dG [kJ/mol], dH [kJ/mol], S [J/mol-K], V [J/bar], a [kJ/mol-K],
-                                          b [*10^5 kJ/mol/K^2], c [kJ-mol-K], d [kJ/mol/K^0.5],
-                                          alpha [*10^5 K^-1], kappa0 [kbar], kappa0_d [kbar], kappa0_dd [kbar],
-                                          n_atom [-], Tc0 [K], Smax [J/mol-K], Vmax [J/bar],
-                                          dH [KJ/mol], dV [J/bar], W [kJ/mol], Wv [J/bar],
-                                          n [-], SF [-]]
-      :type species: array
-
-      :returns: * **delGfPT** (*float, vector*) -- Gibbs Energy [cal/mol]
-                * **delCp** (*float, vector*) -- Heat capacity [cal/mol/K]
-
-      .. rubric:: References
-
-      (1) Holland, T. and Powell, R., 2011. An improved and extended internally consistent thermodynamic
-          dataset for phases of petrological interest, involving a new equation of state for solids.
-          Journal of Metamorphic Geology. 29, 333–383.
-      (2) Zimmer, K., Zhang, Y.L., Lu, P., Chen, Y.Y., Zhang, G.R., Dalkilic, M. and Zhu, C. (2016)
-          SUPCRTBL: A revised and extended thermodynamic dataset and software package of SUPCRT92.
-          Computer and Geosciences 90:97-111
-      (3) Holland, T.J.B. and Powell, R., 1998. An internally-consistent thermodynamic dataset for phases
-          of petrological interest. Journal of Metamorphic Geology, 16, 309–344.
-
-
-
-.. py:function:: supcrtaq(TC, P, specieppt, Dielec_method=None, ThermoInUnit='cal', **rhoE)
-
-   This function evaluates the Gibbs free energy of aqueous species at T and P
-   using the revised HKF equation of state
-
-   :param TC: Temperature [°C]
-   :type TC: float, vector
-   :param P: Pressure [bar]
-   :type P: float, vector
-   :param specieppt: Properties such as (dG [cal/mol], dH [cal/mol], S [cal/mol-K], a1 [*10 cal/mol/bar], a2 [*10**-2 cal/mol], a3 [cal-K/mol/bar], a4 [*10**-4 cal-K/mol], c1 [cal/mol/K], c2 [*10**-4 cal-K/mol], ω [*10**-5 cal/mol] )
-   :type specieppt: array
-   :param Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified default - 'JN91'
-   :type Dielec_method: string
-   :param ThermoInUnit: specify either 'cal' or 'KJ' as the input units for species properties (optional), if not specified default - 'cal'
-   :type ThermoInUnit: string
-   :param rhoE: dictionary of water properties like density (rho) and dielectric factor (E) (optional)
-   :type rhoE: dict
-
-   :returns: **delG** -- Gibbs energy [cal/mol]
-   :rtype: float, vector
-
-   Usage
-   -------
-       The general usage of supcrtaq without the optional arguments is as follows:
-
-       (1) Not on steam saturation curve:
-
-           delG = supcrtaq(TC, P, specieppt)
-
-           where T is temperature in celsius and P is pressure in bar
-       (2) On steam saturation curve:
-
-           delG = supcrtaq(TC, 'T', specieppt),
-
-           where T is temperature in celsius, followed with a quoted char 'T'
-
-           delG = supcrtaq(P, 'P', specieppt),
-
-           where P is pressure in bar, followed with a quoted char 'P'.
-       (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
-           condition not on steam saturation curve is as follows. Default method is 'JN91'
-
-           delG = supcrtaq(TC, P, specieppt, Dielec_method = 'FGL97')
-
-   .. rubric:: Examples
-
-   >>> from pygcc.pygcc_utils import db_reader
-   >>> ps = db_reader() # utilizes the default direct-access database, speq21
-   >>> delG = supcrtaq( 100, 50, ps.dbaccessdic['H2S(aq)'], Dielec_method = 'JN91')
-       -9221.81721068
-   >>> delG = supcrtaq( 100, 50, ps.dbaccessdic['H2S(aq)'], Dielec_method = 'FGL97')
-       -9221.6542038
-
-   .. rubric:: References
-
-   (1) Johnson JW, Oelkers EH, Helgeson HC. 1992. SUPCRT92: A software package for calculating
-       the standard molal thermodynamic properties of minerals, gases, aqueous species, and
-       reactions from 1 to 5000 bar and 0 to 1000°C. Computers & Geosciences 18(7): 899-947.
-       doi: 10.1016/0098-3004(92)90029-Q
-
-
-.. py:function:: Element_counts(formula)
-
-   This function calculates the elemental composition of a substance given by its chemical formula
-   It was a modified version of https://github.com/cgohlke/molmass/blob/master/molmass/molmass.py
-
-   :param formula: Chemical formula
-   :type formula: string
-
-   :returns: **elements** -- dictionary of elemental composition and their respective number of atoms
-   :rtype: dict
+   :returns: * *The calculated instance has the following potential properties*
+             * **PVLH** (*float*) -- Pressure of vapor + liquid + halite coexistence [bar]
+             * **Pcrit** (*float*) -- Critical pressure (of a H2O–NaCl mixture) [bar]
+             * **Xcrit** (*float*) -- Critical Composition  [-]
+             * **xL_NaCl** (*float*) -- Composition of halite-saturated liquid (halite liquidus) Hypothetical [-]
+             * **xV_NaCl** (*float*) -- Composition of halite-saturated vapor [-]
+             * **xVL_Liq** (*float*) -- Composition of liquid at vapor + liquid coexistence [-]
+             * **xVL_Vap** (*float*) -- Composition of vapor at vapor+liquid coexistence [-]
+             * **rho** (*float*) -- Liquid NaCl density [kg/m3]
+             * **vm** (*float*) -- molar volume [mol/m3]
+             * **TstarH** (*float*) -- Scaled temperature for enthalpy correlation [°C]
+             * **H** (*float*) -- Specific enthalpy of an H2O–NaCl solution [J/kg]
+             * **Cp** (*float*) -- Isobaric heat capacity [J/kg/K]
+             * **mu** (*float*) -- viscosity [Pa-s]
 
    Usage:
    ----------
-       [elements] = Element_counts(formula)
-           Examples of valid formulas are "H2O", "[2H]2O", "CH3COOH", "EtOH", "CuSO4:5H2O", "(COOH)2", "AgCuRu4(H)2[CO]12{PPh3}2", "CGCGAATTCGCG", and, "MDRGEQGLLK" .
+       The general usage of Driesner_NaCl is as follows:
 
+       (1) For water-NaCl properties at any Temperature and Pressure:
 
-.. py:class:: solidsolution_thermo(**kwargs)
-
-   Class to calculate Ideal mixing model for solid-solutions, supporting multisite ideal formalism
-
-   :param X: End member mineral volume fraction or mole fraction of Mg in clinopyroxene
-   :type X: float
-   :param cpx_Ca: number of moles of Ca in clinopyroxene formula unit (=1 for Di, Hed)
-   :type cpx_Ca: float
-   :param T: Temperature [°C]
-   :type T: float, vector
-   :param P: Pressure [bar]
-   :type P: float, vector
-   :param dbaccessdic: dictionary of species from direct-access database, optional, default is speq21
-   :type dbaccessdic: dict
-   :param solidsolution_type: specify either 'All' or 'plagioclase' or 'olivine' or 'pyroxene' or 'cpx' or 'alk-feldspar' or 'biotite' to carry-out all or any solid-solution calculations, default is 'All'
-   :type solidsolution_type: string
-   :param Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified default - 'JN91'
-   :type Dielec_method: string
-
-      ThermoInUnit : string
-          specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
-      Al_Si : string
-          specify either 'pygcc' or 'Arnórsson_Stefánsson' as the input to express Al and Si species in solid solution (optional), 'Arnórsson_Stefánsson' expresses them as 'Al(OH)4-' and 'H4SiO4(aq)', respectively while pygcc uses 'Al3+' and 'SiO2(aq)', respectively if not specified default - 'pygcc'
-       rhoEG      : dict
-           dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy  (optional)
-
-   :returns: * *if 'All' is specified for solidsolution_type, each case has the follwowing prefix - AnAb_, FoFa_, EnFe_, cpx_, AlkFed_, Biotite_*
-             * **logK** (*float, vector*) -- logarithmic K values
-             * **Rxn** (*dict*) -- The calculated dictionary of reaction thermodynamic properties has the following properties:
-
-               * type: solid-solution mineral type, [-]
-               * name: solid-solution name, [K]
-               * formula: solid-solution mineral formula, [-]
-               * MW: Molecular weight, [g/mol]
-               * min: solid-solution mineral properties, ['formula', 'source date', dG[cal/ml], dH[cal/mol], S[cal/mol-K], V[cm3/mol], a[cal/mol-K], b[10^3 cal/mol/K^2], c[10^-5 cal/mol/K]]
-               * spec: list of species, [-]
-               * coeff: list of corresponding coefficients of species above, [-]
-               * nSpec: Total number of species, [-]
-               * V: Molar volume, [cm3/mol]
-               * source: Source of thermo data, [kJ/kg·K]
-               * elements: list of elements and their total numbers, [-]
-
-   Usage
-   ----------
-       The general usage of water_dielec is as follows:
-
-       (1) For water dielectric properties at any Temperature and Pressure:
-
-           ss = solidsolution_thermo(T = T, P = P, X = X, solidsolution_type = 'All', Dielec_method = 'JN91'),
+           water_salt = Driesner_NaCl(T = T, P = P),
 
            where T is temperature in celsius and P is pressure in bar
-       (2) For water dielectric properties at any Temperature and density :
-
-           ss = solidsolution_thermo(T = T, rho = rho, X = X, solidsolution_type = 'All', Dielec_method = 'JN91'),
-
-           where T is temperature in celsius and rho is density in kg/m³
-       (3) For water dielectric properties at any Temperature and Pressure on steam saturation curve:
-
-           ss = solidsolution_thermo(T = T, P = 'T', X = X, solidsolution_type = 'All', Dielec_method = 'JN91'),
-
-           where T is temperature in celsius and P is assigned a quoted character 'T' to reflect steam saturation pressure
-
-           ss = solidsolution_thermo(P = P, T = 'P', X = X, solidsolution_type = 'All', Dielec_method = 'JN91'),
-
-           where P is pressure in bar and T is assigned a quoted character 'P' to reflect steam saturation temperature
-
    .. rubric:: Examples
 
-   >>> ss = solidsolution_thermo(cpx_Ca = 0.5, X = 0.85, T = 30, P = 50,
-                                 solidsolution_type = 'All')
-   >>> ss.AnAb_logK, ss.FoFa_logK, ss.EnFe_logK, ss.cpx_logK, ss.AlkFed_logK,
-       ss.Biotite_logK
-       21.750590, 26.570902, 10.793372, 20.577152,  3.756792, 32.96363
-
-   >>> ss = solidsolution_thermo(cpx_Ca = 1, X = 0.85, T = 50, P = 100,
-                                 solidsolution_type = 'cpx')
-   >>> ss.logK
-       18.81769186
-   >>> ss.Rxn
-       {'type': 'cpx', 'name': 'Di85Hed15',
-        'formula': 'Ca1.00Mg0.85Fe0.15Si2O6', 'MW': 221.2817,
-        'min': ['Ca1.00Mg0.85Fe0.15Si2O6', ' R&H95, Stef2001',
-                -711392.7391800061, nan, 37.032850185405415, 66.369,
-                106.66383843212236, -0.019588551625239002, -16326.4818355,
-                -1052.9517208413004, 5.714746653919693e-06],
-        'spec': ['H+', 'Ca++', 'Mg++', 'Fe++', 'SiO2(aq)', 'H2O'],
-        'coeff': [-4, 1.0, 0.85, 0.15, 2, 2], 'nSpec': 6, 'V': 66.369,
-        'source': ' R&H95, Stef2001', 'elements': ['1.0000', 'Ca', '0.8500',
-                                                   'Mg', '0.1500', 'Fe', '2.0000',
-                                                   'Si', '6.0000', 'O']}
-
-   >>> ss = solidsolution_thermo(X = 0.5, T = 50, P = 100,
-                                 solidsolution_type = 'plagioclase')
-   >>> ss.logK
-       12.62488394
-   >>> ss.Rxn
-       {'type': 'plag', 'name': 'An50', 'formula': 'Ca0.50Na0.50Al1.50Si2.50O8',
-        'MW': 270.215145, 'min': ['Ca0.50Na0.50Al1.50Si2.50O8', ' R&H95,
-                                  Stef2001', -919965.222804649, nan,
-                                  47.33081919017781, 100.43, 131.53908221797,
-                                  -0.022148661567686426, 32265.761759082205,
-                                  -1316.0836615678777, 7.719885114722753e-06],
-        'spec': ['H+', 'Al+++', 'Na+', 'Ca++', 'SiO2(aq)', 'H2O'],
-        'coeff': [-6.0, 1.5, 0.5, 0.5, 2.5, 3.0], 'nSpec': 6, 'V': 100.43,
-        'source': ' R&H95, Stef2001', 'elements': ['0.5000', 'Ca', '0.5000',
-                                                   'Na', '1.5000', 'Al', '2.5000',
-                                                   'Si', '8.0000', 'O']}
-
-   .. py:attribute:: kwargs
-      
-
-      
-
-   .. py:method:: __calc__(self, **kwargs)
-
-
-   .. py:method:: __checker__(self, **kwargs)
-
-
-   .. py:method:: calclogKAnAb(self, XAn, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
-
-      This function calculates thermodynamic properties of solid solution of Plagioclase minerals
-
-      :param XAn:
-      :type XAn: volume fraction of Anorthite
-      :param TC:
-      :type TC: temperature [°C]
-      :param P:
-      :type P: pressure [bar]
-      :param dbaccessdic:
-      :type dbaccessdic: dictionary of species from direct-access database
-      :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
-      :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
-      :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
-      :type rhoEG: dictionary of water properties like  density (rho),
-
-      :returns: * **logKplag** (*logarithmic K values*)
-                * **Rxn** (*dictionary of reaction thermodynamic properties*)
-
-      Usage
-      -------
-          The general usage of calclogKAnAb without the optional argument is as follows:
-
-          (1) Not on steam saturation curve:
-
-              [logK, Rxn] = calclogKAnAb(XAn, TC, P, dbaccessdic),
-
-              where T is temperature in celsius and P is pressure in bar;
-          (2) On steam saturation curve:
-
-              [logK, Rxn] = calclogKAnAb(XAn, TC, 'T', dbaccessdic),
-
-              where T is temperature in celsius, followed with a quoted char 'T'
-
-              [logK, Rxn] = calclogKAnAb(XAn, P, 'P', dbaccessdic),
-
-              where P is pressure in bar, followed with a quoted char 'P'.
-          (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
-              condition not on steam saturation curve is as follows. Default method is 'JN91'
-
-              [logK, Rxn] = calclogKAnAb(XAn, TC, P, dbaccessdic, Dielec_method = 'FGL97')
-
-
-   .. py:method:: calclogKFoFa(self, XFo, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
-
-      This function calculates thermodynamic properties of solid solution of olivine minerals
-
-      :param XFo:
-      :type XFo: volume fraction of Forsterite
-      :param TC:
-      :type TC: temperature [°C]
-      :param P:
-      :type P: pressure [bar]
-      :param dbaccessdic:
-      :type dbaccessdic: dictionary of species from direct-access database
-      :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
-      :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
-      :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
-      :type rhoEG: dictionary of water properties like  density (rho),
-
-      :returns: * **logK_ol** (*logarithmic K values*)
-                * **Rxn** (*dictionary of reaction thermodynamic properties*)
-
-      Usage
-      -------
-          The general usage of calclogKFoFa without the optional argument is as follows:
-
-          (1) Not on steam saturation curve:
-
-              [logK, Rxn] = calclogKFoFa(XFo, TC, P, dbaccessdic),
-
-              where T is temperature in celsius and P is pressure in bar;
-          (2) On steam saturation curve:
-
-              [logK, Rxn] = calclogKFoFa(XFo, TC, 'T', dbaccessdic),
-
-              where T is temperature in celsius, followed with a quoted char 'T'
-
-              [logK, Rxn] = calclogKFoFa(XFo, P, 'P', dbaccessdic),
-
-              where P is pressure in bar, followed with a quoted char 'P'.
-          (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
-              condition not on steam saturation curve is as follows. Default method is 'JN91'
-
-              [logK, Rxn] = calclogKFoFa(XFo, TC, P, dbaccessdic, Dielec_method = 'FGL97')
-
-
-   .. py:method:: calclogKEnFe(self, XEn, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
-
-      This function calculates thermodynamic properties of solid solution of pyroxene minerals
-
-      :param XEn:
-      :type XEn: volume fraction of Enstatite
-      :param TC:
-      :type TC: temperature [°C]
-      :param P:
-      :type P: pressure [bar]
-      :param dbaccessdic:
-      :type dbaccessdic: dictionary of species from direct-access database
-      :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
-      :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
-      :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
-      :type rhoEG: dictionary of water properties like  density (rho),
-
-      :returns: * **logK_opx** (*logarithmic K values*)
-                * **Rxn** (*dictionary of reaction thermodynamic properties*)
-
-      Usage
-      -------
-          The general usage of calclogKEnFe without the optional argument is as follows:
-
-          (1) Not on steam saturation curve:
-
-              [logK, Rxn] = calclogKEnFe(XEn, TC, P, dbaccessdic),
-
-              where T is temperature in celsius and P is pressure in bar;
-          (2) On steam saturation curve:
-
-              [logK, Rxn] = calclogKEnFe(XEn, TC, 'T', dbaccessdic),
-
-              where T is temperature in celsius, followed with a quoted char 'T'
-
-              [logK, Rxn] = calclogKEnFe(XEn, P, 'P', dbaccessdic),
-
-              where P is pressure in bar, followed with a quoted char 'P'.
-          (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
-              condition not on steam saturation curve is as follows. Default method is 'JN91'
-
-              [logK, Rxn] = calclogKEnFe(XEn, TC, P, dbaccessdic, Dielec_method = 'FGL97')
-
-
-   .. py:method:: calclogKDiHedEnFe(self, nCa, XMg, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
-
-      This function calculates thermodynamic properties of solid solution of clinopyroxene
-      minerals (Di, Hed, En and Fe)
-
-      :param nCa: and must be greater than zero
-      :type nCa: number of moles of Ca in formula unit (=1 for Di, Hed)
-      :param XMg: XMg = (nMg/(nFe + nMg))
-      :type XMg: mole fraction of Mg
-      :param TC:
-      :type TC: temperature [°C]
-      :param P:
-      :type P: pressure [bar]
-      :param dbaccessdic:
-      :type dbaccessdic: dictionary of species from direct-access database
-      :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
-      :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
-      :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
-      :type rhoEG: dictionary of water properties like  density (rho),
-
-      :returns: * **logK_cpx** (*logarithmic K values*)
-                * **Rxn** (*dictionary of reaction thermodynamic properties*)
-
-      Usage
-      -------
-          The general usage of calclogKDiHedEnFe without the optional argument is as follows:
-
-          (1) Not on steam saturation curve:
-
-              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbaccessdic),
-
-              where T is temperature in celsius and P is pressure in bar;
-          (2) On steam saturation curve:
-
-              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, 'T', dbaccessdic),
-
-              where T is temperature in celsius, followed with a quoted char 'T'
-
-              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, P, 'P', dbaccessdic),
-
-              where P is pressure in bar, followed with a quoted char 'P'.
-          (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
-              condition not on steam saturation curve is as follows. Default method is 'JN91'
-
-              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbaccessdic, Dielec_method = 'FGL97')
-
-
-   .. py:method:: calclogKAbOr(self, XAb, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
-
-      This function calculates thermodynamic properties of solid solution of Alkaline-Feldspar minerals
-
-      :param XAb:
-      :type XAb: volume fraction of Albite
-      :param TC:
-      :type TC: temperature [°C]
-      :param P:
-      :type P: pressure [bar]
-      :param dbaccessdic:
-      :type dbaccessdic: dictionary of species from direct-access database
-      :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
-      :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
-      :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
-      :type rhoEG: dictionary of water properties like  density (rho),
-
-      :returns: * **logKalkfeld** (*logarithmic K values*)
-                * **Rxn** (*dictionary of reaction thermodynamic properties*)
-
-      Usage
-      -------
-          The general usage of calclogKAnAb without the optional argument is as follows:
-
-          (1) Not on steam saturation curve:
-
-              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic),
-
-              where T is temperature in celsius and P is pressure in bar;
-          (2) On steam saturation curve:
-
-              [logK, Rxn] = calclogKAbOr(XAb, TC, 'T', dbaccessdic),
-
-              where T is temperature in celsius, followed with a quoted char 'T'
-
-              [logK, Rxn] = calclogKAbOr(XAb, P, 'P', dbaccessdic),
-
-              where P is pressure in bar, followed with a quoted char 'P'.
-          (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
-              condition not on steam saturation curve is as follows. Default method is 'JN91'
-
-              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic, Dielec_method = 'FGL97')
-
-
-   .. py:method:: calclogKBiotite(self, XPh, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
-
-      This function calculates thermodynamic properties of solid solution of Biotite minerals
-
-      :param XAb:
-      :type XAb: volume fraction of Albite
-      :param TC:
-      :type TC: temperature [°C]
-      :param P:
-      :type P: pressure [bar]
-      :param dbaccessdic:
-      :type dbaccessdic: dictionary of species from direct-access database
-      :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
-      :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
-      :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
-      :type rhoEG: dictionary of water properties like  density (rho),
-
-      :returns: * **logKalkfeld** (*logarithmic K values*)
-                * **Rxn** (*dictionary of reaction thermodynamic properties*)
-
-      Usage
-      -------
-          The general usage of calclogKAnAb without the optional argument is as follows:
-
-          (1) Not on steam saturation curve:
-
-              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic),
-
-              where T is temperature in celsius and P is pressure in bar;
-          (2) On steam saturation curve:
-
-              [logK, Rxn] = calclogKAbOr(XAb, TC, 'T', dbaccessdic),
-
-              where T is temperature in celsius, followed with a quoted char 'T'
-
-              [logK, Rxn] = calclogKAbOr(XAb, P, 'P', dbaccessdic),
-
-              where P is pressure in bar, followed with a quoted char 'P'.
-          (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
-              condition not on steam saturation curve is as follows. Default method is 'JN91'
-
-              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic, Dielec_method = 'FGL97')
-
-
-
-.. py:function:: calclogKclays(TC, P, *elem, dbaccessdic=None, group=None, cation_order=None, Dielec_method=None, ClayMintype=None, ThermoInUnit='cal', **rhoEG)
-
-   This function calculates logK values and reaction parameters of clay reactions using below references:
-
-   :param TC: Temperature [°C]
-   :type TC: float, vector
-   :param P: Pressure [bar]
-   :type P: float, vector
-   :param elem: list containing nine parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li']
-   :type elem: list
-   :param dbacessdic: dictionary of species from direct-access database, optional, default is speq21
-   :type dbacessdic: dict
-   :param group: specify the structural layering of the phyllosilicate, for layers composed of ``1 tetrahedral + 1 octahedral sheet (1:1 layer)`` - specify '7A', ``2 tetrahedral + 1 octahedral sheet (2:1 layer)`` - specify '10A', or the latter with a ``brucitic sheet in the interlayer (2:1:1 layer)``  - specify '14A' (optional), if not specified, default is based on charge balance on the cations and anions
-   :type group: string
-   :param cation_order: specify ordering of Si and Al ions either 'Eastonite', 'Ordered', 'Random', or 'HDC'  (optional), if not specified, default is based on guidelines by Vinograd (1995)
-   :type cation_order: string
-   :param Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified, default - 'JN91'
-   :type Dielec_method: string
-   :param ClayMintype: specify either 'Smectite' or 'Chlorite' or 'Mica' as the clay type, if not specified default - 'Smectites'
-   :type ClayMintype: string
-   :param ThermoInUnit: specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
-   :type ThermoInUnit: string
-   :param rhoEG: dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy  (optional)
-   :type rhoEG: dict
-
-   :returns: * **logK_clay** (*float, vector*) -- logarithmic K values
-             * **Rxn** (*dict*) -- dictionary of reaction thermodynamic properties
-
-   Usage
-   -------
-       The general usage of calclogKclays is as follows:
-
-       (1) Without the optional arguments, not on steam saturation curve:
-
-           [logK, Rxn] = calclogKclays(TC, P, *elem),
-
-           where T is temperature in celsius and P is pressure in bar;
-       (2) Without the optional arguments, on steam saturation curve:
-
-           [logK, Rxn] = calclogKclays(TC, 'T', *elem),
-
-           where T is temperature in celsius, followed with a quoted char 'T'
-
-           [logK, Rxn] = calclogKclays(P, 'P', *elem),
-
-           where P is pressure in bar, followed with a quoted char 'P'.
-       (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
-           condition not on steam saturation curve is as follows. Default method is 'JN91'
-
-           [logK, Rxn] = calclogKclays(TC, P, *elem, dbacessdic = dbacessdic, group = '10A', cation_order = 'HDC', Dielec_method = 'FGL97')
-
-   .. rubric:: Examples
-
-   >>> logK, Rxn = calclogKclays(50, 'T', *['Clinochlore', '3', '2', '0', '0',
-                                            '5', '0', '0', '0', '0'],
-                                 group = '14A')
-   >>> logK
-       57.56820225
+   >>> water_salt = Driesner_NaCl(T = 400., P = 150)
+   >>> water_salt.PVLH, water_salt.xL_NaCl, water_salt.xV_NaCl, water_salt.xVL_Liq, water_salt.xVL_Vap, water_salt.Xcrit
+       176.12604181993797,
+        0.21548565081529097,
+        1.1606891909548725e-05,
+        0.27785803505887324,
+        1.1606891909548725e-05,
+        0.006832050956381021
+
+   >>> water_salt = Driesner_NaCl(T = 400., P = 150, xNaCl = 0.00919)
+   >>> water_salt.PVLH, water_salt.xL_NaCl, water_salt.xV_NaCl, water_salt.xVL_Liq, water_salt.xVL_Vap, water_salt.rho, water_salt.vm, water_salt.H, water_salt.mu, water_salt.Cp
+       (176.12604181993797,
+        0.21548565081529097,
+        1.1606891909548725e-05,
+        0.27785803505887324,
+        1.1606891909548725e-05,
+        0.06932873574838519,
+        265.2138005082347,
+        2934.6231778877977,
+        2.4596312351131325e-05,
+        4394.068874696437)
 
    .. rubric:: References
 
-   (1) Blanc, P., Vieillard, P., Gailhanou, H., Gaboreau, S., Gaucher, É., Fialips, C. I.,
-       Madé, B & Giffaut, E. (2015). A generalized model for predicting the thermodynamic properties
-       of clay minerals. American journal of science, 315(8), 734-780.
-
-   (2) Blanc, P., Gherardi, F., Vieillard, P., Marty, N. C. M., Gailhanou, H., Gaboreau, S.,
-       Letat, B., Geloni, C., Gaucher, E.C. and Madé, B. (2021). Thermodynamics for clay minerals:
-       calculation tools and application to the case of illite/smectite interstratified minerals.
-       Applied Geochemistry, 104986.
-
-   (3) Vinograd, V.L., 1995. Substitution of [4]Al in layer silicates: Calculation of the Al-Si
-       configurational entropy according to 29Si NMR Spectra. Physics and Chemistry of Minerals
-       22, 87-98.
-
-
-.. py:data:: MW
-   
-
-   
-
-.. py:class:: db_reader(**kwargs)
-
-   Class to read direct-access and source thermodynamic database
-
-   :param dbaccess: filename and location of the direct-access/sequential-access database, optional, default is speq21
-   :type dbaccess: string
-   :param dbBerman_dir: filename and location of the Berman mineral database, optional
-   :type dbBerman_dir: string
-   :param dbHP_dir: filename and location of the supcrtbl mineral and gas database, optional
-   :type dbHP_dir: string
-   :param sourcedb: filename of the source database, optional
-   :type sourcedb: string
-   :param sourcedb: filename of the source database, optional
-   :type sourcedb: string
-   :param sourceformat: specify the source database format, either 'GWB' or 'EQ36', optional
-   :type sourceformat: string
-   :param dbaccessformat: specify the direct-access/sequential-access database format, either 'speq' or 'supcrtbl', default is 'speq'
-   :type dbaccessformat: string, optional
-   :param sourcedb_codecs: specify the name of the encoding used to decode or encode the sourcedb file, optional
-   :type sourcedb_codecs: string
-   :param dbaccess_codecs: specify the name of the encoding used to decode or encode the dbaccess file, optional
-   :type dbaccess_codecs: string
-
-   :returns: * **dbaccessdic** (*dict*) -- dictionary of minerals, gases, redox and aqueous species
-             * **dbaccess** (*string*) -- direct-access database file name
-             * **sourcedic** (*dict*) -- dictionary of reaction coefficients and species
-             * **specielist** (*list*) -- list of species segmented into the different categories [element, basis, redox, aqueous, minerals, gases, oxides]
-             * **speciecat** (*list*) -- list of species categories listed in 'specielist'
-             * **chargedic** (*dict*) -- dictionary of charges of species
-             * **MWdic** (*dict*) -- dictionary of MW of species
-             * **Mineraltype** (*dict*) -- mineral type for minerals
-             * **fugacity_info** (*dict*) -- fugacity information as stored in new tdat database for chi and critical ppts
-             * **Sptype** (*dict*) -- specie types and eq3/6 and revised date info
-             * **Elemlist** (*dict*) -- dictionary of elements and coefficients
-
-   .. rubric:: Examples
-
-   >>> ps = db_reader(sourcedb = './default_db/thermo.com.dat',
-                      sourceformat = 'gwb',
-                      dbaccess = './default_db/speq21.dat')
-   >>> ps.sourcedic, ps.dbaccessdic, ps.specielist
+   (1) Driesner, T, and Heinrich, C. A. (2007). The system H2O–NaCl. Part I: Correlation formulae for phase relations in
+       temperature–pressure–composition space from 0 to 1000 C, 0 to 5000 bar, and 0 to 1 XNaCl. Geochimica et Cosmochimica Acta. 71(20), 4880-4901.
+       https://doi.org/10.1016/j.gca.2006.01.033
+   (2) Driesner, T. (2007). "The system H2O-NaCl. II. Correlations for molar volume, enthalpy, and isobaric heat capacity from 0 to 1000 °C, 1 to 5000 bar,
+   #     and 0 to 1 X-NaCl." Geochimica et Cosmochimica Acta 71(20): 4902-4919.
 
    .. py:attribute:: kwargs
       
@@ -1544,599 +836,32 @@ Attributes
    .. py:method:: __calc__(self, **kwargs)
 
 
-   .. py:method:: readAqspecdb(self)
+   .. py:method:: Driesner_NaCl(self, T, P)
 
-      This function reads direct access thermodynamic database and can add other database sources
-      at the bottom returns all constants of Maier-Kelley power function  for minerals and gases
-      (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm3/mol] a [cal/mol-K], b [*10**3 cal/mol/K^2],
-       c [*10^-5 cal/mol/K], Ttrans [K], Htr [cal/mol], Vtr [cm³/mol], dPdTtr [bar/K] ) and
-      aqueous species (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm3/mol], a1 [*10 cal/mol/bar],
-      a2 [*10**-2 cal/mol], a3 [cal-K/mol/bar], a4 [*10**-4 cal-K/mol], c1 [cal/mol/K], c2 [*10**-4 cal-K/mol],
-      ω [*10**-5 cal/mol] ) packed into a dbacess dictionary. In addition, the function can read Berman's
-      mineral properties such as (dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, k3,
-      v1 [*10^5 K^-1], v2 [*10^5 K^-2], v3 [*10^5 bar^-1], v4 [*10^8 bar^-2], dTdP [K/bar], Tlambda [K],
-      Tref [K], l1 [(J/mol)^0.5/K], l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], d2 [J/mol],
-      d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K]). In addition, the function can read supcrtbl's
-      mineral and gas properties such as (dG [kJ/mol], dH [kJ/mol], S [J/mol-K], V [J/bar], a [kJ/mol-K],
-      b [*10^5 kJ/mol/K^2], c [kJ-mol-K], d [kJ/mol/K^0.5], alpha [*10^5 K^-1], kappa0 [kbar],
-      kappa0_d [kbar], kappa0_dd [kbar], n_atom [-], Tc0 [K], Smax [J/mol-K], Vmax [J/bar], dH [KJ/mol],
-      dV [J/bar], W [kJ/mol], Wv [J/bar], n [-], SF [-])
 
-      :param dbaccess        filename and location of the direct-access database:
-      :param dbBerman_dir    filename and location of the Berman mineral database:
-      :param dbHP_dir        filename and location of the supcrtbl (Holland and Powell) mineral and gas database:
+   .. py:method:: Driesner_NaClII(self, T, P, xNaCl)
 
-      :returns: * *dbaccessdic      dictionary of minerals, gases, redox and aqueous species*
-                * *dbaccess        dat file name*
 
-      Usage:
-      ----------
-      [dbaccessdic, dbname] = readAqspecdb(dbaccess)
+   .. py:method:: enthalpy_mu_heatcap(self, T, P, xNaCl)
 
+      Enthalpy in J/g, viscosity in Pas and Cp in Joules per kilogram Kelvin
 
-   .. py:method:: readSourceGWBdb(self)
 
-      This function reads source GWB thermodynamic database and reaction coefficients of 'eh'
-      and 'e-' has been added at the bottom returns all reaction coefficients and species,
-      group species into redox, minerals, gases, oxides and aqueous species
-      :param sourcedb:
-      :type sourcedb: filename of the source database
 
-      :returns: * **sourcedic** (*dictionary of reaction coefficients and species*)
-                * **specielist** (*list of species segmented into the different categories*) -- [element, basis, redox, aqueous, minerals, gases, oxides]
-                * **speciecat** (*list of species categories listed in 'specielist'*)
-                * **chargedic** (*dictionary of charges of species*)
-                * **MWdic** (*dictionary of MW of species*)
-                * **Mineraltype** (*mineral type for minerals*)
-                * **fugacity_info** (*fugacity information as stored in new tdat database for chi and critical ppts*)
+.. py:function:: concentration_converter(val=1.0, In_Unit='x_wt', Out_Unit='x_wt')
 
-      Usage:
-      ----------
-      [sourcedic, specielist, chargedic, MWdic, Mineraltype, fugacity_info, activity_model] = readSourceGWBdb()
+   This function converts concentration between several units like wt%, mole fraction, molality and volume
+   Values must be in fraction except it is molality
 
+   :param val: Values to convert
+   :type val: float
+   :param In_Unit: unit of input concentration
+   :type In_Unit: String
+   :param Out_Unit: expected output concentration
+   :type Out_Unit: String
 
-   .. py:method:: readSourceEQ36db(self)
-
-      This function reads source EQ3/6 thermodynamic database and reaction coefficients of 'eh'
-      and 'e-' has been added at the bottom returns all reaction coefficients and species,
-      group species into basis, auxiliary basis, minerals, gases, liquids and aqueous species
-      :param sourcedb:
-      :type sourcedb: filename of the source database
-
-      :returns: * **sourcedic** (*dictionary of reaction coefficients and species*)
-                * **specielist** (*list of species segmented into the different categories*) -- [element, basis, redox, aqueous, minerals, gases, oxides]
-                * **speciecat** (*list of species categories listed in 'specielist'*)
-                * **chargedic** (*dictionary of charges of species and DHazero info*)
-                * **MWdic** (*dictionary of MW of species*)
-                * **Sptype** (*specie types and eq3/6 and revised date info*)
-                * **Elemlist** (*dictionary of elements and coefficients*)
-
-      Usage:
-      ----------
-      [sourcedic, specielist, chargedic, MWdic, block_info, Elemlist, act_param] = readSourceEQ36db(sourcedb)
-
-
-
-.. py:class:: iapws95(**kwargs)
-
-   Implementation of IAPWS Formulation 1995 for ordinary water substance, revised release of 2016
-
-   .. rubric:: Notes
-
-   Temperature and Pressure input limits
-       * -22 ≤ TC ≤ 1000 and 0 ≤ P ≤ 100,000
-
-   :param T: Temperature [°C]
-   :type T: float, vector
-   :param P: Pressure [bar]
-   :type P: float, vector
-   :param rho: Density [kg/m³]
-   :type rho: float, vector
-   :param rho0: Starting estimate of density [kg/m³]
-   :type rho0: float, vector
-   :param rhom: Molar density [kg/m³]
-   :type rhom: float, vector
-   :param delta: Reduced density, rho/rhoc
-   :type delta: float, vector
-   :param tau: Reduced temperature, Tc/T
-   :type tau: float, vector
-   :param v: Specific volume [m³/kg]
-   :type v: float, vector
-   :param vm: Specific molar volume [m³/mol]
-   :type vm: float, vector
-   :param Out_Unit: Expected units ('standard' or 'kilogram')
-   :type Out_Unit: string
-   :param FullEOSppt: Option to output all or essential water properties [False or True]
-   :type FullEOSppt: bool
-
-   :returns: * *The calculated instance has the following potential properties*
-             * **rho** (*float, vector*) -- Density [kg/m3]
-             * **G** (*float, vector*) -- Gibbs energy [cal/mol] or  [kJ/kg]
-             * **H** (*float, vector*) -- Enthalpy [cal/mol] or [kJ/kg]
-             * **S** (*float, vector*) -- Entropy [cal/mol/K] or [kJ/kg/K]
-             * **V** (*float, vector*) -- Volume [m3/mol] or [m3/kg]
-             * **P** (*float, vector*) -- Pressure [bar]
-             * **TC** (*float, vector*) -- Temperature [°C]
-             * **TK** (*float, vector*) -- Temperature [K]
-             * **U** (*float, vector*) -- Internal energy [cal/mol] or [kJ/kg]  if FullEOSppt is True
-             * **F** (*float, vector*) -- Helmholtz energy [cal/mol/K] or [kJ/kg-K]  if FullEOSppt is True
-             * **Cp** (*float, vector*) -- Isobaric heat capacity [cal/mol/K]
-             * **rhosl** (*float, vector*) -- Density of liquid [kg/m3]
-             * **rhosv** (*float, vector*) -- Density of vapor [kg/m3]
-             * **pdx** (*float, vector*) -- Derivative of pressure with respect to delta in bar
-             * **adx** (*float, vector*) -- Helmholtz energy derivative with respect to delta
-             * **ztx** (*float, vector*) -- zeta value (needed to calculate viscosity)
-             * **ptx** (*float, vector*) -- Derivative of pressure with respect to tau in bar
-             * **gdx** (*float, vector*) -- Gibbs energy derivative [kJ/kg]   if FullEOSppt is True
-             * **ktx** (*float, vector*) -- Compressibility [/bar]
-             * **avx** (*float, vector*) -- Thermal expansion coefficient (thermal expansivity)
-             * **mu** (*float, vector*) -- viscosity [Pa-s] if FullEOSppt is True
-             * **bsx** (*float, vector*) -- Isentropic temperature-pressure coefficient [K-m3/kJ]  if FullEOSppt is True
-             * **dtx** (*float, vector*) -- Isothermal throttling coefficient [kJ/kg/bar]  if FullEOSppt is True
-             * **mux** (*float, vector*) -- Joule-Thomsen coefficient [K-m3/kJ]  if FullEOSppt is True
-             * **cvx** (*float, vector*) -- Isochoric heat capacity [kJ/kg/K]  if FullEOSppt is True
-             * **wx** (*float, vector*) -- Speed of sound [m/s]  if FullEOSppt is True
-
-   Usage:
-   ----------
-       The general usage of iapws95 is as follows:
-
-       (1) For water properties at any Temperature and Pressure not on steam saturation curve:
-
-           water = iapws95(T = T, P = P),
-
-           where T is temperature in celsius and P is pressure in bar
-       (2) For water properties at any Temperature and Pressure on steam saturation curve:
-
-           water = iapws95(T = T, P = 'T'),
-
-           where T is temperature in celsius, followed with a quoted character 'T' to reflect steam saturation pressure
-
-           water = iapws95(T = 'P', P = P),
-
-           where P is pressure in bar, followed with a quoted character 'P' to reflect steam saturation temperature
-       (3) For water properties at any Temperature and density :
-
-           water = iapws95(T = T, rho = rho),
-
-           where T is temperature in celsius and rho is density in kg/m³
-       (4) For water properties at any Pressure and density :
-
-           water = iapws95(P = P, rho = rho),
-
-           where P is pressure in bar and rho is density in kg/m³
-       (5) For water saturation properties at any saturation Temperature :
-
-           water = iapws95(T = T),
-
-           where T is temperature in celsius
-       (6) For water saturation properties at any saturation Pressure :
-
-           water = iapws95(P = P),
-
-           where P is pressure in bar
-
-   .. rubric:: Examples
-
-   >>> water = iapws95(T = 200., P = 50, FullEOSppt = True)
-   >>> water.rho, water.G, water.H, water.S, water.V, water.P, water.T, water.mu
-       867.2595, -60368.41787, -65091.03895,  25.14869,  4.96478e-03,  50.00000,
-       200.000, 0.00013546
-
-   >>> water = iapws95(T=200, rho=996.5560, Out_Unit='kilogram', FullEOSppt=True)
-   >>> water.P, water.F, water.S, water.H, water.G, water.V, water.Cp, water.pdx
-       2872.063, -234.204, 2.051, 1024.747, 53.994, 1.0035e-03, 3.883, 10079.17
-   >>> water.adx, water.ztx, water.ptx, water.ktx, water.avx, water.mu, water.gdx
-       93.120, 2.189e-03, -7.348e+03,  3.205e-05,  6.809e-04, 1.914e-04, 1011.40
-
-   >>> water = iapws95(T = 350)
-   >>> water.P, water.rhosl, water.rhosv
-       165.2942 574.7065 113.6056
-
-   >>> water = iapws95(P = 150)
-   >>> water.TC, water.rhosl, water.rhosv
-       342.1553, 603.5179, 96.7271
-
-   .. rubric:: References
-
-   (1) Wagner, W., Pruß, A., 2002. The IAPWS formulation 1995 for the thermodynamic properties of
-       ordinary water substance for general and scientific use. J. Phys. Chem. Ref. Data 31, 387–535.
-       https://doi.org/10.1063/1.1461829
-
-   .. py:attribute:: kwargs
-      
-
-      
-
-   .. py:attribute:: mwH2O
-      :annotation: = 18.015268
-
-      
-
-   .. py:method:: __checker__(self, **kwargs)
-
-
-   .. py:method:: __calc__(self, **kwargs)
-
-
-
-.. py:class:: ZhangDuan(**kwargs)
-
-   Implementation of Zhang & Duan model Formulation for water at higher Temperature and Pressure conditions, i.e, Deep Earth Water - DEW
-
-   .. rubric:: Notes
-
-   Temperature and Pressure input limits
-       * 0 ≤ TC ≤ 1726.85 and 1000 ≤ P ≤ 300,000
-
-   :param T: Temperature [°C]
-   :type T: float, vector
-   :param P: Pressure [bar]
-   :type P: float, vector
-   :param rho: Density [kg/m³]
-   :type rho: float, vector
-   :param rho0: Starting estimate of density [kg/m³]
-   :type rho0: float, vector
-   :param densityEquation: specify either 'ZD05' to use Zhang & Duan (2005) or 'ZD09'  to use Zhang & Duan (2009)
-   :type densityEquation: string
-
-   :returns: * *The calculated instance has the following potential properties*
-             * **rho** (*float, vector*) -- Density [kg/m3]
-             * **rhohat** (*float, vector*) -- Density [g/cm³]
-             * **G** (*float, vector*) -- Gibbs energy [cal/mol]
-             * **drhodP_T** (*float, vector*) -- Partial derivative of density with respect to pressure at constant temperature
-             * **drhodT_P** (*float, vector*) -- Partial derivative of density with respect to temperature at constant pressure
-
-   Usage:
-   ----------
-       The general usage of ZhangDuan is as follows:
-
-       (1) For water properties at any Temperature and Pressure:
-
-           deepearth = ZhangDuan(T = T, P = P),
-
-           where T is temperature in celsius and P is pressure in bar
-       (2) For water properties at any Temperature and density :
-
-           deepearth = ZhangDuan(T = T, rho = rho),
-
-           where T is temperature in celsius and rho is density in kg/m³
-
-   .. rubric:: Examples
-
-   >>> deepearth = ZhangDuan(T = 25, P = 5000)
-   >>> deepearth.rho, deepearth.G, deepearth.drhodP_T, deepearth.drhodT_P
-       1145.3065, -54631.5351, 2.3283e-05, -0.0004889
-
-   >>> deepearth = ZhangDuan(T = 200, rho = 1100)
-   >>> deepearth.P, deepearth.G, deepearth.drhodP_T, deepearth.drhodT_P
-       7167.2231, -57319.0980, 2.3282e-05, -0.0005122
-
-   .. rubric:: References
-
-   (1) Zhang, Z., Duan, Z., 2005. Prediction of the PVT properties of water over wide range of
-       temperatures and pressures from molecular dynamics simulation. Phys. Earth Planet. Inter.
-       149, 335–354. https://doi.org/10.1016/j.pepi.2004.11.003.
-   (2) Zhang, C. and Duan, Z., 2009. “A model for C-O-H fluid in the Earth’s mantle”, Geochimica et
-       Cosmochimica Acta, vol. 73, no. 7, pp. 2089–2102, doi:10.1016/j.gca.2009.01.021.
-   (3) Sverjensky, D.A., Harrison, B., Azzolini, D., 2014. Water in the deep Earth: The dielectric
-       constant and the solubilities of quartz and corundum to 60kb and 1200°C. Geochim. Cosmochim.
-       Acta 129, 125–145. https://doi.org/10.1016/j.gca.2013.12.019
-
-   .. py:attribute:: kwargs
-      
-
-      
-
-   .. py:method:: __calc__(self, **kwargs)
-
-
-   .. py:method:: ZD_Pressure_drhodP(self, TC, rhohat, method=None)
-
-
-   .. py:method:: ZD_Density(self, TC, P, method='ZD05', error=None)
-
-
-   .. py:method:: GibbsEnergy(self, TC, P, method='VolumeIntegral')
-
-
-
-.. py:class:: water_dielec(**kwargs)
-
-   Class Implementation of Water dielectric constants, the Debye-Huckel "A" and "B" parameters and their derivatives at ambient to deep-earth Temperature and Pressure conditions with three different formulations
-
-   :param T: Temperature [°C]
-   :type T: float, vector
-   :param P: Pressure [bar]
-   :type P: float, vector
-   :param rho: Density [kg/m³]
-   :type rho: float, vector
-   :param Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified, default - 'JN91'
-   :type Dielec_method: string
-   :param Dielec_DEWoutrange: specify either 'FGL97' or 'JN91' as the method to calculate dielectric constant for out of range for 'DEW' method if any
-   :type Dielec_DEWoutrange: string
-
-   :returns: * *The calculated instance has the following potential properties*
-             * **E** (*float, vector*) -- dielectric constant of water [cal/mol]
-             * **rhohat** (*float, vector*) -- density [g/cm³]
-             * **Ah** (*float, vector*) -- Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]
-             * **Bh** (*float, vector*) -- Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]
-             * **bdot** (*float, vector*) -- bdot at any given temperature T
-             * **Adhh** (*float, vector*) -- Debye-Huckel "A" parameters associated with apparent molar enthalpy
-             * **Adhv** (*float, vector*) -- Debye-Huckel "A" parameters associated with apparent molar volume
-             * **Bdhh** (*float, vector*) -- Debye-Huckel "B" parameters associated with apparent molar enthalpy
-             * **Bdhv** (*float, vector*) -- Debye-Huckel "B" parameters associated with apparent molar volume
-             * **dEdP_T** (*float, vector*) -- Partial derivative of dielectric constant with respect to pressure at constant temperature
-             * **dEdT_P** (*float, vector*) -- Partial derivative of dielectric constant with respect to temperature at constant pressure
-
-   .. rubric:: Notes
-
-   FGL97 Temperature and Pressure input limits:
-       * -35 ≤ TC ≤ 600 and 0 ≤ P ≤ 12000
-   DEW Temperature and Pressure input limits:
-       * 100 ≤ TC ≤ 1200 and 1000 ≤ P ≤ 60000
-   JN91 Temperature and Pressure input limits:
-       * 0 ≤ TC ≤ 1000 and 0 ≤ P ≤ 5000
-
-   Usage
-   ----------
-       The general usage of water_dielec is as follows:
-
-       (1) For water dielectric properties at any Temperature and Pressure:
-
-           dielect = water_dielec(T = T, P = P, Dielec_method = 'JN91'),
-
-           where T is temperature in celsius and P is pressure in bar
-       (2) For water dielectric properties at any Temperature and density :
-
-           dielect = water_dielec(T = T, rho = rho, Dielec_method = 'JN91'),
-
-           where T is temperature in celsius and rho is density in kg/m³
-       (3) For water dielectric properties at any Temperature and Pressure on steam saturation curve:
-
-           dielect = water_dielec(T = T, P = 'T', Dielec_method = 'JN91'),
-
-           where T is temperature in celsius and P is assigned a quoted character 'T' to reflect steam saturation pressure
-
-           dielect = water_dielec(P = P, T = 'P', Dielec_method = 'JN91'),
-
-           where P is pressure in bar and T is assigned a quoted character 'P' to reflect steam saturation temperature
-
-   .. rubric:: Examples
-
-   >>> dielect = water_dielec(T = 50, P = 500, Dielec_method = 'JN91')
-   >>> dielect.E, dielect.rhohat, dielect.Ah, dielect.Bh, dielect.bdot
-       71.547359, 1.00868586, 0.52131899,   0.33218072,   0.04088528
-   >>> dielect.Adhh, dielect.Adhv, dielect.Bdhh, dielect.Bdhv
-       0.64360153,   2.13119279,  15.6936832 , -14.52571678
-   >>> dielect.dEdP_T, dielect.dEdT_P
-       0.03293026,   -0.32468033
-
-   >>> dielect = water_dielec(T = 200, rho = 1100, Dielec_method = 'FGL97')
-   >>> dielect.E, dielect.rhohat, dielect.Ah, dielect.Bh, dielect.bdot
-       49.73131404,  1.1,  0.5302338, 0.34384714,  0.04452579
-   >>> dielect.Adhh, dielect.Adhv, dielect.Bdhh, dielect.Bdhv
-       1.21317825,  2.21165281, 28.0047878, -34.21216547
-   >>> dielect.dEdP_T, dielect.dEdT_P
-       0.01444368, -0.16864644
-
-   >>> dielect = water_dielec(T = 250, P = 5000, Dielec_method = 'DEW')
-   >>> dielect.E, dielect.rhohat, dielect.Ah, dielect.Bh, dielect.bdot, dielect.Adhh
-       39.46273008,  1.0238784,  0.62248141,   0.35417088, 0.02878662, 0.80688122
-   >>> dielect.Adhv, dielect.Bdhh, dielect.Bdhv, dielect.dEdP_T, dielect.dEdT_P
-        3.13101408, 39.76402294, -35.29670957, 0.0129006 , -0.08837842
-
-   .. rubric:: References
-
-   (1) Release on the Static Dielectric Constant of Ordinary Water Substance for
-       Temperatures from 238 K to 873 K and Pressures up to 1000 MPa" (IAPWS R8-97, 1997).
-   (2) Fernandez D. P., Goodwin A. R. H., Lemmon E. W., Levelt Sengers J. M. H.,
-       and Williams R. C. (1997) A Formulation for the Permittivity of Water and
-       Steam at Temperatures from 238 K to 873 K at Pressures up to 1200 MPa, including
-       Derivatives and Debye-Hückel Coefficients. J. Phys. Chem. Ref. Data 26, 1125-1166.
-   (3) Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
-       Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
-       Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
-       Am. J. Sci. 274, 1199-1251.
-   (4) Johnson JW, Norton D (1991) Critical phenomena in hydrothermal systems: State, thermodynamic,
-       electrostatic, and transport properties of H2O in the critical region. American Journal of Science 291:541-648
-   (5) D. A. Sverjensky, B. Harrison, and D. Azzolini, "Water in the deep Earth: the dielectric
-       constant and the solubilities of quartz and corundum to 60 kb and 1200 °C," Geochimica et
-       Cosmochimica Acta, vol. 129, pp. 125–145, 2014
-
-   .. py:attribute:: kwargs
-      
-
-      
-
-   .. py:method:: __checker__(self, **kwargs)
-
-
-   .. py:method:: __calc__(self, **kwargs)
-
-
-   .. py:method:: dielec_FGL97(self, TC, rho)
-
-      This function employs the FGL91 formulation to calculate the dielectric constant of water (E), the Debye-Huckel "A" parameters
-      and Debye-Huckel "B" parameters (3)  and their derivatives as a
-      function of temperature and pressure
-
-
-      .. rubric:: Notes
-
-      Temperature and Pressure input limits:
-          * -35 ≤ TC ≤ 600 and 0 ≤ P ≤ 12000
-
-      :param TC:
-      :type TC: temperature [°C]
-      :param rho:
-      :type rho: density [kg/m3]
-
-      :returns: * **E** (*dielectric constant of water [cal/mol]*)
-                * **rhohat** (*density [g/cm³]*)
-                * **Ah** (*Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]*)
-                * **Bh** (*Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]*)
-                * **bdot** (*bdot at any given temperature T*)
-                * **Adhh** (*Debye-Huckel "A" parameters associated with apparent molar enthalpy*)
-                * **Adhv** (*Debye-Huckel "A" parameters associated with apparent molar volume*)
-                * **Bdhh** (*Debye-Huckel "B" parameters associated with apparent molar enthalpy*)
-                * **Bdhv** (*Debye-Huckel "B" parameters associated with apparent molar volume*)
-                * **dEdP_T** (*Partial derivative of dielectric constant with respect to pressure at constant temperature*)
-                * **dEdT_P** (*Partial derivative of dielectric constant with respect to temperature at constant pressure*)
-
-      Usage
-      ----------
-         [E, rhohat, Ah, Bh, bdot, Adhh, Adhv, Bdhh, Bdhv, dEdP_T, dEdT_P] = dielec_FGL97( TC, rho)
-
-      .. rubric:: References
-
-      (1) Release on the Static Dielectric Constant of Ordinary Water Substance for
-          Temperatures from 238 K to 873 K and Pressures up to 1000 MPa" (IAPWS R8-97, 1997).
-      (2) Fernandez D. P., Goodwin A. R. H., Lemmon E. W., Levelt Sengers J. M. H.,
-          and Williams R. C. (1997) A Formulation for the Permittivity of Water and
-          Steam at Temperatures from 238 K to 873 K at Pressures up to 1200 MPa, including
-          Derivatives and Debye-Hückel Coefficients. J. Phys. Chem. Ref. Data 26, 1125-1166.
-      (3) Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
-          Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
-          Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
-          Am. J. Sci. 274, 1199-1251.
-
-
-   .. py:method:: dielec_JN91(self, TC, rho)
-
-      This dielec_JN91 implementation employs the JN91 formulation to calculate the
-      dielectric properties of water and steam, the Debye-Huckel "A" parameters and
-      Debye-Huckel "B" parameters  and their derivatives
-
-      .. rubric:: Notes
-
-      Temperature and Pressure input limits:
-          * 0 ≤ TC ≤ 1000 and 0 ≤ P ≤ 5000
-
-      :param TC:
-      :type TC: temperature [°C]
-      :param rho:
-      :type rho: density [kg/m3]
-
-       Returns
-      ----------
-         E       : dielectric constant of water [cal/mol]
-
-         rhohat  : density [g/cm³]
-
-         Ah      : Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]
-
-         Bh      : Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]
-
-         bdot    : bdot at any given temperature T
-
-         Adhh    : Debye-Huckel "A" parameters associated with apparent molar enthalpy
-
-         Adhv    : Debye-Huckel "A" parameters associated with apparent molar volume
-
-         Bdhh    : Debye-Huckel "B" parameters associated with apparent molar enthalpy
-
-         Bdhv    : Debye-Huckel "B" parameters associated with apparent molar volume
-
-         dEdP_T  : Partial derivative of dielectric constant with respect to pressure at constant temperature
-
-         dEdT_P  : Partial derivative of dielectric constant with respect to temperature at constant pressure
-
-       Usage
-      ----------
-         [E, rhohat, Ah, Bh, bdot, Adhh, Adhv, Bdhh, Bdhv, dEdP_T, dEdT_P] = dielec_JN91( TC, rho)
-
-      .. rubric:: References
-
-      (1) Johnson JW, Norton D (1991) Critical phenomena in hydrothermal systems: State, thermodynamic,
-          electrostatic, and transport properties of H2O in the critical region. American Journal of Science 291:541-648
-      (2) Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
-          Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
-          Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
-          Am. J. Sci. 274, 1199-1251.
-
-
-   .. py:method:: dielec_DEW(self)
-
-      This watercalc implementation employs the DEW formulation embedded in Sverjensky et al. (2014)
-      to calculate the dielectric properties of water and steam, the Debye-Huckel "A" parameters and
-      Debye-Huckel "B" parameters  and their derivatives. This function has been set up to use
-      either Johnson and Norton (1991) or Fernandez et al. (1997) formulation below 5000 bar and
-      Sverjensky et al. (2014) formulation above 5000 bar.
-
-      .. rubric:: Notes
-
-      Temperature and Pressure input limits:
-          * 100 ≤ TC ≤ 1200 and 1000 ≤ P ≤ 60000
-
-      :param TC:
-      :type TC: temperature [°C]
-      :param P:
-      :type P: pressure [bar]
-
-       Returns
-      ----------
-         E       : dielectric constant of water [cal/mol]
-
-         rhohat  : density [g/cm³]
-
-         Ah      : Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]
-
-         Bh      : Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]
-
-         bdot    : bdot at any given temperature T
-
-         Adhh    : Debye-Huckel "A" parameters associated with apparent molar enthalpy
-
-         Adhv    : Debye-Huckel "A" parameters associated with apparent molar volume
-
-         Bdhh    : Debye-Huckel "B" parameters associated with apparent molar enthalpy
-
-         Bdhv    : Debye-Huckel "B" parameters associated with apparent molar volume
-
-         dEdP_T  : Partial derivative of dielectric constant with respect to pressure at constant temperature
-
-         dEdT_P  : Partial derivative of dielectric constant with respect to temperature at constant pressure
-
-       Usage
-      ----------
-         [E, rhohat, Ah, Bh, bdot, Adhh, Adhv, Bdhh, Bdhv, dEdP_T, dEdT_P] = dielec_DEW()
-
-      .. rubric:: References
-
-      (1) D. A. Sverjensky, B. Harrison, and D. Azzolini, "Water in the deep Earth: the dielectric
-          constant and the solubilities of quartz and corundum to 60 kb and 1200 °C," Geochimica et
-          Cosmochimica Acta, vol. 129, pp. 125–145, 2014
-      (2) Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
-          Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
-          Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
-          Am. J. Sci. 274, 1199-1251.
-
-
-
-.. py:function:: readIAPWS95data()
-
-   returns all constants and coefficients needed for the IAPWS95 formulation, packed into a dictionary
-
-
-.. py:function:: convert_temperature(T, Out_Unit='C')
-
-   This function converts temperatures from Celsius to Kelvin and vice-versa
-
-   :param T: Temperature in °C or K
-   :type T: float, vector
-   :param Out_Unit: Expected temperature unit (C or K)
-   :type Out_Unit: string
-
-   :returns: **T** -- Temperature in °C or K
-   :rtype: float, vector
-
-   .. rubric:: Examples
-
-   >>> TC = 100; convert_temperature( TC, Out_Unit = 'K' )
-       373.15
-   >>> TK = 520; convert_temperature( TK, Out_Unit = 'C' )
-       246.85
+   :returns: **Out** -- Converted values
+   :rtype: float
 
 
 .. py:class:: heatcap(**kwargs)
@@ -2999,7 +1724,7 @@ Attributes
     Returns
    ----------
       log10_gamma : float, vector
-          co2 aqueous activities in log10
+          co2 aqueous activity coefficients in log10
 
    .. rubric:: Examples
 
@@ -3019,7 +1744,7 @@ Attributes
    :param I: Ionic strength
    :type I: float
 
-   :returns: * **log10_co2_gamma** (*float, vector*) -- co2 aqueous activities in log10
+   :returns: * **log10_co2_gamma** (*float, vector*) -- co2 aqueous activity coefficients in log10
              * **mco2** (*float, vector*) -- co2 aqueous molalities
 
    Usage
@@ -3143,7 +1868,7 @@ Attributes
       Dielec_method :  specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric
                           constant (optional), if not specified default - 'JN91'
       rhoEDB   :       dictionary of water properties like density (rho), dielectric factor (E) and
-                          Debye–Hückel coefficients (optional)
+                          Debye-Hückel coefficients (optional)
    Returns:
    ----------
       ch20     :       water activity correlation coefficients
@@ -3431,6 +2156,8 @@ Attributes
    :type sourcedb: string
    :param sourceformat: source database format, either 'GWB' or 'EQ36', default is 'GWB'
    :type sourceformat: string
+   :param sourcedb_codecs: specify the name of the encoding used to decode or encode the sourcedb file, optional
+   :type sourcedb_codecs: string
    :param objdb: new database filename and location    (optional)
    :type objdb: string
    :param co2actmodel: co2 activity model equation [Duan_Sun or Drummond]  (optional), if not specified, default is 'Drummond'
@@ -3443,6 +2170,8 @@ Attributes
    :type ThermoInUnit: string
    :param dataset: specify the dataset format, either 'GWB', 'EQ36', 'Pflotran' or 'ToughReact', default is old GWB database ['GWB'] (optional)
    :type dataset: string
+   :param print_msg: print debug message [True or False], default is False
+   :type print_msg: string, bool
 
    :rtype: Output the new database to an ASCII file with filename described in 'objdb' if specified.
 
@@ -3627,7 +2356,1522 @@ Attributes
    print main_function name
 
 
-.. py:data:: __version__
+.. py:class:: db_reader(**kwargs)
+
+   Class to read direct-access and source thermodynamic database
+
+   :param dbaccess: filename and location of the direct-access/sequential-access database, optional, default is speq21
+   :type dbaccess: string
+   :param dbBerman_dir: filename and location of the Berman mineral database, optional
+   :type dbBerman_dir: string
+   :param dbHP_dir: filename and location of the supcrtbl mineral and gas database, optional
+   :type dbHP_dir: string
+   :param sourcedb: filename of the source database, optional
+   :type sourcedb: string
+   :param sourcedb: filename of the source database, optional
+   :type sourcedb: string
+   :param sourceformat: specify the source database format, either 'GWB' or 'EQ36', optional
+   :type sourceformat: string
+   :param dbaccessformat: specify the direct-access/sequential-access database format, either 'speq' or 'supcrtbl', default is 'speq'
+   :type dbaccessformat: string, optional
+   :param sourcedb_codecs: specify the name of the encoding used to decode or encode the sourcedb file, optional
+   :type sourcedb_codecs: string
+   :param dbaccess_codecs: specify the name of the encoding used to decode or encode the dbaccess file, optional
+   :type dbaccess_codecs: string
+
+   :returns: * **dbaccessdic** (*dict*) -- dictionary of minerals, gases, redox and aqueous species
+             * **dbaccess** (*string*) -- direct-access database file name
+             * **sourcedic** (*dict*) -- dictionary of reaction coefficients and species
+             * **specielist** (*list*) -- list of species segmented into the different categories [element, basis, redox, aqueous, minerals, gases, oxides]
+             * **speciecat** (*list*) -- list of species categories listed in 'specielist'
+             * **chargedic** (*dict*) -- dictionary of charges of species
+             * **MWdic** (*dict*) -- dictionary of MW of species
+             * **Mineraltype** (*dict*) -- mineral type for minerals
+             * **fugacity_info** (*dict*) -- fugacity information as stored in new tdat database for chi and critical ppts
+             * **Sptype** (*dict*) -- specie types and eq3/6 and revised date info
+             * **Elemlist** (*dict*) -- dictionary of elements and coefficients
+
+   .. rubric:: Examples
+
+   >>> ps = db_reader(sourcedb = './default_db/thermo.com.dat',
+                      sourceformat = 'gwb',
+                      dbaccess = './default_db/speq21.dat')
+   >>> ps.sourcedic, ps.dbaccessdic, ps.specielist
+
+   .. py:attribute:: kwargs
+      
+
+      
+
+   .. py:method:: __calc__(self, **kwargs)
+
+
+   .. py:method:: readAqspecdb(self)
+
+      This function reads direct access thermodynamic database and can add other database sources
+      at the bottom returns all constants of Maier-Kelley power function  for minerals and gases
+      (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm3/mol] a [cal/mol-K], b [*10**3 cal/mol/K^2],
+       c [*10^-5 cal/mol/K], Ttrans [K], Htr [cal/mol], Vtr [cm³/mol], dPdTtr [bar/K] ) and
+      aqueous species (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm3/mol], a1 [*10 cal/mol/bar],
+      a2 [*10**-2 cal/mol], a3 [cal-K/mol/bar], a4 [*10**-4 cal-K/mol], c1 [cal/mol/K], c2 [*10**-4 cal-K/mol],
+      ω [*10**-5 cal/mol] ) packed into a dbacess dictionary. In addition, the function can read Berman's
+      mineral properties such as (dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, k3,
+      v1 [*10^5 K^-1], v2 [*10^5 K^-2], v3 [*10^5 bar^-1], v4 [*10^8 bar^-2], dTdP [K/bar], Tlambda [K],
+      Tref [K], l1 [(J/mol)^0.5/K], l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], d2 [J/mol],
+      d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K]). In addition, the function can read supcrtbl's
+      mineral and gas properties such as (dG [kJ/mol], dH [kJ/mol], S [J/mol-K], V [J/bar], a [kJ/mol-K],
+      b [*10^5 kJ/mol/K^2], c [kJ-mol-K], d [kJ/mol/K^0.5], alpha [*10^5 K^-1], kappa0 [kbar],
+      kappa0_d [kbar], kappa0_dd [kbar], n_atom [-], Tc0 [K], Smax [J/mol-K], Vmax [J/bar], dH [KJ/mol],
+      dV [J/bar], W [kJ/mol], Wv [J/bar], n [-], SF [-])
+
+      :param dbaccess        filename and location of the direct-access database:
+      :param dbBerman_dir    filename and location of the Berman mineral database:
+      :param dbHP_dir        filename and location of the supcrtbl (Holland and Powell) mineral and gas database:
+
+      :returns: * *dbaccessdic      dictionary of minerals, gases, redox and aqueous species*
+                * *dbaccess        dat file name*
+
+      Usage:
+      ----------
+      [dbaccessdic, dbname] = readAqspecdb(dbaccess)
+
+
+   .. py:method:: readSourceGWBdb(self)
+
+      This function reads source GWB thermodynamic database and reaction coefficients of 'eh'
+      and 'e-' has been added at the bottom returns all reaction coefficients and species,
+      group species into redox, minerals, gases, oxides and aqueous species
+      :param sourcedb:
+      :type sourcedb: filename of the source database
+
+      :returns: * **sourcedic** (*dictionary of reaction coefficients and species*)
+                * **specielist** (*list of species segmented into the different categories*) -- [element, basis, redox, aqueous, minerals, gases, oxides]
+                * **speciecat** (*list of species categories listed in 'specielist'*)
+                * **chargedic** (*dictionary of charges of species*)
+                * **MWdic** (*dictionary of MW of species*)
+                * **Mineraltype** (*mineral type for minerals*)
+                * **fugacity_info** (*fugacity information as stored in new tdat database for chi and critical ppts*)
+
+      Usage:
+      ----------
+      [sourcedic, specielist, chargedic, MWdic, Mineraltype, fugacity_info, activity_model] = readSourceGWBdb()
+
+
+   .. py:method:: readSourceEQ36db(self)
+
+      This function reads source EQ3/6 thermodynamic database and reaction coefficients of 'eh'
+      and 'e-' has been added at the bottom returns all reaction coefficients and species,
+      group species into basis, auxiliary basis, minerals, gases, liquids and aqueous species
+      :param sourcedb:
+      :type sourcedb: filename of the source database
+
+      :returns: * **sourcedic** (*dictionary of reaction coefficients and species*)
+                * **specielist** (*list of species segmented into the different categories*) -- [element, basis, redox, aqueous, minerals, gases, oxides]
+                * **speciecat** (*list of species categories listed in 'specielist'*)
+                * **chargedic** (*dictionary of charges of species and DHazero info*)
+                * **MWdic** (*dictionary of MW of species*)
+                * **Sptype** (*specie types and eq3/6 and revised date info*)
+                * **Elemlist** (*dictionary of elements and coefficients*)
+
+      Usage:
+      ----------
+      [sourcedic, specielist, chargedic, MWdic, block_info, Elemlist, act_param] = readSourceEQ36db(sourcedb)
+
+
+
+.. py:function:: dbaccess_modify(in_filename=None, dbaccess=None, out_filename=None)
+
+   This function loads thermodynamic data from a csv files and appends/replace the corresponding species thermo data and writes out a modified direct-access database
+   :param in_filename: CSV filename and location
+   :type in_filename: string
+   :param dbaccess: direct-access database filename and location  (optional)
+   :type dbaccess: string
+   :param out_filename: newly modified direct-access database filename and location    (optional)
+   :type out_filename: string
+
+   :rtype: Output the newly modified direct-access with filename described in 'out_filename' if specified.
+
+   .. rubric:: Examples
+
+   >>> dbaccess_modify(in_filename = 'geotpd_data_block_cr.csv')
+
+
+.. py:class:: iapws95(**kwargs)
+
+   Implementation of IAPWS Formulation 1995 for ordinary water substance, revised release of 2016
+
+   .. rubric:: Notes
+
+   Temperature and Pressure input limits
+       * -22 ≤ TC ≤ 1000 and 0 ≤ P ≤ 100,000
+
+   :param T: Temperature [°C]
+   :type T: float, vector
+   :param P: Pressure [bar]
+   :type P: float, vector
+   :param rho: Density [kg/m³]
+   :type rho: float, vector
+   :param rho0: Starting estimate of density [kg/m³]
+   :type rho0: float, vector
+   :param rhom: Molar density [kg/m³]
+   :type rhom: float, vector
+   :param delta: Reduced density, rho/rhoc
+   :type delta: float, vector
+   :param tau: Reduced temperature, Tc/T
+   :type tau: float, vector
+   :param v: Specific volume [m³/kg]
+   :type v: float, vector
+   :param vm: Specific molar volume [m³/mol]
+   :type vm: float, vector
+   :param Out_Unit: Expected units ('standard' or 'kilogram')
+   :type Out_Unit: string
+   :param FullEOSppt: Option to output all or essential water properties [False or True]
+   :type FullEOSppt: bool
+
+   :returns: * *The calculated instance has the following potential properties*
+             * **rho** (*float, vector*) -- Density [kg/m3]
+             * **G** (*float, vector*) -- Gibbs energy [cal/mol] or  [kJ/kg]
+             * **H** (*float, vector*) -- Enthalpy [cal/mol] or [kJ/kg]
+             * **S** (*float, vector*) -- Entropy [cal/mol/K] or [kJ/kg/K]
+             * **V** (*float, vector*) -- Volume [m3/mol] or [m3/kg]
+             * **P** (*float, vector*) -- Pressure [bar]
+             * **TC** (*float, vector*) -- Temperature [°C]
+             * **TK** (*float, vector*) -- Temperature [K]
+             * **U** (*float, vector*) -- Internal energy [cal/mol] or [kJ/kg]  if FullEOSppt is True
+             * **F** (*float, vector*) -- Helmholtz energy [cal/mol/K] or [kJ/kg-K]  if FullEOSppt is True
+             * **Cp** (*float, vector*) -- Isobaric heat capacity [cal/mol/K]
+             * **rhosl** (*float, vector*) -- Density of liquid [kg/m3]
+             * **rhosv** (*float, vector*) -- Density of vapor [kg/m3]
+             * **pdx** (*float, vector*) -- Derivative of pressure with respect to delta in bar
+             * **adx** (*float, vector*) -- Helmholtz energy derivative with respect to delta
+             * **ztx** (*float, vector*) -- zeta value (needed to calculate viscosity)
+             * **ptx** (*float, vector*) -- Derivative of pressure with respect to tau in bar
+             * **gdx** (*float, vector*) -- Gibbs energy derivative [kJ/kg]   if FullEOSppt is True
+             * **ktx** (*float, vector*) -- Compressibility [/bar]
+             * **avx** (*float, vector*) -- Thermal expansion coefficient (thermal expansivity)
+             * **mu** (*float, vector*) -- viscosity [Pa-s] if FullEOSppt is True
+             * **bsx** (*float, vector*) -- Isentropic temperature-pressure coefficient [K-m3/kJ]  if FullEOSppt is True
+             * **dtx** (*float, vector*) -- Isothermal throttling coefficient [kJ/kg/bar]  if FullEOSppt is True
+             * **mux** (*float, vector*) -- Joule-Thomsen coefficient [K-m3/kJ]  if FullEOSppt is True
+             * **cvx** (*float, vector*) -- Isochoric heat capacity [kJ/kg/K]  if FullEOSppt is True
+             * **wx** (*float, vector*) -- Speed of sound [m/s]  if FullEOSppt is True
+
+   Usage:
+   ----------
+       The general usage of iapws95 is as follows:
+
+       (1) For water properties at any Temperature and Pressure not on steam saturation curve:
+
+           water = iapws95(T = T, P = P),
+
+           where T is temperature in celsius and P is pressure in bar
+       (2) For water properties at any Temperature and Pressure on steam saturation curve:
+
+           water = iapws95(T = T, P = 'T'),
+
+           where T is temperature in celsius, followed with a quoted character 'T' to reflect steam saturation pressure
+
+           water = iapws95(T = 'P', P = P),
+
+           where P is pressure in bar, followed with a quoted character 'P' to reflect steam saturation temperature
+       (3) For water properties at any Temperature and density :
+
+           water = iapws95(T = T, rho = rho),
+
+           where T is temperature in celsius and rho is density in kg/m³
+       (4) For water properties at any Pressure and density :
+
+           water = iapws95(P = P, rho = rho),
+
+           where P is pressure in bar and rho is density in kg/m³
+       (5) For water saturation properties at any saturation Temperature :
+
+           water = iapws95(T = T),
+
+           where T is temperature in celsius
+       (6) For water saturation properties at any saturation Pressure :
+
+           water = iapws95(P = P),
+
+           where P is pressure in bar
+
+   .. rubric:: Examples
+
+   >>> water = iapws95(T = 200., P = 50, FullEOSppt = True)
+   >>> water.rho, water.G, water.H, water.S, water.V, water.P, water.T, water.mu
+       867.2595, -60368.41787, -65091.03895,  25.14869,  4.96478e-03,  50.00000,
+       200.000, 0.00013546
+
+   >>> water = iapws95(T=200, rho=996.5560, Out_Unit='kilogram', FullEOSppt=True)
+   >>> water.P, water.F, water.S, water.H, water.G, water.V, water.Cp, water.pdx
+       2872.063, -234.204, 2.051, 1024.747, 53.994, 1.0035e-03, 3.883, 10079.17
+   >>> water.adx, water.ztx, water.ptx, water.ktx, water.avx, water.mu, water.gdx
+       93.120, 2.189e-03, -7.348e+03,  3.205e-05,  6.809e-04, 1.914e-04, 1011.40
+
+   >>> water = iapws95(T = 350)
+   >>> water.P, water.rhosl, water.rhosv
+       165.2942 574.7065 113.6056
+
+   >>> water = iapws95(P = 150)
+   >>> water.TC, water.rhosl, water.rhosv
+       342.1553, 603.5179, 96.7271
+
+   .. rubric:: References
+
+   (1) Wagner, W., Pruß, A., 2002. The IAPWS formulation 1995 for the thermodynamic properties of
+       ordinary water substance for general and scientific use. J. Phys. Chem. Ref. Data 31, 387–535.
+       https://doi.org/10.1063/1.1461829
+
+   .. py:attribute:: kwargs
+      
+
+      
+
+   .. py:attribute:: mwH2O
+      :annotation: = 18.015268
+
+      
+
+   .. py:method:: __checker__(self, **kwargs)
+
+
+   .. py:method:: __calc__(self, **kwargs)
+
+
+
+.. py:class:: ZhangDuan(**kwargs)
+
+   Implementation of Zhang & Duan model Formulation for water at higher Temperature and Pressure conditions, i.e, Deep Earth Water - DEW
+
+   .. rubric:: Notes
+
+   Temperature and Pressure input limits
+       * 0 ≤ TC ≤ 1726.85 and 1000 ≤ P ≤ 300,000
+
+   :param T: Temperature [°C]
+   :type T: float, vector
+   :param P: Pressure [bar]
+   :type P: float, vector
+   :param rho: Density [kg/m³]
+   :type rho: float, vector
+   :param rho0: Starting estimate of density [kg/m³]
+   :type rho0: float, vector
+   :param densityEquation: specify either 'ZD05' to use Zhang & Duan (2005) or 'ZD09'  to use Zhang & Duan (2009)
+   :type densityEquation: string
+
+   :returns: * *The calculated instance has the following potential properties*
+             * **rho** (*float, vector*) -- Density [kg/m3]
+             * **rhohat** (*float, vector*) -- Density [g/cm³]
+             * **G** (*float, vector*) -- Gibbs energy [cal/mol]
+             * **drhodP_T** (*float, vector*) -- Partial derivative of density with respect to pressure at constant temperature
+             * **drhodT_P** (*float, vector*) -- Partial derivative of density with respect to temperature at constant pressure
+
+   Usage:
+   ----------
+       The general usage of ZhangDuan is as follows:
+
+       (1) For water properties at any Temperature and Pressure:
+
+           deepearth = ZhangDuan(T = T, P = P),
+
+           where T is temperature in celsius and P is pressure in bar
+       (2) For water properties at any Temperature and density :
+
+           deepearth = ZhangDuan(T = T, rho = rho),
+
+           where T is temperature in celsius and rho is density in kg/m³
+
+   .. rubric:: Examples
+
+   >>> deepearth = ZhangDuan(T = 25, P = 5000)
+   >>> deepearth.rho, deepearth.G, deepearth.drhodP_T, deepearth.drhodT_P
+       1145.3065, -54631.5351, 2.3283e-05, -0.0004889
+
+   >>> deepearth = ZhangDuan(T = 200, rho = 1100)
+   >>> deepearth.P, deepearth.G, deepearth.drhodP_T, deepearth.drhodT_P
+       7167.2231, -57319.0980, 2.3282e-05, -0.0005122
+
+   .. rubric:: References
+
+   (1) Zhang, Z., Duan, Z., 2005. Prediction of the PVT properties of water over wide range of
+       temperatures and pressures from molecular dynamics simulation. Phys. Earth Planet. Inter.
+       149, 335–354. https://doi.org/10.1016/j.pepi.2004.11.003.
+   (2) Zhang, C. and Duan, Z., 2009. “A model for C-O-H fluid in the Earth’s mantle”, Geochimica et
+       Cosmochimica Acta, vol. 73, no. 7, pp. 2089–2102, doi:10.1016/j.gca.2009.01.021.
+   (3) Sverjensky, D.A., Harrison, B., Azzolini, D., 2014. Water in the deep Earth: The dielectric
+       constant and the solubilities of quartz and corundum to 60kb and 1200°C. Geochim. Cosmochim.
+       Acta 129, 125–145. https://doi.org/10.1016/j.gca.2013.12.019
+
+   .. py:attribute:: kwargs
+      
+
+      
+
+   .. py:method:: __calc__(self, **kwargs)
+
+
+   .. py:method:: ZD_Pressure_drhodP(self, TC, rhohat, method=None)
+
+
+   .. py:method:: ZD_Density(self, TC, P, method='ZD05', error=None)
+
+
+   .. py:method:: GibbsEnergy(self, TC, P, method='VolumeIntegral')
+
+
+
+.. py:class:: water_dielec(**kwargs)
+
+   Class Implementation of Water dielectric constants, the Debye-Huckel "A" and "B" parameters and their derivatives at ambient to deep-earth Temperature and Pressure conditions with three different formulations
+
+   :param T: Temperature [°C]
+   :type T: float, vector
+   :param P: Pressure [bar]
+   :type P: float, vector
+   :param rho: Density [kg/m³]
+   :type rho: float, vector
+   :param Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified, default - 'JN91'
+   :type Dielec_method: string
+   :param Dielec_DEWoutrange: specify either 'FGL97' or 'JN91' as the method to calculate dielectric constant for out of range for 'DEW' method if any
+   :type Dielec_DEWoutrange: string
+
+   :returns: * *The calculated instance has the following potential properties*
+             * **E** (*float, vector*) -- dielectric constant of water
+             * **rhohat** (*float, vector*) -- density [g/cm³]
+             * **Ah** (*float, vector*) -- Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]
+             * **Bh** (*float, vector*) -- Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]
+             * **bdot** (*float, vector*) -- bdot at any given temperature T
+             * **Adhh** (*float, vector*) -- Debye-Huckel "A" parameters associated with apparent molar enthalpy
+             * **Adhv** (*float, vector*) -- Debye-Huckel "A" parameters associated with apparent molar volume
+             * **Bdhh** (*float, vector*) -- Debye-Huckel "B" parameters associated with apparent molar enthalpy
+             * **Bdhv** (*float, vector*) -- Debye-Huckel "B" parameters associated with apparent molar volume
+             * **dEdP_T** (*float, vector*) -- Partial derivative of dielectric constant with respect to pressure at constant temperature
+             * **dEdT_P** (*float, vector*) -- Partial derivative of dielectric constant with respect to temperature at constant pressure
+
+   .. rubric:: Notes
+
+   FGL97 Temperature and Pressure input limits:
+       * -35 ≤ TC ≤ 600 and 0 ≤ P ≤ 12000
+   DEW Temperature and Pressure input limits:
+       * 100 ≤ TC ≤ 1200 and 1000 ≤ P ≤ 60000
+   JN91 Temperature and Pressure input limits:
+       * 0 ≤ TC ≤ 1000 and 0 ≤ P ≤ 5000
+
+   Usage
+   ----------
+       The general usage of water_dielec is as follows:
+
+       (1) For water dielectric properties at any Temperature and Pressure:
+
+           dielect = water_dielec(T = T, P = P, Dielec_method = 'JN91'),
+
+           where T is temperature in celsius and P is pressure in bar
+       (2) For water dielectric properties at any Temperature and density :
+
+           dielect = water_dielec(T = T, rho = rho, Dielec_method = 'JN91'),
+
+           where T is temperature in celsius and rho is density in kg/m³
+       (3) For water dielectric properties at any Temperature and Pressure on steam saturation curve:
+
+           dielect = water_dielec(T = T, P = 'T', Dielec_method = 'JN91'),
+
+           where T is temperature in celsius and P is assigned a quoted character 'T' to reflect steam saturation pressure
+
+           dielect = water_dielec(P = P, T = 'P', Dielec_method = 'JN91'),
+
+           where P is pressure in bar and T is assigned a quoted character 'P' to reflect steam saturation temperature
+
+   .. rubric:: Examples
+
+   >>> dielect = water_dielec(T = 50, P = 500, Dielec_method = 'JN91')
+   >>> dielect.E, dielect.rhohat, dielect.Ah, dielect.Bh, dielect.bdot
+       71.547359, 1.00868586, 0.52131899,   0.33218072,   0.04088528
+   >>> dielect.Adhh, dielect.Adhv, dielect.Bdhh, dielect.Bdhv
+       0.64360153,   2.13119279,  15.6936832 , -14.52571678
+   >>> dielect.dEdP_T, dielect.dEdT_P
+       0.03293026,   -0.32468033
+
+   >>> dielect = water_dielec(T = 200, rho = 1100, Dielec_method = 'FGL97')
+   >>> dielect.E, dielect.rhohat, dielect.Ah, dielect.Bh, dielect.bdot
+       49.73131404,  1.1,  0.5302338, 0.34384714,  0.04452579
+   >>> dielect.Adhh, dielect.Adhv, dielect.Bdhh, dielect.Bdhv
+       1.21317825,  2.21165281, 28.0047878, -34.21216547
+   >>> dielect.dEdP_T, dielect.dEdT_P
+       0.01444368, -0.16864644
+
+   >>> dielect = water_dielec(T = 250, P = 5000, Dielec_method = 'DEW')
+   >>> dielect.E, dielect.rhohat, dielect.Ah, dielect.Bh, dielect.bdot, dielect.Adhh
+       39.46273008,  1.0238784,  0.62248141,   0.35417088, 0.02878662, 0.80688122
+   >>> dielect.Adhv, dielect.Bdhh, dielect.Bdhv, dielect.dEdP_T, dielect.dEdT_P
+        3.13101408, 39.76402294, -35.29670957, 0.0129006 , -0.08837842
+
+   .. rubric:: References
+
+   (1) Release on the Static Dielectric Constant of Ordinary Water Substance for
+       Temperatures from 238 K to 873 K and Pressures up to 1000 MPa" (IAPWS R8-97, 1997).
+   (2) Fernandez D. P., Goodwin A. R. H., Lemmon E. W., Levelt Sengers J. M. H.,
+       and Williams R. C. (1997) A Formulation for the Permittivity of Water and
+       Steam at Temperatures from 238 K to 873 K at Pressures up to 1200 MPa, including
+       Derivatives and Debye-Hückel Coefficients. J. Phys. Chem. Ref. Data 26, 1125-1166.
+   (3) Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
+       Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
+       Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
+       Am. J. Sci. 274, 1199-1251.
+   (4) Johnson JW, Norton D (1991) Critical phenomena in hydrothermal systems: State, thermodynamic,
+       electrostatic, and transport properties of H2O in the critical region. American Journal of Science 291:541-648
+   (5) D. A. Sverjensky, B. Harrison, and D. Azzolini, "Water in the deep Earth: the dielectric
+       constant and the solubilities of quartz and corundum to 60 kb and 1200 °C," Geochimica et
+       Cosmochimica Acta, vol. 129, pp. 125–145, 2014
+
+   .. py:attribute:: kwargs
+      
+
+      
+
+   .. py:method:: __checker__(self, **kwargs)
+
+
+   .. py:method:: __calc__(self, **kwargs)
+
+
+   .. py:method:: dielec_FGL97(self, TC, rho)
+
+      This function employs the FGL91 formulation to calculate the dielectric constant of water (E), the Debye-Huckel "A" parameters
+      and Debye-Huckel "B" parameters (3)  and their derivatives as a
+      function of temperature and pressure
+
+
+      .. rubric:: Notes
+
+      Temperature and Pressure input limits:
+          * -35 ≤ TC ≤ 600 and 0 ≤ P ≤ 12000
+
+      :param TC:
+      :type TC: temperature [°C]
+      :param rho:
+      :type rho: density [kg/m3]
+
+      :returns: * **E** (*dielectric constant of water*)
+                * **rhohat** (*density [g/cm³]*)
+                * **Ah** (*Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]*)
+                * **Bh** (*Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]*)
+                * **bdot** (*bdot at any given temperature T*)
+                * **Adhh** (*Debye-Huckel "A" parameters associated with apparent molar enthalpy*)
+                * **Adhv** (*Debye-Huckel "A" parameters associated with apparent molar volume*)
+                * **Bdhh** (*Debye-Huckel "B" parameters associated with apparent molar enthalpy*)
+                * **Bdhv** (*Debye-Huckel "B" parameters associated with apparent molar volume*)
+                * **dEdP_T** (*Partial derivative of dielectric constant with respect to pressure at constant temperature*)
+                * **dEdT_P** (*Partial derivative of dielectric constant with respect to temperature at constant pressure*)
+
+      Usage
+      ----------
+         [E, rhohat, Ah, Bh, bdot, Adhh, Adhv, Bdhh, Bdhv, dEdP_T, dEdT_P] = dielec_FGL97( TC, rho)
+
+      .. rubric:: References
+
+      (1) Release on the Static Dielectric Constant of Ordinary Water Substance for
+          Temperatures from 238 K to 873 K and Pressures up to 1000 MPa" (IAPWS R8-97, 1997).
+      (2) Fernandez D. P., Goodwin A. R. H., Lemmon E. W., Levelt Sengers J. M. H.,
+          and Williams R. C. (1997) A Formulation for the Permittivity of Water and
+          Steam at Temperatures from 238 K to 873 K at Pressures up to 1200 MPa, including
+          Derivatives and Debye-Hückel Coefficients. J. Phys. Chem. Ref. Data 26, 1125-1166.
+      (3) Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
+          Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
+          Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
+          Am. J. Sci. 274, 1199-1251.
+
+
+   .. py:method:: dielec_JN91(self, TC, rho)
+
+      This dielec_JN91 implementation employs the JN91 formulation to calculate the
+      dielectric properties of water and steam, the Debye-Huckel "A" parameters and
+      Debye-Huckel "B" parameters  and their derivatives
+
+      .. rubric:: Notes
+
+      Temperature and Pressure input limits:
+          * 0 ≤ TC ≤ 1000 and 0 ≤ P ≤ 5000
+
+      :param TC:
+      :type TC: temperature [°C]
+      :param rho:
+      :type rho: density [kg/m3]
+
+       Returns
+      ----------
+         E       : dielectric constant of water
+
+         rhohat  : density [g/cm³]
+
+         Ah      : Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]
+
+         Bh      : Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]
+
+         bdot    : bdot at any given temperature T
+
+         Adhh    : Debye-Huckel "A" parameters associated with apparent molar enthalpy
+
+         Adhv    : Debye-Huckel "A" parameters associated with apparent molar volume
+
+         Bdhh    : Debye-Huckel "B" parameters associated with apparent molar enthalpy
+
+         Bdhv    : Debye-Huckel "B" parameters associated with apparent molar volume
+
+         dEdP_T  : Partial derivative of dielectric constant with respect to pressure at constant temperature
+
+         dEdT_P  : Partial derivative of dielectric constant with respect to temperature at constant pressure
+
+       Usage
+      ----------
+         [E, rhohat, Ah, Bh, bdot, Adhh, Adhv, Bdhh, Bdhv, dEdP_T, dEdT_P] = dielec_JN91( TC, rho)
+
+      .. rubric:: References
+
+      (1) Johnson JW, Norton D (1991) Critical phenomena in hydrothermal systems: State, thermodynamic,
+          electrostatic, and transport properties of H2O in the critical region. American Journal of Science 291:541-648
+      (2) Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
+          Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
+          Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
+          Am. J. Sci. 274, 1199-1251.
+
+
+   .. py:method:: dielec_DEW(self)
+
+      This watercalc implementation employs the DEW formulation embedded in Sverjensky et al. (2014)
+      to calculate the dielectric properties of water and steam, the Debye-Huckel "A" parameters and
+      Debye-Huckel "B" parameters  and their derivatives. This function has been set up to use
+      either Johnson and Norton (1991) or Fernandez et al. (1997) formulation below 5000 bar and
+      Sverjensky et al. (2014) formulation above 5000 bar.
+
+      .. rubric:: Notes
+
+      Temperature and Pressure input limits:
+          * 100 ≤ TC ≤ 1200 and 1000 ≤ P ≤ 60000
+
+      :param TC:
+      :type TC: temperature [°C]
+      :param P:
+      :type P: pressure [bar]
+
+       Returns
+      ----------
+         E       : dielectric constant of water
+
+         rhohat  : density [g/cm³]
+
+         Ah      : Debye-Huckel "A" parameters [kg^1/2 mol^-1/2]
+
+         Bh      : Debye-Huckel "B" parameters [kg^1/2 mol^-1/2 Angstrom^-1]
+
+         bdot    : bdot at any given temperature T
+
+         Adhh    : Debye-Huckel "A" parameters associated with apparent molar enthalpy
+
+         Adhv    : Debye-Huckel "A" parameters associated with apparent molar volume
+
+         Bdhh    : Debye-Huckel "B" parameters associated with apparent molar enthalpy
+
+         Bdhv    : Debye-Huckel "B" parameters associated with apparent molar volume
+
+         dEdP_T  : Partial derivative of dielectric constant with respect to pressure at constant temperature
+
+         dEdT_P  : Partial derivative of dielectric constant with respect to temperature at constant pressure
+
+       Usage
+      ----------
+         [E, rhohat, Ah, Bh, bdot, Adhh, Adhv, Bdhh, Bdhv, dEdP_T, dEdT_P] = dielec_DEW()
+
+      .. rubric:: References
+
+      (1) D. A. Sverjensky, B. Harrison, and D. Azzolini, "Water in the deep Earth: the dielectric
+          constant and the solubilities of quartz and corundum to 60 kb and 1200 °C," Geochimica et
+          Cosmochimica Acta, vol. 129, pp. 125–145, 2014
+      (2) Helgeson H. C. and Kirkham D. H. (1974) Theoretical Prediction of the Thermodynamic
+          Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
+          Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
+          Am. J. Sci. 274, 1199-1251.
+
+
+
+.. py:function:: readIAPWS95data()
+
+   returns all constants and coefficients needed for the IAPWS95 formulation, packed into a dictionary
+
+
+.. py:function:: convert_temperature(T, Out_Unit='C')
+
+   This function converts temperatures from Celsius to Kelvin and vice-versa
+
+   :param T: Temperature in °C or K
+   :type T: float, vector
+   :param Out_Unit: Expected temperature unit (C or K)
+   :type Out_Unit: string
+
+   :returns: **T** -- Temperature in °C or K
+   :rtype: float, vector
+
+   .. rubric:: Examples
+
+   >>> TC = 100; convert_temperature( TC, Out_Unit = 'K' )
+       373.15
+   >>> TK = 520; convert_temperature( TK, Out_Unit = 'C' )
+       246.85
+
+
+.. py:class:: Driesner_NaCl(**kwargs)
+
+   Implementation of Driesner and Heinrich PTx Formulation for H2O-NaCl system
+
+   :param T: Temperature [°C]
+   :type T: float
+   :param P: Pressure [bar]
+   :type P: float
+   :param xNaCl: mole fraction of NaCl in H2O [-]
+   :type xNaCl: float
+
+   :returns: * *The calculated instance has the following potential properties*
+             * **PVLH** (*float*) -- Pressure of vapor + liquid + halite coexistence [bar]
+             * **Pcrit** (*float*) -- Critical pressure (of a H2O–NaCl mixture) [bar]
+             * **Xcrit** (*float*) -- Critical Composition  [-]
+             * **xL_NaCl** (*float*) -- Composition of halite-saturated liquid (halite liquidus) Hypothetical [-]
+             * **xV_NaCl** (*float*) -- Composition of halite-saturated vapor [-]
+             * **xVL_Liq** (*float*) -- Composition of liquid at vapor + liquid coexistence [-]
+             * **xVL_Vap** (*float*) -- Composition of vapor at vapor+liquid coexistence [-]
+             * **rho** (*float*) -- Liquid NaCl density [kg/m3]
+             * **vm** (*float*) -- molar volume [mol/m3]
+             * **TstarH** (*float*) -- Scaled temperature for enthalpy correlation [°C]
+             * **H** (*float*) -- Specific enthalpy of an H2O–NaCl solution [J/kg]
+             * **Cp** (*float*) -- Isobaric heat capacity [J/kg/K]
+             * **mu** (*float*) -- viscosity [Pa-s]
+
+   Usage:
+   ----------
+       The general usage of Driesner_NaCl is as follows:
+
+       (1) For water-NaCl properties at any Temperature and Pressure:
+
+           water_salt = Driesner_NaCl(T = T, P = P),
+
+           where T is temperature in celsius and P is pressure in bar
+   .. rubric:: Examples
+
+   >>> water_salt = Driesner_NaCl(T = 400., P = 150)
+   >>> water_salt.PVLH, water_salt.xL_NaCl, water_salt.xV_NaCl, water_salt.xVL_Liq, water_salt.xVL_Vap, water_salt.Xcrit
+       176.12604181993797,
+        0.21548565081529097,
+        1.1606891909548725e-05,
+        0.27785803505887324,
+        1.1606891909548725e-05,
+        0.006832050956381021
+
+   >>> water_salt = Driesner_NaCl(T = 400., P = 150, xNaCl = 0.00919)
+   >>> water_salt.PVLH, water_salt.xL_NaCl, water_salt.xV_NaCl, water_salt.xVL_Liq, water_salt.xVL_Vap, water_salt.rho, water_salt.vm, water_salt.H, water_salt.mu, water_salt.Cp
+       (176.12604181993797,
+        0.21548565081529097,
+        1.1606891909548725e-05,
+        0.27785803505887324,
+        1.1606891909548725e-05,
+        0.06932873574838519,
+        265.2138005082347,
+        2934.6231778877977,
+        2.4596312351131325e-05,
+        4394.068874696437)
+
+   .. rubric:: References
+
+   (1) Driesner, T, and Heinrich, C. A. (2007). The system H2O–NaCl. Part I: Correlation formulae for phase relations in
+       temperature–pressure–composition space from 0 to 1000 C, 0 to 5000 bar, and 0 to 1 XNaCl. Geochimica et Cosmochimica Acta. 71(20), 4880-4901.
+       https://doi.org/10.1016/j.gca.2006.01.033
+   (2) Driesner, T. (2007). "The system H2O-NaCl. II. Correlations for molar volume, enthalpy, and isobaric heat capacity from 0 to 1000 °C, 1 to 5000 bar,
+   #     and 0 to 1 X-NaCl." Geochimica et Cosmochimica Acta 71(20): 4902-4919.
+
+   .. py:attribute:: kwargs
+      
+
+      
+
+   .. py:method:: __calc__(self, **kwargs)
+
+
+   .. py:method:: Driesner_NaCl(self, T, P)
+
+
+   .. py:method:: Driesner_NaClII(self, T, P, xNaCl)
+
+
+   .. py:method:: enthalpy_mu_heatcap(self, T, P, xNaCl)
+
+      Enthalpy in J/g, viscosity in Pas and Cp in Joules per kilogram Kelvin
+
+
+
+.. py:function:: concentration_converter(val=1.0, In_Unit='x_wt', Out_Unit='x_wt')
+
+   This function converts concentration between several units like wt%, mole fraction, molality and volume
+   Values must be in fraction except it is molality
+
+   :param val: Values to convert
+   :type val: float
+   :param In_Unit: unit of input concentration
+   :type In_Unit: String
+   :param Out_Unit: expected output concentration
+   :type Out_Unit: String
+
+   :returns: **Out** -- Converted values
+   :rtype: float
+
+
+.. py:class:: heatcap(**kwargs)
+
+   Class to heat capacity for mineral and gases using Maier-Kelley powerlaw, Haas-Fisher powerlaw, Holland and Powell and Berman's function
+
+   :param T: Temperature [°C]
+   :type T: float, vector
+   :param P: Pressure [bar]
+   :type P: float, vector
+   :param Species_ppt:
+                       Properties such as Supcrt92 (dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm3/mol] a [cal/mol-K], b [*10**3 cal/mol/K^2],
+                        c [*10^-5 cal/mol/K], Ttrans [K], Htr [cal/mol], Vtr [cm³/mol], dPdTtr [bar/K] ): Berman's database
+                       properties such as (dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, k3,
+                       v1 [*10^5 K^-1], v2 [*10^5 K^-2], v3 [*10^5 bar^-1], v4 [*10^8 bar^-2], dTdP [K/bar], Tlambda [K],
+                       Tref [K], l1 [(J/mol)^0.5/K], l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], d2 [J/mol],
+                       d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K]): Supcrtbl's database properties such as (dG [kJ/mol], dH [kJ/mol], S [J/mol-K], V [J/bar], a [kJ/mol-K],
+                       b [*10^5 kJ/mol/K^2], c [kJ-mol-K], d [kJ/mol/K^0.5], alpha [*10^5 K^-1], kappa0 [kbar],
+                       kappa0_d [kbar], kappa0_dd [kbar], n_atom [-], Tc0 [K], Smax [J/mol-K], Vmax [J/bar], dH [KJ/mol],
+                       dV [J/bar], W [kJ/mol], Wv [J/bar], n [-], SF [-]), etc
+   :type Species_ppt: array
+   :param Species: species name, optional for all cases except gases, Coesite and Quartz
+   :type Species: string
+   :param method: specify either 'SUPCRT' or 'berman88' or 'HP11' or 'HF76' to carry-out any mineral or gas
+                  heat capacity calculations, default is 'SUPCRT'
+   :type method: string
+
+   :returns: * **dG** (*float, vector*) -- Gibbs Energy [cal/mol]
+             * **dCp** (*float, vector*) -- Heat capacity [cal/mol/K]
+
+   .. rubric:: Examples
+
+   >>> # Example with Maier-Kelley powerlaw function as implemented in SUPCRT92
+   >>> from pygcc.pygcc_utils import db_reader
+   >>> ps = db_reader() # utilizes the default direct-access database, speq21
+   >>> sp = heatcap( T = 100, P = 50, Species = 'H2S(g)', Species_ppt = ps.dbaccessdic['H2S(g)'], method = 'SUPCRT')
+   >>> sp.dG, sp.dCp
+       -11782.47165818, 8.58416135
+   >>> sp = heatcap( T = 100, P = 50, Species_ppt = ps.dbaccessdic['Quartz'], method = 'SUPCRT',
+                         Species = 'Quartz')
+   >>> sp.dG, sp.dCp
+       -205292.75498942, 12.34074489
+
+   >>> # Example with Haas-Fisher powerlaw function
+   >>> from pygcc.pygcc_utils import db_reader
+   >>> ps = db_reader() # utilizes the default direct-access database, speq21
+   >>> sp = heatcap( T = 100, P = 50, Species_ppt = ps.dbaccessdic['ss_Anorthite'], method = 'HF76',
+                    Species = 'ss_Anorthite')
+   >>> sp.dG, sp.dCp
+       -960440.79915641, 57.46776903
+
+   >>> # Example with Berman's function
+   >>> from pygcc.pygcc_utils import db_reader
+   >>> # utilizes the default speq21 and specified Berman dataset database
+   >>> ps = db_reader(dbBerman_dir = './default_db/Berman.dat')
+   >>> sp = heatcap( T = 100, P = 50, Species_ppt = ps.dbaccessdic['Quartz'], method = 'berman88',
+                    Species = 'Quartz')
+   >>> sp.dG, sp.dCp
+       -205472.3365716, 12.32381279
+
+   >>> # Example with Holland and Powell's function
+   >>> from pygcc.pygcc_utils import db_reader
+   >>> # utilizes the default speq21 and specified SUPCRTBL (HP2011) dataset database
+   >>> ps = db_reader(dbHP_dir = './default_db/supcrtbl.dat')
+   >>> sp = heatcap( T = 100, P = 50, Species_ppt = ps.dbaccessdic['Hematite'], method = 'HP11',
+                    Species = 'Hematite')
+   >>> sp.dG, sp.dCp
+       -179494.62259123, 28.09545987
+
+   .. rubric:: References
+
+   (1) Helgeson, H. C., Delany, J. M., Nesbitt, H. W. and Bird, D. K.(1978). Summary and critique of the
+       thermodynamic properties of rock-forming minerals.
+   (2) Kelley K. K (1960) Contributions to the data on theoretical metallurgy. XIII. High
+       temperature heat content, heat capacity and entropy data for elements and inorganic compounds US Bur Mines Bull 548: 232 p
+   (3) Haas JL Jr, Fisher JR (1976) Simultaneous evaluation and correlation of thermodynamic data.
+       American Journal of Science 276:525-545
+   (4) Berman, R. G. (1988). Internally-consistent thermodynamic data for minerals in the system
+       Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2. Journal of petrology, 29(2), 445-522.
+   (5) Berman RG, Brown TH (1985) Heat Capacities of minerals in the system Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2:
+       Representation, estimation, and high temperature extrapolation. Contrib Mineral Petrol 89:168-183
+   (6) Holland, T. and Powell, R., 2011. An improved and extended internally consistent thermodynamic
+       dataset for phases of petrological interest, involving a new equation of state for solids.
+       Journal of Metamorphic Geology. 29, 333–383.
+   (7) Holland, T.J.B. and Powell, R., 1998. An internally-consistent thermodynamic dataset for phases
+       of petrological interest. Journal of Metamorphic Geology, 16, 309–344.
+   (8) Zimmer, K., Zhang, Y.L., Lu, P., Chen, Y.Y., Zhang, G.R., Dalkilic, M. and Zhu, C. (2016)
+       SUPCRTBL: A revised and extended thermodynamic dataset and software package of SUPCRT92.
+       Computer and Geosciences 90:97-111
+
+   .. py:attribute:: kwargs
+      
+
+      
+
+   .. py:method:: __calc__(self, **kwargs)
+
+
+   .. py:method:: heatcapusgscal(self, TC, P, species)
+
+      This function evaluates Gibbs energy and heat capacity as a function of temperature and pressure
+      for any mineral or gas specie using Haas and Fisher (1976)'s heat capacity parameter fit (utilized for solid-solutions)
+
+      :param TC: Temperature [°C]
+      :type TC: float, vector
+      :param P: Pressure [bar]
+      :type P: float, vector
+      :param species: Properties such as [dG [cal/ml], dH [cal/mol], S [cal/mol-K], V [cm³/mol], a [cal/mol-K], b [cal/mol/K^2], c [cal/mol/K], g [cal/mol/K^0.5], f [cal/mol/K^3] )
+      :type species: array
+
+      :returns: * **delGfPT** (*float, vector*) -- Gibbs Energy [cal/mol]
+                * **delCp** (*float, vector*) -- Heat capacity [cal/mol/K]
+
+      .. rubric:: References
+
+      (1) Haas JL Jr, Fisher JR (1976) Simultaneous evaluation and correlation of thermodynamic data.
+          American Journal of Science 276:525-545
+
+
+   .. py:method:: heatcap_Berman(self, TC, P, species)
+
+      This function evaluates Gibbs energy and heat capacity as a function of temperature
+      and pressure for any mineral or gas specie using Berman (1988) equations and datasets with
+      Berman and Brown (1985)'s heat capacity parameter fit
+
+      :param TC: Temperature [°C]
+      :type TC: float, vector
+      :param P: Pressure [bar]
+      :type P: float, vector
+      :param species:
+                      Properties such as [dG [J/mol], dH [J/mol], S [J/mol-K], V [cm³/mol], k0, k1, k2, k3,
+                                          v1 [*10^5 K^-1], v2 [*10^5 K^-2], v3 [*10^5 bar^-1], v4 [*10^8 bar^-2],
+                                          dTdP [K/bar], Tlambda [K], Tref [K], l1 [(J/mol)^0.5/K],
+                                          l2 [(J/mol)^0.5/K^2], DtH, d0 [J/mol], d1 [J/mol], d2 [J/mol],
+                                          d3 [J/mol], d4 [J/mol], d5 [J/mol], Tmin [K], Tmax [K]]
+      :type species: array
+
+      :returns: * **delGfPT** (*float, vector*) -- Gibbs Energy [cal/mol]
+                * **delCp** (*float, vector*) -- Heat capacity [cal/mol/K]
+
+      .. rubric:: References
+
+      (1) Berman, R. G. (1988). Internally-consistent thermodynamic data for minerals in the system
+          Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2. Journal of petrology, 29(2), 445-522.
+      (2) Berman RG, Brown TH (1985) Heat Capacities of minerals in the system Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2:
+          Representation, estimation, and high temperature extrapolation. Contrib Mineral Petrol 89:168-183
+
+
+   .. py:method:: heatcapsup(self, TC, P, species, **kwargs)
+
+      This function evaluates Gibbs energy and heat capacity as a function of temperature
+      and pressure for any mineral or gas specie using Helgeson et al (1978) equations and Maier-Kelley
+      power function for heat capacity as implemented in SUPCRT92
+
+      :param TC: Temperature [°C]
+      :type TC: float, vector
+      :param P: Pressure [bar]
+      :type P: float, vector
+      :param species:
+                      Properties such as ( dG [cal/mol], dH [cal/mol], S [cal/mol-K], V [cm³/mol], a [cal/mol-K],
+                                          b [*10^3 cal/mol/K^2], c [*10^-5 cal/mol/K], Ttrans [K], Htr [cal/mol],
+                                          Vtr [cm³/mol], dPdTtr [bar/K] ), etc
+      :type species: array
+      :param spec_name: species name, optional for all cases except gases, Coesite and Quartz
+      :type spec_name: string
+
+      :returns: * **delGfPT** (*float, vector*) -- Gibbs Energy [cal/mol]
+                * **delCp** (*float, vector*) -- Heat capacity [cal/mol/K]
+
+      .. rubric:: References
+
+      (1) Helgeson, H. C., Delany, J. M., Nesbitt, H. W. and Bird, D. K.(1978). Summary and critique of the
+          thermodynamic properties of rock-forming minerals.
+      (2) Kelley K. K (1960) Contributions to the data on theoretical metallurgy. XIII. High
+          temperature heat content, heat capacity and entropy data for elements and inorganic compounds US Bur Mines Bull 548: 232 p
+
+
+   .. py:method:: heatcaphp(self, TC, P, species)
+
+      This function evaluates Gibbs energy and heat capacity as a function of temperature and pressure
+      for any mineral or gas specie using Holland and Powell (2011)'s heat capacity parameter fit and
+      database based on SUPCRTBL
+
+      :param TC: Temperature [°C]
+      :type TC: float, vector
+      :param P: Pressure [bar]
+      :type P: float, vector
+      :param species:
+                      Properties such as [dG [kJ/mol], dH [kJ/mol], S [J/mol-K], V [J/bar], a [kJ/mol-K],
+                                          b [*10^5 kJ/mol/K^2], c [kJ-mol-K], d [kJ/mol/K^0.5],
+                                          alpha [*10^5 K^-1], kappa0 [kbar], kappa0_d [kbar], kappa0_dd [kbar],
+                                          n_atom [-], Tc0 [K], Smax [J/mol-K], Vmax [J/bar],
+                                          dH [KJ/mol], dV [J/bar], W [kJ/mol], Wv [J/bar],
+                                          n [-], SF [-]]
+      :type species: array
+
+      :returns: * **delGfPT** (*float, vector*) -- Gibbs Energy [cal/mol]
+                * **delCp** (*float, vector*) -- Heat capacity [cal/mol/K]
+
+      .. rubric:: References
+
+      (1) Holland, T. and Powell, R., 2011. An improved and extended internally consistent thermodynamic
+          dataset for phases of petrological interest, involving a new equation of state for solids.
+          Journal of Metamorphic Geology. 29, 333–383.
+      (2) Zimmer, K., Zhang, Y.L., Lu, P., Chen, Y.Y., Zhang, G.R., Dalkilic, M. and Zhu, C. (2016)
+          SUPCRTBL: A revised and extended thermodynamic dataset and software package of SUPCRT92.
+          Computer and Geosciences 90:97-111
+      (3) Holland, T.J.B. and Powell, R., 1998. An internally-consistent thermodynamic dataset for phases
+          of petrological interest. Journal of Metamorphic Geology, 16, 309–344.
+
+
+
+.. py:function:: supcrtaq(TC, P, specieppt, Dielec_method=None, ThermoInUnit='cal', **rhoE)
+
+   This function evaluates the Gibbs free energy of aqueous species at T and P
+   using the revised HKF equation of state
+
+   :param TC: Temperature [°C]
+   :type TC: float, vector
+   :param P: Pressure [bar]
+   :type P: float, vector
+   :param specieppt: Properties such as (dG [cal/mol], dH [cal/mol], S [cal/mol-K], a1 [*10 cal/mol/bar], a2 [*10**-2 cal/mol], a3 [cal-K/mol/bar], a4 [*10**-4 cal-K/mol], c1 [cal/mol/K], c2 [*10**-4 cal-K/mol], ω [*10**-5 cal/mol] )
+   :type specieppt: array
+   :param Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified default - 'JN91'
+   :type Dielec_method: string
+   :param ThermoInUnit: specify either 'cal' or 'KJ' as the input units for species properties (optional), if not specified default - 'cal'
+   :type ThermoInUnit: string
+   :param rhoE: dictionary of water properties like density (rho) and dielectric factor (E) (optional)
+   :type rhoE: dict
+
+   :returns: **delG** -- Gibbs energy [cal/mol]
+   :rtype: float, vector
+
+   Usage
+   -------
+       The general usage of supcrtaq without the optional arguments is as follows:
+
+       (1) Not on steam saturation curve:
+
+           delG = supcrtaq(TC, P, specieppt)
+
+           where T is temperature in celsius and P is pressure in bar
+       (2) On steam saturation curve:
+
+           delG = supcrtaq(TC, 'T', specieppt),
+
+           where T is temperature in celsius, followed with a quoted char 'T'
+
+           delG = supcrtaq(P, 'P', specieppt),
+
+           where P is pressure in bar, followed with a quoted char 'P'.
+       (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
+           condition not on steam saturation curve is as follows. Default method is 'JN91'
+
+           delG = supcrtaq(TC, P, specieppt, Dielec_method = 'FGL97')
+
+   .. rubric:: Examples
+
+   >>> from pygcc.pygcc_utils import db_reader
+   >>> ps = db_reader() # utilizes the default direct-access database, speq21
+   >>> delG = supcrtaq( 100, 50, ps.dbaccessdic['H2S(aq)'], Dielec_method = 'JN91')
+       -9221.81721068
+   >>> delG = supcrtaq( 100, 50, ps.dbaccessdic['H2S(aq)'], Dielec_method = 'FGL97')
+       -9221.6542038
+
+   .. rubric:: References
+
+   (1) Johnson JW, Oelkers EH, Helgeson HC. 1992. SUPCRT92: A software package for calculating
+       the standard molal thermodynamic properties of minerals, gases, aqueous species, and
+       reactions from 1 to 5000 bar and 0 to 1000°C. Computers & Geosciences 18(7): 899-947.
+       doi: 10.1016/0098-3004(92)90029-Q
+
+
+.. py:function:: Element_counts(formula)
+
+   This function calculates the elemental composition of a substance given by its chemical formula
+   It was a modified version of https://github.com/cgohlke/molmass/blob/master/molmass/molmass.py
+
+   :param formula: Chemical formula
+   :type formula: string
+
+   :returns: **elements** -- dictionary of elemental composition and their respective number of atoms
+   :rtype: dict
+
+   Usage:
+   ----------
+       [elements] = Element_counts(formula)
+           Examples of valid formulas are "H2O", "[2H]2O", "CH3COOH", "EtOH", "CuSO4:5H2O", "(COOH)2", "AgCuRu4(H)2[CO]12{PPh3}2", "CGCGAATTCGCG", and, "MDRGEQGLLK" .
+
+
+.. py:class:: solidsolution_thermo(**kwargs)
+
+   Class to calculate Ideal mixing model for solid-solutions, supporting multisite ideal formalism
+
+   :param X: End member mineral volume fraction or mole fraction of Mg in clinopyroxene
+   :type X: float
+   :param cpx_Ca: number of moles of Ca in clinopyroxene formula unit (=1 for Di, Hed)
+   :type cpx_Ca: float
+   :param T: Temperature [°C]
+   :type T: float, vector
+   :param P: Pressure [bar]
+   :type P: float, vector
+   :param dbaccessdic: dictionary of species from direct-access database, optional, default is speq21
+   :type dbaccessdic: dict
+   :param solidsolution_type: specify either 'All' or 'plagioclase' or 'olivine' or 'pyroxene' or 'cpx' or 'alk-feldspar' or 'biotite' to carry-out all or any solid-solution calculations, default is 'All'
+   :type solidsolution_type: string
+   :param Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified default - 'JN91'
+   :type Dielec_method: string
+
+      ThermoInUnit : string
+          specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
+      Al_Si : string
+          specify either 'pygcc' or 'Arnórsson_Stefánsson' as the input to express Al and Si species in solid solution (optional), 'Arnórsson_Stefánsson' expresses them as 'Al(OH)4-' and 'H4SiO4(aq)', respectively while pygcc uses 'Al3+' and 'SiO2(aq)', respectively if not specified default - 'pygcc'
+       rhoEG      : dict
+           dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy  (optional)
+
+   :returns: * *if 'All' is specified for solidsolution_type, each case has the follwowing prefix - AnAb_, FoFa_, EnFe_, cpx_, AlkFed_, Biotite_*
+             * **logK** (*float, vector*) -- logarithmic K values
+             * **Rxn** (*dict*) -- The calculated dictionary of reaction thermodynamic properties has the following properties:
+
+               * type: solid-solution mineral type, [-]
+               * name: solid-solution name, [K]
+               * formula: solid-solution mineral formula, [-]
+               * MW: Molecular weight, [g/mol]
+               * min: solid-solution mineral properties, ['formula', 'source date', dG[cal/ml], dH[cal/mol], S[cal/mol-K], V[cm3/mol], a[cal/mol-K], b[10^3 cal/mol/K^2], c[10^-5 cal/mol/K]]
+               * spec: list of species, [-]
+               * coeff: list of corresponding coefficients of species above, [-]
+               * nSpec: Total number of species, [-]
+               * V: Molar volume, [cm3/mol]
+               * source: Source of thermo data, [kJ/kg·K]
+               * elements: list of elements and their total numbers, [-]
+
+   Usage
+   ----------
+       The general usage of water_dielec is as follows:
+
+       (1) For water dielectric properties at any Temperature and Pressure:
+
+           ss = solidsolution_thermo(T = T, P = P, X = X, solidsolution_type = 'All', Dielec_method = 'JN91'),
+
+           where T is temperature in celsius and P is pressure in bar
+       (2) For water dielectric properties at any Temperature and density :
+
+           ss = solidsolution_thermo(T = T, rho = rho, X = X, solidsolution_type = 'All', Dielec_method = 'JN91'),
+
+           where T is temperature in celsius and rho is density in kg/m³
+       (3) For water dielectric properties at any Temperature and Pressure on steam saturation curve:
+
+           ss = solidsolution_thermo(T = T, P = 'T', X = X, solidsolution_type = 'All', Dielec_method = 'JN91'),
+
+           where T is temperature in celsius and P is assigned a quoted character 'T' to reflect steam saturation pressure
+
+           ss = solidsolution_thermo(P = P, T = 'P', X = X, solidsolution_type = 'All', Dielec_method = 'JN91'),
+
+           where P is pressure in bar and T is assigned a quoted character 'P' to reflect steam saturation temperature
+
+   .. rubric:: Examples
+
+   >>> ss = solidsolution_thermo(cpx_Ca = 0.5, X = 0.85, T = 30, P = 50,
+                                 solidsolution_type = 'All')
+   >>> ss.AnAb_logK, ss.FoFa_logK, ss.EnFe_logK, ss.cpx_logK, ss.AlkFed_logK,
+       ss.Biotite_logK
+       21.750590, 26.570902, 10.793372, 20.577152,  3.756792, 32.96363
+
+   >>> ss = solidsolution_thermo(cpx_Ca = 1, X = 0.85, T = 50, P = 100,
+                                 solidsolution_type = 'cpx')
+   >>> ss.logK
+       18.81769186
+   >>> ss.Rxn
+       {'type': 'cpx', 'name': 'Di85Hed15',
+        'formula': 'Ca1.00Mg0.85Fe0.15Si2O6', 'MW': 221.2817,
+        'min': ['Ca1.00Mg0.85Fe0.15Si2O6', ' R&H95, Stef2001',
+                -711392.7391800061, nan, 37.032850185405415, 66.369,
+                106.66383843212236, -0.019588551625239002, -16326.4818355,
+                -1052.9517208413004, 5.714746653919693e-06],
+        'spec': ['H+', 'Ca++', 'Mg++', 'Fe++', 'SiO2(aq)', 'H2O'],
+        'coeff': [-4, 1.0, 0.85, 0.15, 2, 2], 'nSpec': 6, 'V': 66.369,
+        'source': ' R&H95, Stef2001', 'elements': ['1.0000', 'Ca', '0.8500',
+                                                   'Mg', '0.1500', 'Fe', '2.0000',
+                                                   'Si', '6.0000', 'O']}
+
+   >>> ss = solidsolution_thermo(X = 0.5, T = 50, P = 100,
+                                 solidsolution_type = 'plagioclase')
+   >>> ss.logK
+       12.62488394
+   >>> ss.Rxn
+       {'type': 'plag', 'name': 'An50', 'formula': 'Ca0.50Na0.50Al1.50Si2.50O8',
+        'MW': 270.215145, 'min': ['Ca0.50Na0.50Al1.50Si2.50O8', ' R&H95,
+                                  Stef2001', -919965.222804649, nan,
+                                  47.33081919017781, 100.43, 131.53908221797,
+                                  -0.022148661567686426, 32265.761759082205,
+                                  -1316.0836615678777, 7.719885114722753e-06],
+        'spec': ['H+', 'Al+++', 'Na+', 'Ca++', 'SiO2(aq)', 'H2O'],
+        'coeff': [-6.0, 1.5, 0.5, 0.5, 2.5, 3.0], 'nSpec': 6, 'V': 100.43,
+        'source': ' R&H95, Stef2001', 'elements': ['0.5000', 'Ca', '0.5000',
+                                                   'Na', '1.5000', 'Al', '2.5000',
+                                                   'Si', '8.0000', 'O']}
+
+   .. py:attribute:: kwargs
+      
+
+      
+
+   .. py:method:: __calc__(self, **kwargs)
+
+
+   .. py:method:: __checker__(self, **kwargs)
+
+
+   .. py:method:: calclogKAnAb(self, XAn, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
+
+      This function calculates thermodynamic properties of solid solution of Plagioclase minerals
+
+      :param XAn:
+      :type XAn: volume fraction of Anorthite
+      :param TC:
+      :type TC: temperature [°C]
+      :param P:
+      :type P: pressure [bar]
+      :param dbaccessdic:
+      :type dbaccessdic: dictionary of species from direct-access database
+      :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
+      :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
+      :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
+      :type rhoEG: dictionary of water properties like  density (rho),
+
+      :returns: * **logKplag** (*logarithmic K values*)
+                * **Rxn** (*dictionary of reaction thermodynamic properties*)
+
+      Usage
+      -------
+          The general usage of calclogKAnAb without the optional argument is as follows:
+
+          (1) Not on steam saturation curve:
+
+              [logK, Rxn] = calclogKAnAb(XAn, TC, P, dbaccessdic),
+
+              where T is temperature in celsius and P is pressure in bar;
+          (2) On steam saturation curve:
+
+              [logK, Rxn] = calclogKAnAb(XAn, TC, 'T', dbaccessdic),
+
+              where T is temperature in celsius, followed with a quoted char 'T'
+
+              [logK, Rxn] = calclogKAnAb(XAn, P, 'P', dbaccessdic),
+
+              where P is pressure in bar, followed with a quoted char 'P'.
+          (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
+              condition not on steam saturation curve is as follows. Default method is 'JN91'
+
+              [logK, Rxn] = calclogKAnAb(XAn, TC, P, dbaccessdic, Dielec_method = 'FGL97')
+
+
+   .. py:method:: calclogKFoFa(self, XFo, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
+
+      This function calculates thermodynamic properties of solid solution of olivine minerals
+
+      :param XFo:
+      :type XFo: volume fraction of Forsterite
+      :param TC:
+      :type TC: temperature [°C]
+      :param P:
+      :type P: pressure [bar]
+      :param dbaccessdic:
+      :type dbaccessdic: dictionary of species from direct-access database
+      :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
+      :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
+      :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
+      :type rhoEG: dictionary of water properties like  density (rho),
+
+      :returns: * **logK_ol** (*logarithmic K values*)
+                * **Rxn** (*dictionary of reaction thermodynamic properties*)
+
+      Usage
+      -------
+          The general usage of calclogKFoFa without the optional argument is as follows:
+
+          (1) Not on steam saturation curve:
+
+              [logK, Rxn] = calclogKFoFa(XFo, TC, P, dbaccessdic),
+
+              where T is temperature in celsius and P is pressure in bar;
+          (2) On steam saturation curve:
+
+              [logK, Rxn] = calclogKFoFa(XFo, TC, 'T', dbaccessdic),
+
+              where T is temperature in celsius, followed with a quoted char 'T'
+
+              [logK, Rxn] = calclogKFoFa(XFo, P, 'P', dbaccessdic),
+
+              where P is pressure in bar, followed with a quoted char 'P'.
+          (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
+              condition not on steam saturation curve is as follows. Default method is 'JN91'
+
+              [logK, Rxn] = calclogKFoFa(XFo, TC, P, dbaccessdic, Dielec_method = 'FGL97')
+
+
+   .. py:method:: calclogKEnFe(self, XEn, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
+
+      This function calculates thermodynamic properties of solid solution of pyroxene minerals
+
+      :param XEn:
+      :type XEn: volume fraction of Enstatite
+      :param TC:
+      :type TC: temperature [°C]
+      :param P:
+      :type P: pressure [bar]
+      :param dbaccessdic:
+      :type dbaccessdic: dictionary of species from direct-access database
+      :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
+      :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
+      :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
+      :type rhoEG: dictionary of water properties like  density (rho),
+
+      :returns: * **logK_opx** (*logarithmic K values*)
+                * **Rxn** (*dictionary of reaction thermodynamic properties*)
+
+      Usage
+      -------
+          The general usage of calclogKEnFe without the optional argument is as follows:
+
+          (1) Not on steam saturation curve:
+
+              [logK, Rxn] = calclogKEnFe(XEn, TC, P, dbaccessdic),
+
+              where T is temperature in celsius and P is pressure in bar;
+          (2) On steam saturation curve:
+
+              [logK, Rxn] = calclogKEnFe(XEn, TC, 'T', dbaccessdic),
+
+              where T is temperature in celsius, followed with a quoted char 'T'
+
+              [logK, Rxn] = calclogKEnFe(XEn, P, 'P', dbaccessdic),
+
+              where P is pressure in bar, followed with a quoted char 'P'.
+          (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
+              condition not on steam saturation curve is as follows. Default method is 'JN91'
+
+              [logK, Rxn] = calclogKEnFe(XEn, TC, P, dbaccessdic, Dielec_method = 'FGL97')
+
+
+   .. py:method:: calclogKDiHedEnFe(self, nCa, XMg, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
+
+      This function calculates thermodynamic properties of solid solution of clinopyroxene
+      minerals (Di, Hed, En and Fe)
+
+      :param nCa: and must be greater than zero
+      :type nCa: number of moles of Ca in formula unit (=1 for Di, Hed)
+      :param XMg: XMg = (nMg/(nFe + nMg))
+      :type XMg: mole fraction of Mg
+      :param TC:
+      :type TC: temperature [°C]
+      :param P:
+      :type P: pressure [bar]
+      :param dbaccessdic:
+      :type dbaccessdic: dictionary of species from direct-access database
+      :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
+      :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
+      :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
+      :type rhoEG: dictionary of water properties like  density (rho),
+
+      :returns: * **logK_cpx** (*logarithmic K values*)
+                * **Rxn** (*dictionary of reaction thermodynamic properties*)
+
+      Usage
+      -------
+          The general usage of calclogKDiHedEnFe without the optional argument is as follows:
+
+          (1) Not on steam saturation curve:
+
+              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbaccessdic),
+
+              where T is temperature in celsius and P is pressure in bar;
+          (2) On steam saturation curve:
+
+              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, 'T', dbaccessdic),
+
+              where T is temperature in celsius, followed with a quoted char 'T'
+
+              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, P, 'P', dbaccessdic),
+
+              where P is pressure in bar, followed with a quoted char 'P'.
+          (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
+              condition not on steam saturation curve is as follows. Default method is 'JN91'
+
+              [logK, Rxn] = calclogKDiHedEnFe(nCa, XMg, TC, P, dbaccessdic, Dielec_method = 'FGL97')
+
+
+   .. py:method:: calclogKAbOr(self, XAb, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
+
+      This function calculates thermodynamic properties of solid solution of Alkaline-Feldspar minerals
+
+      :param XAb:
+      :type XAb: volume fraction of Albite
+      :param TC:
+      :type TC: temperature [°C]
+      :param P:
+      :type P: pressure [bar]
+      :param dbaccessdic:
+      :type dbaccessdic: dictionary of species from direct-access database
+      :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
+      :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
+      :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
+      :type rhoEG: dictionary of water properties like  density (rho),
+
+      :returns: * **logKalkfeld** (*logarithmic K values*)
+                * **Rxn** (*dictionary of reaction thermodynamic properties*)
+
+      Usage
+      -------
+          The general usage of calclogKAnAb without the optional argument is as follows:
+
+          (1) Not on steam saturation curve:
+
+              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic),
+
+              where T is temperature in celsius and P is pressure in bar;
+          (2) On steam saturation curve:
+
+              [logK, Rxn] = calclogKAbOr(XAb, TC, 'T', dbaccessdic),
+
+              where T is temperature in celsius, followed with a quoted char 'T'
+
+              [logK, Rxn] = calclogKAbOr(XAb, P, 'P', dbaccessdic),
+
+              where P is pressure in bar, followed with a quoted char 'P'.
+          (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
+              condition not on steam saturation curve is as follows. Default method is 'JN91'
+
+              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic, Dielec_method = 'FGL97')
+
+
+   .. py:method:: calclogKBiotite(self, XPh, TC, P, dbaccessdic, rhoEG, Dielec_method=None)
+
+      This function calculates thermodynamic properties of solid solution of Biotite minerals
+
+      :param XAb:
+      :type XAb: volume fraction of Albite
+      :param TC:
+      :type TC: temperature [°C]
+      :param P:
+      :type P: pressure [bar]
+      :param dbaccessdic:
+      :type dbaccessdic: dictionary of species from direct-access database
+      :param Dielec_method: dielectric constant (optional), if not specified default - 'JN91'
+      :type Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate
+      :param rhoEG: dielectric factor (E) and Gibbs Energy  (optional)
+      :type rhoEG: dictionary of water properties like  density (rho),
+
+      :returns: * **logKalkfeld** (*logarithmic K values*)
+                * **Rxn** (*dictionary of reaction thermodynamic properties*)
+
+      Usage
+      -------
+          The general usage of calclogKAnAb without the optional argument is as follows:
+
+          (1) Not on steam saturation curve:
+
+              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic),
+
+              where T is temperature in celsius and P is pressure in bar;
+          (2) On steam saturation curve:
+
+              [logK, Rxn] = calclogKAbOr(XAb, TC, 'T', dbaccessdic),
+
+              where T is temperature in celsius, followed with a quoted char 'T'
+
+              [logK, Rxn] = calclogKAbOr(XAb, P, 'P', dbaccessdic),
+
+              where P is pressure in bar, followed with a quoted char 'P'.
+          (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
+              condition not on steam saturation curve is as follows. Default method is 'JN91'
+
+              [logK, Rxn] = calclogKAbOr(XAb, TC, P, dbaccessdic, Dielec_method = 'FGL97')
+
+
+
+.. py:function:: calclogKclays(TC, P, *elem, dbaccessdic=None, group=None, cation_order=None, Dielec_method=None, ClayMintype=None, ThermoInUnit='cal', **rhoEG)
+
+   This function calculates logK values and reaction parameters of clay reactions using below references:
+
+   :param TC: Temperature [°C]
+   :type TC: float, vector
+   :param P: Pressure [bar]
+   :type P: float, vector
+   :param elem: list containing nine parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li']
+   :type elem: list
+   :param dbacessdic: dictionary of species from direct-access database, optional, default is speq21
+   :type dbacessdic: dict
+   :param group: specify the structural layering of the phyllosilicate, for layers composed of ``1 tetrahedral + 1 octahedral sheet (1:1 layer)`` - specify '7A', ``2 tetrahedral + 1 octahedral sheet (2:1 layer)`` - specify '10A', or the latter with a ``brucitic sheet in the interlayer (2:1:1 layer)``  - specify '14A' (optional), if not specified, default is based on charge balance on the cations and anions
+   :type group: string
+   :param cation_order: specify ordering of Si and Al ions either 'Eastonite', 'Ordered', 'Random', or 'HDC'  (optional), if not specified, default is based on guidelines by Vinograd (1995)
+   :type cation_order: string
+   :param Dielec_method: specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified, default - 'JN91'
+   :type Dielec_method: string
+   :param ClayMintype: specify either 'Smectite' or 'Chlorite' or 'Mica' as the clay type, if not specified default - 'Smectites'
+   :type ClayMintype: string
+   :param ThermoInUnit: specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
+   :type ThermoInUnit: string
+   :param rhoEG: dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy  (optional)
+   :type rhoEG: dict
+
+   :returns: * **logK_clay** (*float, vector*) -- logarithmic K values
+             * **Rxn** (*dict*) -- dictionary of reaction thermodynamic properties
+
+   Usage
+   -------
+       The general usage of calclogKclays is as follows:
+
+       (1) Without the optional arguments, not on steam saturation curve:
+
+           [logK, Rxn] = calclogKclays(TC, P, *elem),
+
+           where T is temperature in celsius and P is pressure in bar;
+       (2) Without the optional arguments, on steam saturation curve:
+
+           [logK, Rxn] = calclogKclays(TC, 'T', *elem),
+
+           where T is temperature in celsius, followed with a quoted char 'T'
+
+           [logK, Rxn] = calclogKclays(P, 'P', *elem),
+
+           where P is pressure in bar, followed with a quoted char 'P'.
+       (3) Meanwhile, usage with any specific dielectric constant method ('FGL97') for
+           condition not on steam saturation curve is as follows. Default method is 'JN91'
+
+           [logK, Rxn] = calclogKclays(TC, P, *elem, dbacessdic = dbacessdic, group = '10A', cation_order = 'HDC', Dielec_method = 'FGL97')
+
+   .. rubric:: Examples
+
+   >>> logK, Rxn = calclogKclays(50, 'T', *['Clinochlore', '3', '2', '0', '0',
+                                            '5', '0', '0', '0', '0'],
+                                 group = '14A')
+   >>> logK
+       57.56820225
+
+   .. rubric:: References
+
+   (1) Blanc, P., Vieillard, P., Gailhanou, H., Gaboreau, S., Gaucher, É., Fialips, C. I.,
+       Madé, B & Giffaut, E. (2015). A generalized model for predicting the thermodynamic properties
+       of clay minerals. American journal of science, 315(8), 734-780.
+
+   (2) Blanc, P., Gherardi, F., Vieillard, P., Marty, N. C. M., Gailhanou, H., Gaboreau, S.,
+       Letat, B., Geloni, C., Gaucher, E.C. and Madé, B. (2021). Thermodynamics for clay minerals:
+       calculation tools and application to the case of illite/smectite interstratified minerals.
+       Applied Geochemistry, 104986.
+
+   (3) Vinograd, V.L., 1995. Substitution of [4]Al in layer silicates: Calculation of the Al-Si
+       configurational entropy according to 29Si NMR Spectra. Physics and Chemistry of Minerals
+       22, 87-98.
+
+
+.. py:data:: MW
    
 
    

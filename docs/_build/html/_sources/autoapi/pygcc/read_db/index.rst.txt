@@ -44,6 +44,7 @@ Functions
 .. autoapisummary::
 
    pygcc.read_db.findcodecs
+   pygcc.read_db.dbaccess_modify
 
 
 
@@ -186,5 +187,22 @@ Attributes
       ----------
       [sourcedic, specielist, chargedic, MWdic, block_info, Elemlist, act_param] = readSourceEQ36db(sourcedb)
 
+
+
+.. py:function:: dbaccess_modify(in_filename=None, dbaccess=None, out_filename=None)
+
+   This function loads thermodynamic data from a csv files and appends/replace the corresponding species thermo data and writes out a modified direct-access database
+   :param in_filename: CSV filename and location
+   :type in_filename: string
+   :param dbaccess: direct-access database filename and location  (optional)
+   :type dbaccess: string
+   :param out_filename: newly modified direct-access database filename and location    (optional)
+   :type out_filename: string
+
+   :rtype: Output the newly modified direct-access with filename described in 'out_filename' if specified.
+
+   .. rubric:: Examples
+
+   >>> dbaccess_modify(in_filename = 'geotpd_data_block_cr.csv')
 
 

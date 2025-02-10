@@ -1578,10 +1578,10 @@ Ethanol(aq)
 
 Ethylbenzene(aq)
 *    formula= C6H5C2H5
-     charge=  0.0      ion size=  3.0 A      mole wt.=  106.1667 g
+     charge=  0.0      ion size=  3.0 A      mole wt.=  318.5022 g
      4 species in reaction
-     -10.5000 O2(aq)          -3.0000 H2O              8.0000 H+            
-       8.0000 HCO3-         
+     -31.5000 O2(aq)          -9.0000 H2O             24.0000 H+            
+      24.0000 HCO3-         
      2418.0764  2209.0269  1963.7951  1734.8557
      1636.1718  1503.7476  1157.6789  1019.2019
 *    gflag = 1 [reported delG0f used]
@@ -2886,10 +2886,10 @@ n-Butane(aq)
 
 n-Butylbenzene(aq)
 *    formula= C6H5C4H9
-     charge=  0.0      ion size=  3.0 A      mole wt.=  134.2219 g
+     charge=  0.0      ion size=  3.0 A      mole wt.=  402.6635 g
      4 species in reaction
-     -13.5000 O2(aq)          -3.0000 H2O             10.0000 H+            
-      10.0000 HCO3-         
+     -40.5000 O2(aq)          -9.0000 H2O             30.0000 H+            
+      30.0000 HCO3-         
      3124.4463  2854.7664  2538.5470  2243.4850
      2116.3512  1945.8092  1500.5748  1322.7319
 *    gflag = 1 [reported delG0f used]
@@ -2961,10 +2961,10 @@ n-Octane(aq)
 
 n-Octylbenzene(aq)
 *    formula= C6H5C8H17
-     charge=  0.0      ion size=  3.0 A      mole wt.=  190.3299 g
+     charge=  0.0      ion size=  3.0 A      mole wt.=  570.9860 g
      4 species in reaction
-     -19.5000 O2(aq)          -3.0000 H2O             14.0000 H+            
-      14.0000 HCO3-         
+     -58.5000 O2(aq)          -9.0000 H2O             42.0000 H+            
+      42.0000 HCO3-         
      4538.7602  4147.6746  3689.3287  3261.8989
      3077.8185  2830.9851  2187.3239  1930.7466
 *    gflag = 1 [reported delG0f used]
@@ -3093,7 +3093,7 @@ o-Toluic_acid(aq)
 *         S0PrTr =     56.800  cal/(mol*K)
 
 1-Octanol(aq)
-*    formula= C8H17OH
+*    formula= C8H12OH
      charge=  0.0      ion size=  3.0 A      mole wt.=  130.2303 g
      2 species in reaction
       -3.0000 H2O              4.0000 Ethanol(aq)     
@@ -7211,7 +7211,7 @@ H2S(aq)
 *         S0PrTr =     30.000  cal/(mol*K)
 
 H2SeO3(aq)
-*    formula= H2SeO3(0)
+*    formula= HSeO3(0)
      charge=  0.0      ion size=  3.0 A      mole wt.=  128.9741 g
      2 species in reaction
        1.0000 SeO3--           2.0000 H+            
@@ -7553,20 +7553,6 @@ HSiO3-
      charge= -1.0      ion size=  4.0 A      mole wt.=   77.0916 g
      3 species in reaction
       -1.0000 H+               1.0000 H2O              1.0000 SiO2(aq)      
-       10.4732     9.8493     9.2861     8.9241
-        8.8224     8.7454     8.9698     9.3263
-*    gflag = 1 [reported delG0f used]
-*    extrapolation algorithm: supcrt92 [92joh/oel]
-*    reference-state data source = 5
-*         delG0f =   -242.801  kcal/mol
-*         delH0f =   -273.872  kcal/mol
-*         S0PrTr =      5.000  cal/(mol*K)
-
-Si2O4(aq)
-*    formula= Si2O4(0)
-     charge= 0.0      ion size=  4.0 A      mole wt.=   120.1690 g
-     1 species in reaction
-      2.0000 SiO2(aq)
        10.4732     9.8493     9.2861     8.9241
         8.8224     8.7454     8.9698     9.3263
 *    gflag = 1 [reported delG0f used]
@@ -13405,7 +13391,7 @@ Anthophyllite                       type=
 *         S0PrTr =    128.600  cal/(mol*K)
 
 Antigorite                       type= Kaolinite
-     formula=  Mg48Si34O85(OH)62
+     formula=  Mg48Si24O85(OH)62
      mole vol.=   1754.700 cc      mole wt.=  4535.9511 g
      4 species in reaction
  -96.0000 H+              34.0000 SiO2(aq)        48.0000 Mg++          
@@ -13881,42 +13867,11 @@ Cristobalite(beta)                       type=
 *         delH0f =   -215.675  kcal/mol
 *         S0PrTr =     11.963  cal/(mol*K)
 
-Cronstedtite-7A                 type=
-     formula= Fe2Fe2SiO5(OH)4
-     mole vol.=    0.000 cc      mole wt.=  399.4999 g
-     5 species in reaction
--10.0000 H+                  1.0000 SiO2(aq)            2.0000 Fe++
-  2.0000 Fe+++               7.0000 H2O
-        20.0348   16.2603   11.6511    7.3151
-         2.9102   -0.7721   -4.0674   -7.2379
-*    gflag = 1 [reported delG0f used]
-*    extrapolation algorithm: Cp integration
-*    reference-state data source = 78wol
-*         delG0f =   -625.801 kcal/mol
-*         delH0f =   -697.413 kcal/mol
-*         S0PrTr =     73.500 cal/(mol*K)
-
-Cronstedtite                    type= 
-     formula=  Fe2Fe(FeSi)O5(OH)4
-     mole vol.=   76.800 cc      mole wt.=  399.4999 g
-     5 species in reaction
--10.0000 H+                  1.0000 SiO2(aq)            2.0000 Fe++
-  2.0000 Fe+++               7.0000 H2O
-         -2.3395    -1.9103    -1.3480    -0.7577
-         -0.4826    -0.0945     0.9914     1.4044
-*    gflag = 1 [reported delG0f used]
-*    extrapolation algorithm: supcrt92 [92joh/oel]
-*    reference-state data source = 1
-*         delG0f =    -35.384  kcal/mol
-*         delH0f =    -40.830  kcal/mol
-*         S0PrTr =     22.080  cal/(mol*K)
-
-Mg-Cronstedtite                  type= 
-     formula=  Mg2Fe(FeSi)O5(OH)4
-     mole vol.=   0.000 cc      mole wt.=  336.4084 g
-     5 species in reaction
--10.0000 H+                  1.0000 SiO2(aq)            2.0000 Mg++
-  2.0000 Fe+++               7.0000 H2O
+Cuprite                       type= 
+     formula=  Cu2O
+     mole vol.=   23.437 cc      mole wt.=  143.0914 g
+     3 species in reaction
+  -2.0000 H+               1.0000 H2O              2.0000 Cu+           
          -2.3395    -1.9103    -1.3480    -0.7577
          -0.4826    -0.0945     0.9914     1.4044
 *    gflag = 1 [reported delG0f used]
@@ -14131,21 +14086,6 @@ Gold                       type=
 *         delH0f =      0.000  kcal/mol
 *         S0PrTr =     11.330  cal/(mol*K)
 
-Graphite                         type= 
-     formula= 
-     mole vol.=    5.2980 cc      mole wt.=   12.0110 g
-     4 species in reaction
-       -1.000 H2O            -1.000 O2(aq)          1.000 H+      
-        1.000 HCO3-   
-       500.0000    500.0000    500.0000    500.0000
-       500.0000    500.0000    500.0000    500.0000
-*    gflag = 1 [reported delG0f used]
-*    extrapolation algorithm: supcrt92 [92joh/oel]
-*    reference-state data source = 78hel/del
-*         delG0f =      0.000 kcal/mol
-*         delH0f =      0.000 kcal/mol
-*         S0PrTr =      1.372 cal/(mol*K)
-
 Greenalite                       type= Kaolinite
      formula=  Fe3Si2O5(OH)4
      mole vol.=   105.210 cc      mole wt.=  371.7384 g
@@ -14250,13 +14190,14 @@ Hematite                       type=
 *         S0PrTr =     20.940  cal/(mol*K)
 
 Heulandite                       type= Zeolite
-     formula=  CaAl2Si7O18:6H2O
-     mole vol.=   316.370 cc      mole wt.=  686.7184 g
-     5 species in reaction
-  -8.0000 H+              1.0000 Ca++            2.0000 Al+++                  
-   7.0000 SiO2(aq)        10.0000 H2O           
-          4.3600     2.8800     0.7500     -1.2600
-         -3.3400    -6.2300    -7.7900     -9.3100
+     formula=  Ba.065Sr.175Ca.585K.132Na.383Al2.165Si6.835O18:6
+     mole vol.=   316.370 cc      mole wt.=  708.1317 g
+     9 species in reaction
+  -8.6600 H+               0.0650 Ba++             0.1320 K+            
+   0.1750 Sr++             0.3830 Na+              0.5850 Ca++          
+   2.1650 Al+++            6.8350 SiO2(aq)        10.3300 H2O           
+       1878.6143  1718.3021  1534.5149  1367.0013
+       1296.1118  1202.3995   967.5254   880.2415
 *    gflag = 1 [reported delG0f used]
 *    extrapolation algorithm: supcrt92 [92joh/oel]
 *    reference-state data source = 1

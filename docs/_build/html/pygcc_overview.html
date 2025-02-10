@@ -26,7 +26,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="General Usage" href="Example_1.html" />
-    <link rel="prev" title="Installation" href="installation.html" /> 
+    <link rel="prev" title="Tutorial" href="Tutorial_video.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -47,6 +47,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial_video.html">Tutorial</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">An Introduction to pyGeochemCalc</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview-a-class-anchor-id-section-1-a">Overview  <a class="anchor" id="section_1"></a></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#installing-and-loading-pygeochemcalc-a-class-anchor-id-section-1-1-a">Installing and loading pyGeochemCalc  <a class="anchor" id="section_1_1"></a></a></li>
@@ -169,7 +170,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Helgeson_activity&#39;, &#39;Henry_duan_sun&#39;, &#39;ZhangDuan&#39;, &#39;aw_correlation&#39;, &#39;calcRxnlogK&#39;, &#39;calc_elem_count_molewt&#39;, &#39;calclogKclays&#39;, &#39;co2fugacity&#39;, &#39;convert_temperature&#39;, &#39;db_reader&#39;, &#39;derivative&#39;, &#39;drummondgamma&#39;, &#39;gamma_correlation&#39;, &#39;heatcap&#39;, &#39;iapws95&#39;, &#39;importconfile&#39;, &#39;info&#39;, &#39;outputfmt&#39;, &#39;readIAPWS95data&#39;, &#39;roundup_hundredth&#39;, &#39;roundup_tenth&#39;, &#39;solidsolution_thermo&#39;, &#39;supcrtaq&#39;, &#39;water_dielec&#39;, &#39;write_database&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Helgeson_activity&#39;, &#39;Henry_duan_sun&#39;, &#39;OrderedDict&#39;, &#39;ZhangDuan&#39;, &#39;aw_correlation&#39;, &#39;calcRxnlogK&#39;, &#39;calc_elem_count_molewt&#39;, &#39;calclogKclays&#39;, &#39;co2fugacity&#39;, &#39;convert_temperature&#39;, &#39;db_reader&#39;, &#39;derivative&#39;, &#39;drummondgamma&#39;, &#39;gamma_correlation&#39;, &#39;heatcap&#39;, &#39;iapws95&#39;, &#39;importconfile&#39;, &#39;info&#39;, &#39;outputfmt&#39;, &#39;readIAPWS95data&#39;, &#39;roundup_hundredth&#39;, &#39;roundup_tenth&#39;, &#39;solidsolution_thermo&#39;, &#39;supcrtaq&#39;, &#39;water_dielec&#39;, &#39;write_database&#39;]
 </pre></div>
 </div>
 </div>
@@ -227,7 +228,7 @@ Helgeson_activity(TC, P, I, Dielec_method=None, **rhoEDB)
 <li><p><em>source:</em></p>
 <ul>
 <li><p><strong>data0.dat</strong> is a sample source thermodynamic database for EQ3/6</p></li>
-<li><p><strong>thermo.com.dat</strong> and <strong>thermo.com.tdat</strong> and <strong>thermo_latest.tdat</strong> are sample source thermodynamic databases for older (Oct94), previous (Apr20) and latest (Mar21) formats of GWB respectively.</p></li>
+<li><p><strong>thermo.com.dat</strong> and <strong>thermo.com.tdat</strong> and <strong>thermo_latest.tdat</strong> are sample source thermodynamic databases for older (oct94), previous (apr20) and latest (mar21) formats of GWB respectively.  <strong><em>Only these legacy dataset formats “apr20”, “jan19”, “jul17”, and “oct94” are currently supported by pygcc</em></strong>.</p></li>
 </ul>
 </li>
 </ul>
@@ -288,6 +289,14 @@ speq21.dat
                       <span class="c1">#, dbBerman_dir = &#39;./database/berman.dat&#39;</span>
                       <span class="c1">#, dbHP_dir = &#39;./database/supcrtbl.dat&#39;</span>
                      <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Another option is to refer to the name of a default source database, such as <code class="docutils literal notranslate"><span class="pre">'thermo.com',</span> <span class="pre">'thermo.2021',</span> <span class="pre">and</span> <span class="pre">'thermo_latest'</span></code>, as shown below</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Db_thermo</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">(</span><span class="n">sourcedb</span> <span class="o">=</span> <span class="s1">&#39;thermo.com&#39;</span><span class="p">,</span> <span class="n">sourceformat</span> <span class="o">=</span> <span class="s1">&#39;GWB&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -372,13 +381,13 @@ speq21.dat
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array(100.00385801),
- -60206.765249165524,
- 26.189860494061463,
+ -60206.76524916551,
+ 26.18986049406147,
  -64559.264477311226,
- -61032.47210455878,
+ -61032.47210455877,
  0.0051379794852494795,
  array(0.00011983),
- 19.816052259823447)
+ 19.816052259823458)
 </pre></div>
 </div>
 </div>
@@ -438,10 +447,10 @@ equilibrium) curve, extending from the triple point (273.16K, 0.00611657 bar) up
   warnings.warn(msg, RuntimeWarning)
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bbox([[112.68, 36.0], [854.951554054054, 253.44]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bbox([[112.68, 36.0], [854.951554054054, 735.3340540540539]])
 </pre></div>
 </div>
-<img alt="_images/pygcc_overview_28_2.png" src="_images/pygcc_overview_28_2.png" />
+<img alt="_images/pygcc_overview_30_2.png" src="_images/pygcc_overview_30_2.png" />
 </div>
 </div>
 <p>Here, the users can specify either a temperature or pressure value and the implementation of this type can solve for corresponding pressure (<code class="docutils literal notranslate"><span class="pre">T</span></code>) or temperature (<code class="docutils literal notranslate"><span class="pre">P</span></code>) respectively and their respective vapor and liquid densities. These functions have been implemented in <code class="docutils literal notranslate"><span class="pre">iapws95</span></code> to calculate thermodynamic properties when saturation curve properties are requested. An example of utilizing <code class="docutils literal notranslate"><span class="pre">iapws95</span></code> for calculating properties at temperatures ranging from 0.01°C to 300°C and saturation pressures is as follows:</p>
@@ -580,7 +589,7 @@ equilibrium) curve, extending from the triple point (273.16K, 0.00611657 bar) up
  array([0.71764521]),
  array([0.35859842]),
  array([0.04452579]),
- array([1.15231321]),
+ array([0.2115715]),
  array([7.02321141]),
  array([52.29367986]),
  array([-66.08043662]))
@@ -674,14 +683,14 @@ equilibrium) curve, extending from the triple point (273.16K, 0.00611657 bar) up
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ps</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">(</span><span class="n">dbBerman_dir</span> <span class="o">=</span> <span class="s1">&#39;./database/Berman.dat&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ps</span> <span class="o">=</span> <span class="n">db_reader</span><span class="p">(</span><span class="n">dbBerman_dir</span> <span class="o">=</span> <span class="s1">&#39;./database/berman.dat&#39;</span><span class="p">)</span>
 <span class="n">sp</span> <span class="o">=</span> <span class="n">heatcap</span><span class="p">(</span> <span class="n">T</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">Species</span> <span class="o">=</span> <span class="s1">&#39;Quartz&#39;</span><span class="p">,</span> <span class="n">Species_ppt</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">dbaccessdic</span><span class="p">[</span><span class="s1">&#39;Quartz&#39;</span><span class="p">],</span> <span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;berman88&#39;</span><span class="p">)</span>
 <span class="n">sp</span><span class="o">.</span><span class="n">dG</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">dCp</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Duplicate found for species &quot;Cordierite&quot; in Berman.dat
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Duplicate found for species &quot;Cordierite&quot; in berman.dat
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-204972.30130472]), array([11.51694157]))
@@ -722,7 +731,7 @@ Duplicate found for species &quot;Arsenolite&quot; in supcrtbl.dat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([17.81356522]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([17.72530764]),
  {&#39;type&#39;: &#39;cpx&#39;,
   &#39;name&#39;: &#39;Di45Hed19En25Fe11&#39;,
   &#39;formula&#39;: &#39;Ca0.65Mg0.95Fe0.41Si2O6&#39;,
@@ -766,7 +775,7 @@ Duplicate found for species &quot;Arsenolite&quot; in supcrtbl.dat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([17.81356522]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([17.72530764]),
  {&#39;type&#39;: &#39;cpx&#39;,
   &#39;name&#39;: &#39;Di45Hed19En25Fe11&#39;,
   &#39;formula&#39;: &#39;Ca0.65Mg0.95Fe0.41Si2O6&#39;,
@@ -813,7 +822,7 @@ Duplicate found for species &quot;Arsenolite&quot; in supcrtbl.dat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([40.01276655]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([39.88038017]),
  {&#39;type&#39;: &#39;Smectites&#39;,
   &#39;name&#39;: &#39;Chamosite&#39;,
   &#39;formula&#39;: &#39;Fe5.00Al2.00Si3.0O10(OH)8&#39;,
@@ -858,7 +867,7 @@ Duplicate found for species &quot;Arsenolite&quot; in supcrtbl.dat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([40.01276655]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([39.88038017]),
  {&#39;type&#39;: &#39;Smectite&#39;,
   &#39;name&#39;: &#39;Chamosite&#39;,
   &#39;formula&#39;: &#39;Fe5.00Al2.00Si3.0O10(OH)8&#39;,
@@ -906,7 +915,7 @@ Duplicate found for species &quot;Arsenolite&quot; in supcrtbl.dat
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/pygcc_overview_59_0.png" src="_images/pygcc_overview_59_0.png" />
+<img alt="_images/pygcc_overview_61_0.png" src="_images/pygcc_overview_61_0.png" />
 </div>
 </div>
 <p>This approach is implemented in <code class="docutils literal notranslate"><span class="pre">calcRxnlogK</span></code> and can be activated by setting <code class="docutils literal notranslate"><span class="pre">densityextrap</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>. Examples are shown below</p>
@@ -934,7 +943,7 @@ Duplicate found for species &quot;Arsenolite&quot; in supcrtbl.dat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([9.97884849])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([14.31769536])
 </pre></div>
 </div>
 </div>
@@ -949,7 +958,7 @@ Duplicate found for species &quot;Arsenolite&quot; in supcrtbl.dat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([36.02176691])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([41.68113239])
 </pre></div>
 </div>
 </div>
@@ -958,7 +967,7 @@ Duplicate found for species &quot;Arsenolite&quot; in supcrtbl.dat
 </section>
 <section id="generating-thermodynamic-database-a-class-anchor-id-section-5-a">
 <h2>Generating thermodynamic database      <a class="anchor" id="section_5"></a><a class="headerlink" href="#generating-thermodynamic-database-a-class-anchor-id-section-5-a" title="Permalink to this headline"></a></h2>
-<p>Generating database for any of <code class="docutils literal notranslate"><span class="pre">GWB</span></code>, <code class="docutils literal notranslate"><span class="pre">EQ3/6</span></code>, <code class="docutils literal notranslate"><span class="pre">ToughReact</span></code>, <code class="docutils literal notranslate"><span class="pre">Pflotran</span></code> or Phreeqc (under development) can be easily achieved through the function <code class="docutils literal notranslate"><span class="pre">write_database</span></code>. This function requires several inputs some of which are compulsory - temperature [°C], pressure [bar] and dataset format (<code class="docutils literal notranslate"><span class="pre">GWB</span></code>, <code class="docutils literal notranslate"><span class="pre">EQ36</span></code>, <code class="docutils literal notranslate"><span class="pre">ToughReact</span></code>, or <code class="docutils literal notranslate"><span class="pre">Pflotran</span></code>). If the users want default solid_solution and clay_minerals included, then the inputs have to include <em>‘Yes’</em> or <em>True</em> option. By default, density extrapolation is included to generate equilibrium constants for regions outside the revised HKF applicability, however, if the users want to turn off density extrapolation, this can be achieved by setting <code class="docutils literal notranslate"><span class="pre">densityextrap</span> <span class="pre">=</span> <span class="pre">'No'</span></code>. Meanwhile, for <code class="docutils literal notranslate"><span class="pre">ToughReact</span></code> and <code class="docutils literal notranslate"><span class="pre">Pflotran</span></code>, their source database can be either of <code class="docutils literal notranslate"><span class="pre">GWB</span></code> or <code class="docutils literal notranslate"><span class="pre">EQ3/6</span></code> and this option needs to included as part of the inputs through <em>‘sourceformat’</em>, see example below.</p>
+<p>Generating database for any of <code class="docutils literal notranslate"><span class="pre">GWB</span></code>, <code class="docutils literal notranslate"><span class="pre">EQ3/6</span></code>, <code class="docutils literal notranslate"><span class="pre">ToughReact</span></code>, <code class="docutils literal notranslate"><span class="pre">Pflotran</span></code> or Phreeqc (under development) can be easily achieved through the function <code class="docutils literal notranslate"><span class="pre">write_database</span></code>. This function requires several inputs some of which are compulsory - temperature [°C], pressure [bar] and dataset format (<code class="docutils literal notranslate"><span class="pre">GWB</span></code>, <code class="docutils literal notranslate"><span class="pre">EQ36</span></code>, <code class="docutils literal notranslate"><span class="pre">ToughReact</span></code>, or <code class="docutils literal notranslate"><span class="pre">Pflotran</span></code>). <em>Note: GWB requires exactly 8 temperature and pressure pairs</em>. If the users want default solid_solution and clay_minerals included, then the inputs have to include <em>‘Yes’</em> or <em>True</em> option. By default, density extrapolation is included to generate equilibrium constants for regions outside the revised HKF applicability, however, if the users want to turn off density extrapolation, this can be achieved by setting <code class="docutils literal notranslate"><span class="pre">densityextrap</span> <span class="pre">=</span> <span class="pre">'No'</span></code>. Meanwhile, for <code class="docutils literal notranslate"><span class="pre">ToughReact</span></code> and <code class="docutils literal notranslate"><span class="pre">Pflotran</span></code>, their source database can be either of <code class="docutils literal notranslate"><span class="pre">GWB</span></code> or <code class="docutils literal notranslate"><span class="pre">EQ3/6</span></code> and this option needs to included as part of the inputs through <em>‘sourceformat’</em>, see example below.</p>
 <p>A typical example of the command to generate <strong>GWB</strong> using 0°C to 350°C temperature range, 300 bar and nCa of 0.5 and turning on the inclusion of solid_solution and clay minerals thermodynamics is as follows:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -967,14 +976,10 @@ Duplicate found for species &quot;Arsenolite&quot; in supcrtbl.dat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:2331: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
-  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x19d5b9b2c08&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1cefc6cbc48&gt;
 </pre></div>
 </div>
 </div>
@@ -992,7 +997,7 @@ Duplicate found for species &quot;Arsenolite&quot; in supcrtbl.dat
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new GWB database is ready for download
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x19d5c497988&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1cefca92688&gt;
 </pre></div>
 </div>
 </div>
@@ -1007,14 +1012,10 @@ Duplicate found for species &quot;Arsenolite&quot; in supcrtbl.dat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:3409: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
-  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new EQ3/6 database is ready for download
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x19d5cd21648&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1cefcc8ea88&gt;
 </pre></div>
 </div>
 </div>
@@ -1028,14 +1029,10 @@ Duplicate found for species &quot;Arsenolite&quot; in supcrtbl.dat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:4426: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
-  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new ToughReact database is ready for download
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x19d5cd21348&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1cefcc8ee48&gt;
 </pre></div>
 </div>
 </div>
@@ -1049,14 +1046,10 @@ Duplicate found for species &quot;Arsenolite&quot; in supcrtbl.dat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:4010: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
-  warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new Pflotran database is ready for download
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x19d5cd619c8&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1cefd5185c8&gt;
 </pre></div>
 </div>
 </div>
@@ -1066,7 +1059,7 @@ Duplicate found for species &quot;Arsenolite&quot; in supcrtbl.dat
 <h2>Citation and contact information     <a class="anchor" id="section_6"></a><a class="headerlink" href="#citation-and-contact-information-a-class-anchor-id-section-6-a" title="Permalink to this headline"></a></h2>
 <p>If you use pyGeochemCalc (pygcc) for publications, consider citing the following paper:</p>
 <blockquote>
-<div><p>Awolayo, A. N. and Tutolo, B. M. (2022). “PyGeochemCalc: A python package for geochemical thermodynamic calculations and software-specific thermodynamic database production from ambient to deep Earth conditions” in prep.</p>
+<div><p>Awolayo, A. N. and Tutolo, B. M. (2022). “PyGeochemCalc: A python package for geochemical thermodynamic calculations and software-specific thermodynamic database production from ambient to deep Earth conditions”. Chemical Geology, 606 (120984). <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0009254122002789">doi:10.1016/j.chemgeo.2022.120984</a></p>
 </div></blockquote>
 <p>If you found a bug or have questions that are not answered in this documentation, please contact:</p>
 <p>“<code class="docutils literal notranslate"><span class="pre">Adedapo</span> <span class="pre">Awolayo</span></code> <a class="reference external" href="mailto:adedapo&#46;awolayo&#37;&#52;&#48;ucalgary&#46;ca">mailto:adedapo<span>&#46;</span>awolayo<span>&#64;</span>ucalgary<span>&#46;</span>ca</a>”</p>
@@ -1107,7 +1100,7 @@ Duplicate found for species &quot;Arsenolite&quot; in supcrtbl.dat
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Tutorial_video.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="Example_1.html" class="btn btn-neutral float-right" title="General Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

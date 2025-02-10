@@ -6,6 +6,18 @@ All notable changes to this project are documented here. To ensure that they are
 pip install --upgrade pygcc
 ```
 
+## v1.3.3 (25/01/2025)
+
+#### Added
+
+#### Changed
+   
+#### Fixed
+
+- we have fixed the extrapolation error at higher pressures related to Helgeson_activity function.
+  
+#### Removed
+
 ## v1.3.1 (11/11/2024)
 
 #### Added

@@ -1,2 +1,621 @@
+Acetic_acid(aq)
+   Acetic_acid(aq)
+   Acetic
+   acid(aq)
+Acetone(aq)
+   Acetone(aq)
+   Acetic
+   acid(aq)
+Benzene(aq)
+   Benzene(aq)
+   Acetic
+   acid(aq)
+Butanoic_acid(aq)
+   Butanoic_acid(aq)
+   Butanoic
+   acid(aq)
+   Acetic
+Ethanamine(aq)
+   Ethanamine(aq)
+   Acetic
+   acid(aq)
+Ethane(aq)
+   Ethane(aq)
+   Acetic
+   acid(aq)
+Ethanol(aq)
+   Ethanol(aq)
+   Acetic
+   acid(aq)
+Ethylene(aq)
+   Ethylene(aq)
+   Acetic
+   acid(aq)
+Ethyne(aq)
+   Ethyne(aq)
+   Acetic
+   acid(aq)
+Formic_acid(aq)
+   Formic_acid(aq)
+   Formic
+   acid(aq)
+   Acetic
+Glycine(aq)
+   Glycine(aq)
+   Acetic
+   acid(aq)
+Pentanoic_acid(aq)
+   Pentanoic_acid(aq)
+   Pentanoic
+   acid(aq)
+   Acetic
+Propanoic_acid(aq)
+   Propanoic_acid(aq)
+   Propanoic
+   acid(aq)
+   Acetic
+Toluene(aq)
+   Toluene(aq)
+   Acetic
+   acid(aq)
+1-Butanamine(aq)
+   1-Butanamine(aq)
+1-Heptanamine(aq)
+   1-Heptanamine(aq)
+1-Hexanamine(aq)
+   1-Hexanamine(aq)
+1-Octanamine(aq)
+   1-Octanamine(aq)
+1-Propanamine(aq)
+   1-Propanamine(aq)
+2-Butanone(aq)
+   2-Butanone(aq)
+2-Heptanone(aq)
+   2-Heptanone(aq)
+2-Hexanone(aq)
+   2-Hexanone(aq)
+2-Octanone(aq)
+   2-Octanone(aq)
+2-Pentanone(aq)
+   2-Pentanone(aq)
+Acetaldehyde(aq)
+   Acetaldehyde(aq)
+   Acetic
+   acid(aq)
+Acetamide(aq)
+   Acetamide(aq)
+   Acetic
+   acid(aq)
+Acetate
+   Acetate
+   Acetic
+   acid(aq)
+Ag(CH3COO)2-
+   Ag(CH3COO)2-
+   Acetic
+   acid(aq)
+AgCH3COO(aq)
+   AgCH3COO(aq)
+   Acetic
+   acid(aq)
+Al(CH3COO)2+
+   Al(CH3COO)2+
+   Acetic
+   acid(aq)
+AlCH3COO++
+   AlCH3COO++
+   Acetic
+   acid(aq)
+Aspartic_acid(aq)
+   Aspartic_acid(aq)
+   Aspartic
+   acid(aq)
+Au(CH3COO)2-
+   Au(CH3COO)2-
+   Acetic
+   acid(aq)
+AuCH3COO(aq)
+   AuCH3COO(aq)
+   Acetic
+   acid(aq)
+Ba(CH3COO)2(aq)
+   Ba(CH3COO)2(aq)
+   Acetic
+   acid(aq)
+BaCH3COO+
+   BaCH3COO+
+   Acetic
+   acid(aq)
+Be(CH3COO)2(aq)
+   Be(CH3COO)2(aq)
+   Acetic
+   acid(aq)
+BeCH3COO+
+   BeCH3COO+
+   Acetic
+   acid(aq)
+Butanal(aq)
+   Butanal(aq)
+   Acetic
+   acid(aq)
+Ca(CH3COO)2(aq)
+   Ca(CH3COO)2(aq)
+   Acetic
+   acid(aq)
+CaCH3COO+
+   CaCH3COO+
+   Acetic
+   acid(aq)
+Cd(CH3COO)2(aq)
+   Cd(CH3COO)2(aq)
+   Acetic
+   acid(aq)
+Cd(CH3COO)3-
+   Cd(CH3COO)3-
+   Acetic
+   acid(aq)
+CdCH3COO+
+   CdCH3COO+
+   Acetic
+   acid(aq)
+Ce(CH3COO)2+
+   Ce(CH3COO)2+
+   Acetic
+   acid(aq)
+Ce(CH3COO)3(aq)
+   Ce(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+CeCH3COO++
+   CeCH3COO++
+   Acetic
+   acid(aq)
+Co(CH3COO)2(aq)
+   Co(CH3COO)2(aq)
+   Acetic
+   acid(aq)
+Co(CH3COO)3-
+   Co(CH3COO)3-
+   Acetic
+   acid(aq)
+CoCH3COO+
+   CoCH3COO+
+   Acetic
+   acid(aq)
+Cs(CH3COO)2-
+   Cs(CH3COO)2-
+   Acetic
+   acid(aq)
+CsCH3COO(aq)
+   CsCH3COO(aq)
+   Acetic
+   acid(aq)
+Cu(CH3COO)2(aq)
+   Cu(CH3COO)2(aq)
+   Acetic
+   acid(aq)
+Cu(CH3COO)2-
+   Cu(CH3COO)2-
+   Acetic
+   acid(aq)
+Cu(CH3COO)3-
+   Cu(CH3COO)3-
+   Acetic
+   acid(aq)
+CuCH3COO(aq)
+   CuCH3COO(aq)
+   Acetic
+   acid(aq)
+CuCH3COO+
+   CuCH3COO+
+   Acetic
+   acid(aq)
+Decanal(aq)
+   Decanal(aq)
+   Acetic
+   acid(aq)
+Dy(CH3COO)2+
+   Dy(CH3COO)2+
+   Acetic
+   acid(aq)
+Dy(CH3COO)3(aq)
+   Dy(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+DyCH3COO++
+   DyCH3COO++
+   Acetic
+   acid(aq)
+Er(CH3COO)2+
+   Er(CH3COO)2+
+   Acetic
+   acid(aq)
+Er(CH3COO)3(aq)
+   Er(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+ErCH3COO++
+   ErCH3COO++
+   Acetic
+   acid(aq)
+Ethylacetate(aq)
+   Ethylacetate(aq)
+   Acetic
+   acid(aq)
+Eu(CH3COO)2+
+   Eu(CH3COO)2+
+   Acetic
+   acid(aq)
+Eu(CH3COO)3(aq)
+   Eu(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+EuCH3COO++
+   EuCH3COO++
+   Acetic
+   acid(aq)
+Fe(CH3COO)2(aq)
+   Fe(CH3COO)2(aq)
+   Acetic
+   acid(aq)
+FeCH3COO+
+   FeCH3COO+
+   Acetic
+   acid(aq)
+Formaldehyde(aq)
+   Formaldehyde(aq)
+   Acetic
+   acid(aq)
+Gd(CH3COO)2+
+   Gd(CH3COO)2+
+   Acetic
+   acid(aq)
+Gd(CH3COO)3(aq)
+   Gd(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+GdCH3COO++
+   GdCH3COO++
+   Acetic
+   acid(aq)
+Glutamic_acid(aq)
+   Glutamic_acid(aq)
+   Glutamic
+   acid(aq)
+Heptanal(aq)
+   Heptanal(aq)
+   Acetic
+   acid(aq)
+Heptanoic_acid(aq)
+   Heptanoic_acid(aq)
+   Heptanoic
+   acid(aq)
+   Acetic
+Hexanal(aq)
+   Hexanal(aq)
+   Acetic
+   acid(aq)
+Hexanoic_acid(aq)
+   Hexanoic_acid(aq)
+   Hexanoic
+   acid(aq)
+   Acetic
+Hg(CH3COO)2(aq)
+   Hg(CH3COO)2(aq)
+   Acetic
+   acid(aq)
+Hg(CH3COO)3-
+   Hg(CH3COO)3-
+   Acetic
+   acid(aq)
+HgCH3COO+
+   HgCH3COO+
+   Acetic
+   acid(aq)
+Ho(CH3COO)2+
+   Ho(CH3COO)2+
+   Acetic
+   acid(aq)
+Ho(CH3COO)3(aq)
+   Ho(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+HoCH3COO++
+   HoCH3COO++
+   Acetic
+   acid(aq)
+K(CH3COO)2-
+   K(CH3COO)2-
+   Acetic
+   acid(aq)
+KCH3COO(aq)
+   KCH3COO(aq)
+   Acetic
+   acid(aq)
+La(CH3COO)2+
+   La(CH3COO)2+
+   Acetic
+   acid(aq)
+La(CH3COO)3(aq)
+   La(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+LaCH3COO++
+   LaCH3COO++
+   Acetic
+   acid(aq)
+Li(CH3COO)2-
+   Li(CH3COO)2-
+   Acetic
+   acid(aq)
+LiCH3COO(aq)
+   LiCH3COO(aq)
+   Acetic
+   acid(aq)
+Lu(CH3COO)2+
+   Lu(CH3COO)2+
+   Acetic
+   acid(aq)
+Lu(CH3COO)3(aq)
+   Lu(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+LuCH3COO++
+   LuCH3COO++
+   Acetic
+   acid(aq)
+Mg(CH3COO)2(aq)
+   Mg(CH3COO)2(aq)
+   Acetic
+   acid(aq)
+MgCH3COO+
+   MgCH3COO+
+   Acetic
+   acid(aq)
+Mn(CH3COO)2(aq)
+   Mn(CH3COO)2(aq)
+   Acetic
+   acid(aq)
+Mn(CH3COO)3-
+   Mn(CH3COO)3-
+   Acetic
+   acid(aq)
+MnCH3COO+
+   MnCH3COO+
+   Acetic
+   acid(aq)
+NH4(CH3COO)2-
+   NH4(CH3COO)2-
+   Acetic
+   acid(aq)
+NH4CH3COO(aq)
+   NH4CH3COO(aq)
+   Acetic
+   acid(aq)
+Na(CH3COO)2-
+   Na(CH3COO)2-
+   Acetic
+   acid(aq)
+NaCH3COO(aq)
+   NaCH3COO(aq)
+   Acetic
+   acid(aq)
+Nd(CH3COO)2+
+   Nd(CH3COO)2+
+   Acetic
+   acid(aq)
+Nd(CH3COO)3(aq)
+   Nd(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+NdCH3COO++
+   NdCH3COO++
+   Acetic
+   acid(aq)
+Ni(CH3COO)2(aq)
+   Ni(CH3COO)2(aq)
+   Acetic
+   acid(aq)
+Ni(CH3COO)3-
+   Ni(CH3COO)3-
+   Acetic
+   acid(aq)
+NiCH3COO+
+   NiCH3COO+
+   Acetic
+   acid(aq)
+Nonanal(aq)
+   Nonanal(aq)
+   Acetic
+   acid(aq)
+Octanal(aq)
+   Octanal(aq)
+   Acetic
+   acid(aq)
+Octanoic_acid(aq)
+   Octanoic_acid(aq)
+   Octanoic
+   acid(aq)
+   Acetic
+Pb(CH3COO)2(aq)
+   Pb(CH3COO)2(aq)
+   Acetic
+   acid(aq)
+Pb(CH3COO)3-
+   Pb(CH3COO)3-
+   Acetic
+   acid(aq)
+PbCH3COO+
+   PbCH3COO+
+   Acetic
+   acid(aq)
+Pentanal(aq)
+   Pentanal(aq)
+   Acetic
+   acid(aq)
+Pr(CH3COO)2+
+   Pr(CH3COO)2+
+   Acetic
+   acid(aq)
+Pr(CH3COO)3(aq)
+   Pr(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+PrCH3COO++
+   PrCH3COO++
+   Acetic
+   acid(aq)
+Propanal(aq)
+   Propanal(aq)
+   Acetic
+   acid(aq)
+Ra(CH3COO)2(aq)
+   Ra(CH3COO)2(aq)
+   Acetic
+   acid(aq)
+RaCH3COO+
+   RaCH3COO+
+   Acetic
+   acid(aq)
+Rb(CH3COO)2-
+   Rb(CH3COO)2-
+   Acetic
+   acid(aq)
+RbCH3COO(aq)
+   RbCH3COO(aq)
+   Acetic
+   acid(aq)
+Sc(CH3COO)2+
+   Sc(CH3COO)2+
+   Acetic
+   acid(aq)
+Sc(CH3COO)3(aq)
+   Sc(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+ScCH3COO++
+   ScCH3COO++
+   Acetic
+   acid(aq)
+Sm(CH3COO)2+
+   Sm(CH3COO)2+
+   Acetic
+   acid(aq)
+Sm(CH3COO)3(aq)
+   Sm(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+SmCH3COO++
+   SmCH3COO++
+   Acetic
+   acid(aq)
+Sr(CH3COO)2(aq)
+   Sr(CH3COO)2(aq)
+   Acetic
+   acid(aq)
+SrCH3COO+
+   SrCH3COO+
+   Acetic
+   acid(aq)
+Tb(CH3COO)2+
+   Tb(CH3COO)2+
+   Acetic
+   acid(aq)
+Tb(CH3COO)3(aq)
+   Tb(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+TbCH3COO++
+   TbCH3COO++
+   Acetic
+   acid(aq)
+Tl(CH3COO)2-
+   Tl(CH3COO)2-
+   Acetic
+   acid(aq)
+TlCH3COO(aq)
+   TlCH3COO(aq)
+   Acetic
+   acid(aq)
+Tm(CH3COO)2+
+   Tm(CH3COO)2+
+   Acetic
+   acid(aq)
+Tm(CH3COO)3(aq)
+   Tm(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+TmCH3COO++
+   TmCH3COO++
+   Acetic
+   acid(aq)
+Y(CH3COO)2+
+   Y(CH3COO)2+
+   Acetic
+   acid(aq)
+Y(CH3COO)3(aq)
+   Y(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+YCH3COO++
+   YCH3COO++
+   Acetic
+   acid(aq)
+Yb(CH3COO)2+
+   Yb(CH3COO)2+
+   Acetic
+   acid(aq)
+Yb(CH3COO)3(aq)
+   Yb(CH3COO)3(aq)
+   Acetic
+   acid(aq)
+YbCH3COO++
+   YbCH3COO++
+   Acetic
+   acid(aq)
+Zn(CH3COO)2(aq)
+   Zn(CH3COO)2(aq)
+   Acetic
+   acid(aq)
+Zn(CH3COO)3-
+   Zn(CH3COO)3-
+   Acetic
+   acid(aq)
+ZnCH3COO+
+   ZnCH3COO+
+   Acetic
+   acid(aq)
+Albite_high
+   Albite_high
+   high
+Albite_low
+   Albite_low
+   low
+Cordierite_anhyd
+   Cordierite_anhyd
+   Cordierite
+   anhyd
+Cordierite_hydr
+   Cordierite_hydr
+   Cordierite
+   hydr
 Cronstedtite-7A
    Cronstedtite-7A
+Laurite
+   Laurite
+Lopezite
+   Lopezite
+Lutetium
+   Lutetium
+Maximum Microcline
+   Maximum Microcline
+   Maximum
+   Microcline
+Sanidine_high
+   Sanidine_high
+   Sanidine
+   high
+Tin
+   Tin
+Stilbite
+   Stilbite

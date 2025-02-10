@@ -42,6 +42,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial_video.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pygcc_overview.html">An Introduction to pyGeochemCalc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Example_1.html">General Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Example_2.html">Integration of pygcc with GWB</a></li>
@@ -2511,7 +2512,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">        The calculated instance has the following potential properties:</span>
 <span class="sd">        E  : float, vector</span>
-<span class="sd">            dielectric constant of water [cal/mol]  \n</span>
+<span class="sd">            dielectric constant of water  \n</span>
 <span class="sd">        rhohat : float, vector</span>
 <span class="sd">            density [g/cm³] \n</span>
 <span class="sd">        Ah : float, vector</span>
@@ -2670,7 +2671,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        ----------</span>
-<span class="sd">           E       : dielectric constant of water [cal/mol]  \n</span>
+<span class="sd">           E       : dielectric constant of water  \n</span>
 <span class="sd">           rhohat  : density [g/cm³] \n</span>
 <span class="sd">           Ah      : Debye-Huckel &quot;A&quot; parameters [kg^1/2 mol^-1/2] \n</span>
 <span class="sd">           Bh      : Debye-Huckel &quot;B&quot; parameters [kg^1/2 mol^-1/2 Angstrom^-1] \n</span>
@@ -2852,7 +2853,7 @@
 
 <span class="sd">         Returns</span>
 <span class="sd">        ----------</span>
-<span class="sd">           E       : dielectric constant of water [cal/mol] \n</span>
+<span class="sd">           E       : dielectric constant of water \n</span>
 <span class="sd">           rhohat  : density [g/cm³] \n</span>
 <span class="sd">           Ah      : Debye-Huckel &quot;A&quot; parameters [kg^1/2 mol^-1/2] \n</span>
 <span class="sd">           Bh      : Debye-Huckel &quot;B&quot; parameters [kg^1/2 mol^-1/2 Angstrom^-1] \n</span>
@@ -2996,7 +2997,7 @@
 
 <span class="sd">         Returns</span>
 <span class="sd">        ----------</span>
-<span class="sd">           E       : dielectric constant of water [cal/mol] \n</span>
+<span class="sd">           E       : dielectric constant of water \n</span>
 <span class="sd">           rhohat  : density [g/cm³] \n</span>
 <span class="sd">           Ah      : Debye-Huckel &quot;A&quot; parameters [kg^1/2 mol^-1/2] \n</span>
 <span class="sd">           Bh      : Debye-Huckel &quot;B&quot; parameters [kg^1/2 mol^-1/2 Angstrom^-1] \n</span>
@@ -3049,7 +3050,7 @@
             <span class="c1"># P ≤ 1000 bar to calculate the Dielectric Constant.</span>
             <span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">TC</span><span class="p">));</span> <span class="n">dEdP_T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">TC</span><span class="p">));</span> <span class="n">dEdT_P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">TC</span><span class="p">));</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">TC</span><span class="p">):</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">):</span>
                     <span class="c1"># deepearth_P = DEW(T = j, rho = deepearth.rho[i]).P.ravel()</span>
                     <span class="k">if</span> <span class="n">Dielec_method</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;FGL97&#39;</span><span class="p">:</span>
                         <span class="p">[</span><span class="n">E</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">dEdP_T</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">dEdT_P</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dielec_FGL97</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">deepearth</span><span class="o">.</span><span class="n">rho</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
@@ -3083,7 +3084,7 @@
 
         <span class="c1"># Debye-Huckel AH constant. Units are kJ kg^1/2 mol^-3/2.</span>
         <span class="c1"># AH/RT are kg^1/2 mol^-1/2</span>
-        <span class="n">Ahrt</span> <span class="o">=</span> <span class="o">-</span><span class="mi">6</span><span class="o">*</span><span class="n">Aphi</span><span class="o">*</span><span class="n">TK</span><span class="o">*</span><span class="p">((</span><span class="n">dEdT_P</span><span class="o">/</span><span class="n">E</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">TK</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">drdT_P</span><span class="o">/</span><span class="n">rhohat</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span>
+        <span class="n">Ahrt</span> <span class="o">=</span> <span class="o">-</span><span class="mi">6</span><span class="o">*</span><span class="n">Aphi</span><span class="o">*</span><span class="n">TK</span><span class="o">*</span><span class="p">((</span><span class="n">dEdT_P</span><span class="o">/</span><span class="n">E</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">TK</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">drdT_P</span><span class="o">/</span><span class="n">rhohat</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span>
         <span class="n">Adhh</span> <span class="o">=</span> <span class="n">R</span><span class="o">*</span><span class="n">TK</span><span class="o">*</span><span class="n">Ahrt</span>
         <span class="c1"># convert Adhh from kJ kg^1/2 mol^-3/2 to kcal kg^1/2 mol^-3/2</span>
         <span class="n">Adhh</span> <span class="o">=</span> <span class="n">Adhh</span><span class="o">/</span><span class="n">J_to_cal</span>

@@ -44,6 +44,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Tutorial_video.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pygcc_overview.html">An Introduction to pyGeochemCalc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Example_1.html">General Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Example_2.html">Integration of pygcc with GWB</a></li>
@@ -133,6 +134,9 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 <tr class="row-even"><td><p><a class="reference internal" href="#pygcc.water_eos.water_dielec" title="pygcc.water_eos.water_dielec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">water_dielec</span></code></a></p></td>
 <td><p>Class Implementation of Water dielectric constants, the Debye-Huckel &quot;A&quot; and &quot;B&quot; parameters and their derivatives at ambient to deep-earth Temperature and Pressure conditions with three different formulations</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.water_eos.Driesner_NaCl" title="pygcc.water_eos.Driesner_NaCl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Driesner_NaCl</span></code></a></p></td>
+<td><p>Implementation of Driesner and Heinrich PTx Formulation for H2O-NaCl system</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -152,6 +156,9 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.water_eos.readIAPWS95data" title="pygcc.water_eos.readIAPWS95data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">readIAPWS95data</span></code></a>()</p></td>
 <td><p>returns all constants and coefficients needed for the IAPWS95 formulation, packed into a dictionary</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.water_eos.concentration_converter" title="pygcc.water_eos.concentration_converter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concentration_converter</span></code></a>(val=1.0, In_Unit='x_wt', Out_Unit='x_wt')</p></td>
+<td><p>This function converts concentration between several units like wt%, mole fraction, molality and volume</p></td>
 </tr>
 </tbody>
 </table>
@@ -859,7 +866,7 @@ Acta 129, 125–145. <a class="reference external" href="https://doi.org/10.1016
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><em>The calculated instance has the following potential properties</em></p></li>
-<li><p><strong>E</strong> (<em>float, vector</em>) – dielectric constant of water [cal/mol]</p></li>
+<li><p><strong>E</strong> (<em>float, vector</em>) – dielectric constant of water</p></li>
 <li><p><strong>rhohat</strong> (<em>float, vector</em>) – density [g/cm³]</p></li>
 <li><p><strong>Ah</strong> (<em>float, vector</em>) – Debye-Huckel “A” parameters [kg^1/2 mol^-1/2]</p></li>
 <li><p><strong>Bh</strong> (<em>float, vector</em>) – Debye-Huckel “B” parameters [kg^1/2 mol^-1/2 Angstrom^-1]</p></li>
@@ -989,7 +996,7 @@ function of temperature and pressure</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>E</strong> (<em>dielectric constant of water [cal/mol]</em>)</p></li>
+<li><p><strong>E</strong> (<em>dielectric constant of water</em>)</p></li>
 <li><p><strong>rhohat</strong> (<em>density [g/cm³]</em>)</p></li>
 <li><p><strong>Ah</strong> (<em>Debye-Huckel “A” parameters [kg^1/2 mol^-1/2]</em>)</p></li>
 <li><p><strong>Bh</strong> (<em>Debye-Huckel “B” parameters [kg^1/2 mol^-1/2 Angstrom^-1]</em>)</p></li>
@@ -1045,7 +1052,7 @@ Debye-Huckel “B” parameters  and their derivatives</p>
 </dl>
 <blockquote>
 <div><blockquote>
-<div><p>E       : dielectric constant of water [cal/mol]</p>
+<div><p>E       : dielectric constant of water</p>
 <p>rhohat  : density [g/cm³]</p>
 <p>Ah      : Debye-Huckel “A” parameters [kg^1/2 mol^-1/2]</p>
 <p>Bh      : Debye-Huckel “B” parameters [kg^1/2 mol^-1/2 Angstrom^-1]</p>
@@ -1098,7 +1105,7 @@ Sverjensky et al. (2014) formulation above 5000 bar.</p>
 </dl>
 <blockquote>
 <div><blockquote>
-<div><p>E       : dielectric constant of water [cal/mol]</p>
+<div><p>E       : dielectric constant of water</p>
 <p>rhohat  : density [g/cm³]</p>
 <p>Ah      : Debye-Huckel “A” parameters [kg^1/2 mol^-1/2]</p>
 <p>Bh      : Debye-Huckel “B” parameters [kg^1/2 mol^-1/2 Angstrom^-1]</p>
@@ -1125,6 +1132,130 @@ Behavior of Aqueous Electrolytes at High Pressures and Temperatures: II.
 Debye-Huckel Parameters for Activity Coefficients and Relative Partial Molal Properties.
 Am. J. Sci. 274, 1199-1251.</p></li>
 </ol>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.water_eos.concentration_converter">
+<span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">concentration_converter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">In_Unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x_wt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Out_Unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x_wt'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcc.water_eos.concentration_converter" title="Permalink to this definition"></a></dt>
+<dd><p>This function converts concentration between several units like wt%, mole fraction, molality and volume
+Values must be in fraction except it is molality</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>val</strong> (<em>float</em>) – Values to convert</p></li>
+<li><p><strong>In_Unit</strong> (<em>String</em>) – unit of input concentration</p></li>
+<li><p><strong>Out_Unit</strong> (<em>String</em>) – expected output concentration</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Out</strong> – Converted values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pygcc.water_eos.Driesner_NaCl">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">Driesner_NaCl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl" title="Permalink to this definition"></a></dt>
+<dd><p>Implementation of Driesner and Heinrich PTx Formulation for H2O-NaCl system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>float</em>) – Temperature [°C]</p></li>
+<li><p><strong>P</strong> (<em>float</em>) – Pressure [bar]</p></li>
+<li><p><strong>xNaCl</strong> (<em>float</em>) – mole fraction of NaCl in H2O [-]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>The calculated instance has the following potential properties</em></p></li>
+<li><p><strong>PVLH</strong> (<em>float</em>) – Pressure of vapor + liquid + halite coexistence [bar]</p></li>
+<li><p><strong>Pcrit</strong> (<em>float</em>) – Critical pressure (of a H2O–NaCl mixture) [bar]</p></li>
+<li><p><strong>Xcrit</strong> (<em>float</em>) – Critical Composition  [-]</p></li>
+<li><p><strong>xL_NaCl</strong> (<em>float</em>) – Composition of halite-saturated liquid (halite liquidus) Hypothetical [-]</p></li>
+<li><p><strong>xV_NaCl</strong> (<em>float</em>) – Composition of halite-saturated vapor [-]</p></li>
+<li><p><strong>xVL_Liq</strong> (<em>float</em>) – Composition of liquid at vapor + liquid coexistence [-]</p></li>
+<li><p><strong>xVL_Vap</strong> (<em>float</em>) – Composition of vapor at vapor+liquid coexistence [-]</p></li>
+<li><p><strong>rho</strong> (<em>float</em>) – Liquid NaCl density [kg/m3]</p></li>
+<li><p><strong>vm</strong> (<em>float</em>) – molar volume [mol/m3]</p></li>
+<li><p><strong>TstarH</strong> (<em>float</em>) – Scaled temperature for enthalpy correlation [°C]</p></li>
+<li><p><strong>H</strong> (<em>float</em>) – Specific enthalpy of an H2O–NaCl solution [J/kg]</p></li>
+<li><p><strong>Cp</strong> (<em>float</em>) – Isobaric heat capacity [J/kg/K]</p></li>
+<li><p><strong>mu</strong> (<em>float</em>) – viscosity [Pa-s]</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>The general usage of Driesner_NaCl is as follows:</p>
+<ol class="arabic">
+<li><p>For water-NaCl properties at any Temperature and Pressure:</p>
+<p>water_salt = Driesner_NaCl(T = T, P = P),</p>
+<p>where T is temperature in celsius and P is pressure in bar</p>
+</li>
+</ol>
+</div></blockquote>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">water_salt</span> <span class="o">=</span> <span class="n">Driesner_NaCl</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mf">400.</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">150</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">water_salt</span><span class="o">.</span><span class="n">PVLH</span><span class="p">,</span> <span class="n">water_salt</span><span class="o">.</span><span class="n">xL_NaCl</span><span class="p">,</span> <span class="n">water_salt</span><span class="o">.</span><span class="n">xV_NaCl</span><span class="p">,</span> <span class="n">water_salt</span><span class="o">.</span><span class="n">xVL_Liq</span><span class="p">,</span> <span class="n">water_salt</span><span class="o">.</span><span class="n">xVL_Vap</span><span class="p">,</span> <span class="n">water_salt</span><span class="o">.</span><span class="n">Xcrit</span>
+<span class="go">    176.12604181993797,</span>
+<span class="go">     0.21548565081529097,</span>
+<span class="go">     1.1606891909548725e-05,</span>
+<span class="go">     0.27785803505887324,</span>
+<span class="go">     1.1606891909548725e-05,</span>
+<span class="go">     0.006832050956381021</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">water_salt</span> <span class="o">=</span> <span class="n">Driesner_NaCl</span><span class="p">(</span><span class="n">T</span> <span class="o">=</span> <span class="mf">400.</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">150</span><span class="p">,</span> <span class="n">xNaCl</span> <span class="o">=</span> <span class="mf">0.00919</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">water_salt</span><span class="o">.</span><span class="n">PVLH</span><span class="p">,</span> <span class="n">water_salt</span><span class="o">.</span><span class="n">xL_NaCl</span><span class="p">,</span> <span class="n">water_salt</span><span class="o">.</span><span class="n">xV_NaCl</span><span class="p">,</span> <span class="n">water_salt</span><span class="o">.</span><span class="n">xVL_Liq</span><span class="p">,</span> <span class="n">water_salt</span><span class="o">.</span><span class="n">xVL_Vap</span><span class="p">,</span> <span class="n">water_salt</span><span class="o">.</span><span class="n">rho</span><span class="p">,</span> <span class="n">water_salt</span><span class="o">.</span><span class="n">vm</span><span class="p">,</span> <span class="n">water_salt</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="n">water_salt</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">water_salt</span><span class="o">.</span><span class="n">Cp</span>
+<span class="go">    (176.12604181993797,</span>
+<span class="go">     0.21548565081529097,</span>
+<span class="go">     1.1606891909548725e-05,</span>
+<span class="go">     0.27785803505887324,</span>
+<span class="go">     1.1606891909548725e-05,</span>
+<span class="go">     0.06932873574838519,</span>
+<span class="go">     265.2138005082347,</span>
+<span class="go">     2934.6231778877977,</span>
+<span class="go">     2.4596312351131325e-05,</span>
+<span class="go">     4394.068874696437)</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p>Driesner, T, and Heinrich, C. A. (2007). The system H2O–NaCl. Part I: Correlation formulae for phase relations in
+temperature–pressure–composition space from 0 to 1000 C, 0 to 5000 bar, and 0 to 1 XNaCl. Geochimica et Cosmochimica Acta. 71(20), 4880-4901.
+<a class="reference external" href="https://doi.org/10.1016/j.gca.2006.01.033">https://doi.org/10.1016/j.gca.2006.01.033</a></p></li>
+</ol>
+<p>(2) Driesner, T. (2007). “The system H2O-NaCl. II. Correlations for molar volume, enthalpy, and isobaric heat capacity from 0 to 1000 °C, 1 to 5000 bar,
+#     and 0 to 1 X-NaCl.” Geochimica et Cosmochimica Acta 71(20): 4902-4919.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pygcc.water_eos.Driesner_NaCl.kwargs">
+<span class="sig-name descname"><span class="pre">kwargs</span></span><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl.kwargs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Driesner_NaCl.__calc__">
+<span class="sig-name descname"><span class="pre">__calc__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl.__calc__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Driesner_NaCl.Driesner_NaCl">
+<span class="sig-name descname"><span class="pre">Driesner_NaCl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl.Driesner_NaCl" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Driesner_NaCl.Driesner_NaClII">
+<span class="sig-name descname"><span class="pre">Driesner_NaClII</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xNaCl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl.Driesner_NaClII" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcc.water_eos.Driesner_NaCl.enthalpy_mu_heatcap">
+<span class="sig-name descname"><span class="pre">enthalpy_mu_heatcap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xNaCl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl.enthalpy_mu_heatcap" title="Permalink to this definition"></a></dt>
+<dd><p>Enthalpy in J/g, viscosity in Pas and Cp in Joules per kilogram Kelvin</p>
 </dd></dl>
 
 </dd></dl>

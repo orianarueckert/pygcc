@@ -45,6 +45,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Tutorial_video.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pygcc_overview.html">An Introduction to pyGeochemCalc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Example_1.html">General Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Example_2.html">Integration of pygcc with GWB</a></li>
@@ -137,6 +138,9 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pygcc.read_db.findcodecs" title="pygcc.read_db.findcodecs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">findcodecs</span></code></a>(filename)</p></td>
 <td><p>Function to find the name of the encoding used to decode or encode any file</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygcc.read_db.dbaccess_modify" title="pygcc.read_db.dbaccess_modify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dbaccess_modify</span></code></a>(in_filename=None, dbaccess=None, out_filename=None)</p></td>
+<td><p>This function loads thermodynamic data from a csv files and appends/replace the corresponding species thermo data and writes out a modified direct-access database</p></td>
 </tr>
 </tbody>
 </table>
@@ -306,6 +310,27 @@ group species into basis, auxiliary basis, minerals, gases, liquids and aqueous 
 <p>[sourcedic, specielist, chargedic, MWdic, block_info, Elemlist, act_param] = readSourceEQ36db(sourcedb)</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pygcc.read_db.dbaccess_modify">
+<span class="sig-prename descclassname"><span class="pre">pygcc.read_db.</span></span><span class="sig-name descname"><span class="pre">dbaccess_modify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dbaccess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcc.read_db.dbaccess_modify" title="Permalink to this definition"></a></dt>
+<dd><p>This function loads thermodynamic data from a csv files and appends/replace the corresponding species thermo data and writes out a modified direct-access database
+:param in_filename: CSV filename and location
+:type in_filename: string
+:param dbaccess: direct-access database filename and location  (optional)
+:type dbaccess: string
+:param out_filename: newly modified direct-access database filename and location    (optional)
+:type out_filename: string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Output the newly modified direct-access with filename described in ‘out_filename’ if specified.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dbaccess_modify</span><span class="p">(</span><span class="n">in_filename</span> <span class="o">=</span> <span class="s1">&#39;geotpd_data_block_cr.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>

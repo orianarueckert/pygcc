@@ -45,6 +45,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Tutorial_video.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pygcc_overview.html">An Introduction to pyGeochemCalc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Example_1.html">General Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Example_2.html">Integration of pygcc with GWB</a></li>
@@ -376,7 +377,7 @@ backward: f(a) - f(a-h))/h</p>
 </dl>
 <blockquote>
 <div><dl class="simple">
-<dt>log10_gamma<span class="classifier">float, vector</span></dt><dd><p>co2 aqueous activities in log10</p>
+<dt>log10_gamma<span class="classifier">float, vector</span></dt><dd><p>co2 aqueous activity coefficients in log10</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -402,7 +403,7 @@ backward: f(a) - f(a-h))/h</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>log10_co2_gamma</strong> (<em>float, vector</em>) – co2 aqueous activities in log10</p></li>
+<li><p><strong>log10_co2_gamma</strong> (<em>float, vector</em>) – co2 aqueous activity coefficients in log10</p></li>
 <li><p><strong>mco2</strong> (<em>float, vector</em>) – co2 aqueous molalities</p></li>
 </ul>
 </p>
@@ -552,7 +553,7 @@ Dielec_method :  specify either ‘FGL97’ or ‘JN91’ or ‘DEW’ as the me
 <div><p>constant (optional), if not specified default - ‘JN91’</p>
 </div></blockquote>
 <dl class="simple">
-<dt>rhoEDB<span class="classifier">dictionary of water properties like density (rho), dielectric factor (E) and</span></dt><dd><p>Debye–Hückel coefficients (optional)</p>
+<dt>rhoEDB<span class="classifier">dictionary of water properties like density (rho), dielectric factor (E) and</span></dt><dd><p>Debye-Hückel coefficients (optional)</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -826,12 +827,14 @@ a new folder called “output”</p>
 <li><p><strong>dbaccessformat</strong> (<em>string</em><em>, </em><em>optional</em>) – specify the direct-access/sequential-access database format, either ‘speq’ or ‘supcrtbl’, default is ‘speq’</p></li>
 <li><p><strong>sourcedb</strong> (<em>string</em>) – source database filename and location  (optional)</p></li>
 <li><p><strong>sourceformat</strong> (<em>string</em>) – source database format, either ‘GWB’ or ‘EQ36’, default is ‘GWB’</p></li>
+<li><p><strong>sourcedb_codecs</strong> (<em>string</em>) – specify the name of the encoding used to decode or encode the sourcedb file, optional</p></li>
 <li><p><strong>objdb</strong> (<em>string</em>) – new database filename and location    (optional)</p></li>
 <li><p><strong>co2actmodel</strong> (<em>string</em>) – co2 activity model equation [Duan_Sun or Drummond]  (optional), if not specified, default is ‘Drummond’</p></li>
 <li><p><strong>Dielec_method</strong> (<em>string</em>) – specify either ‘FGL97’ or ‘JN91’ or ‘DEW’ as the method to calculate dielectric constant, default is ‘JN91’   (optional)</p></li>
 <li><p><strong>heatcap_method</strong> (<em>string</em>) – specify either ‘SUPCRT’ or ‘Berman88’  or ‘HP11’ or ‘HF76’ the method to calculate thermodynamic properties of any mineral, default is ‘SUPCRT’</p></li>
 <li><p><strong>ThermoInUnit</strong> (<em>string</em>) – specify either ‘cal’ or ‘KJ’ as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - ‘cal’</p></li>
 <li><p><strong>dataset</strong> (<em>string</em>) – specify the dataset format, either ‘GWB’, ‘EQ36’, ‘Pflotran’ or ‘ToughReact’, default is old GWB database [‘GWB’] (optional)</p></li>
+<li><p><strong>print_msg</strong> (<em>string</em><em>, </em><em>bool</em>) – print debug message [True or False], default is False</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>

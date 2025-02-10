@@ -201,7 +201,7 @@ Attributes
     Returns
    ----------
       log10_gamma : float, vector
-          co2 aqueous activities in log10
+          co2 aqueous activity coefficients in log10
 
    .. rubric:: Examples
 
@@ -221,7 +221,7 @@ Attributes
    :param I: Ionic strength
    :type I: float
 
-   :returns: * **log10_co2_gamma** (*float, vector*) -- co2 aqueous activities in log10
+   :returns: * **log10_co2_gamma** (*float, vector*) -- co2 aqueous activity coefficients in log10
              * **mco2** (*float, vector*) -- co2 aqueous molalities
 
    Usage
@@ -345,7 +345,7 @@ Attributes
       Dielec_method :  specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric
                           constant (optional), if not specified default - 'JN91'
       rhoEDB   :       dictionary of water properties like density (rho), dielectric factor (E) and
-                          Debye–Hückel coefficients (optional)
+                          Debye-Hückel coefficients (optional)
    Returns:
    ----------
       ch20     :       water activity correlation coefficients
@@ -633,6 +633,8 @@ Attributes
    :type sourcedb: string
    :param sourceformat: source database format, either 'GWB' or 'EQ36', default is 'GWB'
    :type sourceformat: string
+   :param sourcedb_codecs: specify the name of the encoding used to decode or encode the sourcedb file, optional
+   :type sourcedb_codecs: string
    :param objdb: new database filename and location    (optional)
    :type objdb: string
    :param co2actmodel: co2 activity model equation [Duan_Sun or Drummond]  (optional), if not specified, default is 'Drummond'
@@ -645,6 +647,8 @@ Attributes
    :type ThermoInUnit: string
    :param dataset: specify the dataset format, either 'GWB', 'EQ36', 'Pflotran' or 'ToughReact', default is old GWB database ['GWB'] (optional)
    :type dataset: string
+   :param print_msg: print debug message [True or False], default is False
+   :type print_msg: string, bool
 
    :rtype: Output the new database to an ASCII file with filename described in 'objdb' if specified.
 

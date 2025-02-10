@@ -1,382 +1,4052 @@
 Am+++
    Am+++
-B(OH)4-
-   B(OH)4-
+Ar(aq)
+   Ar(aq)
+Np++++
+   Np++++
+Pu++++
+   Pu++++
+Sb(OH)3(aq)
+   Sb(OH)3(aq)
+Ti(OH)4(aq)
+   Ti(OH)4(aq)
+Zr(OH)2++
+   Zr(OH)2++
+2-Butanone(aq)
+   2-Butanone(aq)
+2-Heptanone(aq)
+   2-Heptanone(aq)
+2-Hexanone(aq)
+   2-Hexanone(aq)
+2-Hydroxybutanoic(aq)
+   2-Hydroxybutanoic(aq)
+2-Hydroxydecanoic(aq)
+   2-Hydroxydecanoic(aq)
+2-Hydroxyheptanoic(aq)
+   2-Hydroxyheptanoic(aq)
+2-Hydroxyhexanoic(aq)
+   2-Hydroxyhexanoic(aq)
+2-Hydroxynonanoic(aq)
+   2-Hydroxynonanoic(aq)
+2-Hydroxyoctanoic(aq)
+   2-Hydroxyoctanoic(aq)
+2-Hydroxypentanoic(aq)
+   2-Hydroxypentanoic(aq)
+2-Octanone(aq)
+   2-Octanone(aq)
+2-Pentanone(aq)
+   2-Pentanone(aq)
+Am++
+   Am++
+   Am+++
+Am++++
+   Am++++
+   Am+++
+AmO2+
+   AmO2+
+   Am+++
+AmO2++
+   AmO2++
+   Am+++
+AsH3(aq)
+   AsH3(aq)
+BH4-
+   BH4-
+CrO4---
+   CrO4---
+Dodecanoic_acid(aq)
+   Dodecanoic_acid(aq)
+Leucylglycine(aq)
+   Leucylglycine(aq)
+n-Heptylbenzene(aq)
+   n-Heptylbenzene(aq)
+n-Pentylbenzene(aq)
+   n-Pentylbenzene(aq)
+n-Propylbenzene(aq)
+   n-Propylbenzene(aq)
+N3-
+   N3-
+Np+++
+   Np+++
+   Np++++
 NpO2+
    NpO2+
-NegIon
-   NegIon
-PosIon
-   PosIon
-Acetate-
-   Acetate-
-Citrate---
-   Citrate---
-EDTA----
-   EDTA----
-Oxalate--
-   Oxalate--
-Lactate-
-   Lactate-
-B(OH)3(aq)
-   B(OH)3(aq)
-   B(OH)4-
-B3O3(OH)4-
-   B3O3(OH)4-
-   B(OH)4-
-B4O5(OH)4--
-   B4O5(OH)4--
-   B(OH)4-
-CaB(OH)4+
-   CaB(OH)4+
-   B(OH)4-
-MgB(OH)4+
-   MgB(OH)4+
-   B(OH)4-
-AmCO3+
-   AmCO3+
-   Am+++
+   Np++++
+NpO2++
+   NpO2++
+   Np++++
+o-Phthalate
+   o-Phthalate
+Pb++++
+   Pb++++
+Pu+++
+   Pu+++
+   Pu++++
+PuO2+
+   PuO2+
+   Pu++++
+PuO2++
+   PuO2++
+   Pu++++
+Ru(OH)2++
+   Ru(OH)2++
+RuO4(aq)
+   RuO4(aq)
+RuO4-
+   RuO4-
+Se--
+   Se--
+Sn++++
+   Sn++++
+Tc+++
+   Tc+++
+TcO++
+   TcO++
+TcO4--
+   TcO4--
+TcO4---
+   TcO4---
+Undecanoic_acid(aq)
+   Undecanoic_acid(aq)
+(NH4)2Sb2S4(aq)
+   (NH4)2Sb2S4(aq)
+   Sb(OH)3(aq)
+(NpO2)2(OH)2++
+   (NpO2)2(OH)2++
+   NpO2++
+(NpO2)3(OH)5+
+   (NpO2)3(OH)5+
+   NpO2++
+(PuO2)2(OH)2++
+   (PuO2)2(OH)2++
+   PuO2++
+(PuO2)3(OH)5+
+   (PuO2)3(OH)5+
+   PuO2++
+(TcO(OH)2)2(aq)
+   (TcO(OH)2)2(aq)
+   TcO++
+(UO2)11(CO3)6(OH)12-
+   (UO2)11(CO3)6(OH)12-
+(UO2)2(OH)2++
+   (UO2)2(OH)2++
+(UO2)2CO3(OH)3-
+   (UO2)2CO3(OH)3-
+(UO2)2OH+++
+   (UO2)2OH+++
+(UO2)3(CO3)6(6-)
+   (UO2)3(CO3)6(6-)
+(UO2)3(OH)4++
+   (UO2)3(OH)4++
+(UO2)3(OH)5+
+   (UO2)3(OH)5+
+(UO2)3(OH)5CO2+
+   (UO2)3(OH)5CO2+
+(UO2)3(OH)7-
+   (UO2)3(OH)7-
+(UO2)3O(OH)2(HCO3)+
+   (UO2)3O(OH)2(HCO3)+
+(UO2)4(OH)7+
+   (UO2)4(OH)7+
+(VO)2(OH)2++
+   (VO)2(OH)2++
+1-Butanamine(aq)
+   1-Butanamine(aq)
+1-Heptanamine(aq)
+   1-Heptanamine(aq)
+1-Hexanamine(aq)
+   1-Hexanamine(aq)
+1-Octanamine(aq)
+   1-Octanamine(aq)
+1-Propanamine(aq)
+   1-Propanamine(aq)
+2-Hydroxybutanoate
+   2-Hydroxybutanoate
+   2-Hydroxybutanoic(aq)
+2-Hydroxydecanoate
+   2-Hydroxydecanoate
+   2-Hydroxydecanoic(aq)
+2-Hydroxyheptanoate
+   2-Hydroxyheptanoate
+   2-Hydroxyheptanoic(aq)
+2-Hydroxyhexanoate
+   2-Hydroxyhexanoate
+   2-Hydroxyhexanoic(aq)
+2-Hydroxynonanoate
+   2-Hydroxynonanoate
+   2-Hydroxynonanoic(aq)
+2-Hydroxyoctanoate
+   2-Hydroxyoctanoate
+   2-Hydroxyoctanoic(aq)
+2-Hydroxypentanoate
+   2-Hydroxypentanoate
+   2-Hydroxypentanoic(aq)
+a-Aminobutyric_acid(aq)
+   a-Aminobutyric_acid(aq)
+   2-Hydroxybutanoic(aq)
+Adipate
+   Adipate
+Al(SO4)2-
+   Al(SO4)2-
+Al13O4(OH)24(7+)
+   Al13O4(OH)24(7+)
+Al2(OH)2++++
+   Al2(OH)2++++
+Al3(OH)4(5+)
+   Al3(OH)4(5+)
+AlH2PO4++
+   AlH2PO4++
+AlHPO4+
+   AlHPO4+
 Am(CO3)2-
    Am(CO3)2-
    Am+++
 Am(CO3)3---
    Am(CO3)3---
    Am+++
-AmOH++
-   AmOH++
-   Am+++
+Am(CO3)5(6-)
+   Am(CO3)5(6-)
+   Am++++
 Am(OH)2+
    Am(OH)2+
    Am+++
 Am(OH)3(aq)
    Am(OH)3(aq)
    Am+++
+Am(SO4)2-
+   Am(SO4)2-
+   Am+++
 AmCl++
    AmCl++
    Am+++
-AmCl2+
-   AmCl2+
+AmCO3+
+   AmCO3+
    Am+++
-Am(CO3)4(5-)
-   Am(CO3)4(5-)
+AmF++
+   AmF++
    Am+++
-Am(SO4)2-
-   Am(SO4)2-
+AmF2+
+   AmF2+
+   Am+++
+AmH2PO4++
+   AmH2PO4++
+   Am+++
+AmN3++
+   AmN3++
+   Am+++
+   N3-
+AmNO3++
+   AmNO3++
+   Am+++
+AmOH++
+   AmOH++
    Am+++
 AmSO4+
    AmSO4+
    Am+++
-Th(CO3)5(6-)
-   Th(CO3)5(6-)
-Th(OH)3(CO3)-
-   Th(OH)3(CO3)-
-Th(OH)4(aq)
-   Th(OH)4(aq)
-Th(SO4)2(aq)
-   Th(SO4)2(aq)
-Th(SO4)3--
-   Th(SO4)3--
-NpO2CO3-
-   NpO2CO3-
-   NpO2+
+As(OH)3(aq)
+   As(OH)3(aq)
+AsO2OH--
+   AsO2OH--
+AsO3F--
+   AsO3F--
+Azelate
+   Azelate
+B2O(OH)5-
+   B2O(OH)5-
+Ba(Ala)+
+   Ba(Ala)+
+Ba(Ala)2(aq)
+   Ba(Ala)2(aq)
+Ba(o-Phthalate)(aq)
+   Ba(o-Phthalate)(aq)
+   o-Phthalate
+BaB(OH)4+
+   BaB(OH)4+
+BaNO3+
+   BaNO3+
+Benzoate
+   Benzoate
+BF2(OH)2-
+   BF2(OH)2-
+BF3OH-
+   BF3OH-
+Br2(aq)
+   Br2(aq)
+Butanoate
+   Butanoate
+Ca(Ala)+
+   Ca(Ala)+
+Ca(Ala)2(aq)
+   Ca(Ala)2(aq)
+Ca(o-Phthalate)(aq)
+   Ca(o-Phthalate)(aq)
+   o-Phthalate
+CaB(OH)4+
+   CaB(OH)4+
+CaH2PO4+
+   CaH2PO4+
+CaHPO4(aq)
+   CaHPO4(aq)
+CaNO3+
+   CaNO3+
+CaP2O7--
+   CaP2O7--
+CaPO4-
+   CaPO4-
+Cd(Ala)+
+   Cd(Ala)+
+Cd(Ala)2(aq)
+   Cd(Ala)2(aq)
+Cd(CH3COO)4--
+   Cd(CH3COO)4--
+Cd(CN)2(aq)
+   Cd(CN)2(aq)
+Cd(CN)3-
+   Cd(CN)3-
+Cd(CN)4--
+   Cd(CN)4--
+Cd(CO3)2--
+   Cd(CO3)2--
+Cd(For)3-
+   Cd(For)3-
+Cd(For)4--
+   Cd(For)4--
+Cd(N3)2(aq)
+   Cd(N3)2(aq)
+   N3-
+Cd(N3)3-
+   Cd(N3)3-
+   N3-
+Cd(N3)4--
+   Cd(N3)4--
+   N3-
+Cd(NH3)++
+   Cd(NH3)++
+Cd(NH3)2++
+   Cd(NH3)2++
+Cd(NH3)4++
+   Cd(NH3)4++
+Cd(OH)2(aq)
+   Cd(OH)2(aq)
+Cd(OH)3-
+   Cd(OH)3-
+Cd(OH)4--
+   Cd(OH)4--
+Cd(OH)Cl(aq)
+   Cd(OH)Cl(aq)
+Cd(SCN)2(aq)
+   Cd(SCN)2(aq)
+Cd(SCN)3-
+   Cd(SCN)3-
+Cd2OH+++
+   Cd2OH+++
+Cd4(OH)4++++
+   Cd4(OH)4++++
+CdBr+
+   CdBr+
+CdBr2(aq)
+   CdBr2(aq)
+CdBr3-
+   CdBr3-
+CdCN+
+   CdCN+
+CdCO3(aq)
+   CdCO3(aq)
+CdHCO3+
+   CdHCO3+
+CdI+
+   CdI+
+CdI2(aq)
+   CdI2(aq)
+CdI3-
+   CdI3-
+CdI4--
+   CdI4--
+CdN3+
+   CdN3+
+   N3-
+CdNO2+
+   CdNO2+
+CdP2O7--
+   CdP2O7--
+CdSCN+
+   CdSCN+
+CdSeO4(aq)
+   CdSeO4(aq)
+CdSO4(aq)
+   CdSO4(aq)
+Ce(CO3)2-
+   Ce(CO3)2-
+Ce(HPO4)2-
+   Ce(HPO4)2-
+Ce(OH)2++
+   Ce(OH)2++
+Ce(PO4)2---
+   Ce(PO4)2---
+Ce2(OH)2(6+)
+   Ce2(OH)2(6+)
+Ce3(OH)5++++
+   Ce3(OH)5++++
+CeHPO4+
+   CeHPO4+
+CeOH+++
+   CeOH+++
+CePO4(aq)
+   CePO4(aq)
+Co(Ala)+
+   Co(Ala)+
+Co(Ala)2(aq)
+   Co(Ala)2(aq)
+Co(HS)2(aq)
+   Co(HS)2(aq)
+Co(OH)2(aq)
+   Co(OH)2(aq)
+Co(OH)4--
+   Co(OH)4--
+Co2OH+++
+   Co2OH+++
+Co4(OH)4++++
+   Co4(OH)4++++
+CoBr2(aq)
+   CoBr2(aq)
+CoHS+
+   CoHS+
+CoI2(aq)
+   CoI2(aq)
+CoNO3+
+   CoNO3+
+CoS2O3(aq)
+   CoS2O3(aq)
+CoSeO4(aq)
+   CoSeO4(aq)
+CoSO4(aq)
+   CoSO4(aq)
+Cr(OH)2+
+   Cr(OH)2+
+Cr(OH)3(aq)
+   Cr(OH)3(aq)
+Cr(OH)4-
+   Cr(OH)4-
+Cr2(OH)2++++
+   Cr2(OH)2++++
+Cr3(OH)4(5+)
+   Cr3(OH)4(5+)
+CrBr++
+   CrBr++
+CrCl++
+   CrCl++
+CrCl2+
+   CrCl2+
+CrO3Cl-
+   CrO3Cl-
+Cu(Ala)+
+   Cu(Ala)+
+Cu(Ala)2(aq)
+   Cu(Ala)2(aq)
+Cu(CO3)2--
+   Cu(CO3)2--
+Cu(NH3)2++
+   Cu(NH3)2++
+Cu(NH3)3++
+   Cu(NH3)3++
+Cu(NO2)2(aq)
+   Cu(NO2)2(aq)
+CuCO3(aq)
+   CuCO3(aq)
+CuCO3(OH)2--
+   CuCO3(OH)2--
+CuH2PO4+
+   CuH2PO4+
+CuHPO4(aq)
+   CuHPO4(aq)
+CuNH3++
+   CuNH3++
+CuNO2+
+   CuNO2+
+CuPO4-
+   CuPO4-
+CuSO4(aq)
+   CuSO4(aq)
+Decanoate
+   Decanoate
+Diketopiperazine(aq)
+   Diketopiperazine(aq)
+Dodecanoate
+   Dodecanoate
+   Dodecanoic_acid(aq)
+Dy(CO3)2-
+   Dy(CO3)2-
+Dy(HPO4)2-
+   Dy(HPO4)2-
+Dy(OH)4-
+   Dy(OH)4-
+Dy(PO4)2---
+   Dy(PO4)2---
+Dy(SO4)2-
+   Dy(SO4)2-
+DyHPO4+
+   DyHPO4+
+DyPO4(aq)
+   DyPO4(aq)
+Er(CO3)2-
+   Er(CO3)2-
+Er(HPO4)2-
+   Er(HPO4)2-
+Er(OH)4-
+   Er(OH)4-
+Er(PO4)2---
+   Er(PO4)2---
+Er(SO4)2-
+   Er(SO4)2-
+ErHPO4+
+   ErHPO4+
+ErPO4(aq)
+   ErPO4(aq)
+Eu(Ala)+
+   Eu(Ala)+
+Eu(Ala)2(aq)
+   Eu(Ala)2(aq)
+Eu(CO3)2-
+   Eu(CO3)2-
+Eu(CO3)3---
+   Eu(CO3)3---
+Eu(HPO4)2-
+   Eu(HPO4)2-
+Eu(OH)2+
+   Eu(OH)2+
+Eu(OH)2CO3-
+   Eu(OH)2CO3-
+Eu(OH)3(aq)
+   Eu(OH)3(aq)
+Eu(OH)4-
+   Eu(OH)4-
+Eu(PO4)2---
+   Eu(PO4)2---
+Eu(SO4)2-
+   Eu(SO4)2-
+Eu2(OH)2++++
+   Eu2(OH)2++++
+EuBr++
+   EuBr++
+EuBr2+
+   EuBr2+
+EuBrO3++
+   EuBrO3++
+EuF4--
+   EuF4--
+EuHPO4+
+   EuHPO4+
+EuIO3++
+   EuIO3++
+EuOH(CO3)2--
+   EuOH(CO3)2--
+EuOHCO3(aq)
+   EuOHCO3(aq)
+EuPO4(aq)
+   EuPO4(aq)
+Fe(Ala)+
+   Fe(Ala)+
+Fe(Ala)2(aq)
+   Fe(Ala)2(aq)
+Fe(OH)2(aq)
+   Fe(OH)2(aq)
+Fe(OH)2+
+   Fe(OH)2+
+Fe(OH)3(aq)
+   Fe(OH)3(aq)
+Fe(OH)3-
+   Fe(OH)3-
+Fe(OH)4-
+   Fe(OH)4-
+Fe(OH)4--
+   Fe(OH)4--
+Fe(SO4)2-
+   Fe(SO4)2-
+Fe2(OH)2++++
+   Fe2(OH)2++++
+Fe3(OH)4(5+)
+   Fe3(OH)4(5+)
+FeCl2+
+   FeCl2+
+FeCl4-
+   FeCl4-
+FeCl4--
+   FeCl4--
+FeCO3(aq)
+   FeCO3(aq)
+FeCO3+
+   FeCO3+
+FeF2+
+   FeF2+
+FeH2PO4+
+   FeH2PO4+
+FeH2PO4++
+   FeH2PO4++
+FeHCO3+
+   FeHCO3+
+FeHPO4(aq)
+   FeHPO4(aq)
+FeHPO4+
+   FeHPO4+
+FeNO2++
+   FeNO2++
+FeNO3++
+   FeNO3++
+FePO4-
+   FePO4-
+FeSO4(aq)
+   FeSO4(aq)
+FeSO4+
+   FeSO4+
+Formate
+   Formate
+Gd(CO3)2-
+   Gd(CO3)2-
+Gd(HPO4)2-
+   Gd(HPO4)2-
+Gd(OH)4-
+   Gd(OH)4-
+Gd(PO4)2---
+   Gd(PO4)2---
+Gd(SO4)2-
+   Gd(SO4)2-
+GdHPO4+
+   GdHPO4+
+GdPO4(aq)
+   GdPO4(aq)
+Glutarate
+   Glutarate
+Glycolate
+   Glycolate
+H(o-Phthalate)-
+   H(o-Phthalate)-
+   o-Phthalate
+H-Adipate
+   H-Adipate
+H-Azelate
+   H-Azelate
+H-Glutarate
+   H-Glutarate
+H-Malonate
+   H-Malonate
+H-Oxalate
+   H-Oxalate
+H-Pimelate
+   H-Pimelate
+H-Sebacate
+   H-Sebacate
+H-Suberate
+   H-Suberate
+H-Succinate
+   H-Succinate
+H2CrO4(aq)
+   H2CrO4(aq)
+H2F2(aq)
+   H2F2(aq)
+H2PO3F(aq)
+   H2PO3F(aq)
+H2Se(aq)
+   H2Se(aq)
+   Se--
+H2SiO4--
+   H2SiO4--
+H2SO3(aq)
+   H2SO3(aq)
+H2SO4(aq)
+   H2SO4(aq)
+H2TcO4(aq)
+   H2TcO4(aq)
+   TcO4--
+H4(H2SiO4)4----
+   H4(H2SiO4)4----
+H6(H2SiO4)4--
+   H6(H2SiO4)4--
+HAsO3F-
+   HAsO3F-
+HAsS2(aq)
+   HAsS2(aq)
+Heptanoate
+   Heptanoate
+Hexanoate
+   Hexanoate
+Hf(OH)5-
+   Hf(OH)5-
+HN3(aq)
+   HN3(aq)
+   N3-
+Ho(CO3)2-
+   Ho(CO3)2-
+Ho(HPO4)2-
+   Ho(HPO4)2-
+Ho(PO4)2---
+   Ho(PO4)2---
+Ho(SO4)2-
+   Ho(SO4)2-
+HoHPO4+
+   HoHPO4+
+HoPO4(aq)
+   HoPO4(aq)
+HPO3F-
+   HPO3F-
+HRuO5-
+   HRuO5-
+   RuO4(aq)
+HSb2S4-
+   HSb2S4-
+   Sb(OH)3(aq)
+HTcO4-
+   HTcO4-
+   TcO4--
+KHPO4-
+   KHPO4-
+KP2O7---
+   KP2O7---
+La(CO3)2-
+   La(CO3)2-
+La(HPO4)2-
+   La(HPO4)2-
+La(PO4)2---
+   La(PO4)2---
+La(SO4)2-
+   La(SO4)2-
+La2(OH)2++++
+   La2(OH)2++++
+La5(OH)9(6+)
+   La5(OH)9(6+)
+Lactate
+   Lactate
+LaHPO4+
+   LaHPO4+
+LaPO4(aq)
+   LaPO4(aq)
+LiSO4-
+   LiSO4-
+Lu(CO3)2-
+   Lu(CO3)2-
+Lu(HPO4)2-
+   Lu(HPO4)2-
+Lu(PO4)2---
+   Lu(PO4)2---
+Lu(SO4)2-
+   Lu(SO4)2-
+LuHPO4+
+   LuHPO4+
+LuPO4(aq)
+   LuPO4(aq)
+m-Toluate
+   m-Toluate
+Malonate
+   Malonate
+Mg(Ala)+
+   Mg(Ala)+
+Mg(Ala)2(aq)
+   Mg(Ala)2(aq)
+Mg4(OH)4++++
+   Mg4(OH)4++++
+MgB(OH)4+
+   MgB(OH)4+
+MgH2PO4+
+   MgH2PO4+
+MgHPO4(aq)
+   MgHPO4(aq)
+MgP2O7--
+   MgP2O7--
+MgPO4-
+   MgPO4-
+Mn(Ala)+
+   Mn(Ala)+
+Mn(Ala)2(aq)
+   Mn(Ala)2(aq)
+Mn(NO3)2(aq)
+   Mn(NO3)2(aq)
+Mn(OH)2(aq)
+   Mn(OH)2(aq)
+Mn(OH)3-
+   Mn(OH)3-
+Mn(OH)4--
+   Mn(OH)4--
+Mn2(OH)3+
+   Mn2(OH)3+
+Mn2OH+++
+   Mn2OH+++
+MnCl3-
+   MnCl3-
+MnCO3(aq)
+   MnCO3(aq)
+MnH2PO4+
+   MnH2PO4+
+MnHCO3+
+   MnHCO3+
+MnHPO4(aq)
+   MnHPO4(aq)
+MnNO3+
+   MnNO3+
+MnPO4-
+   MnPO4-
+MnSeO4(aq)
+   MnSeO4(aq)
+Na(o-Phthalate)-
+   Na(o-Phthalate)-
+   o-Phthalate
+Na2P2O7--
+   Na2P2O7--
+NaAlO2(aq)
+   NaAlO2(aq)
+NaB(OH)4(aq)
+   NaB(OH)4(aq)
+NaCO3-
+   NaCO3-
+NaHCO3(aq)
+   NaHCO3(aq)
+NaHP2O7--
+   NaHP2O7--
+NaHPO4-
+   NaHPO4-
+NaP2O7---
+   NaP2O7---
+Nd(CO3)2-
+   Nd(CO3)2-
+Nd(HPO4)2-
+   Nd(HPO4)2-
+Nd(OH)4-
+   Nd(OH)4-
+Nd(PO4)2---
+   Nd(PO4)2---
+Nd(SO4)2-
+   Nd(SO4)2-
+Nd2(OH)2++++
+   Nd2(OH)2++++
+NdHPO4+
+   NdHPO4+
+NdPO4(aq)
+   NdPO4(aq)
+NH4SbO2(aq)
+   NH4SbO2(aq)
+   Sb(OH)3(aq)
+NH4SO4-
+   NH4SO4-
+Ni(Ala)+
+   Ni(Ala)+
+Ni(Ala)2(aq)
+   Ni(Ala)2(aq)
+Ni(NH3)2++
+   Ni(NH3)2++
+Ni(NH3)6++
+   Ni(NH3)6++
+Ni(NO3)2(aq)
+   Ni(NO3)2(aq)
+Ni(OH)2(aq)
+   Ni(OH)2(aq)
+Ni(OH)3-
+   Ni(OH)3-
+Ni2OH+++
+   Ni2OH+++
+Ni4(OH)4++++
+   Ni4(OH)4++++
+NiBr+
+   NiBr+
+NiHP2O7-
+   NiHP2O7-
+NiNO3+
+   NiNO3+
+NiP2O7--
+   NiP2O7--
+NiSeO4(aq)
+   NiSeO4(aq)
+NiSO4(aq)
+   NiSO4(aq)
+Nonanoate
+   Nonanoate
+Np(CO3)5(6-)
+   Np(CO3)5(6-)
+   Np++++
+Np(H2PO4)2+
+   Np(H2PO4)2+
+   Np+++
+Np(H2PO4)3(aq)
+   Np(H2PO4)3(aq)
+   Np+++
+Np(HPO4)2(aq)
+   Np(HPO4)2(aq)
+   Np++++
+Np(HPO4)3--
+   Np(HPO4)3--
+   Np++++
+Np(HPO4)4----
+   Np(HPO4)4----
+   Np++++
+Np(HPO4)5(6-)
+   Np(HPO4)5(6-)
+   Np++++
+Np(OH)2++
+   Np(OH)2++
+   Np++++
+Np(OH)3+
+   Np(OH)3+
+   Np++++
+Np(OH)4(aq)
+   Np(OH)4(aq)
+   Np++++
+Np(SO4)2(aq)
+   Np(SO4)2(aq)
+   Np++++
+NpCl+++
+   NpCl+++
+   Np++++
+NpCl2++
+   NpCl2++
+   Np++++
+NpF+++
+   NpF+++
+   Np++++
+NpF2++
+   NpF2++
+   Np++++
+NpH2PO4++
+   NpH2PO4++
+   Np+++
+NpHPO4++
+   NpHPO4++
+   Np++++
+NpO2(CO3)2--
+   NpO2(CO3)2--
+   NpO2++
 NpO2(CO3)2---
    NpO2(CO3)2---
    NpO2+
 NpO2(CO3)3(5-)
    NpO2(CO3)3(5-)
    NpO2+
+NpO2(CO3)3----
+   NpO2(CO3)3----
+   NpO2++
+NpO2Cl(aq)
+   NpO2Cl(aq)
+   NpO2+
+NpO2Cl+
+   NpO2Cl+
+   NpO2++
+NpO2CO3-
+   NpO2CO3-
+   NpO2+
+NpO2F(aq)
+   NpO2F(aq)
+   NpO2+
+NpO2F+
+   NpO2F+
+   NpO2++
+NpO2F2(aq)
+   NpO2F2(aq)
+   NpO2++
+NpO2H2PO4(aq)
+   NpO2H2PO4(aq)
+   NpO2+
+NpO2H2PO4+
+   NpO2H2PO4+
+   NpO2++
+NpO2HPO4(aq)
+   NpO2HPO4(aq)
+   NpO2++
+NpO2HPO4-
+   NpO2HPO4-
+   NpO2+
 NpO2OH(aq)
    NpO2OH(aq)
    NpO2+
-NpO2(OH)2-
-   NpO2(OH)2-
+NpO2OH+
+   NpO2OH+
+   NpO2++
+NpO2SO4(aq)
+   NpO2SO4(aq)
+   NpO2++
+NpO2SO4-
+   NpO2SO4-
    NpO2+
-HAcetate(aq)
-   HAcetate(aq)
-   Acetate-
-H3Citrate(aq)
-   H3Citrate(aq)
-   Citrate---
-H2Citrate-
-   H2Citrate-
-   Citrate---
-HCitrate--
-   HCitrate--
-   Citrate---
-H4EDTA(aq)
-   H4EDTA(aq)
-   EDTA----
-H3EDTA-
-   H3EDTA-
-   EDTA----
-H2EDTA--
-   H2EDTA--
-   EDTA----
-HEDTA---
-   HEDTA---
-   EDTA----
-H2Oxalate(aq)
-   H2Oxalate(aq)
-   Oxalate--
-HOxalate-
-   HOxalate-
-   Oxalate--
-HLactate(aq)
-   HLactate(aq)
-   Lactate-
-AmAcetate++
-   AmAcetate++
+NpOH++
+   NpOH++
+   Np+++
+NpOH+++
+   NpOH+++
+   Np++++
+NpSO4++
+   NpSO4++
+   Np++++
+o-Phthalic_acid(aq)
+   o-Phthalic_acid(aq)
+   o-Phthalate
+o-Toluate
+   o-Toluate
+Octanoate
+   Octanoate
+Oxalate
+   Oxalate
+p-Toluate
+   p-Toluate
+Pb(Ala)+
+   Pb(Ala)+
+Pb(Ala)2(aq)
+   Pb(Ala)2(aq)
+Pb(BrO3)2(aq)
+   Pb(BrO3)2(aq)
+Pb(ClO3)2(aq)
+   Pb(ClO3)2(aq)
+Pb(CO3)2--
+   Pb(CO3)2--
+Pb(OH)2(aq)
+   Pb(OH)2(aq)
+Pb(OH)3-
+   Pb(OH)3-
+Pb(SCN)2(aq)
+   Pb(SCN)2(aq)
+Pb2OH+++
+   Pb2OH+++
+Pb3(OH)4++
+   Pb3(OH)4++
+Pb4(OH)4++++
+   Pb4(OH)4++++
+Pb6(OH)8++++
+   Pb6(OH)8++++
+PbBr+
+   PbBr+
+PbBr2(aq)
+   PbBr2(aq)
+PbBr3-
+   PbBr3-
+PbBrO3+
+   PbBrO3+
+PbClO3+
+   PbClO3+
+PbCO3(aq)
+   PbCO3(aq)
+PbH2PO4+
+   PbH2PO4+
+PbHPO4(aq)
+   PbHPO4(aq)
+PbI+
+   PbI+
+PbI2(aq)
+   PbI2(aq)
+PbI3-
+   PbI3-
+PbI4--
+   PbI4--
+PbNO3+
+   PbNO3+
+PbP2O7--
+   PbP2O7--
+PbSCN+
+   PbSCN+
+Pentanoate
+   Pentanoate
+PH4+
+   PH4+
+Pimelate
+   Pimelate
+Pm(CO3)2-
+   Pm(CO3)2-
+Pm(HPO4)2-
+   Pm(HPO4)2-
+Pm(OH)2+
+   Pm(OH)2+
+Pm(OH)3(aq)
+   Pm(OH)3(aq)
+Pm(PO4)2---
+   Pm(PO4)2---
+Pm(SO4)2-
+   Pm(SO4)2-
+PmCl++
+   PmCl++
+PmCO3+
+   PmCO3+
+PmF++
+   PmF++
+PmH2PO4++
+   PmH2PO4++
+PmHCO3++
+   PmHCO3++
+PmHPO4+
+   PmHPO4+
+PmNO3++
+   PmNO3++
+PmOH++
+   PmOH++
+PmPO4(aq)
+   PmPO4(aq)
+PmSO4+
+   PmSO4+
+PO3F--
+   PO3F--
+Pr(CO3)2-
+   Pr(CO3)2-
+Pr(HPO4)2-
+   Pr(HPO4)2-
+Pr(PO4)2---
+   Pr(PO4)2---
+Pr(SO4)2-
+   Pr(SO4)2-
+PrHPO4+
+   PrHPO4+
+Propanoate
+   Propanoate
+PrPO4(aq)
+   PrPO4(aq)
+Pu(HPO4)2(aq)
+   Pu(HPO4)2(aq)
+   Pu++++
+Pu(HPO4)3--
+   Pu(HPO4)3--
+   Pu++++
+Pu(HPO4)4----
+   Pu(HPO4)4----
+   Pu++++
+Pu(OH)2++
+   Pu(OH)2++
+   Pu++++
+Pu(OH)3+
+   Pu(OH)3+
+   Pu++++
+Pu(OH)4(aq)
+   Pu(OH)4(aq)
+   Pu++++
+Pu(SO4)2(aq)
+   Pu(SO4)2(aq)
+   Pu++++
+Pu(SO4)2-
+   Pu(SO4)2-
+   Pu+++
+PuF+++
+   PuF+++
+   Pu++++
+PuF2++
+   PuF2++
+   Pu++++
+PuF3+
+   PuF3+
+   Pu++++
+PuF4(aq)
+   PuF4(aq)
+   Pu++++
+PuH2PO4++
+   PuH2PO4++
+   Pu+++
+PuHPO4++
+   PuHPO4++
+   Pu++++
+PuO2(CO3)2--
+   PuO2(CO3)2--
+   PuO2++
+PuO2Cl+
+   PuO2Cl+
+   PuO2++
+PuO2F+
+   PuO2F+
+   PuO2++
+PuO2F2(aq)
+   PuO2F2(aq)
+   PuO2++
+PuO2F3-
+   PuO2F3-
+   PuO2++
+PuO2F4--
+   PuO2F4--
+   PuO2++
+PuO2H2PO4+
+   PuO2H2PO4+
+   PuO2++
+PuO2OH(aq)
+   PuO2OH(aq)
+   PuO2+
+PuO2OH+
+   PuO2OH+
+   PuO2++
+PuO2SO4(aq)
+   PuO2SO4(aq)
+   PuO2++
+PuOH++
+   PuOH++
+   Pu+++
+PuOH+++
+   PuOH+++
+   Pu++++
+PuSO4+
+   PuSO4+
+   Pu+++
+PuSO4++
+   PuSO4++
+   Pu++++
+Ru(Cl)2+
+   Ru(Cl)2+
+Ru(Cl)3(aq)
+   Ru(Cl)3(aq)
+Ru(OH)2+
+   Ru(OH)2+
+Ru(OH)2Cl+
+   Ru(OH)2Cl+
+   Ru(OH)2++
+Ru(OH)2Cl2(aq)
+   Ru(OH)2Cl2(aq)
+   Ru(OH)2++
+Ru(OH)2Cl3-
+   Ru(OH)2Cl3-
+   Ru(OH)2++
+Ru(OH)2Cl4--
+   Ru(OH)2Cl4--
+   Ru(OH)2++
+Ru(OH)2SO4(aq)
+   Ru(OH)2SO4(aq)
+   Ru(OH)2++
+Ru(OH)4(aq)
+   Ru(OH)4(aq)
+Ru4(OH)12++++
+   Ru4(OH)12++++
+   Ru(OH)2++
+S--
+   S--
+Sb(OH)2+
+   Sb(OH)2+
+   Sb(OH)3(aq)
+Sb(OH)2F(aq)
+   Sb(OH)2F(aq)
+   Sb(OH)3(aq)
+Sb(OH)4-
+   Sb(OH)4-
+   Sb(OH)3(aq)
+Sb2S4--
+   Sb2S4--
+   Sb(OH)3(aq)
+SbCl4-
+   SbCl4-
+   Sb(OH)3(aq)
+Sebacate
+   Sebacate
+Sm(CO3)2-
+   Sm(CO3)2-
+Sm(HPO4)2-
+   Sm(HPO4)2-
+Sm(OH)4-
+   Sm(OH)4-
+Sm(PO4)2---
+   Sm(PO4)2---
+Sm(SO4)2-
+   Sm(SO4)2-
+SmHPO4+
+   SmHPO4+
+SmPO4(aq)
+   SmPO4(aq)
+Sn(OH)2(aq)
+   Sn(OH)2(aq)
+Sn(OH)2++
+   Sn(OH)2++
+   Sn++++
+Sn(OH)3+
+   Sn(OH)3+
+   Sn++++
+Sn(OH)3-
+   Sn(OH)3-
+Sn(OH)4(aq)
+   Sn(OH)4(aq)
+   Sn++++
+Sn(SO4)2(aq)
+   Sn(SO4)2(aq)
+   Sn++++
+SnCl+
+   SnCl+
+SnCl2(aq)
+   SnCl2(aq)
+SnCl3-
+   SnCl3-
+SnF+
+   SnF+
+SnF2(aq)
+   SnF2(aq)
+SnF3-
+   SnF3-
+SnOH+++
+   SnOH+++
+   Sn++++
+SnSO4++
+   SnSO4++
+   Sn++++
+Sr(Ala)+
+   Sr(Ala)+
+Sr(Ala)2(aq)
+   Sr(Ala)2(aq)
+SrH2PO4+
+   SrH2PO4+
+SrHPO4(aq)
+   SrHPO4(aq)
+SrNO3+
+   SrNO3+
+SrP2O7--
+   SrP2O7--
+SrSO4(aq)
+   SrSO4(aq)
+Suberate
+   Suberate
+Succinate
+   Succinate
+Tb(CO3)2-
+   Tb(CO3)2-
+Tb(HPO4)2-
+   Tb(HPO4)2-
+Tb(PO4)2---
+   Tb(PO4)2---
+Tb(SO4)2-
+   Tb(SO4)2-
+TbHPO4+
+   TbHPO4+
+TbPO4(aq)
+   TbPO4(aq)
+TcO(OH)2(aq)
+   TcO(OH)2(aq)
+   TcO++
+TcOOH+
+   TcOOH+
+   TcO++
+Th(H2PO4)2++
+   Th(H2PO4)2++
+Th(HPO4)2(aq)
+   Th(HPO4)2(aq)
+Th(HPO4)3--
+   Th(HPO4)3--
+Th(OH)2++
+   Th(OH)2++
+Th(OH)3+
+   Th(OH)3+
+Th(OH)4(aq)
+   Th(OH)4(aq)
+Th(SO4)2(aq)
+   Th(SO4)2(aq)
+Th(SO4)3--
+   Th(SO4)3--
+Th(SO4)4----
+   Th(SO4)4----
+Th2(OH)2(6+)
+   Th2(OH)2(6+)
+Th4(OH)8(8+)
+   Th4(OH)8(8+)
+Th6(OH)15(9+)
+   Th6(OH)15(9+)
+ThCl+++
+   ThCl+++
+ThCl2++
+   ThCl2++
+ThCl3+
+   ThCl3+
+ThCl4(aq)
+   ThCl4(aq)
+ThF+++
+   ThF+++
+ThF2++
+   ThF2++
+ThF3+
+   ThF3+
+ThF4(aq)
+   ThF4(aq)
+ThH2PO4+++
+   ThH2PO4+++
+ThH3PO4++++
+   ThH3PO4++++
+ThHPO4++
+   ThHPO4++
+ThOH+++
+   ThOH+++
+ThSO4++
+   ThSO4++
+Tm(CO3)2-
+   Tm(CO3)2-
+Tm(HPO4)2-
+   Tm(HPO4)2-
+Tm(PO4)2---
+   Tm(PO4)2---
+Tm(SO4)2-
+   Tm(SO4)2-
+TmHPO4+
+   TmHPO4+
+TmPO4(aq)
+   TmPO4(aq)
+U(CO3)4----
+   U(CO3)4----
+U(CO3)5(6-)
+   U(CO3)5(6-)
+U(NO3)2++
+   U(NO3)2++
+U(OH)4(aq)
+   U(OH)4(aq)
+U(SCN)2++
+   U(SCN)2++
+U(SO4)2(aq)
+   U(SO4)2(aq)
+UBr+++
+   UBr+++
+UCl+++
+   UCl+++
+UF+++
+   UF+++
+UF2++
+   UF2++
+UF3+
+   UF3+
+UF4(aq)
+   UF4(aq)
+UF5-
+   UF5-
+UF6--
+   UF6--
+UI+++
+   UI+++
+Undecanoate
+   Undecanoate
+   Undecanoic_acid(aq)
+UNO3+++
+   UNO3+++
+UO2(CO3)2--
+   UO2(CO3)2--
+UO2(CO3)3(5-)
+   UO2(CO3)3(5-)
+UO2(CO3)3----
+   UO2(CO3)3----
+UO2(H2PO4)(H3PO4)+
+   UO2(H2PO4)(H3PO4)+
+UO2(H2PO4)2(aq)
+   UO2(H2PO4)2(aq)
+UO2(IO3)2(aq)
+   UO2(IO3)2(aq)
+UO2(N3)2(aq)
+   UO2(N3)2(aq)
+   N3-
+UO2(N3)3-
+   UO2(N3)3-
+   N3-
+UO2(N3)4--
+   UO2(N3)4--
+   N3-
+UO2(OH)2(aq)
+   UO2(OH)2(aq)
+UO2(OH)3-
+   UO2(OH)3-
+UO2(OH)4--
+   UO2(OH)4--
+UO2(SCN)2(aq)
+   UO2(SCN)2(aq)
+UO2(SCN)3-
+   UO2(SCN)3-
+UO2(SO3)2--
+   UO2(SO3)2--
+UO2(SO4)2--
+   UO2(SO4)2--
+UO2Br+
+   UO2Br+
+UO2BrO3+
+   UO2BrO3+
+UO2Cl+
+   UO2Cl+
+UO2Cl2(aq)
+   UO2Cl2(aq)
+UO2ClO3+
+   UO2ClO3+
+UO2CO3(aq)
+   UO2CO3(aq)
+UO2F+
+   UO2F+
+UO2F2(aq)
+   UO2F2(aq)
+UO2F3-
+   UO2F3-
+UO2F4--
+   UO2F4--
+UO2H2PO4+
+   UO2H2PO4+
+UO2H3PO4++
+   UO2H3PO4++
+UO2HPO4(aq)
+   UO2HPO4(aq)
+UO2IO3+
+   UO2IO3+
+UO2N3+
+   UO2N3+
+   N3-
+UO2NO3+
+   UO2NO3+
+UO2PO4-
+   UO2PO4-
+UO2S2O3(aq)
+   UO2S2O3(aq)
+UO2SCN+
+   UO2SCN+
+UO2SO3(aq)
+   UO2SO3(aq)
+UO2SO4(aq)
+   UO2SO4(aq)
+USCN+++
+   USCN+++
+USO4++
+   USO4++
+V(OH)2+
+   V(OH)2+
+V2(OH)2++++
+   V2(OH)2++++
+Valine(aq)
+   Valine(aq)
+   2-Hydroxypentanoic(aq)
+VO(OH)3(aq)
+   VO(OH)3(aq)
+VO2(HPO4)2---
+   VO2(HPO4)2---
+VO2(OH)2-
+   VO2(OH)2-
+VO2F(aq)
+   VO2F(aq)
+VO2F2-
+   VO2F2-
+VO2H2PO4(aq)
+   VO2H2PO4(aq)
+VO2HPO4-
+   VO2HPO4-
+VO2SO4-
+   VO2SO4-
+VO3OH--
+   VO3OH--
+VOF+
+   VOF+
+VOF2(aq)
+   VOF2(aq)
+VOSO4(aq)
+   VOSO4(aq)
+VSO4+
+   VSO4+
+Y(CO3)2-
+   Y(CO3)2-
+Y(HPO4)2-
+   Y(HPO4)2-
+Y(OH)2+
+   Y(OH)2+
+Y(OH)3(aq)
+   Y(OH)3(aq)
+Y(OH)4-
+   Y(OH)4-
+Y(PO4)2---
+   Y(PO4)2---
+Y(SO4)2-
+   Y(SO4)2-
+Y2(OH)2++++
+   Y2(OH)2++++
+Yb(CO3)2-
+   Yb(CO3)2-
+Yb(HPO4)2-
+   Yb(HPO4)2-
+Yb(OH)4-
+   Yb(OH)4-
+Yb(PO4)2---
+   Yb(PO4)2---
+Yb(SO4)2-
+   Yb(SO4)2-
+YbHPO4+
+   YbHPO4+
+YbPO4(aq)
+   YbPO4(aq)
+YCl++
+   YCl++
+YCO3+
+   YCO3+
+YF++
+   YF++
+YF2+
+   YF2+
+YF3(aq)
+   YF3(aq)
+YH2PO4++
+   YH2PO4++
+YHCO3++
+   YHCO3++
+YHPO4+
+   YHPO4+
+YNO3++
+   YNO3++
+YPO4(aq)
+   YPO4(aq)
+YSO4+
+   YSO4+
+Zn(Ala)+
+   Zn(Ala)+
+Zn(Ala)2(aq)
+   Zn(Ala)2(aq)
+Zn(CN)4--
+   Zn(CN)4--
+Zn(For)3-
+   Zn(For)3-
+Zn(For)4--
+   Zn(For)4--
+Zn(N3)2(aq)
+   Zn(N3)2(aq)
+   N3-
+Zn(NH3)++
+   Zn(NH3)++
+Zn(NH3)2++
+   Zn(NH3)2++
+Zn(NH3)3++
+   Zn(NH3)3++
+Zn(NH3)4++
+   Zn(NH3)4++
+Zn(OH)2(aq)
+   Zn(OH)2(aq)
+Zn(OH)3-
+   Zn(OH)3-
+Zn(OH)4--
+   Zn(OH)4--
+Zn(OH)Cl(aq)
+   Zn(OH)Cl(aq)
+Zn(SCN)2(aq)
+   Zn(SCN)2(aq)
+Zn(SCN)4--
+   Zn(SCN)4--
+ZnBr+
+   ZnBr+
+ZnBr2(aq)
+   ZnBr2(aq)
+ZnBr3-
+   ZnBr3-
+ZnClO4+
+   ZnClO4+
+ZnCO3(aq)
+   ZnCO3(aq)
+ZnH2PO4+
+   ZnH2PO4+
+ZnHCO3+
+   ZnHCO3+
+ZnHPO4(aq)
+   ZnHPO4(aq)
+ZnI+
+   ZnI+
+ZnI2(aq)
+   ZnI2(aq)
+ZnI3-
+   ZnI3-
+ZnI4--
+   ZnI4--
+ZnN3+
+   ZnN3+
+   N3-
+ZnPO4-
+   ZnPO4-
+ZnSeO4(aq)
+   ZnSeO4(aq)
+ZnSO4(aq)
+   ZnSO4(aq)
+Zr(OH)3+
+   Zr(OH)3+
+   Zr(OH)2++
+Zr(OH)4(aq)
+   Zr(OH)4(aq)
+   Zr(OH)2++
+Zr(OH)5-
+   Zr(OH)5-
+   Zr(OH)2++
+Zr(SO4)2(aq)
+   Zr(SO4)2(aq)
+   Zr(OH)2++
+Zr(SO4)3--
+   Zr(SO4)3--
+   Zr(OH)2++
+Zr++++
+   Zr++++
+   Zr(OH)2++
+Zr3(OH)4(8+)
+   Zr3(OH)4(8+)
+   Zr(OH)2++
+Zr4(OH)8(8+)
+   Zr4(OH)8(8+)
+   Zr(OH)2++
+ZrF+++
+   ZrF+++
+   Zr(OH)2++
+ZrF2++
+   ZrF2++
+   Zr(OH)2++
+ZrF3+
+   ZrF3+
+   Zr(OH)2++
+ZrF4(aq)
+   ZrF4(aq)
+   Zr(OH)2++
+ZrF5-
+   ZrF5-
+   Zr(OH)2++
+ZrF6--
+   ZrF6--
+   Zr(OH)2++
+ZrOH+++
+   ZrOH+++
+   Zr(OH)2++
+ZrSO4++
+   ZrSO4++
+   Zr(OH)2++
+(UO2)2As2O7
+   (UO2)2As2O7
+(UO2)2Cl3
+   (UO2)2Cl3
+(UO2)2P2O7
+   (UO2)2P2O7
+(UO2)3(AsO4)2
+   (UO2)3(AsO4)2
+(UO2)3(PO4)2
+   (UO2)3(PO4)2
+(UO2)3(PO4)2:4H2O
+   (UO2)3(PO4)2:4H2O
+(VO)3(PO4)2
+   (VO)3(PO4)2
+Afwillite
+   Afwillite
+Ag
+   Ag
+Ag3PO4
+   Ag3PO4
+Ahlfeldite
+   Ahlfeldite
+Al
+   Al
+Al2(SO4)3
+   Al2(SO4)3
+Al2(SO4)3:6H2O
+   Al2(SO4)3:6H2O
+Alamosite
+   Alamosite
+AlF3
+   AlF3
+Alstonite
+   Alstonite
+Alum-K
+   Alum-K
+Am
+   Am
    Am+++
-   Acetate-
-AmCitrate(aq)
-   AmCitrate(aq)
+Am(OH)3
+   Am(OH)3
    Am+++
-   Citrate---
-AmEDTA-
-   AmEDTA-
+Am(OH)3(am)
+   Am(OH)3(am)
    Am+++
-   EDTA----
-AmOxalate+
-   AmOxalate+
+Am2(CO3)3
+   Am2(CO3)3
    Am+++
-   Oxalate--
-AmLactate++
-   AmLactate++
+Am2C3
+   Am2C3
    Am+++
-   Lactate-
-Th(Acetate)2++
-   Th(Acetate)2++
-   Acetate-
-NpO2H2EDTA-
-   NpO2H2EDTA-
-   NpO2+
-   EDTA----
-Th(Lactate)2++
-   Th(Lactate)2++
-   Lactate-
-ThAcetate+++
-   ThAcetate+++
-   Acetate-
-ThCitrate+
-   ThCitrate+
-   Citrate---
-ThEDTA(aq)
-   ThEDTA(aq)
-   EDTA----
-ThOxalate++
-   ThOxalate++
-   Oxalate--
-ThLactate+++
-   ThLactate+++
-   Lactate-
-NpO2Acetate(aq)
-   NpO2Acetate(aq)
-   NpO2+
-   Acetate-
-NpO2Citrate--
-   NpO2Citrate--
-   NpO2+
-   Citrate---
-NpO2EDTA---
-   NpO2EDTA---
-   NpO2+
-   EDTA----
-NpO2Oxalate-
-   NpO2Oxalate-
-   NpO2+
-   Oxalate--
-NpO2Lactate(aq)
-   NpO2Lactate(aq)
-   NpO2+
-   Lactate-
-MgAcetate+
-   MgAcetate+
-   Acetate-
-MgCitrate-
-   MgCitrate-
-   Citrate---
-MgEDTA--
-   MgEDTA--
-   EDTA----
-MgOxalate(aq)
-   MgOxalate(aq)
-   Oxalate--
-CaAcetate+
-   CaAcetate+
-   Acetate-
-CaCitrate-
-   CaCitrate-
-   Citrate---
-CaEDTA--
-   CaEDTA--
-   EDTA----
-CaOxalate(aq)
-   CaOxalate(aq)
-   Oxalate--
-NpO2HEDTA--
-   NpO2HEDTA--
-   NpO2+
-   EDTA----
-AmOHCO3(c)
-   AmOHCO3(c)
+Am2O3
+   Am2O3
    Am+++
-Am(OH)3(s)
-   Am(OH)3(s)
+AmBr3
+   AmBr3
    Am+++
-NaAm(CO3)2.6H2O(c)
-   NaAm(CO3)2.6H2O(c)
+AmCl3
+   AmCl3
    Am+++
-AmPO4(c)
-   AmPO4(c)
+Amesite-14A
+   Amesite-14A
+AmF3
+   AmF3
    Am+++
-ThO2(am)
-   ThO2(am)
-Th(SO4)2.9H2O(s)
-   Th(SO4)2.9H2O(s)
-Th(SO4)2.8H2O(s)
-   Th(SO4)2.8H2O(s)
-Th(SO4)2.Na2SO4.6H2O
-   Th(SO4)2.Na2SO4.6H2O
-Th(SO4)2.K2SO4.4H2O
-   Th(SO4)2.K2SO4.4H2O
-Th(SO4)2.2K2SO4.2H2O
-   Th(SO4)2.2K2SO4.2H2O
-2[Th(SO4)2.7/2K2SO4]
-   2[Th(SO4)2.7/2K2SO4]
-NpO2OH(aged)
-   NpO2OH(aged)
-   NpO2+
-NpO2OH(am)
-   NpO2OH(am)
-   NpO2+
-2[NaNpO2CO3.7/2H2O]
-   2[NaNpO2CO3.7/2H2O]
-   NpO2+
-Na3NpO2(CO3)2
-   Na3NpO2(CO3)2
-   NpO2+
-KNpO2CO3
-   KNpO2CO3
-   NpO2+
-K3NpO2(CO3)2
-   K3NpO2(CO3)2
-   NpO2+
-H2Oxalate.2H2O
-   H2Oxalate.2H2O
-   Oxalate--
-NaHOxalate.H2O
-   NaHOxalate.H2O
-   Oxalate--
-Na2Oxalate
-   Na2Oxalate
-   Oxalate--
-Aphthitalite/Glaserite
-   Aphthitalite/Glaserite
-Whewellite
-   Whewellite
-   Oxalate--
+AmF4
+   AmF4
+   Am++++
+AmH2
+   AmH2
+   Am++
+AmI3
+   AmI3
+   Am+++
+AmO2
+   AmO2
+   Am++++
+AmOBr
+   AmOBr
+   Am+++
+AmOCl
+   AmOCl
+   Am+++
+AmOHCO3
+   AmOHCO3
+   Am+++
+AmPO4(am)
+   AmPO4(am)
+   Am+++
+Anatase
+   Anatase
+   Ti(OH)4(aq)
+Antarcticite
+   Antarcticite
+Antlerite
+   Antlerite
+Aphthitalite
+   Aphthitalite
 Arcanite
    Arcanite
+Arsenolite
+   Arsenolite
+Arsenopyrite
+   Arsenopyrite
+   AsH3(aq)
+As
+   As
+As2O5
+   As2O5
+As4O6(cubi)
+   As4O6(cubi)
+As4O6(mono)
+   As4O6(mono)
+Atacamite
+   Atacamite
+Au
+   Au
+Autunite-H
+   Autunite-H
+B
+   B
+B2O3
+   B2O3
+Ba
+   Ba
+Ba(OH)2:8H2O
+   Ba(OH)2:8H2O
+Ba2Si3O8
+   Ba2Si3O8
+Ba2SiO4
+   Ba2SiO4
+Ba2U2O7
+   Ba2U2O7
+Ba3UO6
+   Ba3UO6
+BaBr2
+   BaBr2
+BaBr2:2H2O
+   BaBr2:2H2O
+BaCl2
+   BaCl2
+BaCl2:2H2O
+   BaCl2:2H2O
+BaCl2:H2O
+   BaCl2:H2O
+BaCrO4
+   BaCrO4
+Baddeleyite
+   Baddeleyite
+   Zr(OH)2++
+BaHPO4
+   BaHPO4
+BaI2
+   BaI2
+BaMnO4
+   BaMnO4
+BaO
+   BaO
+Barytocalcite
+   Barytocalcite
+BaS
+   BaS
+BaSeO3
+   BaSeO3
+BaSeO4
+   BaSeO4
+BaSiF6
+   BaSiF6
+Bassanite
+   Bassanite
+Bassetite
+   Bassetite
+BaU2O7
+   BaU2O7
+BaUO4
+   BaUO4
+BaZrO3
+   BaZrO3
+   Zr(OH)2++
+Be
+   Be
+Be13U
+   Be13U
+Beidellite-Ca
+   Beidellite-Ca
+Beidellite-Cs
+   Beidellite-Cs
+Beidellite-H
+   Beidellite-H
+Beidellite-K
+   Beidellite-K
+Beidellite-Mg
+   Beidellite-Mg
+Berlinite
+   Berlinite
+Bieberite
+   Bieberite
+Birnessite
+   Birnessite
 Bischofite
    Bischofite
+Bixbyite
+   Bixbyite
 Bloedite
    Bloedite
+Boltwoodite
+   Boltwoodite
+Boltwoodite-Na
+   Boltwoodite-Na
+Borax
+   Borax
+Boric_acid
+   Boric_acid
+Br2(l)
+   Br2(l)
+Brezinaite
+   Brezinaite
+Brochantite
+   Brochantite
+Brushite
+   Brushite
 Burkeite
    Burkeite
-CaCl2.4H2O
-   CaCl2.4H2O
-CaOxychloride_A
-   CaOxychloride_A
-CaOxychloride_B
-   CaOxychloride_B
+C
+   C
+Ca
+   Ca
+Ca-Al_Pyroxene
+   Ca-Al_Pyroxene
+Ca2Al2O5:8H2O
+   Ca2Al2O5:8H2O
+Ca2Cl2(OH)2:H2O
+   Ca2Cl2(OH)2:H2O
+Ca2V2O7
+   Ca2V2O7
+Ca3(AsO4)2
+   Ca3(AsO4)2
+Ca3Al2O6
+   Ca3Al2O6
+Ca3V2O8
+   Ca3V2O8
+Ca4Al2Fe2O10
+   Ca4Al2Fe2O10
+Ca4Al2O7:13H2O
+   Ca4Al2O7:13H2O
+Ca4Al2O7:19H2O
+   Ca4Al2O7:19H2O
+Ca4Cl2(OH)6:13H2O
+   Ca4Cl2(OH)6:13H2O
+CaAl2O4
+   CaAl2O4
+CaAl2O4:10H2O
+   CaAl2O4:10H2O
+CaAl4O7
+   CaAl4O7
+Cadmoselite
+   Cadmoselite
+   Se--
+Calomel
+   Calomel
 Carnallite
    Carnallite
+Carnotite
+   Carnotite
+CaSeO3:2H2O
+   CaSeO3:2H2O
+CaSeO4
+   CaSeO4
+CaSO4:0.5H2O(beta)
+   CaSO4:0.5H2O(beta)
+Cattierite
+   Cattierite
+CaUO4
+   CaUO4
+CaV2O6
+   CaV2O6
+CaZrO3
+   CaZrO3
+   Zr(OH)2++
+Cd
+   Cd
+Cd(BO2)2
+   Cd(BO2)2
+Cd(IO3)2
+   Cd(IO3)2
+Cd(OH)2
+   Cd(OH)2
+Cd(OH)Cl
+   Cd(OH)Cl
+Cd3(AsO4)2
+   Cd3(AsO4)2
+Cd3(PO4)2
+   Cd3(PO4)2
+Cd3(SO4)(OH)4
+   Cd3(SO4)(OH)4
+Cd3(SO4)2(OH)2
+   Cd3(SO4)2(OH)2
+CdBr2
+   CdBr2
+CdBr2:4H2O
+   CdBr2:4H2O
+CdCl2
+   CdCl2
+CdCl2(NH3)2
+   CdCl2(NH3)2
+CdCl2(NH3)4
+   CdCl2(NH3)4
+CdCl2(NH3)6
+   CdCl2(NH3)6
+CdCl2:H2O
+   CdCl2:H2O
+CdCr2O4
+   CdCr2O4
+CdF2
+   CdF2
+CdI2
+   CdI2
+CdS
+   CdS
+CdSeO3
+   CdSeO3
+CdSeO4
+   CdSeO4
+CdSiO3
+   CdSiO3
+CdSO4
+   CdSO4
+CdSO4:2.667H2O
+   CdSO4:2.667H2O
+CdSO4:H2O
+   CdSO4:H2O
+Ce
+   Ce
+Ce(OH)3
+   Ce(OH)3
+Ce(OH)3(am)
+   Ce(OH)3(am)
+Ce2(CO3)3:8H2O
+   Ce2(CO3)3:8H2O
+Ce2O3
+   Ce2O3
+Ce3(PO4)4
+   Ce3(PO4)4
+CeF3:.5H2O
+   CeF3:.5H2O
+CeO2
+   CeO2
+CePO4:10H2O
+   CePO4:10H2O
+Chalcanthite
+   Chalcanthite
+Chalcocyanite
+   Chalcocyanite
+Chamosite-7A
+   Chamosite-7A
+Chloromagnesite
+   Chloromagnesite
+Chromite
+   Chromite
+Chrysocolla
+   Chrysocolla
+Claudetite
+   Claudetite
+Clausthalite
+   Clausthalite
+   Se--
+Clinochalcomenite
+   Clinochalcomenite
+Clinochlore-14A
+   Clinochlore-14A
+Clinochlore-7A
+   Clinochlore-7A
+Clinoptilolite
+   Clinoptilolite
+Clinoptilolite-Ca
+   Clinoptilolite-Ca
+Clinoptilolite-Cs
+   Clinoptilolite-Cs
+Clinoptilolite-dehy
+   Clinoptilolite-dehy
+Clinoptilolite-dehy-Ca
+   Clinoptilolite-dehy-Ca
+Clinoptilolite-dehy-Cs
+   Clinoptilolite-dehy-Cs
+Clinoptilolite-dehy-K
+   Clinoptilolite-dehy-K
+Clinoptilolite-dehy-Na
+   Clinoptilolite-dehy-Na
+Clinoptilolite-dehy-NH4
+   Clinoptilolite-dehy-NH4
+Clinoptilolite-dehy-Sr
+   Clinoptilolite-dehy-Sr
+Clinoptilolite-hy-Ca
+   Clinoptilolite-hy-Ca
+Clinoptilolite-hy-Cs
+   Clinoptilolite-hy-Cs
+Clinoptilolite-hy-K
+   Clinoptilolite-hy-K
+Clinoptilolite-hy-Na
+   Clinoptilolite-hy-Na
+Clinoptilolite-hy-Sr
+   Clinoptilolite-hy-Sr
+Clinoptilolite-K
+   Clinoptilolite-K
+Clinoptilolite-Na
+   Clinoptilolite-Na
+Clinoptilolite-NH4
+   Clinoptilolite-NH4
+Clinoptilolite-Sr
+   Clinoptilolite-Sr
+Co
+   Co
+Co(NO3)2
+   Co(NO3)2
+Co(OH)2
+   Co(OH)2
+Co2SiO4
+   Co2SiO4
+Co3(AsO4)2
+   Co3(AsO4)2
+Co3(PO4)2
+   Co3(PO4)2
+CoCl2
+   CoCl2
+CoCl2:2H2O
+   CoCl2:2H2O
+CoCl2:6H2O
+   CoCl2:6H2O
+CoF2
+   CoF2
+CoF3
+   CoF3
+CoFe2O4
+   CoFe2O4
+Coffinite
+   Coffinite
+CoHPO4
+   CoHPO4
+Colemanite
+   Colemanite
+CoO
+   CoO
+Corkite
+   Corkite
+CoS
+   CoS
+CoSeO3
+   CoSeO3
+CoSO4
+   CoSO4
+CoSO4.3Co(OH)2
+   CoSO4.3Co(OH)2
+CoSO4:6H2O
+   CoSO4:6H2O
+CoSO4:H2O
+   CoSO4:H2O
+Cotunnite
+   Cotunnite
+CoWO4
+   CoWO4
+Cr
+   Cr
+CrCl3
+   CrCl3
+CrF3
+   CrF3
+CrF4
+   CrF4
+CrI3
+   CrI3
+CrO2
+   CrO2
+CrO3
+   CrO3
+Crocoite
+   Crocoite
+Cronstedtite-7A
+   Cronstedtite-7A
+CrS
+   CrS
+Cs
+   Cs
+Cs2NaAmCl6
+   Cs2NaAmCl6
+   Am+++
+Cs2U2O7
+   Cs2U2O7
+Cs2U4O12
+   Cs2U4O12
+Cs2UO4
+   Cs2UO4
+Cu
+   Cu
+Cu3(PO4)2
+   Cu3(PO4)2
+Cu3(PO4)2:3H2O
+   Cu3(PO4)2:3H2O
+CuCl2
+   CuCl2
+CuCr2O4
+   CuCr2O4
+CuF
+   CuF
+CuF2
+   CuF2
+CuF2:2H2O
+   CuF2:2H2O
+CuSeO3
+   CuSeO3
+Daphnite-14A
+   Daphnite-14A
+Daphnite-7A
+   Daphnite-7A
+Dawsonite
+   Dawsonite
+Delafossite
+   Delafossite
+Dicalcium_silicate
+   Dicalcium_silicate
+Dioptase
+   Dioptase
+Downeyite
+   Downeyite
+Dy
+   Dy
+Dy(OH)3
+   Dy(OH)3
+Dy(OH)3(am)
+   Dy(OH)3(am)
+Dy2(CO3)3
+   Dy2(CO3)3
+Dy2O3
+   Dy2O3
+DyF3:.5H2O
+   DyF3:.5H2O
+DyPO4:10H2O
+   DyPO4:10H2O
 Epsomite
    Epsomite
+Er
+   Er
+Er(OH)3
+   Er(OH)3
+Er(OH)3(am)
+   Er(OH)3(am)
+Er2(CO3)3
+   Er2(CO3)3
+Er2O3
+   Er2O3
+ErF3:.5H2O
+   ErF3:.5H2O
+ErPO4:10H2O
+   ErPO4:10H2O
+Erythrite
+   Erythrite
+Eskolaite
+   Eskolaite
+Ettringite
+   Ettringite
+Eu
+   Eu
+Eu(IO3)3:2H2O
+   Eu(IO3)3:2H2O
+Eu(NO3)3:6H2O
+   Eu(NO3)3:6H2O
+Eu(OH)2.5Cl.5
+   Eu(OH)2.5Cl.5
+Eu(OH)2Cl
+   Eu(OH)2Cl
+Eu(OH)3
+   Eu(OH)3
+Eu2(CO3)3:3H2O
+   Eu2(CO3)3:3H2O
+Eu2(SO4)3:8H2O
+   Eu2(SO4)3:8H2O
+Eu2O3(cubic)
+   Eu2O3(cubic)
+Eu2O3(monoclinic)
+   Eu2O3(monoclinic)
+Eu3O4
+   Eu3O4
+EuBr3
+   EuBr3
+EuCl2
+   EuCl2
+EuCl3
+   EuCl3
+EuCl3:6H2O
+   EuCl3:6H2O
+Eucryptite
+   Eucryptite
+EuF3:0.5H2O
+   EuF3:0.5H2O
+EuO
+   EuO
+EuOCl
+   EuOCl
+EuOHCO3
+   EuOHCO3
+EuPO4:10H2O
+   EuPO4:10H2O
+EuS
+   EuS
+EuSO4
+   EuSO4
+Fe
+   Fe
+Fe(OH)2
+   Fe(OH)2
+Fe(OH)3
+   Fe(OH)3
+Fe2(SO4)3
+   Fe2(SO4)3
+FeF2
+   FeF2
+FeF3
+   FeF3
+Ferrite-Ca
+   Ferrite-Ca
+Ferrite-Cu
+   Ferrite-Cu
+Ferrite-Dicalcium
+   Ferrite-Dicalcium
+Ferrite-Mg
+   Ferrite-Mg
+Ferrite-Zn
+   Ferrite-Zn
+Ferroselite
+   Ferroselite
+   Se--
+FeSO4
+   FeSO4
+FeV2O4
+   FeV2O4
+Foshagite
+   Foshagite
+Frankdicksonite
+   Frankdicksonite
+Freboldite
+   Freboldite
+   Se--
+Ga
+   Ga
 Gaylussite
    Gaylussite
+Gd
+   Gd
+Gd(OH)3
+   Gd(OH)3
+Gd(OH)3(am)
+   Gd(OH)3(am)
+Gd2(CO3)3
+   Gd2(CO3)3
+Gd2O3
+   Gd2O3
+GdF3:.5H2O
+   GdF3:.5H2O
+GdPO4:10H2O
+   GdPO4:10H2O
+Gismondine
+   Gismondine
 Glauberite
    Glauberite
+Goethite
+   Goethite
 Gypsum
    Gypsum
+Gyrolite
+   Gyrolite
+Haiweeite
+   Haiweeite
+Hatrurite
+   Hatrurite
+Hausmannite
+   Hausmannite
+Heazlewoodite
+   Heazlewoodite
+Hercynite
+   Hercynite
+Herzenbergite
+   Herzenbergite
 Hexahydrite
    Hexahydrite
+Hf
+   Hf
+HfB2
+   HfB2
+   BH4-
+HfBr2
+   HfBr2
+HfBr4
+   HfBr4
+HfC
+   HfC
+HfCl2
+   HfCl2
+HfCl4
+   HfCl4
+HfF2
+   HfF2
+HfF4
+   HfF4
+HfI2
+   HfI2
+HfI4
+   HfI4
+HfN
+   HfN
+HfO2
+   HfO2
+HfS2
+   HfS2
+HfS3
+   HfS3
+Hg(l)
+   Hg(l)
+Hg2SeO3
+   Hg2SeO3
+Hg2SO4
+   Hg2SO4
+HgSeO3
+   HgSeO3
+Hillebrandite
+   Hillebrandite
+Hinsdalite
+   Hinsdalite
+Ho
+   Ho
+Ho(OH)3
+   Ho(OH)3
+Ho(OH)3(am)
+   Ho(OH)3(am)
+Ho2(CO3)3
+   Ho2(CO3)3
+Ho2O3
+   Ho2O3
+HoF3:.5H2O
+   HoF3:.5H2O
+Hopeite
+   Hopeite
+HoPO4:10H2O
+   HoPO4:10H2O
+HTcO4
+   HTcO4
+Hydroboracite
+   Hydroboracite
+Hydrocerussite
+   Hydrocerussite
+Hydrophilite
+   Hydrophilite
+Hydroxylapatite
+   Hydroxylapatite
+Hydrozincite
+   Hydrozincite
+I2
+   I2
+Ice
+   Ice
+Illite
+   Illite
+Ilmenite
+   Ilmenite
+   Ti(OH)4(aq)
+In
+   In
+Jarosite
+   Jarosite
+Jarosite-Na
+   Jarosite-Na
+K
+   K
+K2CO3:1.5H2O
+   K2CO3:1.5H2O
+K2Se
+   K2Se
+   Se--
+K2UO4
+   K2UO4
+K3H(SO4)2
+   K3H(SO4)2
+K8H4(CO3)6:3H2O
+   K8H4(CO3)6:3H2O
 Kainite
    Kainite
+KAl(SO4)2
+   KAl(SO4)2
 Kalicinite
    Kalicinite
+Karelianite
+   Karelianite
+Kasolite
+   Kasolite
+Katoite
+   Katoite
+KBr
+   KBr
 Kieserite
    Kieserite
+Klockmannite
+   Klockmannite
+   Se--
+KMgCl3
+   KMgCl3
+KMgCl3:2H2O
+   KMgCl3:2H2O
+KNaCO3:6H2O
+   KNaCO3:6H2O
+Krutaite
+   Krutaite
+   Se--
+KTcO4
+   KTcO4
+KUO2AsO4
+   KUO2AsO4
+La
+   La
+La(OH)3
+   La(OH)3
+La(OH)3(am)
+   La(OH)3(am)
+La2(CO3)3:8H2O
+   La2(CO3)3:8H2O
+La2O3
+   La2O3
+LaCl3
+   LaCl3
+LaCl3:7H2O
+   LaCl3:7H2O
+LaF3:.5H2O
+   LaF3:.5H2O
+Lammerite
+   Lammerite
+Lanarkite
+   Lanarkite
+Lansfordite
+   Lansfordite
+LaPO4:10H2O
+   LaPO4:10H2O
+Laurite
+   Laurite
+Lawrencite
+   Lawrencite
 Leonite
    Leonite
-Labile_Salt
-   Labile_Salt
-Mg2Cl(OH)3.4H2O
-   Mg2Cl(OH)3.4H2O
+Li
+   Li
+Li2Se
+   Li2Se
+Li2UO4
+   Li2UO4
+Linnaeite
+   Linnaeite
+LiUO2AsO4
+   LiUO2AsO4
+Lopezite
+   Lopezite
+Lu
+   Lu
+Lu(OH)3
+   Lu(OH)3
+Lu(OH)3(am)
+   Lu(OH)3(am)
+Lu2(CO3)3
+   Lu2(CO3)3
+Lu2O3
+   Lu2O3
+LuF3:.5H2O
+   LuF3:.5H2O
+LuPO4:10H2O
+   LuPO4:10H2O
+Magnesiochromite
+   Magnesiochromite
+Manganite
+   Manganite
+Massicot
+   Massicot
+Matlockite
+   Matlockite
+Mayenite
+   Mayenite
+Melanterite
+   Melanterite
 Mercallite
    Mercallite
+Mesolite
+   Mesolite
+Mg
+   Mg
+Mg1.25SO4(OH)0.5:0.5H2O
+   Mg1.25SO4(OH)0.5:0.5H2O
+Mg1.5SO4(OH)
+   Mg1.5SO4(OH)
+Mg2V2O7
+   Mg2V2O7
+MgBr2
+   MgBr2
+MgBr2:6H2O
+   MgBr2:6H2O
+MgCl2:2H2O
+   MgCl2:2H2O
+MgCl2:4H2O
+   MgCl2:4H2O
+MgCl2:H2O
+   MgCl2:H2O
+MgOHCl
+   MgOHCl
+MgSeO3
+   MgSeO3
+MgSeO3:6H2O
+   MgSeO3:6H2O
+MgSO4
+   MgSO4
+MgUO4
+   MgUO4
+MgV2O6
+   MgV2O6
+Millerite
+   Millerite
+Minium
+   Minium
+   Pb++++
 Mirabilite
    Mirabilite
 Misenite
    Misenite
+Mn
+   Mn
+Mn(OH)2(am)
+   Mn(OH)2(am)
+Mn(OH)3
+   Mn(OH)3
+Mn3(PO4)2
+   Mn3(PO4)2
+MnCl2:2H2O
+   MnCl2:2H2O
+MnCl2:4H2O
+   MnCl2:4H2O
+MnCl2:H2O
+   MnCl2:H2O
+MnHPO4
+   MnHPO4
+MnO2(gamma)
+   MnO2(gamma)
+MnSe
+   MnSe
+   Se--
+MnSeO3
+   MnSeO3
+MnSeO3:2H2O
+   MnSeO3:2H2O
+MnSO4
+   MnSO4
+MnV2O6
+   MnV2O6
+Mo
+   Mo
+Modderite
+   Modderite
+   AsH3(aq)
+Molysite
+   Molysite
+Monohydrocalcite
+   Monohydrocalcite
+Monteponite
+   Monteponite
+Montmor-Ca
+   Montmor-Ca
+Montmor-Cs
+   Montmor-Cs
+Montmor-K
+   Montmor-K
+Montmor-Mg
+   Montmor-Mg
+Montroydite
+   Montroydite
+Mordenite
+   Mordenite
+Mordenite-dehy
+   Mordenite-dehy
+Morenosite
+   Morenosite
+MoSe2
+   MoSe2
+   Se--
+Na
+   Na
+Na2CO3
+   Na2CO3
+Na2CO3:7H2O
+   Na2CO3:7H2O
+Na2Cr2O7
+   Na2Cr2O7
+Na2CrO4
+   Na2CrO4
+Na2Se
+   Na2Se
+   Se--
+Na2Se2
+   Na2Se2
+   Se--
+Na2SiO3
+   Na2SiO3
+Na2U2O7
+   Na2U2O7
+Na2UO4(alpha)
+   Na2UO4(alpha)
+Na3H(SO4)2
+   Na3H(SO4)2
+Na3UO4
+   Na3UO4
+Na4Ca(SO4)3:2H2O
+   Na4Ca(SO4)3:2H2O
+Na4SiO4
+   Na4SiO4
+Na4UO2(CO3)3
+   Na4UO2(CO3)3
+Na6Si2O7
+   Na6Si2O7
+NaBr
+   NaBr
+NaBr:2H2O
+   NaBr:2H2O
+NaFeO2
+   NaFeO2
 Nahcolite
    Nahcolite
+NaNpO2CO3:3.5H2O
+   NaNpO2CO3:3.5H2O
+   NpO2+
+Nantokite
+   Nantokite
+NaTcO4
+   NaTcO4
 Natron
    Natron
-Picromerite/Schoenite
-   Picromerite/Schoenite
+Natrosilite
+   Natrosilite
+Naumannite
+   Naumannite
+   Se--
+NaUO3
+   NaUO3
+Nd
+   Nd
+Nd(OH)3
+   Nd(OH)3
+Nd(OH)3(am)
+   Nd(OH)3(am)
+Nd(OH)3(c)
+   Nd(OH)3(c)
+Nd2(CO3)3
+   Nd2(CO3)3
+Nd2O3
+   Nd2O3
+NdF3:.5H2O
+   NdF3:.5H2O
+NdOHCO3
+   NdOHCO3
+NdPO4:10H2O
+   NdPO4:10H2O
+NH4HSe
+   NH4HSe
+   Se--
+Ni
+   Ni
+Ni(OH)2
+   Ni(OH)2
+Ni2P2O7
+   Ni2P2O7
+Ni2SiO4
+   Ni2SiO4
+Ni3(PO4)2
+   Ni3(PO4)2
+Nickelbischofite
+   Nickelbischofite
+NiCl2
+   NiCl2
+NiCl2:2H2O
+   NiCl2:2H2O
+NiCl2:4H2O
+   NiCl2:4H2O
+NiCO3
+   NiCO3
+NiF2
+   NiF2
+NiF2:4H2O
+   NiF2:4H2O
+Ningyoite
+   Ningyoite
+NiSO4
+   NiSO4
+NiSO4:6H2O(alpha)
+   NiSO4:6H2O(alpha)
+Niter
+   Niter
+Nitrobarite
+   Nitrobarite
+Nontronite-Ca
+   Nontronite-Ca
+Nontronite-Cs
+   Nontronite-Cs
+Nontronite-H
+   Nontronite-H
+Nontronite-K
+   Nontronite-K
+Nontronite-Mg
+   Nontronite-Mg
+Np
+   Np
+   Np++++
+Np(HPO4)2
+   Np(HPO4)2
+   Np++++
+Np(OH)4
+   Np(OH)4
+   Np++++
+Np2O5
+   Np2O5
+   NpO2+
+NpO2
+   NpO2
+   Np++++
+NpO2(OH)2
+   NpO2(OH)2
+   NpO2++
+NpO2OH(am)
+   NpO2OH(am)
+   NpO2+
+o-Phthalic_acid
+   o-Phthalic_acid
+   o-Phthalate
+Okenite
+   Okenite
+Orpiment
+   Orpiment
+Otavite
+   Otavite
+Ottemannite
+   Ottemannite
+   Sn++++
+Oxychloride-Mg
+   Oxychloride-Mg
+P
+   P
+Paralaurionite
+   Paralaurionite
+Parsonsite
+   Parsonsite
+Pb
+   Pb
+Pb(H2PO4)2
+   Pb(H2PO4)2
+Pb(IO3)2
+   Pb(IO3)2
+Pb(N3)2(mono)
+   Pb(N3)2(mono)
+   N3-
+Pb(N3)2(orth)
+   Pb(N3)2(orth)
+   N3-
+Pb(SCN)2
+   Pb(SCN)2
+Pb2Cl2CO3
+   Pb2Cl2CO3
+Pb2Cl5NH4
+   Pb2Cl5NH4
+Pb2O(N3)2
+   Pb2O(N3)2
+   N3-
+Pb2SiO4
+   Pb2SiO4
+Pb3(PO4)2
+   Pb3(PO4)2
+Pb3SO6
+   Pb3SO6
+Pb4Cl2(OH)6
+   Pb4Cl2(OH)6
+Pb4O(PO4)2
+   Pb4O(PO4)2
+Pb4SO7
+   Pb4SO7
+PbBr2
+   PbBr2
+PbBrF
+   PbBrF
+PbCO3.PbO
+   PbCO3.PbO
+PbF2
+   PbF2
+PbFCl
+   PbFCl
+PbHPO4
+   PbHPO4
+PbI2
+   PbI2
+PbSeO4
+   PbSeO4
+PbSO4(NH3)2
+   PbSO4(NH3)2
+PbSO4(NH3)4
+   PbSO4(NH3)4
+Pd
+   Pd
+Penroseite
+   Penroseite
+   Se--
+Pentahydrite
+   Pentahydrite
+Petalite
+   Petalite
+Phosgenite
+   Phosgenite
+Picromerite
+   Picromerite
 Pirssonite
    Pirssonite
+Plattnerite
+   Plattnerite
+   Pb++++
+Plumbogummite
+   Plumbogummite
+Pm
+   Pm
+Pm(OH)3
+   Pm(OH)3
+Pm(OH)3(am)
+   Pm(OH)3(am)
+Pm2(CO3)3
+   Pm2(CO3)3
+Pm2O3
+   Pm2O3
+PmF3:.5H2O
+   PmF3:.5H2O
+PmPO4:10H2O
+   PmPO4:10H2O
+Polydymite
+   Polydymite
 Polyhalite
    Polyhalite
 Portlandite
    Portlandite
-K2CO3.3/2H2O
-   K2CO3.3/2H2O
-K8H4(CO3)6.3H2O
-   K8H4(CO3)6.3H2O
-KNaCO3.6H2O
-   KNaCO3.6H2O
-K_Trona
-   K_Trona
-K3H(SO4)2
-   K3H(SO4)2
-Na3H(SO4)2
-   Na3H(SO4)2
-Na2CO3.7H2O
-   Na2CO3.7H2O
+Pr
+   Pr
+Pr(OH)3
+   Pr(OH)3
+Pr(OH)3(am)
+   Pr(OH)3(am)
+Pr2(CO3)3
+   Pr2(CO3)3
+Pr2O3
+   Pr2O3
+PrF3:.5H2O
+   PrF3:.5H2O
+PrPO4:10H2O
+   PrPO4:10H2O
+Przhevalskite
+   Przhevalskite
+Pseudowollastonite
+   Pseudowollastonite
+Pu
+   Pu
+   Pu++++
+Pu(HPO4)2
+   Pu(HPO4)2
+   Pu++++
+Pu(OH)3
+   Pu(OH)3
+   Pu+++
+Pu(OH)4
+   Pu(OH)4
+   Pu++++
+Pu2O3
+   Pu2O3
+   Pu+++
+PuF3
+   PuF3
+   Pu+++
+PuF4
+   PuF4
+   Pu++++
+PuO2
+   PuO2
+   Pu++++
+PuO2(OH)2
+   PuO2(OH)2
+   PuO2++
+PuO2HPO4
+   PuO2HPO4
+   PuO2++
+PuO2OH(am)
+   PuO2OH(am)
+   PuO2+
+Pyrolusite
+   Pyrolusite
+Pyromorphite
+   Pyromorphite
+Pyromorphite-OH
+   Pyromorphite-OH
+Ra
+   Ra
+Ra(NO3)2
+   Ra(NO3)2
+RaCl2:2H2O
+   RaCl2:2H2O
+Rankinite
+   Rankinite
+RaSO4
+   RaSO4
+Rb
+   Rb
+Rb2UO4
+   Rb2UO4
+Re
+   Re
+Realgar
+   Realgar
+   AsH3(aq)
+Rhodonite
+   Rhodonite
+Ripidolite-14A
+   Ripidolite-14A
+Ripidolite-7A
+   Ripidolite-7A
+Ru
+   Ru
+Ru(OH)3:H2O(am)
+   Ru(OH)3:H2O(am)
+RuBr3
+   RuBr3
+RuCl3
+   RuCl3
+RuI3
+   RuI3
+RuO2
+   RuO2
+   Ru(OH)2++
+RuO2:2H2O(am)
+   RuO2:2H2O(am)
+   Ru(OH)2++
+RuO4
+   RuO4
+   RuO4(aq)
+RuSe2
+   RuSe2
+   Ru(OH)2++
+   Se--
+Rutherfordine
+   Rutherfordine
+Rutile
+   Rutile
+   Ti(OH)4(aq)
+S
+   S
+Safflorite
+   Safflorite
+   AsH3(aq)
+Saleeite
+   Saleeite
+Sanbornite
+   Sanbornite
+Saponite-Ca
+   Saponite-Ca
+Saponite-Cs
+   Saponite-Cs
+Saponite-H
+   Saponite-H
+Saponite-K
+   Saponite-K
+Saponite-Mg
+   Saponite-Mg
+Saponite-Na
+   Saponite-Na
+Sb
+   Sb
+   Sb(OH)3(aq)
+Sb(OH)3
+   Sb(OH)3
+   Sb(OH)3(aq)
+Sb2O3
+   Sb2O3
+   Sb(OH)3(aq)
+Sb2O4
+   Sb2O4
+   Sb(OH)3(aq)
+Sb2O5
+   Sb2O5
+   Sb(OH)3(aq)
+Sb4O6(cubic)
+   Sb4O6(cubic)
+   Sb(OH)3(aq)
+Sb4O6(orthorhombic)
+   Sb4O6(orthorhombic)
+   Sb(OH)3(aq)
+SbBr3
+   SbBr3
+   Sb(OH)3(aq)
+SbCl3
+   SbCl3
+   Sb(OH)3(aq)
+Sc
+   Sc
+Scacchite
+   Scacchite
+Schoepite
+   Schoepite
+Schoepite-dehy(.393)
+   Schoepite-dehy(.393)
+Schoepite-dehy(.648)
+   Schoepite-dehy(.648)
+Schoepite-dehy(.85)
+   Schoepite-dehy(.85)
+Schoepite-dehy(.9)
+   Schoepite-dehy(.9)
+Schoepite-dehy(1.0)
+   Schoepite-dehy(1.0)
+Scolecite
+   Scolecite
+Se
+   Se
+Se2O5
+   Se2O5
+SeCl4
+   SeCl4
+Sellaite
+   Sellaite
+SeO3
+   SeO3
+Shcherbinaite
+   Shcherbinaite
+Si
+   Si
+Sklodowskite
+   Sklodowskite
+Sm
+   Sm
+Sm(OH)3
+   Sm(OH)3
+Sm(OH)3(am)
+   Sm(OH)3(am)
+Sm2(CO3)3
+   Sm2(CO3)3
+Sm2(SO4)3
+   Sm2(SO4)3
+Sm2O3
+   Sm2O3
+Smectite-high-Fe-Mg
+   Smectite-high-Fe-Mg
+Smectite-low-Fe-Mg
+   Smectite-low-Fe-Mg
+SmF3:.5H2O
+   SmF3:.5H2O
+SmPO4:10H2O
+   SmPO4:10H2O
+Sn
+   Sn
+Sn(OH)2
+   Sn(OH)2
+Sn(SO4)2
+   Sn(SO4)2
+   Sn++++
+Sn3S4
+   Sn3S4
+   Sn++++
+SnBr2
+   SnBr2
+SnBr4
+   SnBr4
+   Sn++++
+SnCl2
+   SnCl2
+SnSe
+   SnSe
+   Se--
+SnSe2
+   SnSe2
+   Sn++++
+   Se--
+SnSO4
+   SnSO4
+Soddyite
+   Soddyite
+Sphaerocobaltite
+   Sphaerocobaltite
+Spinel-Co
+   Spinel-Co
+Spodumene
+   Spodumene
+Sr
+   Sr
+Sr(NO3)2
+   Sr(NO3)2
+Sr(NO3)2:4H2O
+   Sr(NO3)2:4H2O
+Sr(OH)2
+   Sr(OH)2
+Sr2SiO4
+   Sr2SiO4
+Sr3(AsO4)2
+   Sr3(AsO4)2
+SrBr2
+   SrBr2
+SrBr2:6H2O
+   SrBr2:6H2O
+SrBr2:H2O
+   SrBr2:H2O
+SrCl2
+   SrCl2
+SrCl2:2H2O
+   SrCl2:2H2O
+SrCl2:6H2O
+   SrCl2:6H2O
+SrCl2:H2O
+   SrCl2:H2O
+SrCrO4
+   SrCrO4
+SrF2
+   SrF2
+SrHPO4
+   SrHPO4
+SrI2
+   SrI2
+SrO
+   SrO
+SrS
+   SrS
+SrSeO4
+   SrSeO4
+SrSiO3
+   SrSiO3
+SrUO4(alpha)
+   SrUO4(alpha)
+SrZrO3
+   SrZrO3
+   Zr(OH)2++
+Starkeyite
+   Starkeyite
+Stibnite
+   Stibnite
+   Sb(OH)3(aq)
+Stilbite
+   Stilbite
+Stilleite
+   Stilleite
+   Se--
+Strengite
+   Strengite
 Syngenite
    Syngenite
 Tachyhydrite
    Tachyhydrite
+Tarapacaite
+   Tarapacaite
+Tb
+   Tb
+Tb(OH)3
+   Tb(OH)3
+Tb(OH)3(am)
+   Tb(OH)3(am)
+Tb2(CO3)3
+   Tb2(CO3)3
+Tb2O3
+   Tb2O3
+TbF3:.5H2O
+   TbF3:.5H2O
+TbPO4:10H2O
+   TbPO4:10H2O
+Tc
+   Tc
+Tc(OH)2
+   Tc(OH)2
+   Tc+++
+Tc(OH)3
+   Tc(OH)3
+   Tc+++
+Tc2O7
+   Tc2O7
+Tc2S7
+   Tc2S7
+Tc3O4
+   Tc3O4
+   Tc+++
+Tc4O7
+   Tc4O7
+   Tc+++
+   TcO++
+TcO2:2H2O(am)
+   TcO2:2H2O(am)
+   TcO++
+TcO3
+   TcO3
+   TcO4--
+TcOH
+   TcOH
+   Tc+++
+TcS2
+   TcS2
+   TcO++
+TcS3
+   TcS3
+   TcO4--
+Tephroite
+   Tephroite
+Th
+   Th
+Th(NO3)4:5H2O
+   Th(NO3)4:5H2O
+Th(OH)4
+   Th(OH)4
+Th(SO4)2
+   Th(SO4)2
+Th2S3
+   Th2S3
+Th2Se3
+   Th2Se3
+   Se--
+Th7S12
+   Th7S12
+ThBr4
+   ThBr4
+ThCl4
+   ThCl4
 Thenardite
    Thenardite
 Thermonatrite
    Thermonatrite
-Trona
-   Trona
-Borax
-   Borax
-   B(OH)4-
-B(OH)3
-   B(OH)3
-   B(OH)4-
-K-Pentaborate(30C)
-   K-Pentaborate(30C)
-   B(OH)4-
-K-Tetraborate(30C)
-   K-Tetraborate(30C)
-   B(OH)4-
-Na_Metaborate
-   Na_Metaborate
-   B(OH)4-
-Na_Pentaborate
-   Na_Pentaborate
-   B(OH)4-
-Teepleite(20C)
-   Teepleite(20C)
-   B(OH)4-
-Hydromagnesite5424
-   Hydromagnesite5424
-Hydromagnesite4323
-   Hydromagnesite4323
+ThF4
+   ThF4
+ThF4:2.5H2O
+   ThF4:2.5H2O
+ThI4
+   ThI4
+Thorianite
+   Thorianite
+ThS
+   ThS
+ThS2
+   ThS2
+Ti
+   Ti
+   Ti(OH)4(aq)
+Ti2O3
+   Ti2O3
+   Ti(OH)4(aq)
+Ti3O5
+   Ti3O5
+   Ti(OH)4(aq)
+TiB2
+   TiB2
+   Ti(OH)4(aq)
+TiBr3
+   TiBr3
+   Ti(OH)4(aq)
+TiBr4
+   TiBr4
+   Ti(OH)4(aq)
+TiC
+   TiC
+   Ti(OH)4(aq)
+TiCl2
+   TiCl2
+   Ti(OH)4(aq)
+TiCl3
+   TiCl3
+   Ti(OH)4(aq)
+Tiemannite
+   Tiemannite
+   Se--
+TiF4(am)
+   TiF4(am)
+   Ti(OH)4(aq)
+TiI4
+   TiI4
+   Ti(OH)4(aq)
+TiN
+   TiN
+   Ti(OH)4(aq)
+TiO(alpha)
+   TiO(alpha)
+   Ti(OH)4(aq)
+Titanite
+   Titanite
+   Ti(OH)4(aq)
+Tl
+   Tl
+Tm
+   Tm
+Tm(OH)3
+   Tm(OH)3
+Tm(OH)3(am)
+   Tm(OH)3(am)
+Tm2(CO3)3
+   Tm2(CO3)3
+Tm2O3
+   Tm2O3
+TmF3:.5H2O
+   TmF3:.5H2O
+TmPO4:10H2O
+   TmPO4:10H2O
+Tobermorite-11A
+   Tobermorite-11A
+Tobermorite-14A
+   Tobermorite-14A
+Tobermorite-9A
+   Tobermorite-9A
+Todorokite
+   Todorokite
+Torbernite
+   Torbernite
+Trevorite
+   Trevorite
+Tridymite
+   Tridymite
+Troilite
+   Troilite
+Trona-K
+   Trona-K
+Tsumebite
+   Tsumebite
+Tyuyamunite
+   Tyuyamunite
+U
+   U
+U(CO3)2
+   U(CO3)2
+U(HPO4)2:4H2O
+   U(HPO4)2:4H2O
+U(OH)2SO4
+   U(OH)2SO4
+U(SO3)2
+   U(SO3)2
+U(SO4)2
+   U(SO4)2
+U(SO4)2:4H2O
+   U(SO4)2:4H2O
+U(SO4)2:8H2O
+   U(SO4)2:8H2O
+U2C3
+   U2C3
+U2F9
+   U2F9
+U2O2Cl5
+   U2O2Cl5
+U2O3F6
+   U2O3F6
+U2S3
+   U2S3
+U2Se3
+   U2Se3
+U3As4
+   U3As4
+U3O5F8
+   U3O5F8
+U3P4
+   U3P4
+U3S5
+   U3S5
+U3Sb4
+   U3Sb4
+   Sb(OH)3(aq)
+U3Se4
+   U3Se4
+U3Se5
+   U3Se5
+U4F17
+   U4F17
+U5O12Cl
+   U5O12Cl
+UAs
+   UAs
+UAs2
+   UAs2
+UBr2Cl
+   UBr2Cl
+UBr2Cl2
+   UBr2Cl2
+UBr3
+   UBr3
+UBr3Cl
+   UBr3Cl
+UBr4
+   UBr4
+UBr5
+   UBr5
+UBrCl2
+   UBrCl2
+UBrCl3
+   UBrCl3
+UC
+   UC
+UC1.94(alpha)
+   UC1.94(alpha)
+UCl2F2
+   UCl2F2
+UCl2I2
+   UCl2I2
+UCl3
+   UCl3
+UCl3F
+   UCl3F
+UCl3I
+   UCl3I
+UCl4
+   UCl4
+UCl5
+   UCl5
+UCl6
+   UCl6
+UClF3
+   UClF3
+UClI3
+   UClI3
+UF3
+   UF3
+UF4
+   UF4
+UF4:2.5H2O
+   UF4:2.5H2O
+UF5(alpha)
+   UF5(alpha)
+UF5(beta)
+   UF5(beta)
+UF6
+   UF6
+UH3(beta)
+   UH3(beta)
+UI3
+   UI3
+UI4
+   UI4
+Umangite
+   Umangite
+   Se--
+UN
+   UN
+UN1.59(alpha)
+   UN1.59(alpha)
+UN1.73(alpha)
+   UN1.73(alpha)
+UO2(am)
+   UO2(am)
+UO2(AsO3)2
+   UO2(AsO3)2
+UO2(IO3)2
+   UO2(IO3)2
+UO2(NO3)2
+   UO2(NO3)2
+UO2(NO3)2:2H2O
+   UO2(NO3)2:2H2O
+UO2(NO3)2:3H2O
+   UO2(NO3)2:3H2O
+UO2(NO3)2:6H2O
+   UO2(NO3)2:6H2O
+UO2(NO3)2:H2O
+   UO2(NO3)2:H2O
+UO2(OH)2(beta)
+   UO2(OH)2(beta)
+UO2(PO3)2
+   UO2(PO3)2
+UO2.25
+   UO2.25
+UO2.25(beta)
+   UO2.25(beta)
+UO2.3333(beta)
+   UO2.3333(beta)
+UO2.6667
+   UO2.6667
+UO2Br2
+   UO2Br2
+UO2Br2:3H2O
+   UO2Br2:3H2O
+UO2Br2:H2O
+   UO2Br2:H2O
+UO2BrOH:2H2O
+   UO2BrOH:2H2O
+UO2Cl
+   UO2Cl
+UO2Cl2
+   UO2Cl2
+UO2Cl2:3H2O
+   UO2Cl2:3H2O
+UO2Cl2:H2O
+   UO2Cl2:H2O
+UO2ClOH:2H2O
+   UO2ClOH:2H2O
+UO2CO3
+   UO2CO3
+UO2F2
+   UO2F2
+UO2F2:3H2O
+   UO2F2:3H2O
+UO2FOH
+   UO2FOH
+UO2FOH:2H2O
+   UO2FOH:2H2O
+UO2FOH:H2O
+   UO2FOH:H2O
+UO2HPO4
+   UO2HPO4
+UO2HPO4:4H2O
+   UO2HPO4:4H2O
+UO2SO3
+   UO2SO3
+UO2SO4
+   UO2SO4
+UO2SO4:2.5H2O
+   UO2SO4:2.5H2O
+UO2SO4:3.5H2O
+   UO2SO4:3.5H2O
+UO2SO4:3H2O
+   UO2SO4:3H2O
+UO2SO4:H2O
+   UO2SO4:H2O
+UO3(alpha)
+   UO3(alpha)
+UO3(beta)
+   UO3(beta)
+UO3(gamma)
+   UO3(gamma)
+UO3:.9H2O(alpha)
+   UO3:.9H2O(alpha)
+UO3:2H2O
+   UO3:2H2O
+UOBr2
+   UOBr2
+UOBr3
+   UOBr3
+UOCl
+   UOCl
+UOCl2
+   UOCl2
+UOCl3
+   UOCl3
+UOF2
+   UOF2
+UOF2:H2O
+   UOF2:H2O
+UOF4
+   UOF4
+UOFOH
+   UOFOH
+UOFOH:.5H2O
+   UOFOH:.5H2O
+UP
+   UP
+UP2
+   UP2
+UP2O7
+   UP2O7
+UP2O7:20H2O
+   UP2O7:20H2O
+UPO5
+   UPO5
+Uranocircite
+   Uranocircite
+Uranophane
+   Uranophane
+US
+   US
+US1.9
+   US1.9
+US2
+   US2
+US3
+   US3
+USb
+   USb
+   Sb(OH)3(aq)
+USb2
+   USb2
+   Sb(OH)3(aq)
+USe
+   USe
+USe2(alpha)
+   USe2(alpha)
+USe2(beta)
+   USe2(beta)
+USe3
+   USe3
+V
+   V
+V2O4
+   V2O4
+V3O5
+   V3O5
+V4O7
+   V4O7
+Vaesite
+   Vaesite
+Vivianite
+   Vivianite
+W
+   W
+Weeksite
+   Weeksite
+Whitlockite
+   Whitlockite
+Wilkmanite
+   Wilkmanite
+   Se--
+Witherite
+   Witherite
+Wustite
+   Wustite
+Xonotlite
+   Xonotlite
+Y
+   Y
+Yb
+   Yb
+Yb(OH)3
+   Yb(OH)3
+Yb(OH)3(am)
+   Yb(OH)3(am)
+Yb2(CO3)3
+   Yb2(CO3)3
+Yb2O3
+   Yb2O3
+YbF3:.5H2O
+   YbF3:.5H2O
+YbPO4:10H2O
+   YbPO4:10H2O
+Zircon
+   Zircon
+   Zr(OH)2++
+Zn
+   Zn
+Zn(BO2)2
+   Zn(BO2)2
+Zn(ClO4)2:6H2O
+   Zn(ClO4)2:6H2O
+Zn(IO3)2
+   Zn(IO3)2
+Zn(NO3)2:6H2O
+   Zn(NO3)2:6H2O
+Zn(OH)2(beta)
+   Zn(OH)2(beta)
+Zn(OH)2(epsilon)
+   Zn(OH)2(epsilon)
+Zn(OH)2(gamma)
+   Zn(OH)2(gamma)
+Zn2(OH)3Cl
+   Zn2(OH)3Cl
+Zn2SiO4
+   Zn2SiO4
+Zn2SO4(OH)2
+   Zn2SO4(OH)2
+Zn2TiO4
+   Zn2TiO4
+   Ti(OH)4(aq)
+Zn3(AsO4)2
+   Zn3(AsO4)2
+Zn3O(SO4)2
+   Zn3O(SO4)2
+Zn5(NO3)2(OH)8
+   Zn5(NO3)2(OH)8
+ZnBr2
+   ZnBr2
+ZnBr2:2H2O
+   ZnBr2:2H2O
+ZnCl2
+   ZnCl2
+ZnCl2(NH3)2
+   ZnCl2(NH3)2
+ZnCl2(NH3)4
+   ZnCl2(NH3)4
+ZnCl2(NH3)6
+   ZnCl2(NH3)6
+ZnCO3:H2O
+   ZnCO3:H2O
+ZnCr2O4
+   ZnCr2O4
+ZnF2
+   ZnF2
+ZnI2
+   ZnI2
+ZnSeO3:H2O
+   ZnSeO3:H2O
+ZnSO4
+   ZnSO4
+ZnSO4:6H2O
+   ZnSO4:6H2O
+ZnSO4:7H2O
+   ZnSO4:7H2O
+ZnSO4:H2O
+   ZnSO4:H2O
+Zr
+   Zr
+   Zr(OH)2++
+ZrB2
+   ZrB2
+   Zr(OH)2++
+   BH4-
+ZrC
+   ZrC
+   Zr(OH)2++
+ZrCl
+   ZrCl
+   Zr(OH)2++
+ZrCl2
+   ZrCl2
+   Zr(OH)2++
+ZrCl3
+   ZrCl3
+   Zr(OH)2++
+ZrCl4
+   ZrCl4
+   Zr(OH)2++
+ZrF4(beta)
+   ZrF4(beta)
+   Zr(OH)2++
+ZrH2
+   ZrH2
+   Zr(OH)2++
+ZrN
+   ZrN
+   Zr(OH)2++
+Ag(g)
+   Ag(g)
+Al(g)
+   Al(g)
+Am(g)
+   Am(g)
+   Am+++
+AmF3(g)
+   AmF3(g)
+   Am+++
+Ar(g)
+   Ar(g)
+   Ar(aq)
+B(g)
+   B(g)
+Be(g)
+   Be(g)
+BF3(g)
+   BF3(g)
+Br2(g)
+   Br2(g)
+C(g)
+   C(g)
+C2H4(g)
+   C2H4(g)
+Ca(g)
+   Ca(g)
+Cd(g)
+   Cd(g)
+Cl2(g)
+   Cl2(g)
+Cs(g)
+   Cs(g)
+Cu(g)
+   Cu(g)
+F2(g)
+   F2(g)
+HBr(g)
+   HBr(g)
+HCl(g)
+   HCl(g)
+HF(g)
+   HF(g)
+Hf(g)
+   Hf(g)
+Hg(g)
+   Hg(g)
+HI(g)
+   HI(g)
+I2(g)
+   I2(g)
+K(g)
+   K(g)
+Li(g)
+   Li(g)
+Mg(g)
+   Mg(g)
+Na(g)
+   Na(g)
+NO(g)
+   NO(g)
+NO2(g)
+   NO2(g)
+Pb(g)
+   Pb(g)
+Rb(g)
+   Rb(g)
+RuCl3(g)
+   RuCl3(g)
+RuO3(g)
+   RuO3(g)
+Si(g)
+   Si(g)
+SiF4(g)
+   SiF4(g)
+Sn(g)
+   Sn(g)
+Tc2O7(g)
+   Tc2O7(g)
+Th(g)
+   Th(g)
+Ti(g)
+   Ti(g)
+   Ti(OH)4(aq)
+TiBr4(g)
+   TiBr4(g)
+   Ti(OH)4(aq)
+TiCl4(g)
+   TiCl4(g)
+   Ti(OH)4(aq)
+TiO(g)
+   TiO(g)
+   Ti(OH)4(aq)
+U(g)
+   U(g)
+U2Cl10(g)
+   U2Cl10(g)
+U2Cl8(g)
+   U2Cl8(g)
+U2F10(g)
+   U2F10(g)
+UBr(g)
+   UBr(g)
+UBr2(g)
+   UBr2(g)
+UBr3(g)
+   UBr3(g)
+UBr4(g)
+   UBr4(g)
+UBr5(g)
+   UBr5(g)
+UCl(g)
+   UCl(g)
+UCl2(g)
+   UCl2(g)
+UCl3(g)
+   UCl3(g)
+UCl4(g)
+   UCl4(g)
+UCl5(g)
+   UCl5(g)
+UCl6(g)
+   UCl6(g)
+UF(g)
+   UF(g)
+UF2(g)
+   UF2(g)
+UF3(g)
+   UF3(g)
+UF4(g)
+   UF4(g)
+UF5(g)
+   UF5(g)
+UF6(g)
+   UF6(g)
+UI(g)
+   UI(g)
+UI2(g)
+   UI2(g)
+UI3(g)
+   UI3(g)
+UI4(g)
+   UI4(g)
+UO(g)
+   UO(g)
+UO2(g)
+   UO2(g)
+UO2Cl2(g)
+   UO2Cl2(g)
+UO2F2(g)
+   UO2F2(g)
+UO3(g)
+   UO3(g)
+UOF4(g)
+   UOF4(g)
+Zn(g)
+   Zn(g)
+Zr(g)
+   Zr(g)
+   Zr(OH)2++
+ZrF4(g)
+   ZrF4(g)
+   Zr(OH)2++
+Ag2O
+   Ag2O
+Al2O3
+   Al2O3
+Am2O3(ox)
+   Am2O3(ox)
+   Am+++
+As2O5(ox)
+   As2O5(ox)
+B2O3(ox)
+   B2O3(ox)
+BaO(ox)
+   BaO(ox)
+CaO
+   CaO
+Cr2O3
+   Cr2O3
+Cs2O
+   Cs2O
+Cu2O
+   Cu2O
+CuO
+   CuO
+Eu2O3(cubic)(ox)
+   Eu2O3(cubic)(ox)
+Fe2O3
+   Fe2O3
+FeO(ox)
+   FeO(ox)
+HBr
+   HBr
+HCl
+   HCl
+HF
+   HF
+HgO
+   HgO
+HI
+   HI
+K2O(ox)
+   K2O(ox)
+Li2O
+   Li2O
+MgO
+   MgO
+MnO
+   MnO
+Na2O(ox)
+   Na2O(ox)
+NiO
+   NiO
+NpO2(ox)
+   NpO2(ox)
+   Np++++
+P2O5
+   P2O5
+PbO
+   PbO
+PuO2(ox)
+   PuO2(ox)
+   Pu++++
+RaO
+   RaO
+RuO2(ox)
+   RuO2(ox)
+   Ru(OH)2++
+SeO2
+   SeO2
+SiO2
+   SiO2
+SnO2
+   SnO2
+SO3
+   SO3
+SrO(ox)
+   SrO(ox)
+TcO2
+   TcO2
+ThO2
+   ThO2
+TiO2
+   TiO2
+   Ti(OH)4(aq)
+U3O8
+   U3O8
+V2O5
+   V2O5
+ZnO
+   ZnO

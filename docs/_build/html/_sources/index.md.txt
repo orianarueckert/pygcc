@@ -6,6 +6,7 @@
 :hidden:
 
 installation
+Tutorial_video
 pygcc_overview.ipynb
 Example_1.ipynb
 Example_2.ipynb

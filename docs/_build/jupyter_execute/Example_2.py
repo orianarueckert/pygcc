@@ -72,7 +72,7 @@ if os.path.exists(os.path.join(os.getcwd(), output_folder)) == False:
 
 # start the GWB program
 if myGWBrun.initialize("react","%s/runs_%s.txt" % (output_folder, i), 
-                       "-nocd -d \"./output/%s.dat\" " % objdbname[1:]):
+                       "-nocd -d \"./output/GWB/%s.dat\" " % objdbname[1:]):
 
     cmds = ['H2O  = 1 free kg', 'Fe++  = %s umol/kg' % nFe, "Na+  = %s mmol/kg" % nNa, 
             'pH = %s' % npH, "Cl- = %s mmol/kg" % nCl, "swap H2S(aq) for SO4--", 

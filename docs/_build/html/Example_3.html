@@ -45,6 +45,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial_video.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pygcc_overview.html">An Introduction to pyGeochemCalc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Example_1.html">General Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Example_2.html">Integration of pygcc with GWB</a></li>
@@ -103,81 +104,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">cbb2c9c05039</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">subprocess</span><span class="o">,</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span><span class="o">,</span> <span class="nn">sys</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">shutil</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">from</span> <span class="nn">pygcc.pygcc_utils</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span> <span class="nn">pygcc</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="nb">print</span><span class="p">(</span><span class="n">pygcc</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-
-<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\pandas\__init__.py in &lt;module&gt;
-<span class="g g-Whitespace">     </span><span class="mi">48</span> <span class="kn">import</span> <span class="nn">pandas.core.config_init</span>
-<span class="g g-Whitespace">     </span><span class="mi">49</span> 
-<span class="ne">---&gt; </span><span class="mi">50</span> <span class="kn">from</span> <span class="nn">pandas.core.api</span> <span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">51</span>     <span class="c1"># dtype</span>
-<span class="g g-Whitespace">     </span><span class="mi">52</span>     <span class="n">Int8Dtype</span><span class="p">,</span>
-
-<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\pandas\core\api.py in &lt;module&gt;
-<span class="g g-Whitespace">     </span><span class="mi">46</span> <span class="kn">from</span> <span class="nn">pandas.core.construction</span> <span class="kn">import</span> <span class="n">array</span>
-<span class="g g-Whitespace">     </span><span class="mi">47</span> <span class="kn">from</span> <span class="nn">pandas.core.flags</span> <span class="kn">import</span> <span class="n">Flags</span>
-<span class="ne">---&gt; </span><span class="mi">48</span> <span class="kn">from</span> <span class="nn">pandas.core.groupby</span> <span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">49</span>     <span class="n">Grouper</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">50</span>     <span class="n">NamedAgg</span><span class="p">,</span>
-
-<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\pandas\core\groupby\__init__.py in &lt;module&gt;
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">pandas.core.groupby.generic</span> <span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">DataFrameGroupBy</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">NamedAgg</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="n">SeriesGroupBy</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="p">)</span>
-
-<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\pandas\core\groupby\generic.py in &lt;module&gt;
-<span class="g g-Whitespace">     </span><span class="mi">71</span> <span class="kn">import</span> <span class="nn">pandas.core.common</span> <span class="k">as</span> <span class="nn">com</span>
-<span class="g g-Whitespace">     </span><span class="mi">72</span> <span class="kn">from</span> <span class="nn">pandas.core.construction</span> <span class="kn">import</span> <span class="n">create_series_with_explicit_dtype</span>
-<span class="ne">---&gt; </span><span class="mi">73</span> <span class="kn">from</span> <span class="nn">pandas.core.frame</span> <span class="kn">import</span> <span class="n">DataFrame</span>
-<span class="g g-Whitespace">     </span><span class="mi">74</span> <span class="kn">from</span> <span class="nn">pandas.core.generic</span> <span class="kn">import</span> <span class="n">NDFrame</span>
-<span class="g g-Whitespace">     </span><span class="mi">75</span> <span class="kn">from</span> <span class="nn">pandas.core.groupby</span> <span class="kn">import</span> <span class="n">base</span>
-
-<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\pandas\core\frame.py in &lt;module&gt;
-<span class="g g-Whitespace">    </span><span class="mi">127</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">128</span> 
-<span class="ne">--&gt; </span><span class="mi">129</span> <span class="kn">from</span> <span class="nn">pandas.core</span> <span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">130</span>     <span class="n">algorithms</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">131</span>     <span class="n">common</span> <span class="k">as</span> <span class="n">com</span><span class="p">,</span>
-
-<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\pandas\core\generic.py in &lt;module&gt;
-<span class="g g-Whitespace">    </span><span class="mi">142</span> <span class="kn">from</span> <span class="nn">pandas.core.shared_docs</span> <span class="kn">import</span> <span class="n">_shared_docs</span>
-<span class="g g-Whitespace">    </span><span class="mi">143</span> <span class="kn">from</span> <span class="nn">pandas.core.sorting</span> <span class="kn">import</span> <span class="n">get_indexer_indexer</span>
-<span class="ne">--&gt; </span><span class="mi">144</span> <span class="kn">from</span> <span class="nn">pandas.core.window</span> <span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">145</span>     <span class="n">Expanding</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">146</span>     <span class="n">ExponentialMovingWindow</span><span class="p">,</span>
-
-<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\pandas\core\window\__init__.py in &lt;module&gt;
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">pandas.core.window.ewm</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># noqa:F401</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">ExponentialMovingWindow</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">ExponentialMovingWindowGroupby</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">pandas.core.window.expanding</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># noqa:F401</span>
-
-<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\pandas\core\window\ewm.py in &lt;module&gt;
-<span class="g g-Whitespace">     </span><span class="mi">36</span>     <span class="n">window_agg_numba_parameters</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">37</span> <span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">38</span> <span class="kn">from</span> <span class="nn">pandas.core.window.indexers</span> <span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">39</span>     <span class="n">BaseIndexer</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">40</span>     <span class="n">ExponentialMovingWindowIndexer</span><span class="p">,</span>
-
-<span class="ne">D</span>:\ProgramData\Anaconda3\lib\site-packages\pandas\core\window\indexers.py in &lt;module&gt;
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> 
-<span class="ne">----&gt; </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">pandas._libs.window.indexers</span> <span class="kn">import</span> <span class="n">calculate_variable_window_bounds</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="kn">from</span> <span class="nn">pandas.util._decorators</span> <span class="kn">import</span> <span class="n">Appender</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> 
-
-<span class="nn">D:\ProgramData\Anaconda3\lib\importlib\_bootstrap.py</span> in <span class="ni">parent</span><span class="nt">(self)</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0.6
 </pre></div>
 </div>
 </div>
@@ -246,16 +173,16 @@ Depth                                        2500
 Temp                                          340
 pH                                            3.4
 XH2S                                          7.6
-Cl                                            500
-Na                                            439
+Cl                                          500.0
+Na                                          439.0
 Fe                                           1530
 Mn                                           1024
 H2                                           0.01
 K                                            23.5
 Ca                                           15.6
 Si                                           17.6
-Cu                                          1e-07
-Press                                     251.945
+Cu                                            0.0
+Press                                  251.945325
 Name: 2, dtype: object
 </pre></div>
 </div>
@@ -283,14 +210,14 @@ Name: 2, dtype: object
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:3327: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\ProgramData\Anaconda3\lib\site-packages\pygcc\pygcc_utils.py:3409: UserWarning: Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied
   warnings.warn(&#39;Some temperature and pressure points are out of aqueous species HKF eqns regions of applicability, hence, density extrapolation has been applied&#39;)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Success, your new EQ3/6 database is ready for download
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x272962c7d00&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygcc.pygcc_utils.write_database at 0x1ba72489708&gt;
 </pre></div>
 </div>
 </div>
@@ -298,12 +225,12 @@ Name: 2, dtype: object
 <p>Copy the generated database to the EQ3/6 work environment specified above and run through eqpt for preprocessing</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">copyfile</span><span class="p">(</span><span class="n">current_dir</span> <span class="o">+</span> <span class="s1">&#39;/output/data0.geo&#39;</span><span class="p">,</span> <span class="n">eq_dir</span> <span class="o">+</span> <span class="s1">&#39;/data0.pym&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">copyfile</span><span class="p">(</span><span class="n">current_dir</span> <span class="o">+</span> <span class="s1">&#39;/output/EQ36/data0.geo&#39;</span><span class="p">,</span> <span class="n">eq_dir</span> <span class="o">+</span> <span class="s1">&#39;/data0.pym&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File copied successfully.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error occurred while copying file.
 </pre></div>
 </div>
 </div>
@@ -648,10 +575,10 @@ Name: 2, dtype: object
        &#39;TotM_H+&#39;, &#39;TotM_H2O&#39;, &#39;TotM_HS-&#39;, &#39;TotM_K+&#39;, &#39;TotM_Mn++&#39;, &#39;TotM_Na+&#39;,
        &#39;TotM_O2(g)&#39;, &#39;TotM_SiO2(aq)&#39;, &#39;SI_Alabandite&#39;, &#39;SI_Anhydrite&#39;,
        &#39;SI_Bornite&#39;, &#39;SI_Chalcedony&#39;, &#39;SI_Chalcocite&#39;, &#39;SI_Chalcopyrite&#39;,
-       &#39;SI_Coesite&#39;, &#39;SI_Covellite&#39;, &#39;SI_Cristobalite(beta)&#39;, &#39;SI_Fayalite&#39;,
-       &#39;SI_FeO&#39;, &#39;SI_Ferrosilite&#39;, &#39;SI_Halite&#39;, &#39;SI_Hematite&#39;, &#39;SI_Magnetite&#39;,
-       &#39;SI_Minnesotaite&#39;, &#39;SI_Pyrite&#39;, &#39;SI_Pyrrhotite&#39;, &#39;SI_Quartz&#39;,
-       &#39;SI_SiO2(am)&#39;, &#39;SI_Sylvite&#39;],
+       &#39;SI_Coesite&#39;, &#39;SI_Covellite&#39;, &#39;SI_Cristobalite(alpha)&#39;,
+       &#39;SI_Cristobalite(beta)&#39;, &#39;SI_Fayalite&#39;, &#39;SI_FeO&#39;, &#39;SI_Ferrosilite&#39;,
+       &#39;SI_Halite&#39;, &#39;SI_Hematite&#39;, &#39;SI_Magnetite&#39;, &#39;SI_Minnesotaite&#39;,
+       &#39;SI_Pyrite&#39;, &#39;SI_Pyrrhotite&#39;, &#39;SI_Quartz&#39;, &#39;SI_SiO2(am)&#39;, &#39;SI_Sylvite&#39;],
       dtype=&#39;object&#39;)
 </pre></div>
 </div>
