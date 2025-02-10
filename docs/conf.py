@@ -27,6 +27,7 @@ extensions = [
     "sphinx.ext.intersphinx",
 ]
 
+autoapi_dirs = ["../src"]
 
 intersphinx_mapping = {
     "rtd": ("https://docs.readthedocs.io/en/stable/", None),
