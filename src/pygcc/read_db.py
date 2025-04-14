@@ -441,8 +441,8 @@ class db_reader:
             mineralgas_list = list(self.dbaccessdic.keys())[:list(self.dbaccessdic.keys()).index(last_gas)+1]
             self.dbaccessdic = {k: v for k, v in self.dbaccessdic.items() if k not in mineralgas_list}
             with open(self.dbHP_dir, encoding = codecs) as g:
-                Rd = g.readlines()
-            self.dbaccessdic.update(multiline_reader(Rd, 0, self.dbHP_dir)[0])
+                Rd_HP = g.readlines()
+            self.dbaccessdic.update(multiline_reader(Rd_HP, 0, self.dbHP_dir)[0])
 
         # read in the header reference list
         if len(header_counter) != 0:

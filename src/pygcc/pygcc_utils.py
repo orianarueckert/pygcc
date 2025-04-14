@@ -1699,7 +1699,9 @@ class write_database():
                              dbHP_dir = self.dbHP_dir, dbaccessformat = self.dbaccessformat,
                              sourcedb = self.sourcedb, sourceformat = self.sourceformat,
                              sourcedb_codecs = self.sourcedb_codecs)
-        # condition to add Dimer from Sverjensky et al. 2014
+        # condition to add Dimer from Sverjensky et al. 2014 to SPEQ database
+        # if self.dbHP_dir is None or self.dbBerman_dir is None:
+        # print("print database name", self.dbHP_dir)
         if self.dbr.header_ref[self.dbr.dbaccessdic['SiO2(aq)'][1].strip(' ref:').split('   ')[0]].startswith('Sverjensky, D. A., Harrison, B., & Azzolini, D., 2014'):
             if 'Si2O4(aq)' not in self.dbr.dbaccessdic.keys() or 'Si2O4(aq)' not in self.dbr.sourcedic.keys():
                 warnings.warn('Warning: you are using SiO2(aq) data from Sverjensky et al. (2014) GCA. This thermodynamic model requires that you also add data for Si2O4(aq) to achieve accurate solubility calculations. Please ensure thermodynamic data for Si2O4(aq) are added to both your source GWB or EQ3/6 database AND your source direct-access database.')
@@ -3392,7 +3394,7 @@ class write_database():
         logK = calcRxnlogK( T = T, P = P, Specie = 'eh', dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                            specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                            sourceformat = sourceformat, densityextrap = densityextrap,
-                           rhoEGextrap = rhoEGextrap).logK
+                           heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap).logK
         logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
         for i in range(len(logK)):
             i = i + 1
@@ -3646,7 +3648,7 @@ class write_database():
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'aqueous',
-                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit)
+                                   heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit)
                 if densityextrap.lower() == 'yes': 
                     if all(logK.nonsubBornptrs) == True: # if all densities are >= 350
                         logKnan_alert = False            # turn off the prompts for using Density extrapolation
@@ -3755,7 +3757,7 @@ class write_database():
                 logK = calcRxnlogK( T = T, P = P, Specie = j, dbaccessdic = dbaccessdic, sourcedic = sourcedic,
                                    specielist = specielist, Dielec_method = Dielec_method, rhoEG = rhoEG,
                                    sourceformat = sourceformat, densityextrap = densityextrap, Specie_class = 'aqueous',
-                                   rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit).logK
+                                   heatcap_method = heatcap_method, rhoEGextrap = rhoEGextrap, ThermoInUnit = self.ThermoInUnit).logK
                 logK = np.where(np.isnan(logK), 500, logK) # set abitrary 500 to nan values
                 for i in range(len(logK)):
                     i = i + 1

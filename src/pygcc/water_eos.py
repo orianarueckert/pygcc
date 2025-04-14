@@ -3028,7 +3028,8 @@ class water_dielec():
 
 
 def concentration_converter(val = 1.0, In_Unit='x_wt', Out_Unit='x_wt'):
-    """This function converts concentration between several units like wt%, mole fraction, molality and volume
+    """This function converts concentration between several units like 
+    wt fraction, mole fraction, molality, mol/kg solution and volume fraction
     Values must be in fraction except it is molality
 
     Parameters
@@ -3048,10 +3049,10 @@ def concentration_converter(val = 1.0, In_Unit='x_wt', Out_Unit='x_wt'):
     #Accepted units for input and output are:
     phase_markers = ['x_wt', 'x_mol', 'x_vol', 'x_molal', 'x_mol_kgsol']
 
-    MwH2O = 18.01528
-    MwNaCl = 58.44280
-    rhoH2O = 1
-    rhoNaCl = 2.16
+    Mw_H2O = 18.01528   # Molar mass of water (g/mol)
+    Mw_NaCl = 58.44280  # Molar mass of NaCl (g/mol)
+    rho_H2O = 1         # Density of NaCl (g/cm3)
+    rho_NaCl = 2.16     # Density of water (g/cm3)
     if not (In_Unit in phase_markers and Out_Unit in phase_markers):
         return None
 
@@ -3063,40 +3064,53 @@ def concentration_converter(val = 1.0, In_Unit='x_wt', Out_Unit='x_wt'):
         return None
     if In_Unit == "x_wt":
         if Out_Unit == 'x_mol':
-            return val/MwNaCl/(val/MwNaCl+(1.-val)/MwH2O)
+            return (val/Mw_NaCl) / (val/Mw_NaCl + (1 - val)/Mw_H2O)
         elif Out_Unit == 'x_vol':
-            return val/rhoNaCl/(val/rhoNaCl+(1.-val)/rhoH2O)
+            return (val/rho_NaCl) / (val/rho_NaCl + (1 - val)/rho_H2O)
+        elif Out_Unit == 'x_mol_kgsol':
+            return (val * 1000) / Mw_NaCl
         else:
-            return val*1000./MwNaCl/(1.-val)
+            return (val * 1000) / ((1 - val) * Mw_NaCl)
     elif In_Unit == 'x_mol':
         if Out_Unit == 'x_wt':
-            return val*MwNaCl/(val*MwNaCl+(1.-val)*MwH2O)
+            return val*Mw_NaCl/(val*Mw_NaCl+(1 - val)*Mw_H2O)
         elif Out_Unit == 'x_vol':
-            return MwNaCl*val/rhoNaCl/(MwNaCl*val/rhoNaCl+(1.-val)*MwH2O/rhoH2O)
+            return Mw_NaCl*val/rho_NaCl/(Mw_NaCl*val/rho_NaCl+(1 - val)*Mw_H2O/rho_H2O)
+        elif Out_Unit == 'x_mol_kgsol':
+            return val/(val * Mw_NaCl + (1 - val) * Mw_H2O) * 1000
         else:
-            x_tmp = val*MwNaCl/(val*MwNaCl+(1.-val)*MwH2O)
-            return 1000.*x_tmp/MwNaCl/(1.-x_tmp)
+            # x_tmp = val*Mw_NaCl/(val*Mw_NaCl+(1 - val)*Mw_H2O)
+            return (val * 1000) / (Mw_H2O * (1 - val))
     elif In_Unit == 'x_vol':
         if Out_Unit == 'x_wt':
-            return val*rhoNaCl/(val*rhoNaCl+(1.-val)*rhoH2O)
+            return val*rho_NaCl/(val*rho_NaCl+(1 - val)*rho_H2O)
         elif Out_Unit == 'x_mol':
-            return val*rhoNaCl/MwNaCl/(val*rhoNaCl/MwNaCl+(1.-val)*(rhoH2O/MwH2O))
+            return val*rho_NaCl/Mw_NaCl/(val*rho_NaCl/Mw_NaCl + (1 - val)*(rho_H2O/Mw_H2O))
+        elif Out_Unit == 'x_mol_kgsol':
+            return ((val * rho_NaCl / Mw_NaCl) / (val * rho_NaCl + (1 - val) * rho_H2O)) * 1000
         else:
-            x_tmp = val*rhoNaCl/(val*rhoNaCl+(1.-val)*rhoH2O)
-            return 1000*x_tmp/MwNaCl/(1.-x_tmp)
+            # x_tmp = val*rho_NaCl/(val*rho_NaCl+(1.-val)*rho_H2O)
+            return (val * rho_NaCl / Mw_NaCl / ((1 - val)*rho_H2O)) * 1000
     elif In_Unit == 'x_mol_kgsol':
-        if Out_Unit == 'x_mol':
-            x_tmp = val*MwNaCl/(1000)
-            return x_tmp/MwNaCl/(x_tmp/MwNaCl+(1.-x_tmp)/MwH2O)
+        if Out_Unit == 'x_wt':
+            return (val * Mw_NaCl) / 1000
+        elif Out_Unit == 'x_vol':
+            x_tmp = val * Mw_NaCl
+            return (x_tmp / rho_NaCl) / (x_tmp / rho_NaCl + (1000 - x_tmp) / rho_H2O)
+        elif Out_Unit == 'x_mol':
+            # x_tmp = val*MwNaCl/(1000)
+            return val/(val + (1000 - val*Mw_NaCl)/Mw_H2O)
+        else:
+            return val/((1000 - val * Mw_NaCl)/1000)
     else:
         if Out_Unit == 'x_wt':
-            return val*MwNaCl/(1000.+val*MwNaCl)
+            return val*Mw_NaCl/(1000 + val*Mw_NaCl)
         elif Out_Unit == 'x_mol':
-            x_tmp = val*MwNaCl/(1000.+val*MwNaCl)
-            return x_tmp/MwNaCl/(x_tmp/MwNaCl+(1.-x_tmp)/MwH2O)
+            return val/(val + (1000/Mw_H2O))
+        elif Out_Unit == 'x_vol':
+            return val * Mw_NaCl/rho_NaCl/(val * Mw_NaCl/rho_NaCl + 1000/rho_H2O)
         else:
-            x_tmp = val*MwNaCl/(1000.+val*MwNaCl)
-            return x_tmp/rhoNaCl/(x_tmp/rhoNaCl+(1.-x_tmp)*rhoH2O)
+            return val/(1 + (val * Mw_NaCl/1000))
 
 
 
