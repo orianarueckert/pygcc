@@ -6,6 +6,18 @@ All notable changes to this project are documented here. To ensure that they are
 pip install --upgrade pygcc
 ```
 
+## v1.3.7 (11/05/2025)
+
+#### Added
+
+#### Changed
+   
+#### Fixed
+
+- fixed compilation error in v.1.3.7.
+
+#### Removed
+
 ## v1.3.6 (11/05/2025)
 
 #### Added

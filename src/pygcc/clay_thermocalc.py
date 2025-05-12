@@ -218,7 +218,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
         P : float, vector
             Pressure [bar]  \n
         elem : list
-            list containing nine parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li', 'H3O'] \n
+            list containing nine or ten parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li', 'H3O'] \n
         dbacessdic : dict
             dictionary of species from direct-access database, optional, default is speq21  \n
         group : string
@@ -1002,8 +1002,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
             else:
                 Octahedral['moles'][j] = (Octahedral['M1'][k] + Octahedral['M2'][k] + \
                     Brucitic['M3'][k] + Brucitic['M4'][k])/(R1 + 1)
- 
-     else:
+    else:
         Tetrahedral['moles']['Al2O3'] = 0.5*(4 - nSi)
         Tetrahedral['moles']['SiO2'] = nSi
         for j in ['LiOH', 'Li2O', 'Mg(OH)2', 'MgO', 'Fe(OH)2', 'FeO', 'Fe(OH)3', 'Fe2O3',

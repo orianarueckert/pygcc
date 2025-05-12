@@ -963,7 +963,7 @@ class calcRxnlogK():
         Specie_class : string, optional
             specify the class of species  like 'aqueous', 'minerals', 'liquids', or 'gases'
         elem : list
-            list containing nine parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li'] \n
+            list containing nine or ten parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li', 'H3O'] \n
         dbaccessdic : dict
             direct-acess database dictionary
         rhoEGextrap : dict
@@ -988,6 +988,10 @@ class calcRxnlogK():
             specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
         Al_Si : string
             specify either 'pygcc' or 'Arnórsson_Stefánsson' as the input to express Al and Si species in solid solution (optional), 'Arnórsson_Stefánsson' expresses them as 'Al(OH)4-' and 'H4SiO4(aq)', respectively while pygcc uses 'Al3+' and 'SiO2(aq)', respectively if not specified default - 'pygcc'
+        Int_Mg_fract : string
+            specify the fraction of Mg to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
+        Int_Li_fract : string
+            specify the fraction of Li to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
         sourceformat : string
             specify the source database format, either 'GWB' or 'EQ36'
         densityextrap : float, vector
@@ -1030,7 +1034,7 @@ class calcRxnlogK():
               "P": None, "group": None,  "X": None,  "cpx_Ca": None,  "elem": None,
               'rhoEGextrap': None, "sourcedic": None, "specielist": None,
               'dbaccessdic': None, "Dielec_method": None, "sourceformat": None,
-              'heatcap_method': None, "densityextrap": None, 'rhoEG': None,
+              'heatcap_method': None, "densityextrap": None, 'rhoEG': None, 'Int_Mg_fract': None, 'Int_Li_fract': None,
               'ClayMintype': 'Smectite', "Al_Si": 'pygcc'}
 
     def __init__(self, **kwargs):
@@ -1049,6 +1053,7 @@ class calcRxnlogK():
         self.cpx_Ca = self.kwargs['cpx_Ca'];               self.group = self.kwargs['group']
         self.X = self.kwargs['X'];                         self.heatcap_method = self.kwargs['heatcap_method']
         self.ClayMintype = self.kwargs['ClayMintype'];     self.Al_Si = self.kwargs["Al_Si"]
+        self.Int_Mg_fract = self.kwargs['Int_Mg_fract'];     self.Int_Li_fract = self.kwargs["Int_Li_fract"]
         self.densityextrap = 'No' if (self.kwargs['densityextrap'] is None or self.kwargs['densityextrap'] is False) else 'Yes' if self.kwargs['densityextrap'] is True else self.kwargs['densityextrap']
 
         self.Dielec_method = 'JN91' if self.Dielec_method is None else self.Dielec_method
@@ -1184,7 +1189,8 @@ class calcRxnlogK():
             return ss.logK, ss.Rxn
         elif self.Specie.lower() == 'clay':
             logK, Rxn = calclogKclays(TC, P, *self.elem, dbaccessdic = self.dbaccessdic,
-                                      group = self.group, Dielec_method = self.Dielec_method,
+                                      group = self.group, Dielec_method = self.Dielec_method, 
+                                      Int_Mg_fract = self.Int_Mg_fract, Int_Li_fract = self.Int_Li_fract,
                                       ThermoInUnit = self.ThermoInUnit, ClayMintype = self.ClayMintype,
                                       **rhoEG)
             return logK, Rxn
@@ -1358,7 +1364,7 @@ def outputfmt(fid, logK, Rxn, *T, dataset = None, logK_form = None):
         dataset : string
             specify the dataset format, either 'GWB', 'EQ36', 'Pflotran' or 'ToughReact'
         logK_form : string
-            specify the format of logK either as a set of eight values one for each of the dataset’s principal temperatures, or blocks of polynomial coefficients,  [values, polycoeffs], default is 'a set of eight values' (optional)
+            specify the format of logK either as a set of eight values one for each of the dataset's principal temperatures, or blocks of polynomial coefficients,  [values, polycoeffs], default is 'a set of eight values' (optional)
 
     Returns
     -------
