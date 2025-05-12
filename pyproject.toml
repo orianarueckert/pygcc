@@ -1,9 +1,9 @@
 [tool.poetry]
 name = "pygcc"
-version = "1.3.3"
+version = "1.3.6"
 description = "A tool for thermodynamic calculations and geochemical database generation"
 authors = ["Adedapo Awolayo and Benjamin Tutolo"]
-maintainers = ["Adedapo Awolayo and Benjamin Tutolo <benjamin.tutolo@ucalgary.ca>"]
+maintainers = ["Adedapo Awolayo and Benjamin Tutolo, <awolayoa@mcmaster.ca>"]
 license = "GNU General Public License v3.0"
 readme = "README.md"
 homepage = ""

@@ -6,6 +6,33 @@ All notable changes to this project are documented here. To ensure that they are
 pip install --upgrade pygcc
 ```
 
+## v1.3.6 (11/05/2025)
+
+#### Added
+
+#### Changed
+   
+#### Fixed
+
+- we calculation errors in logK values and reaction parameters for clay thermodynmanics and introduced partitioning
+  parameters such as "Int_Mg_fract" and "Int_Li_fract" to help users specify the fraction of Mg and Li in the interlayer sheet.
+
+#### Removed
+
+## v1.3.5 (12/04/2025)
+
+#### Added
+
+#### Changed
+   
+#### Fixed
+
+- we have fixed the dimer error enforced on other mineral databases.
+
+- we revised concentration_converter function
+  
+#### Removed
+
 ## v1.3.3 (25/01/2025)
 
 #### Added

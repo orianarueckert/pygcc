@@ -121,9 +121,93 @@ def Molecularweight():
 MW = Molecularweight()
 J_to_cal = 4.184
 
+def generate_structural_formula(Rxn, Interlayer, Octahedral, Tetrahedral, Oxy, OH, MW, charge):
+    # Extract cation counts
+    nCs = Interlayer['Tot']['Cs+']
+    nRb = Interlayer['Tot']['Rb+']
+    nK = Interlayer['Tot']['K+']
+    nNa = Interlayer['Tot']['Na+']
+    nCa = Interlayer['Tot']['Ca2+']
+    nH3O = Interlayer['Tot']['H3O+']
+    nNi = Octahedral['Tot']['Ni2+']
+    nTi = Octahedral['Tot']['Ti4+']; nCr = Octahedral['Tot']['Cr3+']
+    nV = Octahedral['Tot']['V3+']; nVO = Octahedral['Tot']['VO2+']
+    nLi = Interlayer['Tot']['Li+'] + Octahedral['Tot']['Li+']
+    nMg = Interlayer['Tot']['Mg2+'] + Octahedral['Tot']['Mg2+']
+    nFe = Interlayer['Tot']['Fe2+'] + Octahedral['Tot']['Fe2+']
+    nZn = Interlayer['Tot']['Zn2+'] + Octahedral['Tot']['Zn2+']
+    nMn = Interlayer['Tot']['Mn2+'] + Octahedral['Tot']['Mn2+']
+    nCo = Interlayer['Tot']['Co2+'] + Octahedral['Tot']['Co2+']
+    nCd = Interlayer['Tot']['Cd2+'] + Octahedral['Tot']['Cd2+']
+    nAl = Tetrahedral['Tot']['Al3+'] + Octahedral['Tot']['Al3+']
+    nFe3 = Tetrahedral['Tot']['Fe3+'] + Octahedral['Tot']['Fe3+']
+    nSi = Tetrahedral['Tot']['Si4+']
 
-def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order = None,
-                  Dielec_method = None, ClayMintype = None, ThermoInUnit = 'cal', **rhoEG):
+    # Calculate hydrogen content
+    nH = np.sum([Interlayer['Tot'][j]*charge[j]
+                for j in list(Interlayer['Tot'].keys())[:7] + \
+                    list(Interlayer['Tot'].keys())[-5:]]) + \
+        np.sum([Octahedral['Tot'][j]*charge[j]
+               for j in list(Octahedral['Tot'].keys())[:-1] if j != 'Cd2+']) + \
+           np.sum([Tetrahedral['Tot'][j]*charge[j] for j in list(Tetrahedral['Tot'].keys())[1:]])
+    nH = round(nH, 3)
+
+    # Helper function to format numbers
+    def format_num(value):
+        return f"{value:.3f}".rstrip('0').rstrip('.') if not value.is_integer() else f"{int(value)}"
+
+    # Build interlayer formula (first bracket)
+    interlayer_parts = []
+    if nCs != 0: interlayer_parts.append(f"Cs{format_num(nCs)}")
+    if nRb != 0: interlayer_parts.append(f"Rb{format_num(nRb)}")
+    if nK != 0: interlayer_parts.append(f"K{format_num(nK)}")
+    if nNa != 0: interlayer_parts.append(f"Na{format_num(nNa)}")
+    if nH3O != 0: interlayer_parts.append(f"H{format_num(nH3O)}")
+    if nCa != 0: interlayer_parts.append(f"Ca{format_num(nCa)}")
+    if Interlayer['Tot']['Li+'] != 0: interlayer_parts.append(f"Li{format_num(Interlayer['Tot']['Li+'])}")
+    if Interlayer['Tot']['Mg2+'] != 0: interlayer_parts.append(f"Mg{format_num(Interlayer['Tot']['Mg2+'])}")
+    if Interlayer['Tot']['Fe2+'] != 0: interlayer_parts.append(f"Fe{format_num(Interlayer['Tot']['Fe2+'])}")
+    if Interlayer['Tot']['Zn2+'] != 0: interlayer_parts.append(f"Fe{format_num(Interlayer['Tot']['Zn2+'])}")
+    if Interlayer['Tot']['Mn2+'] != 0: interlayer_parts.append(f"Fe{format_num(Interlayer['Tot']['Mn2+'])}")
+    if Interlayer['Tot']['Co2+'] != 0: interlayer_parts.append(f"Fe{format_num(Interlayer['Tot']['Co2+'])}")
+    if Interlayer['Tot']['Cd2+'] != 0: interlayer_parts.append(f"Fe{format_num(Interlayer['Tot']['Cd2+'])}")
+    interlayer_formula = "".join(interlayer_parts)
+
+    # Build octahedral formula (second bracket)
+    octahedral_parts = []
+    if Octahedral['Tot']['Mg2+'] > 0: octahedral_parts.append(f"Mg{format_num(Octahedral['Tot']['Mg2+'])}")
+    if Octahedral['Tot']['Li+'] > 0: octahedral_parts.append(f"Li{format_num(Octahedral['Tot']['Li+'])}")
+    if Octahedral['Tot']['Fe2+'] > 0: octahedral_parts.append(f"Fe{format_num(Octahedral['Tot']['Fe2+'])}")
+    if nNi > 0: octahedral_parts.append(f"Ni{format_num(nNi)}")
+    if nTi > 0: octahedral_parts.append(f"Ti{format_num(nTi)}")
+    if nCr > 0: octahedral_parts.append(f"Cr{format_num(nCr)}")
+    if nV > 0: octahedral_parts.append(f"V{format_num(nV)}")
+    if nVO > 0: octahedral_parts.append(f"VO{format_num(nVO)}")
+    if Octahedral['Tot']['Mn2+'] > 0: octahedral_parts.append(f"Mn{format_num(Octahedral['Tot']['Mn2+'])}")
+    if Octahedral['Tot']['Co2+'] > 0: octahedral_parts.append(f"Co{format_num(Octahedral['Tot']['Co2+'])}")
+    if Octahedral['Tot']['Zn2+'] > 0: octahedral_parts.append(f"Zn{format_num(Octahedral['Tot']['Zn2+'])}")
+    if Octahedral['Tot']['Cd2+'] > 0: octahedral_parts.append(f"Cd{format_num(Octahedral['Tot']['Cd2+'])}")
+    if Octahedral['Tot']['Al3+'] > 0: octahedral_parts.append(f"Al{format_num(Octahedral['Tot']['Al3+'])}")
+    if Octahedral['Tot']['Fe3+'] > 0: octahedral_parts.append(f"FeIII{format_num(Octahedral['Tot']['Fe3+'])}")
+    octahedral_formula = "".join(octahedral_parts)
+
+    # Build tetrahedral formula (third bracket)
+    tetrahedral_parts = []
+    if nSi > 0: tetrahedral_parts.append(f"Si{format_num(nSi)}")
+    if Tetrahedral['Tot']['Al3+'] > 0: tetrahedral_parts.append(f"Al{format_num(Tetrahedral['Tot']['Al3+'])}")
+    if Tetrahedral['Tot']['Fe3+'] > 0: tetrahedral_parts.append(f"FeIII{format_num(Tetrahedral['Tot']['Fe3+'])}")
+    tetrahedral_formula = "".join(tetrahedral_parts)
+
+    # Construct the structural formula
+    Rxn['struct_formula'] = f"({interlayer_formula})({octahedral_formula})({tetrahedral_formula})O{int(Oxy - OH)}(OH){int(OH)}"
+
+    return Rxn
+
+
+
+def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order = None, export_struct_formula = None,
+                  Dielec_method = None, ClayMintype = None, Int_Mg_fract = None, Int_Li_fract = None,
+                  ThermoInUnit = 'cal', **rhoEG):
     """
     This function calculates logK values and reaction parameters of clay reactions using below references:
 
@@ -134,7 +218,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
         P : float, vector
             Pressure [bar]  \n
         elem : list
-            list containing nine parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li'] \n
+            list containing nine parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li', 'H3O'] \n
         dbacessdic : dict
             dictionary of species from direct-access database, optional, default is speq21  \n
         group : string
@@ -145,6 +229,10 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
             specify either 'FGL97' or 'JN91' or 'DEW' as the method to calculate dielectric constant (optional), if not specified, default - 'JN91'
         ClayMintype : string
             specify either 'Smectite' or 'Chlorite' or 'Mica' as the clay type, if not specified default - 'Smectites'
+        Int_Mg_fract : string
+            specify the fraction of Mg to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
+        Int_Li_fract : string
+            specify the fraction of Li to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
         ThermoInUnit : string
             specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
         rhoEG : dict
@@ -191,13 +279,16 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
             Applied Geochemistry, 104986.  \n
         (3) Vinograd, V.L., 1995. Substitution of [4]Al in layer silicates: Calculation of the Al-Si
             configurational entropy according to 29Si NMR Spectra. Physics and Chemistry of Minerals
-            22, 87-98.
+            22, 87-98. (
+            saponite-H-Li  Li0.165H0.165)(Mg3)(Si3.67Al0.33)O10(OH)2
+            saponite-Mg-Li(VI)	(Mg0.17)(Li0.33Mg2.835)(Si3.66Al0.34)O10(OH)2	
+            ['Name', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li', 'H3O']			
     """
 
     if type(P) == str:
         if P == 'T':
             P = iapws95(T = TC).P
-            P[np.isnan(P) | (P < 1)] = 1.0133
+            P[(np.isnan(P)) | (P < 1)] = 1.0133
         elif P == 'P':
             P = TC   # Assign first input T to pressure in bar
             TC = iapws95(P = P).TC
@@ -216,9 +307,12 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
         dbaccess_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), dbaccess_dir)
         dbaccessdic = db_reader(dbaccess = dbaccess_dir).dbaccessdic
 
+    export_struct_formula = True if export_struct_formula is None else False
+    Int_Li_fract = 1 if Int_Li_fract is None else Int_Li_fract
     Dielec_method = 'JN91' if Dielec_method is None else Dielec_method
 
-    mass_bal = round(np.sum([j*float(k) for j,k in zip([4, 3, 3, 2, 2, 1, 1, 2, 1], elem[1:])]), 2)
+
+    mass_bal = round(np.sum([j*float(k) for j,k in zip([4, 3, 3, 2, 2, 1, 1, 2, 1, 1], elem[1:])]), 0) if len(elem) > 10 else round(np.sum([j*float(k) for j,k in zip([4, 3, 3, 2, 2, 1, 1, 2, 1], elem[1:])]), 2) 
     if mass_bal not in [14, 22, 28]:
         raise Exception("Mass/Charge balance error: the summation of the product of charge and mass of each element must equal 14 for '7A' group, 22 for '10A' group and 28 for  '14A' group")
     if group is None:
@@ -253,10 +347,12 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
             T_Al = T_Al if float(elem[2]) >= T_Al else float(elem[2])
     if len(elem) == 0:
         O_Al = 0
-    elif (float(elem[2]) > T_Al):
+    elif (float(elem[2]) > T_Al + 1e-3):
         O_Al = float(elem[2]) - T_Al
     else:
+        T_Al = float(elem[2])
         O_Al = 0
+
     if len(elem) == 0:
         O_FeIII = 0
         T_FeIII = 0
@@ -271,15 +367,16 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
     I_K = 0 if len(elem) == 0 else float(elem[6])
     I_Na = 0 if len(elem) == 0 else float(elem[7])
     I_Ca = 0 if len(elem) == 0 else float(elem[8])
+    I_H3O = float(elem[10]) if len(elem) > 10 else  0 
     if len(elem) == 0:
         I_Mg = 0; I_Li = 0
         O_Mg = 0; O_Li = 0
     else:
-        if ('Montmorillonite_Lc' in name) or ('Saponite' in name) or ('Nontronite' in name) or ('Beidellite' in name):
+        if ('montmorillonite_lc' in name.lower()) or ('saponite' in name.lower()) or ('nontronite' in name.lower()) or ('beidellite' in name.lower()):
             Tot_Oxy = 0.17
-        elif 'Montmorillonite_Hc' in name:
+        elif 'montmorillonite_hc' in name.lower():
             Tot_Oxy = 0.3
-        elif ('Illite' in name) or ('Vermiculite' in name):
+        elif ('illite' in name.lower()) or ('vermiculite' in name.lower()):
             Tot_Oxy = 0.43
         else:
             Tot_Oxy = 0.0
@@ -289,12 +386,15 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
             I_Li = Tot_Oxy if float(elem[9]) != 0 else 0
         else:
             I_Mg = 0; I_Li = 0
+        I_Mg = Int_Mg_fract*float(elem[5]) if Int_Mg_fract is not None else I_Mg
+        I_Li = Int_Li_fract*float(elem[9]) if Int_Li_fract is not None else I_Li
         O_Mg = float(elem[5]) - I_Mg
         O_Li = float(elem[9]) - I_Li
     TK = convert_temperature( TC, Out_Unit = 'K' )
 
+
     Interlayer = {'Tot' : {'Cs+' : 0, 'Rb+' : 0, 'K+' : I_K, 'Na+' : I_Na, 'Li+' : I_Li,
-                           'H3O+' : 0, 'NH4+' : 0, 'Mn2+' : 0.0, 'Fe2+' : 0, 'Co2+' : 0,
+                           'H3O+' : I_H3O, 'NH4+' : 0, 'Mn2+' : 0.0, 'Fe2+' : 0, 'Co2+' : 0,
                            'Cu2+' : 0, 'Cd2+' : 0, 'Zn2+' : 0, 'Ba2+' : 0, 'Sr2+' : 0,
                            'Ca2+' : I_Ca, 'Mg2+' : I_Mg}}
     Octahedral = {'Tot' : {'Li+' : O_Li, 'Mg2+': O_Mg, 'Fe2+' : O_FeII, 'Mn2+' : 0,
@@ -397,7 +497,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
                         'Mn2+' : -189.180, 'Fe2+' : -211.8386339, 'Co2+' : -208.9244064,
                         'Cu2+' : -256.2185226, 'Cd2+' : -212.38346050, 'Zn2+' : -222.8680592,
                         'Ba2+' : 70.57, 'Sr2+' : 15.350, 'Ca2+' : -71.23, 'Mg2+' : -147.250,
-                        'H2O' : -249.58}
+                        'H2O' : -249.576624132357}
     Octahedral['dH'] = {'Li+' : -110.00, 'Mg2+': -191.72, 'Fe2+' : -230.790, 'Mn2+' : -218.940,
                         'Ni2+' : -237.50, 'Co2+' : -232.590, 'Zn2+' : -242.780,
                         'Cd2+' : -235.07550080,  'VO2+' : -296.25, 'Al3+' : -251.750,
@@ -407,7 +507,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
                       'Ni2+' : -197.67, 'Co2+' : -187.60, 'Zn2+' : -208.49,
                       'Cd2+' : -192.6891279,  'VO2+' : -318.16, 'Al3+' : -229.05,
                       'Fe3+' : -288.99, 'V3+' : -285.76,  'Cr3+' : -210.19, 'Mn3+' : -287.05,
-                      'Ti4+' : -307.49, 'H2O' : -311.98}
+                      'Ti4+' : -307.49, 'H2O' : -311.976483069821 }
     Tetrahedral['dH'] = {'Si4+' : -285.33, 'Al3+': -260.450, 'Fe3+' : -310.0}
 
     charge = {'Mn2+' : 2, 'Fe2+' : 2, 'Co2+' : 2, 'Cu2+' : 2, 'Cd2+' : 2, 'V3+' : 3,
@@ -705,20 +805,36 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
                    Tetrahedral, Tetrahedral]):
         if i == 'Inter':
             a = 'Tot'
-            summ = np.sum([k[a][j] if k[a][j] != 0 else 1e-11 for j in k[a]]) + k['Tot_Remainder']
-            X = [k[a][j]/summ if k[a][j] != 0 else 1e-11/summ for j in k[a]]
-            X.append(k['Tot_Remainder']/summ)
+            summInt = np.sum([k[a][j] if k[a][j] != 0 else 1e-11 for j in k[a]]) + k['Tot_Remainder']
+            X = [k[a][j]/summInt if k[a][j] != 0 else 1e-11/summInt for j in k[a]]
+            X.extend([k['Tot_Remainder']/summInt, (summInt - k['Tot_Remainder'])/summInt])
 
         else:
             a = '%s' % i
             summ = np.sum([k[a][j] if k[a][j] != 0 else 1e-11 for j in k[a]])
             X = [k[a][j]/summ if k[a][j] != 0 else 1e-11/summ for j in k[a]]
+            if i == 'M1':
+                X = [k[a][j] if k[a][j] != 0 else 1e-11 for j in k[a]] 
+                X.append(k['M1_Remainder'])
 
-        lnX = [np.log(j) for j in X]
+        lnX = [np.log(j) if j > 0 else 0 for j in X]
         if (group != '14A')&(i in ['M3', 'M4']):
             Calc['XlnX'][i] = 0
-        elif (Octahedral['M1_Remainder'] == 1)&(i == 'M1'):
+        elif (Octahedral['M1_Remainder'] == 0)&(i == 'M1'):
             Calc['XlnX'][i] = 0
+        elif i == 'Inter':
+            condition1 = (group == '10A')
+            condition2 = ((summInt - Interlayer['Tot_Remainder']) < 0.66)
+            condition3 = (np.sum([Interlayer['Tot'][j]*charge[j] 
+                                  for j in Interlayer['Tot'] if j in ['K+', 'Na+', 'Ca2+']])>0.5*(summInt - Interlayer['Tot_Remainder']))
+            condition4 = (np.sum([Interlayer['Tot'][j]*charge[j] 
+                                  for j in Interlayer['Tot'] if j in ['Mg2+', 'Ca2+']])>0.5*(summInt - Interlayer['Tot_Remainder']))
+            if condition1 & condition2 & condition3:
+                Calc['XlnX'][i] = lnX[-1]*X[-1] + lnX[-2]*X[-2]
+            else:
+                Calc['XlnX'][i] = np.sum([lnX[j]*X[j] if X[j]*summInt != summInt else 0 for j in range(len(X)-1)])
+        elif i in ['M1', 'M2', 'M3', 'M4']:
+            Calc['XlnX'][i] = np.sum([lnX[j]*X[j] if X[j]*summ != summ else 0 for j in range(len(X))])
         else:
             Calc['XlnX'][i] = np.sum([lnX[j]*X[j] for j in range(len(X))])
 
@@ -755,23 +871,23 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
                 Calc['DO_moy'][i] = k['dH_%s' % j]['moy'] + K[j]*\
                     np.sum(list(k['dH_%s' % j].values())[1:])/Calc['Nb_Oxy'][i]**2
 
-    dHoxphtl = -(np.sum([Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*(Calc['DO_moy'][k]-Calc['DO_moy'][j])
+    dHoxphtl = -(np.sum([Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*abs(Calc['DO_moy'][k]-Calc['DO_moy'][j])
                         for j in ['T1', 'T2'] for k in ['Inter', 'M1', 'M2']] + \
-                       [Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*(Calc['DO_moy'][k]-Calc['DO_moy'][j])
+                       [Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*abs(Calc['DO_moy'][k]-Calc['DO_moy'][j])
                         for j in ['H_i'] for k in ['M1', 'M2']] + \
-                           [Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*(Calc['DO_moy'][k]-Calc['DO_moy'][j])
+                           [Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*abs(Calc['DO_moy'][k]-Calc['DO_moy'][j])
                             for j in ['M1'] for k in ['M2']] + \
-                               [Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*(Calc['DO_moy'][k]-Calc['DO_moy'][j])
+                               [Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*abs(Calc['DO_moy'][k]-Calc['DO_moy'][j])
                                 for j in ['T1'] for k in ['T2']] + \
-                                   [Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*(Calc['DO_moy'][k]-Calc['DO_moy'][j])
+                                   [Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*abs(Calc['DO_moy'][k]-Calc['DO_moy'][j])
                                     for j in ['H_b'] for k in ['M3', 'M4']] +\
-                                       [Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*(Calc['DO_moy'][k]-Calc['DO_moy'][j])
+                                       [Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*abs(Calc['DO_moy'][k]-Calc['DO_moy'][j])
                                         for j in ['M4'] for k in ['M3']] +\
-                                           [Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*(Calc['DO_moy'][k]-Calc['DO_moy'][j])
+                                           [Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*abs(Calc['DO_moy'][k]-Calc['DO_moy'][j])
                                             for j in ['H_b'] for k in ['T1', 'T2']]) +\
-                 np.sum([Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*(Calc['DO_moy'][k]-Calc['DO_moy'][j])
+                 np.sum([Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*abs(Calc['DO_moy'][k]-Calc['DO_moy'][j])
                          for j in ['H_ext'] for k in ['M1', 'M2']] +\
-                        [Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*(Calc['DO_moy'][k]-Calc['DO_moy'][j])
+                        [Calc['Nb_Oxy'][k]*Calc['Nb_Oxy'][j]*abs(Calc['DO_moy'][k]-Calc['DO_moy'][j])
                          for j in ['H_ext'] for k in ['T1', 'T2']]))/Oxy
 
     dHox = dHoxphtl - Calc['Nb_Oxy']['H_i']*(dH['H2O'] - Interlayer['dH']['H2O']) -\
@@ -791,9 +907,11 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
                             for j in k[i] ])
 
     if group in ['7A', '10A']:
-        R1 = (2*nMg + 2*nFeII + 3*nFeIII + 3*nAlVI)/OH - 1
+        R1 = ((O_Li + nVO + 2*(O_Mg + nFeII + Octahedral['Tot']['Mn2+'] + nNi + 
+                               Octahedral['Tot']['Co2+'] + Octahedral['Tot']['Zn2+']) + 3*(nFeIII + nAlVI + nV))/OH - 1)
+
     else:
-        R1 = 2*nMg/(8 - 3*nAlVI) + 2*nFeII/(8 - 3*nAlVI) + 3*nFeIII/(8 - 3*nAlVI) - 1
+        R1 = (2*nMg/(8 - 3*nAlVI) + 2*nFeII/(8 - 3*nAlVI) + 3*nFeIII/(8 - 3*nAlVI) - 1)
         R2 = 2*nMg/(8 - 3 - 3*(nAlVI - 1)) + 2*nFeII/(8 - 3 - 3*(nAlVI - 1)) + \
             3*nFeIII/(8 - 3 - 3*(nAlVI - 1)) - 1
         R3 = 2*nMg/(8 - 3 - 2/3) + 2*nFeII/(8 - 3 - 2/3) + 3*nFeIII/(8 - 3 - 2/3) + \
@@ -869,7 +987,8 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
                     hydroxide = '%sOH' % (k.rstrip('0123456789.+ '))
                 else:
                     hydroxide = '%s(OH)%d' % (k.rstrip('0123456789.+ '), charge[k])
-                if charge[k] == 1 | charge[k] == 3:
+
+                if charge[k] in (1, 3):
                     Octahedral['moles'][j] = (Octahedral['M1'][k] + Octahedral['M2'][k] + \
                         Brucitic['M3'][k] + Brucitic['M4'][k] - Octahedral['moles'][hydroxide])/2
                 else:
@@ -883,7 +1002,8 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
             else:
                 Octahedral['moles'][j] = (Octahedral['M1'][k] + Octahedral['M2'][k] + \
                     Brucitic['M3'][k] + Brucitic['M4'][k])/(R1 + 1)
-    else:
+ 
+     else:
         Tetrahedral['moles']['Al2O3'] = 0.5*(4 - nSi)
         Tetrahedral['moles']['SiO2'] = nSi
         for j in ['LiOH', 'Li2O', 'Mg(OH)2', 'MgO', 'Fe(OH)2', 'FeO', 'Fe(OH)3', 'Fe2O3',
@@ -899,10 +1019,10 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
             div = 0.5
         elif k == 'H3O+':
             j = 'H2O'
-            div = 0.5
+            div = 1
         elif k == 'NH4+':
             j = '(NH4)2O'
-            div = 0.5
+            div = 1
         else:
             j = '%sO' % (k.rstrip('0123456789.+ '))
             div = 1
@@ -915,12 +1035,14 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
                    for j in Tetrahedral['Slat'].keys()] + \
                       [Interlayer['moles'][j]*Interlayer['Slat'][j]
                        for j in Interlayer['Slat'].keys()])
+
     V = np.sum([Octahedral['moles'][j]*Octahedral['V'][j]
                 for j in Octahedral['V'].keys()] + \
                [Tetrahedral['moles'][j]*Tetrahedral['V'][j]
                 for j in Tetrahedral['V'].keys()] + \
                    [Interlayer['moles'][j]*Interlayer['V'][j]
                     for j in Interlayer['V'].keys()]) # cm3/mol
+    
     Cp = np.where(np.sum([Octahedral['moles'][j] for j in Octahedral['moles'].keys()
                           if j in ['Mn(OH)2', 'Cr(OH)3', 'Co(OH)2']]) == 0,
                   np.sum([Octahedral['moles'][j]*Octahedral['Cp'][j]
@@ -1050,7 +1172,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
 
     S = Slat + Scf + S_spin_mag if group == '10A' else Slat + S_spin_mag
     dG = (dHf*1e3 - 298.15*(S - S_allelem))*1e-3
-
+ 
     Rxn = {}
     Rxn['type'] = ClayMintype
     Rxn['name'] = name
@@ -1071,6 +1193,9 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
     if nLi != 0:
         Rxn['formula'] = Rxn['formula'] + 'Li%1.2f' % nLi
         Rxn['MW'] = Rxn['MW'] + nLi*MW['Li']
+    if nH3O != 0:
+        Rxn['formula'] = Rxn['formula'] + 'H%1.2f' % nH3O
+        Rxn['MW'] = Rxn['MW'] + nH3O*MW['H']  #(3*MW['H'] + MW['O'])
     if nFe != 0:
         Rxn['formula'] = Rxn['formula'] + 'Fe%1.2f' % nFe
         Rxn['MW'] = Rxn['MW'] + nFe*MW['Fe']
@@ -1120,8 +1245,8 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
         np.sum([Octahedral['Tot'][j]*charge[j]
                 for j in list(Octahedral['Tot'].keys())[:-1] if j != 'Cd2+']) + \
             np.sum([Tetrahedral['Tot'][j]*charge[j] for j in list(Tetrahedral['Tot'].keys())[1:]])
-    nH = round(nH, 3)
-    nH2O = (Oxy - nH3O - 2*nSi - 2*nTi)
+    nH = round(nH, 3) - nH3O
+    nH2O = (Oxy - nH3O  + nH3O - 2*nSi - 2*nTi)
     # nH = (nH2O*2 - OH) if (nH2O*2 - OH) != nH else nH
     Rxn['formula'] = Rxn['formula'] + 'Si%s' % nSi + 'O%d(OH)%d' % (Oxy - OH, OH)
     Rxn['MW'] = Rxn['MW'] + nSi*MW['Si'] + Oxy*MW['O'] + OH*MW['H']
@@ -1129,6 +1254,10 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
                 V, a/J_to_cal, b/J_to_cal, c/J_to_cal]
     Rxn['min'].insert(0, Rxn['formula'])
     Rxn['min'].insert(1, 'B2015, B2021')
+
+    # In your main code where you want to generate the formula:
+    if export_struct_formula is True:
+        Rxn = generate_structural_formula(Rxn, Interlayer, Octahedral, Tetrahedral, Oxy, OH, MW, charge)
 
     coeff = [-nH, nCs, nRb, nK, nNa, nLi, nFe, nMn, nNi, nCo, nCd, nZn, nCa, nMg,
              nAl, nFe3, nV, nCr, nTi, nVO, nSi, nH2O]
@@ -1141,12 +1270,14 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
     Rxn['V'] = V
     Rxn['dG'] = dG
     Rxn['dHf'] = dHf
+    Rxn['S'] = S
     Rxn['Cp'] = float(Cp)
     Rxn['source'] = 'B2015, B2021'
 
-    elements  = ['%.4f' % nCa, 'Ca', '%.4f' % nK, 'K', '%.4f' % nNa, 'Na',
-                 '%.4f' % (nFe + nFe3), 'Fe', '%.4f' % nMg, 'Mg', '%.4f' % nAl, 'Al',
-                 '%.4f' % nSi, 'Si', '%.4f' % OH, 'H', '%.4f' % Oxy, 'O']
+    elements  = ['%.4f' % nCa, 'Ca', '%.4f' % nK, 'K', '%.4f' % nNa, 'Na', '%.4f' % nLi, 'Li',
+                 '%.4f' % (nFe + nFe3), 'Fe', '%.4f' % nMg, 'Mg', '%.4f' % nNi, 'Ni', 
+                 '%.4f' % nAl, 'Al', '%.4f' % nSi, 'Si', '%.4f' % (OH + 3 * nH3O), 'H', 
+                 '%.4f' % (Oxy + nH3O), 'O']
     filters = [y for x, y in enumerate(elements) if x%2 == 0 and float(y) == 0]
     filters = [[x, x+1] for x, y in enumerate(elements) if y in filters]
     filters = [num for elem in filters for num in elem]
@@ -1169,5 +1300,5 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
     dGrxn = -dGTP + dGRs
     logK_clay = (-dGrxn/R/(TK)/np.log(10))
 
-    return logK_clay, Rxn
+    return logK_clay, Rxn#, rhoEG
 
