@@ -850,8 +850,7 @@ Attributes
 
 .. py:function:: concentration_converter(val=1.0, In_Unit='x_wt', Out_Unit='x_wt')
 
-   This function converts concentration between several units like
-   wt fraction, mole fraction, molality, mol/kg solution and volume fraction
+   This function converts concentration between several units like wt%, mole fraction, molality and volume
    Values must be in fraction except it is molality
 
    :param val: Values to convert
@@ -1523,7 +1522,7 @@ Attributes
 
 
 
-.. py:function:: calclogKclays(TC, P, *elem, dbaccessdic=None, group=None, cation_order=None, export_struct_formula=None, Dielec_method=None, ClayMintype=None, Int_Mg_fract=None, Int_Li_fract=None, heatcap_approx=None, ThermoInUnit='cal', **rhoEG)
+.. py:function:: calclogKclays(TC, P, *elem, dbaccessdic=None, group=None, cation_order=None, Dielec_method=None, ClayMintype=None, ThermoInUnit='cal', **rhoEG)
 
    This function calculates logK values and reaction parameters of clay reactions using below references:
 
@@ -1531,7 +1530,7 @@ Attributes
    :type TC: float, vector
    :param P: Pressure [bar]
    :type P: float, vector
-   :param elem: list containing nine or ten parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li', 'H3O']
+   :param elem: list containing nine parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li']
    :type elem: list
    :param dbacessdic: dictionary of species from direct-access database, optional, default is speq21
    :type dbacessdic: dict
@@ -1543,12 +1542,6 @@ Attributes
    :type Dielec_method: string
    :param ClayMintype: specify either 'Smectite' or 'Chlorite' or 'Mica' as the clay type, if not specified default - 'Smectites'
    :type ClayMintype: string
-   :param Int_Mg_fract: specify the fraction of Mg to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
-   :type Int_Mg_fract: string
-   :param Int_Li_fract: specify the fraction of Li to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
-   :type Int_Li_fract: string
-   :param heatcap_approx: specify either 'Maier-Kelley' or 'constant' as the approximation method for clay minerals' specific heat capacity calculation, default is 'constant', based on ClayTherm's definition for specific cations (Octahedral sites: Li+, Mn2+, Cr3+, Ni2+, Co2+, Zn2+; Interlayer sites: Cs+, Rb+, Li+, Ba2+, Sr2+, Mg2+, Cu2+, Co2+, Zn2+, H3O+)
-   :type heatcap_approx: string
    :param ThermoInUnit: specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
    :type ThermoInUnit: string
    :param rhoEG: dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy  (optional)
@@ -1601,10 +1594,7 @@ Attributes
 
    (3) Vinograd, V.L., 1995. Substitution of [4]Al in layer silicates: Calculation of the Al-Si
        configurational entropy according to 29Si NMR Spectra. Physics and Chemistry of Minerals
-       22, 87-98. (
-       saponite-H-Li  Li0.165H0.165)(Mg3)(Si3.67Al0.33)O10(OH)2
-       saponite-Mg-Li(VI)  (Mg0.17)(Li0.33Mg2.835)(Si3.66Al0.34)O10(OH)2
-       ['Name', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li', 'H3O']
+       22, 87-98.
 
 
 .. py:data:: eps
@@ -1900,7 +1890,7 @@ Attributes
    :type Specie: string
    :param Specie_class: specify the class of species  like 'aqueous', 'minerals', 'liquids', or 'gases'
    :type Specie_class: string, optional
-   :param elem: list containing nine or ten parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li', 'H3O']
+   :param elem: list containing nine parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li']
    :type elem: list
    :param dbaccessdic: direct-acess database dictionary
    :type dbaccessdic: dict
@@ -1926,12 +1916,6 @@ Attributes
    :type ThermoInUnit: string
    :param Al_Si: specify either 'pygcc' or 'Arnórsson_Stefánsson' as the input to express Al and Si species in solid solution (optional), 'Arnórsson_Stefánsson' expresses them as 'Al(OH)4-' and 'H4SiO4(aq)', respectively while pygcc uses 'Al3+' and 'SiO2(aq)', respectively if not specified default - 'pygcc'
    :type Al_Si: string
-   :param Int_Mg_fract: specify the fraction of Mg to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
-   :type Int_Mg_fract: string
-   :param Int_Li_fract: specify the fraction of Li to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
-   :type Int_Li_fract: string
-   :param heatcap_approx: specify either 'Maier-Kelley' or 'constant' as the approximation method for clay minerals' specific heat capacity calculation, default is 'constant', based on ClayTherm's definition for specific cations (Octahedral sites: Li+, Mn2+, Cr3+, Ni2+, Co2+, Zn2+; Interlayer sites: Cs+, Rb+, Li+, Ba2+, Sr2+, Mg2+, Cu2+, Co2+, Zn2+, H3O+)
-   :type heatcap_approx: string
    :param sourceformat: specify the source database format, either 'GWB' or 'EQ36'
    :type sourceformat: string
    :param densityextrap: specify the extrapolation option for density-logK, 'Yes'/True or 'No'/False
@@ -2126,7 +2110,7 @@ Attributes
    :type T: float, vector
    :param dataset: specify the dataset format, either 'GWB', 'EQ36', 'Pflotran' or 'ToughReact'
    :type dataset: string
-   :param logK_form: specify the format of logK either as a set of eight values one for each of the dataset's principal temperatures, or blocks of polynomial coefficients,  [values, polycoeffs], default is 'a set of eight values' (optional)
+   :param logK_form: specify the format of logK either as a set of eight values one for each of the dataset’s principal temperatures, or blocks of polynomial coefficients,  [values, polycoeffs], default is 'a set of eight values' (optional)
    :type logK_form: string
 
    :rtype: Output data to the file with filename described in fid with any format mentioned above.
@@ -3123,8 +3107,7 @@ Attributes
 
 .. py:function:: concentration_converter(val=1.0, In_Unit='x_wt', Out_Unit='x_wt')
 
-   This function converts concentration between several units like
-   wt fraction, mole fraction, molality, mol/kg solution and volume fraction
+   This function converts concentration between several units like wt%, mole fraction, molality and volume
    Values must be in fraction except it is molality
 
    :param val: Values to convert
@@ -3813,7 +3796,7 @@ Attributes
 
 
 
-.. py:function:: calclogKclays(TC, P, *elem, dbaccessdic=None, group=None, cation_order=None, export_struct_formula=None, Dielec_method=None, ClayMintype=None, Int_Mg_fract=None, Int_Li_fract=None, heatcap_approx=None, ThermoInUnit='cal', **rhoEG)
+.. py:function:: calclogKclays(TC, P, *elem, dbaccessdic=None, group=None, cation_order=None, Dielec_method=None, ClayMintype=None, ThermoInUnit='cal', **rhoEG)
 
    This function calculates logK values and reaction parameters of clay reactions using below references:
 
@@ -3821,7 +3804,7 @@ Attributes
    :type TC: float, vector
    :param P: Pressure [bar]
    :type P: float, vector
-   :param elem: list containing nine or ten parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li', 'H3O']
+   :param elem: list containing nine parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li']
    :type elem: list
    :param dbacessdic: dictionary of species from direct-access database, optional, default is speq21
    :type dbacessdic: dict
@@ -3833,12 +3816,6 @@ Attributes
    :type Dielec_method: string
    :param ClayMintype: specify either 'Smectite' or 'Chlorite' or 'Mica' as the clay type, if not specified default - 'Smectites'
    :type ClayMintype: string
-   :param Int_Mg_fract: specify the fraction of Mg to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
-   :type Int_Mg_fract: string
-   :param Int_Li_fract: specify the fraction of Li to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
-   :type Int_Li_fract: string
-   :param heatcap_approx: specify either 'Maier-Kelley' or 'constant' as the approximation method for clay minerals' specific heat capacity calculation, default is 'constant', based on ClayTherm's definition for specific cations (Octahedral sites: Li+, Mn2+, Cr3+, Ni2+, Co2+, Zn2+; Interlayer sites: Cs+, Rb+, Li+, Ba2+, Sr2+, Mg2+, Cu2+, Co2+, Zn2+, H3O+)
-   :type heatcap_approx: string
    :param ThermoInUnit: specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
    :type ThermoInUnit: string
    :param rhoEG: dictionary of water properties like  density (rho), dielectric factor (E) and Gibbs Energy  (optional)
@@ -3891,10 +3868,7 @@ Attributes
 
    (3) Vinograd, V.L., 1995. Substitution of [4]Al in layer silicates: Calculation of the Al-Si
        configurational entropy according to 29Si NMR Spectra. Physics and Chemistry of Minerals
-       22, 87-98. (
-       saponite-H-Li  Li0.165H0.165)(Mg3)(Si3.67Al0.33)O10(OH)2
-       saponite-Mg-Li(VI)  (Mg0.17)(Li0.33Mg2.835)(Si3.66Al0.34)O10(OH)2
-       ['Name', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li', 'H3O']
+       22, 87-98.
 
 
 .. py:data:: MW
