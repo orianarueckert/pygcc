@@ -207,7 +207,7 @@ def generate_structural_formula(Rxn, Interlayer, Octahedral, Tetrahedral, Oxy, O
 
 def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order = None, export_struct_formula = None,
                   Dielec_method = None, ClayMintype = None, Int_Mg_fract = None, Int_Li_fract = None,
-                  ThermoInUnit = 'cal', **rhoEG):
+                  heatcap_approx = None, ThermoInUnit = 'cal', **rhoEG):
     """
     This function calculates logK values and reaction parameters of clay reactions using below references:
 
@@ -233,6 +233,8 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
             specify the fraction of Mg to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
         Int_Li_fract : string
             specify the fraction of Li to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
+        heatcap_approx : string
+            specify either 'Maier-Kelley' or 'constant' as the approximation method for clay minerals' specific heat capacity calculation, default is 'constant', based on ClayTherm's definition for specific cations (Octahedral sites: Li+, Mn2+, Cr3+, Ni2+, Co2+, Zn2+; Interlayer sites: Cs+, Rb+, Li+, Ba2+, Sr2+, Mg2+, Cu2+, Co2+, Zn2+, H3O+) \n
         ThermoInUnit : string
             specify either 'cal' or 'KJ' as the input units for species properties (optional), particularly used to covert KJ data to cal by supcrtaq function if not specified default - 'cal'
         rhoEG : dict
@@ -310,7 +312,7 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
     export_struct_formula = True if export_struct_formula is None else False
     Int_Li_fract = 1 if Int_Li_fract is None else Int_Li_fract
     Dielec_method = 'JN91' if Dielec_method is None else Dielec_method
-
+    heatcap_approx = 'constant' if heatcap_approx is None else heatcap_approx
 
     mass_bal = round(np.sum([j*float(k) for j,k in zip([4, 3, 3, 2, 2, 1, 1, 2, 1, 1], elem[1:])]), 0) if len(elem) > 10 else round(np.sum([j*float(k) for j,k in zip([4, 3, 3, 2, 2, 1, 1, 2, 1], elem[1:])]), 2) 
     if mass_bal not in [14, 22, 28]:
@@ -1051,42 +1053,55 @@ def calclogKclays(TC, P, *elem, dbaccessdic = None, group = None, cation_order =
                               [Interlayer['moles'][j]*Interlayer['Cp'][j]
                               for j in Interlayer['Cp'].keys()]),
                           0)
-    a = np.where(np.sum([Octahedral['moles'][j] for j in Octahedral['moles'].keys()
-                          if j in ['Li2O', 'MnO', 'Cr2O3', 'NiO', 'CoO', 'ZnO']] + \
-                        [Interlayer['moles'][j] for j in Interlayer['moles'].keys()
-                         if j in ['Cs2O', 'Rb2O', 'Li2O', 'ZnO', 'BaO', 'SrO', 'CoO',
-                                  'MgO', 'CuO', 'H2O']]) == 0,
-                  np.sum([Octahedral['moles'][j]*Octahedral['a'][j]
-                          for j in Octahedral['a'].keys()] + \
-                         [Tetrahedral['moles'][j]*Tetrahedral['a'][j]
-                          for j in Tetrahedral['a'].keys()] + \
-                             [Interlayer['moles'][j]*Interlayer['a'][j]
-                              for j in Interlayer['a'].keys()]),
-                          0)
-    b = np.where(np.sum([Octahedral['moles'][j] for j in Octahedral['moles'].keys()
-                          if j in ['Li2O', 'MnO', 'Cr2O3', 'NiO', 'CoO', 'ZnO']] + \
-                        [Interlayer['moles'][j] for j in Interlayer['moles'].keys()
-                         if j in ['Cs2O', 'Rb2O', 'Li2O', 'ZnO', 'BaO', 'SrO', 'CoO',
-                                  'MgO', 'CuO', 'H2O']]) == 0,
-                  np.sum([Octahedral['moles'][j]*Octahedral['b'][j]
-                          for j in Octahedral['b'].keys()] + \
-                         [Tetrahedral['moles'][j]*Tetrahedral['b'][j]
-                          for j in Tetrahedral['b'].keys()] + \
-                             [Interlayer['moles'][j]*Interlayer['b'][j]
-                              for j in Interlayer['b'].keys()]),
-                          0)
-    c = np.where(np.sum([Octahedral['moles'][j] for j in Octahedral['moles'].keys()
-                          if j in ['Li2O', 'MnO', 'Cr2O3', 'NiO', 'CoO', 'ZnO']] + \
-                        [Interlayer['moles'][j] for j in Interlayer['moles'].keys()
-                         if j in ['Cs2O', 'Rb2O', 'Li2O', 'ZnO', 'BaO', 'SrO', 'CoO',
-                                  'MgO', 'CuO', 'H2O']]) == 0,
-                  np.sum([Octahedral['moles'][j]*Octahedral['c'][j]
-                          for j in Octahedral['c'].keys()] + \
-                         [Tetrahedral['moles'][j]*Tetrahedral['c'][j]
-                          for j in Tetrahedral['c'].keys()] + \
-                             [Interlayer['moles'][j]*Interlayer['c'][j]
-                              for j in Interlayer['c'].keys()]),
-                          0)
+    
+    if heatcap_approx.lower() == 'maier-kelley':
+        a = np.sum([Octahedral['moles'][j]*Octahedral['a'][j] for j in Octahedral['a'].keys()] + \
+                [Tetrahedral['moles'][j]*Tetrahedral['a'][j] for j in Tetrahedral['a'].keys()] + \
+                    [Interlayer['moles'][j]*Interlayer['a'][j] for j in Interlayer['a'].keys()])
+        b = np.sum([Octahedral['moles'][j]*Octahedral['b'][j] for j in Octahedral['b'].keys()] + \
+                   [Tetrahedral['moles'][j]*Tetrahedral['b'][j] for j in Tetrahedral['b'].keys()] + \
+                      [Interlayer['moles'][j]*Interlayer['b'][j] for j in Interlayer['b'].keys()])
+        c = np.sum([Octahedral['moles'][j]*Octahedral['c'][j] for j in Octahedral['c'].keys()] + \
+                [Tetrahedral['moles'][j]*Tetrahedral['c'][j] for j in Tetrahedral['c'].keys()] + \
+                    [Interlayer['moles'][j]*Interlayer['c'][j] for j in Interlayer['c'].keys()])
+
+    else:    
+        a = np.where(np.sum([Octahedral['moles'][j] for j in Octahedral['moles'].keys()
+                            if j in ['Li2O', 'MnO', 'Cr2O3', 'NiO', 'CoO', 'ZnO']] + \
+                            [Interlayer['moles'][j] for j in Interlayer['moles'].keys()
+                            if j in ['Cs2O', 'Rb2O', 'Li2O', 'ZnO', 'BaO', 'SrO', 'CoO',
+                                    'MgO', 'CuO', 'H2O']]) == 0,
+                    np.sum([Octahedral['moles'][j]*Octahedral['a'][j]
+                            for j in Octahedral['a'].keys()] + \
+                            [Tetrahedral['moles'][j]*Tetrahedral['a'][j]
+                            for j in Tetrahedral['a'].keys()] + \
+                                [Interlayer['moles'][j]*Interlayer['a'][j]
+                                for j in Interlayer['a'].keys()]),
+                            0)
+        b = np.where(np.sum([Octahedral['moles'][j] for j in Octahedral['moles'].keys()
+                            if j in ['Li2O', 'MnO', 'Cr2O3', 'NiO', 'CoO', 'ZnO']] + \
+                            [Interlayer['moles'][j] for j in Interlayer['moles'].keys()
+                            if j in ['Cs2O', 'Rb2O', 'Li2O', 'ZnO', 'BaO', 'SrO', 'CoO',
+                                    'MgO', 'CuO', 'H2O']]) == 0,
+                    np.sum([Octahedral['moles'][j]*Octahedral['b'][j]
+                            for j in Octahedral['b'].keys()] + \
+                            [Tetrahedral['moles'][j]*Tetrahedral['b'][j]
+                            for j in Tetrahedral['b'].keys()] + \
+                                [Interlayer['moles'][j]*Interlayer['b'][j]
+                                for j in Interlayer['b'].keys()]),
+                            0)
+        c = np.where(np.sum([Octahedral['moles'][j] for j in Octahedral['moles'].keys()
+                            if j in ['Li2O', 'MnO', 'Cr2O3', 'NiO', 'CoO', 'ZnO']] + \
+                            [Interlayer['moles'][j] for j in Interlayer['moles'].keys()
+                            if j in ['Cs2O', 'Rb2O', 'Li2O', 'ZnO', 'BaO', 'SrO', 'CoO',
+                                    'MgO', 'CuO', 'H2O']]) == 0,
+                    np.sum([Octahedral['moles'][j]*Octahedral['c'][j]
+                            for j in Octahedral['c'].keys()] + \
+                            [Tetrahedral['moles'][j]*Tetrahedral['c'][j]
+                            for j in Tetrahedral['c'].keys()] + \
+                                [Interlayer['moles'][j]*Interlayer['c'][j]
+                                for j in Interlayer['c'].keys()]),
+                            0)
     S_spin_mag = np.sum([S_spin[j]*Octahedral['M2'][j]
                          for j in set(S_spin.keys())&set(Octahedral['M2'].keys())] +\
                         [S_spin[j]*Octahedral['M1'][j]

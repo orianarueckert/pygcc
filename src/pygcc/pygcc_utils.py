@@ -992,6 +992,8 @@ class calcRxnlogK():
             specify the fraction of Mg to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
         Int_Li_fract : string
             specify the fraction of Li to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
+        heatcap_approx : string
+            specify either 'Maier-Kelley' or 'constant' as the approximation method for clay minerals' specific heat capacity calculation, default is 'constant', based on ClayTherm's definition for specific cations (Octahedral sites: Li+, Mn2+, Cr3+, Ni2+, Co2+, Zn2+; Interlayer sites: Cs+, Rb+, Li+, Ba2+, Sr2+, Mg2+, Cu2+, Co2+, Zn2+, H3O+) \n
         sourceformat : string
             specify the source database format, either 'GWB' or 'EQ36'
         densityextrap : float, vector
@@ -1034,7 +1036,8 @@ class calcRxnlogK():
               "P": None, "group": None,  "X": None,  "cpx_Ca": None,  "elem": None,
               'rhoEGextrap': None, "sourcedic": None, "specielist": None,
               'dbaccessdic': None, "Dielec_method": None, "sourceformat": None,
-              'heatcap_method': None, "densityextrap": None, 'rhoEG': None, 'Int_Mg_fract': None, 'Int_Li_fract': None,
+              'heatcap_method': None, "densityextrap": None, 'rhoEG': None, 
+              'Int_Mg_fract': None, 'Int_Li_fract': None, 'heatcap_approx': None, 
               'ClayMintype': 'Smectite', "Al_Si": 'pygcc'}
 
     def __init__(self, **kwargs):
@@ -1054,6 +1057,7 @@ class calcRxnlogK():
         self.X = self.kwargs['X'];                         self.heatcap_method = self.kwargs['heatcap_method']
         self.ClayMintype = self.kwargs['ClayMintype'];     self.Al_Si = self.kwargs["Al_Si"]
         self.Int_Mg_fract = self.kwargs['Int_Mg_fract'];     self.Int_Li_fract = self.kwargs["Int_Li_fract"]
+        self.heatcap_approx = self.kwargs["heatcap_approx"]
         self.densityextrap = 'No' if (self.kwargs['densityextrap'] is None or self.kwargs['densityextrap'] is False) else 'Yes' if self.kwargs['densityextrap'] is True else self.kwargs['densityextrap']
 
         self.Dielec_method = 'JN91' if self.Dielec_method is None else self.Dielec_method
@@ -1192,7 +1196,7 @@ class calcRxnlogK():
                                       group = self.group, Dielec_method = self.Dielec_method, 
                                       Int_Mg_fract = self.Int_Mg_fract, Int_Li_fract = self.Int_Li_fract,
                                       ThermoInUnit = self.ThermoInUnit, ClayMintype = self.ClayMintype,
-                                      **rhoEG)
+                                      heatcap_approx = self.heatcap_approx, **rhoEG)
             return logK, Rxn
         else:
             logK, dGrxn, dGP, dGRs = self.RxnlogK( TC, P, self.Specie, rhoEG)
@@ -5059,29 +5063,12 @@ class write_database():
                     fout.writelines('+---------------------------------------------------------------\n')
             fout.write("nc and na combinations: lambda(nc) and lambda(na)\n")
             fout.write("+--------------------------------------------------------------------\n")
-            ions_exmpt = [j for j, k in enumerate(act_param['lambda'].keys()) if len(k.rstrip('\n').split()) <= 1][0]
-            ions_exmpt = list(act_param['lambda'].keys())[ions_exmpt:]
-            for k in act_param['lambda'].keys():
-                if all([x not in missing_species for x in k.rstrip('\n').split()]) and k not in ions_exmpt:
-                    ks = k.rstrip('\n').split()
-                    fout.writelines('%-8s\n' % ks[0]) if len(ks) == 1 else fout.writelines('%-24s  %-24s\n' % (ks[0], ks[1]))  if len(ks) == 2 else fout.writelines('%-8s  %-8s  %-8s\n' % (ks[0], ks[1], ks[2]))
-                    fout.writelines('  %-6s: \n' % 'lambda')
-                    if type(act_param['lambda'][k]) == float:
-                        fout.writelines('    a1 = %s \n' % act_param['lambda'][k])
-                        fout.writelines('    a2 = 0. \n    a3 = 0. \n    a4 = 0. \n    a5 = 0. \n    a6 = 0. \n' )
-                    else:
-                        fout.writelines('    a1 = %s \n' % act_param['lambda'][k][0])
-                        fout.writelines('    a2 = %s \n'  % act_param['lambda'][k][1])
-                        fout.writelines('    a3 = %s \n'  % act_param['lambda'][k][2])
-                        fout.writelines('    a4 = %s \n'  % act_param['lambda'][k][3])
-                        fout.writelines('    a5 = 0. \n    a6 = 0. \n' )
-                    fout.writelines('+---------------------------------------------------------------\n')
-            fout.write("nn combinations: lambda(nn) and mu(nnn) \n")
-            fout.write("+--------------------------------------------------------------------\n")
-            for k in act_param['mu'].keys():
-                if all([x not in missing_species for x in k.rstrip('\n').split()]):
-                    ks = k.rstrip('\n').split()
-                    if len(ks) <= 1:
+            if act_param['lambda'].keys():  # checks if dictionary is not empty
+                ions_exmpt = [j for j, k in enumerate(act_param['lambda'].keys()) if len(k.rstrip('\n').split()) <= 1][0]
+                ions_exmpt = list(act_param['lambda'].keys())[ions_exmpt:]
+                for k in act_param['lambda'].keys():
+                    if all([x not in missing_species for x in k.rstrip('\n').split()]) and k not in ions_exmpt:
+                        ks = k.rstrip('\n').split()
                         fout.writelines('%-8s\n' % ks[0]) if len(ks) == 1 else fout.writelines('%-24s  %-24s\n' % (ks[0], ks[1]))  if len(ks) == 2 else fout.writelines('%-8s  %-8s  %-8s\n' % (ks[0], ks[1], ks[2]))
                         fout.writelines('  %-6s: \n' % 'lambda')
                         if type(act_param['lambda'][k]) == float:
@@ -5093,34 +5080,55 @@ class write_database():
                             fout.writelines('    a3 = %s \n'  % act_param['lambda'][k][2])
                             fout.writelines('    a4 = %s \n'  % act_param['lambda'][k][3])
                             fout.writelines('    a5 = 0. \n    a6 = 0. \n' )
-                        fout.writelines('  %-6s: \n' % 'mu')
-                        if type(act_param['mu'][k]) == float:
-                            fout.writelines('    a1 = %s \n' % act_param['mu'][k])
+                        fout.writelines('+---------------------------------------------------------------\n')
+            fout.write("nn combinations: lambda(nn) and mu(nnn) \n")
+            fout.write("+--------------------------------------------------------------------\n")
+            if act_param['mu'].keys():  # checks if dictionary is empty
+                ions_exmpt = [j for j, k in enumerate(act_param['mu'].keys()) if len(k.rstrip('\n').split()) <= 1][0]
+                ions_exmpt = list(act_param['mu'].keys())[ions_exmpt:]
+                for k in act_param['mu'].keys():
+                    if all([x not in missing_species for x in k.rstrip('\n').split()]):
+                        ks = k.rstrip('\n').split()
+                        if len(ks) <= 1:
+                            fout.writelines('%-8s\n' % ks[0]) if len(ks) == 1 else fout.writelines('%-24s  %-24s\n' % (ks[0], ks[1]))  if len(ks) == 2 else fout.writelines('%-8s  %-8s  %-8s\n' % (ks[0], ks[1], ks[2]))
+                            fout.writelines('  %-6s: \n' % 'lambda')
+                            if type(act_param['lambda'][k]) == float:
+                                fout.writelines('    a1 = %s \n' % act_param['lambda'][k])
+                                fout.writelines('    a2 = 0. \n    a3 = 0. \n    a4 = 0. \n    a5 = 0. \n    a6 = 0. \n' )
+                            else:
+                                fout.writelines('    a1 = %s \n' % act_param['lambda'][k][0])
+                                fout.writelines('    a2 = %s \n'  % act_param['lambda'][k][1])
+                                fout.writelines('    a3 = %s \n'  % act_param['lambda'][k][2])
+                                fout.writelines('    a4 = %s \n'  % act_param['lambda'][k][3])
+                                fout.writelines('    a5 = 0. \n    a6 = 0. \n' )
+                            fout.writelines('  %-6s: \n' % 'mu')
+                            if type(act_param['mu'][k]) == float:
+                                fout.writelines('    a1 = %s \n' % act_param['mu'][k])
+                                fout.writelines('    a2 = 0. \n    a3 = 0. \n    a4 = 0. \n    a5 = 0. \n    a6 = 0. \n' )
+                            else:
+                                fout.writelines('    a1 = %s \n' % act_param['mu'][k][0])
+                                fout.writelines('    a2 = %s \n'  % act_param['mu'][k][1])
+                                fout.writelines('    a3 = %s \n'  % act_param['mu'][k][2])
+                                fout.writelines('    a4 = %s \n'  % act_param['mu'][k][3])
+                                fout.writelines('    a5 = 0. \n    a6 = 0. \n' )
+                            fout.writelines('+---------------------------------------------------------------\n')
+                fout.write("nn' combinations: lambda(nn') \n")
+                fout.write("+--------------------------------------------------------------------\n")
+                for k in [j for j in ions_exmpt if j not in act_param['mu'].keys()]:
+                    if all([x not in missing_species for x in k.rstrip('\n').split()]):
+                        ks = k.rstrip('\n').split()
+                        fout.writelines('%-8s\n' % ks[0]) if len(ks) == 1 else fout.writelines('%-24s  %-24s\n' % (ks[0], ks[1]))  if len(ks) == 2 else fout.writelines('%-8s  %-8s  %-8s\n' % (ks[0], ks[1], ks[2]))
+                        fout.writelines('  %-6s: \n' % 'lambda')
+                        if type(act_param['lambda'][k]) == float:
+                            fout.writelines('    a1 = %s \n' % act_param['lambda'][k])
                             fout.writelines('    a2 = 0. \n    a3 = 0. \n    a4 = 0. \n    a5 = 0. \n    a6 = 0. \n' )
                         else:
-                            fout.writelines('    a1 = %s \n' % act_param['mu'][k][0])
-                            fout.writelines('    a2 = %s \n'  % act_param['mu'][k][1])
-                            fout.writelines('    a3 = %s \n'  % act_param['mu'][k][2])
-                            fout.writelines('    a4 = %s \n'  % act_param['mu'][k][3])
+                            fout.writelines('    a1 = %s \n' % act_param['lambda'][k][0])
+                            fout.writelines('    a2 = %s \n'  % act_param['lambda'][k][1])
+                            fout.writelines('    a3 = %s \n'  % act_param['lambda'][k][2])
+                            fout.writelines('    a4 = %s \n'  % act_param['lambda'][k][3])
                             fout.writelines('    a5 = 0. \n    a6 = 0. \n' )
                         fout.writelines('+---------------------------------------------------------------\n')
-            fout.write("nn' combinations: lambda(nn') \n")
-            fout.write("+--------------------------------------------------------------------\n")
-            for k in [j for j in ions_exmpt if j not in act_param['mu'].keys()]:
-                if all([x not in missing_species for x in k.rstrip('\n').split()]):
-                    ks = k.rstrip('\n').split()
-                    fout.writelines('%-8s\n' % ks[0]) if len(ks) == 1 else fout.writelines('%-24s  %-24s\n' % (ks[0], ks[1]))  if len(ks) == 2 else fout.writelines('%-8s  %-8s  %-8s\n' % (ks[0], ks[1], ks[2]))
-                    fout.writelines('  %-6s: \n' % 'lambda')
-                    if type(act_param['lambda'][k]) == float:
-                        fout.writelines('    a1 = %s \n' % act_param['lambda'][k])
-                        fout.writelines('    a2 = 0. \n    a3 = 0. \n    a4 = 0. \n    a5 = 0. \n    a6 = 0. \n' )
-                    else:
-                        fout.writelines('    a1 = %s \n' % act_param['lambda'][k][0])
-                        fout.writelines('    a2 = %s \n'  % act_param['lambda'][k][1])
-                        fout.writelines('    a3 = %s \n'  % act_param['lambda'][k][2])
-                        fout.writelines('    a4 = %s \n'  % act_param['lambda'][k][3])
-                        fout.writelines('    a5 = 0. \n    a6 = 0. \n' )
-                    fout.writelines('+---------------------------------------------------------------\n')
             fout.write("cc'a and aa'c combinations: psi(cc'a) and psi(aa'c) \n")
             fout.write("+--------------------------------------------------------------------\n")
             for k in act_param['psi'].keys():
