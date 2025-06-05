@@ -6,6 +6,20 @@ All notable changes to this project are documented here. To ensure that they are
 pip install --upgrade pygcc
 ```
 
+## v1.4.0 (05/06/2025)
+
+#### Added
+
+- We introduced the keyword heatcap_approx to allow users to specify either 'Maier-Kelley' or 'constant' for heat capacity calculations in clay mineral thermodynamic properties. This provides flexibility in choosing between a temperature-dependent Maier-Kelley formulation or a constant heat capacity approximation.
+
+#### Changed
+   
+#### Fixed
+
+- fixed error in writing ptizer database for Toughreact, particularly in source database, like data0.hmw with no lamda values.
+
+#### Removed
+
 ## v1.3.7 (11/05/2025)
 
 #### Added
@@ -26,7 +40,7 @@ pip install --upgrade pygcc
    
 #### Fixed
 
-- we calculation errors in logK values and reaction parameters for clay thermodynmanics and introduced partitioning
+- we fixed calculation errors in logK values and reaction parameters for clay thermodynmanics and introduced partitioning
   parameters such as "Int_Mg_fract" and "Int_Li_fract" to help users specify the fraction of Mg and Li in the interlayer sheet.
 
 #### Removed
