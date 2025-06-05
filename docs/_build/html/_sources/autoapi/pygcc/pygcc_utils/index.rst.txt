@@ -367,7 +367,7 @@ Attributes
    :type Specie: string
    :param Specie_class: specify the class of species  like 'aqueous', 'minerals', 'liquids', or 'gases'
    :type Specie_class: string, optional
-   :param elem: list containing nine parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li']
+   :param elem: list containing nine or ten parameters with clay names and elements compositions with the following format ['Montmorillonite_Lc_MgK', 'Si', 'Al', 'FeIII', 'FeII', 'Mg', 'K', 'Na', 'Ca', 'Li', 'H3O']
    :type elem: list
    :param dbaccessdic: direct-acess database dictionary
    :type dbaccessdic: dict
@@ -393,6 +393,12 @@ Attributes
    :type ThermoInUnit: string
    :param Al_Si: specify either 'pygcc' or 'Arnórsson_Stefánsson' as the input to express Al and Si species in solid solution (optional), 'Arnórsson_Stefánsson' expresses them as 'Al(OH)4-' and 'H4SiO4(aq)', respectively while pygcc uses 'Al3+' and 'SiO2(aq)', respectively if not specified default - 'pygcc'
    :type Al_Si: string
+   :param Int_Mg_fract: specify the fraction of Mg to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
+   :type Int_Mg_fract: string
+   :param Int_Li_fract: specify the fraction of Li to partition into Interlayer sheet and the remainder will be partitioned into Octahedral sheet, if not specified, default is 1
+   :type Int_Li_fract: string
+   :param heatcap_approx: specify either 'Maier-Kelley' or 'constant' as the approximation method for clay minerals' specific heat capacity calculation, default is 'constant', based on ClayTherm's definition for specific cations (Octahedral sites: Li+, Mn2+, Cr3+, Ni2+, Co2+, Zn2+; Interlayer sites: Cs+, Rb+, Li+, Ba2+, Sr2+, Mg2+, Cu2+, Co2+, Zn2+, H3O+)
+   :type heatcap_approx: string
    :param sourceformat: specify the source database format, either 'GWB' or 'EQ36'
    :type sourceformat: string
    :param densityextrap: specify the extrapolation option for density-logK, 'Yes'/True or 'No'/False
@@ -587,7 +593,7 @@ Attributes
    :type T: float, vector
    :param dataset: specify the dataset format, either 'GWB', 'EQ36', 'Pflotran' or 'ToughReact'
    :type dataset: string
-   :param logK_form: specify the format of logK either as a set of eight values one for each of the dataset’s principal temperatures, or blocks of polynomial coefficients,  [values, polycoeffs], default is 'a set of eight values' (optional)
+   :param logK_form: specify the format of logK either as a set of eight values one for each of the dataset's principal temperatures, or blocks of polynomial coefficients,  [values, polycoeffs], default is 'a set of eight values' (optional)
    :type logK_form: string
 
    :rtype: Output data to the file with filename described in fid with any format mentioned above.

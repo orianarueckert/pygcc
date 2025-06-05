@@ -158,7 +158,7 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 <td><p>returns all constants and coefficients needed for the IAPWS95 formulation, packed into a dictionary</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pygcc.water_eos.concentration_converter" title="pygcc.water_eos.concentration_converter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concentration_converter</span></code></a>(val=1.0, In_Unit='x_wt', Out_Unit='x_wt')</p></td>
-<td><p>This function converts concentration between several units like wt%, mole fraction, molality and volume</p></td>
+<td><p>This function converts concentration between several units like</p></td>
 </tr>
 </tbody>
 </table>
@@ -1138,8 +1138,9 @@ Am. J. Sci. 274, 1199-1251.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pygcc.water_eos.concentration_converter">
-<span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">concentration_converter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">In_Unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x_wt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Out_Unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x_wt'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcc.water_eos.concentration_converter" title="Permalink to this definition"></a></dt>
-<dd><p>This function converts concentration between several units like wt%, mole fraction, molality and volume
+<span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">concentration_converter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">In_Unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x_wt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Out_Unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x_wt'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#concentration_converter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.concentration_converter" title="Permalink to this definition"></a></dt>
+<dd><p>This function converts concentration between several units like
+wt fraction, mole fraction, molality, mol/kg solution and volume fraction
 Values must be in fraction except it is molality</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1160,7 +1161,7 @@ Values must be in fraction except it is molality</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pygcc.water_eos.Driesner_NaCl">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">Driesner_NaCl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygcc.water_eos.</span></span><span class="sig-name descname"><span class="pre">Driesner_NaCl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Driesner_NaCl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl" title="Permalink to this definition"></a></dt>
 <dd><p>Implementation of Driesner and Heinrich PTx Formulation for H2O-NaCl system</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1239,22 +1240,22 @@ temperature–pressure–composition space from 0 to 1000 C, 0 to 5000 bar, and 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcc.water_eos.Driesner_NaCl.__calc__">
-<span class="sig-name descname"><span class="pre">__calc__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl.__calc__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__calc__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Driesner_NaCl.__calc__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl.__calc__" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcc.water_eos.Driesner_NaCl.Driesner_NaCl">
-<span class="sig-name descname"><span class="pre">Driesner_NaCl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl.Driesner_NaCl" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Driesner_NaCl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Driesner_NaCl.Driesner_NaCl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl.Driesner_NaCl" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcc.water_eos.Driesner_NaCl.Driesner_NaClII">
-<span class="sig-name descname"><span class="pre">Driesner_NaClII</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xNaCl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl.Driesner_NaClII" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Driesner_NaClII</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xNaCl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Driesner_NaCl.Driesner_NaClII"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl.Driesner_NaClII" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcc.water_eos.Driesner_NaCl.enthalpy_mu_heatcap">
-<span class="sig-name descname"><span class="pre">enthalpy_mu_heatcap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xNaCl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl.enthalpy_mu_heatcap" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">enthalpy_mu_heatcap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xNaCl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pygcc/water_eos.html#Driesner_NaCl.enthalpy_mu_heatcap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygcc.water_eos.Driesner_NaCl.enthalpy_mu_heatcap" title="Permalink to this definition"></a></dt>
 <dd><p>Enthalpy in J/g, viscosity in Pas and Cp in Joules per kilogram Kelvin</p>
 </dd></dl>
 

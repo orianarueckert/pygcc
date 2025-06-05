@@ -1003,7 +1003,8 @@ Attributes
 
 .. py:function:: concentration_converter(val=1.0, In_Unit='x_wt', Out_Unit='x_wt')
 
-   This function converts concentration between several units like wt%, mole fraction, molality and volume
+   This function converts concentration between several units like
+   wt fraction, mole fraction, molality, mol/kg solution and volume fraction
    Values must be in fraction except it is molality
 
    :param val: Values to convert
