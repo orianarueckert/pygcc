@@ -1,6 +1,6 @@
 # `pygcc`
 
-<img src="_static/PyGCC_logo_vector.jpg" alt="pygcc Logo" width="40%" align="right">
+<img src="./docs/static/PyGCC_logo_vector.jpg" alt="pygcc Logo" width="40%" align="right">
 
 A tool for thermodynamic calculations and geochemical database generation
 
