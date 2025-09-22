@@ -12,7 +12,6 @@ pyGeochemCalc (pygcc) is a python-based program for thermodynamic calculations a
 Geochemist's Workbench (GWB), EQ3/6, TOUGHREACT, PFLOTRAN and PHREEQC (in progress) thermodynamic database from 
 ambient to deep Earth temperature and pressure conditions
 
-
 pygcc is developed for use in the geochemical community by providing a consolidated 
 set of existing and newly implemented functions for calculating the thermodynamic properties 
 of gas, aqueous, and mineral (including solid solutions and variable-formula clays) species, 
